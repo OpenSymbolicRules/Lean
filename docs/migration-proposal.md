@@ -1,0 +1,92 @@
+# M6 — Ecosystem migration proposal (draft)
+
+Status: proposal.  No existing repository has been modified; the Julia changes
+live on the local branch `feat/osr-v1-lean-export` of OpenSymbolicRules.jl.
+
+## Breaking changes
+
+The OSR v1 interchange format replaces v0.1 entirely (see
+`docs/architecture.md`, "Breaking changes").  There is no compatibility layer:
+a v0.1 consumer cannot read v1 files, and the v1 loader rejects v0.1 files.
+
+## Per repository
+
+| Repository | Change |
+|---|---|
+| Specification | Replace `docs/spec.md` with a v1 specification covering the expression fragment, the `defined_pattern` semantics, profiles, verification records and the certification policy.  Move `schemas/ruleset.schema.json` there.  Archive v0.1 under `v0.1/`. |
+| OpenMath | Host the pinned CD snapshots (done locally) and the generated `registry.json`. |
+| Trigonometry | Replace `rules/` with the generated `trigonometry.osr.json` and `report.md`, produced by CI from a tagged `Lean` release.  Remove hand-written JSON.  Fix the non-terminating `default` profile in the Lean source first. |
+| Algebra, Calculus, Logic | Keep v0.1 until the corresponding Lean modules exist; then distribute generated files the same way. |
+| Integration | Keep the RUBI corpus as *imported, unverified* data with v0.1 provenance.  Formalize selected rules individually.  An imported rule is never exported with a `verification` record it does not have. |
+| Conformance | Engine tests: matching (syntactic, AC), substitution, strategies, definedness handling.  OSRv1's matcher bug (BigInt identity) is the first regression case. |
+| Verification | Publish `report.json`/`report.md` per release and a workflow that rebuilds a release at its source digest and runs `leanchecker`. |
+| OpenSymbolicRules.jl | Merge `OSRv1`; later, compile v1 rules into the SymbolicUtils pipeline behind the same verification metadata. |
+
+## Unverified imported rules
+
+An imported rule may be distributed with status `unproved` (or `unsupported`
+when its constructs are outside the fragment).  Consumers select certified
+rules by default; using others is an explicit choice (`certified_only=false`
+in OSRv1).
+
+## Future domains
+
+- **Algebra.**  The fragment needs more constructs:
+  - rational and integer exponents, via `zpow` for integer exponents, with a
+    nonzero-base definedness condition for negative ones;
+  - `transc1#ln` with a positive-argument definedness condition over ℝ and a
+    principal-branch assurance over ℂ;
+  - `transc1#exp`;
+  - order-based conditions (`relation1#lt`, `geq`), which are only meaningful
+    over ℝ.
+
+  The `Cond` type becomes domain-indexed.
+- **Calculus.**  Binders are needed: `calculus1#diff`, `fns1#lambda` and
+  `limit1#limit` via `OMBIND`.  Derivatives map to `deriv` with explicit
+  differentiability hypotheses.  Limits map to filter statements (`Tendsto f
+  (𝓝[≠] a) (𝓝 L)`, one-sided via `𝓝[<]`/`𝓝[>]`).  Substitution must avoid
+  capture; de Bruijn indices are recommended inside `Expr`.
+- **Logic.**  Prop-valued interpretations: `logic1`, plus `quant1` binders.
+  Equivalences are stated as `↔`.  Multi-premise inference rules are stated as
+  implications, with the derivation state outside the rule.  The v0.1
+  semantic checker of the Logic repository (truth tables over propositional
+  rules) becomes a cross-check of the Lean proofs, not a substitute for them.
+- **Integration.**  Antiderivative rules are stated as `HasDerivAt` on an
+  explicit open set where every operation is defined.  Constants of
+  integration and disconnected domains are handled by the open-set hypothesis.
+  RUBI utility functions and matching predicates stay outside the certified
+  fragment.
+
+## Research questions (initial answers from the pilot)
+
+1. **Can a Lean DSL represent CAS rules without duplicating Mathlib?**  Yes, for
+   this fragment: the interpretation maps every symbol to an existing Mathlib
+   constant, and all 26 proofs reuse Mathlib lemmas.
+2. **How should OpenMath symbols be represented in Lean?**  As data (`OMSymbol`)
+   attached to typed constructors, with a separate per-domain interpretation.
+   This keeps identity independent of Lean names.
+3. **How can a mapping be justified?**  By CMP obligations proved in Lean, plus
+   real/complex agreement lemmas (`Complex.ofReal_sin`, …).  Such evidence
+   cannot characterize a function completely, which is why assurance levels
+   exist.
+4. **Should the registry be authored in Lean?**  Yes: authoring it in Lean lets
+   the build check that interpretations and obligations exist.  A JSON copy is
+   exported for other tools.
+5. **Can the exporter preserve meaning?**  Structurally, yes (shared `Expr`).  A
+   proof needs a Lean model of OpenMath JSON; see `docs/trust-model.md`.
+6. **Can rule correctness and rewrite safety be checked separately?**  Yes.  The
+   pilot proves values, and the Julia engine exposed a strategy cycle that no
+   value theorem can detect.
+7. **How should external engines consume assumptions?**  Through explicit
+   conditions plus the `defined_pattern` applicability.  An engine either
+   decides the conditions or does not apply the rule (OSRv1 does the latter).
+8. **Can OSR carry verified knowledge independently of Lean?**  Yes.  The JSON
+   is self-describing (OpenMath symbols, domains, theorems, revisions, digest),
+   and checking it needs Lean only for re-verification.
+9. **Could OSR find missing Mathlib lemmas?**  No gap was found for
+   trigonometry.  `Real.sin_sq_eq_half_sub` exists without a `Complex`
+   counterpart, so the complex proof combines two lemmas instead.
+10. **What could be verified within Lean?**  Next targets, in order: the
+    exporter (OpenMath JSON model), the definedness semantics of the registry
+    against CD descriptions, and a reference matcher with a substitution
+    soundness theorem.

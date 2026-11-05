@@ -1,0 +1,75 @@
+# Trust model
+
+This document states what a `"certified": true` record means, what it relies
+on, and how to re-check it.
+
+## What is checked by Lean's kernel
+
+For each certified record `(rule, domain)`, the theorem named in `theorem`
+proves the proposition named in `statement`: `OSR.Rule.Holds <rule> <domain>`.
+The kernel checks this proof when the module compiles.  `scripts/Export.lean`
+then verifies, in the elaborated environment:
+
+- the theorem's type is *syntactically* `Rule.Holds <ruleDecl> <domain>`.  A
+  theorem about a different rule or a weaker statement is rejected;
+- the declaration `<ruleDecl>` evaluates to the rule that is exported;
+- the theorem's transitive axioms are within `propext`, `Classical.choice` and
+  `Quot.sound`.  `sorryAx`, `Lean.ofReduceBool` (from `native_decide`) and any
+  custom axiom make the export fail.
+
+`just check` replays the compiled modules with `leanchecker`, a second kernel
+pass over the `.olean` files, which detects environment manipulation.
+
+## What is trusted, not proved
+
+| Component | Trust basis |
+|---|---|
+| Lean kernel, Mathlib's foundations | Standard; the toolchain and Mathlib revision are pinned |
+| Symbol mappings (OpenMath ↔ Lean) | Human review plus CMP obligations; recorded as an assurance level per symbol and domain |
+| `Expr.toOMJson` (Lean → JSON) | Small structural function and `#guard` tests; **not proved** semantics-preserving |
+| JSON parsing and matching in a consumer (e.g. OpenSymbolicRules.jl) | Consumer tests; not verified |
+| Rewrite strategy (order, repetition, termination) | Not verified; cycles are possible (see `docs/audit-m0.md`) |
+
+The exporter is trusted for the following reason.  `eval` and `toOMJson` are
+defined by structural recursion over the same `Expr`, constructor by
+constructor, and every constructor is mapped to one registry symbol.  The
+intended property:
+
+> the OpenMath reading of `toOMJson e`, through the registry's interpretation
+> in domain `d`, equals `eval d e`
+
+holds by inspection of this correspondence, but it is not a Lean theorem.
+Proving it requires a Lean model of OpenMath JSON objects and of their registry
+interpretation.  That is the first target for a verified exporter.
+
+## What `applicability: defined_pattern` means
+
+For every assignment of the rule's variables that satisfies its conditions, if
+every operation in the pattern is applied inside its domain of definition (no
+zero divisor, no `tan` pole, no `arctan` singularity in ℂ), then:
+
+- the replacement is defined;
+- the replacement has the same value.
+
+The definedness relation is `OSR.Defined`, generated from the registry's
+interpretation.  A consumer that rewrites an expression defined on a set `S`
+obtains an expression equal to it on `S`.  It may lose the information that the
+original was undefined outside `S`.
+
+## A JSON record is not a certificate
+
+`"status": "proved"` is a claim.  To check it independently:
+
+1. Find a commit of `OpenSymbolicRules/Lean` whose `scripts/source-digest.sh`
+   output equals the record's `source_digest` (without the `sha256:` prefix).
+   Release tags will publish this mapping.
+2. Install the `lean_toolchain` named in the record (`elan` reads
+   `lean-toolchain`), then run `just setup`.  This fetches Mathlib at the
+   pinned `mathlib_revision`, which `lake-manifest.json` records.
+3. Run `just build check export`.  The build replays every proof in the kernel,
+   `leanchecker` replays the modules, and the export re-runs the audit and
+   regenerates the JSON.
+4. Compare the regenerated file with the published one; generation is
+   byte-for-byte deterministic.
+
+No network access is needed after step 2.

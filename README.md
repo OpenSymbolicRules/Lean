@@ -1,0 +1,78 @@
+# OpenSymbolicRules — Lean
+
+Canonical source of the Open Symbolic Rules (OSR): symbolic rewriting rules
+authored in Lean 4, proved against Mathlib, grounded in OpenMath content
+dictionaries, and exported to a portable JSON interchange format that any
+computer algebra system can consume without Lean.
+
+```
+OpenMath CDs ──► semantic registry ──► Lean rules + proofs ──► kernel
+                                                                 │
+                     OpenSymbolicRules.jl, other CAS ◄── OSR v1 JSON (audited export)
+```
+
+Status: **pilot** (`1.0.0-alpha.1` format).  The 13 rules of the Trigonometry
+rule set are migrated:
+
+- ℝ: 13 rules proved, 13 certified;
+- ℂ: 13 rules proved, 12 certified.
+
+`tan(arctan z) = z` over ℂ is proved but not certified, because the mapping of
+`transc1#arctan` to `Complex.arctan` is provisional.  See
+[`docs/audit-m0.md`](docs/audit-m0.md).
+
+## Example
+
+The Pythagorean identity is data:
+
+```lean
+def pythagorean : Rule where
+  id := "trigonometry.pythagorean"
+  vars := ["x"]
+  lhs := add (sq (sin x)) (sq (cos x))
+  rhs := .int 1
+  ...
+```
+
+Its proof reuses Mathlib, stated over the rule's own interpretation:
+
+```lean
+theorem pythagorean_real : pythagorean.Holds .real := by
+  osr_intro pythagorean Interp.real
+  exact Real.sin_sq_add_cos_sq _
+```
+
+The export carries the OpenMath expression (`arith1#plus`, `arith1#power`,
+`transc1#sin`, `transc1#cos`) and the verification record: theorem, statement,
+axioms, toolchain, Mathlib revision and source digest.
+
+## Usage
+
+Requires [elan](https://github.com/leanprover/elan) and
+[just](https://github.com/casey/just); `check-jsonschema` for `just validate`.
+
+```bash
+just setup        # fetch Mathlib (pinned) and its build cache
+just build        # compile registry, rules and proofs
+just test         # #guard tests and examples
+just check        # replay modules with leanchecker
+just export       # audit and write generated/{trigonometry.osr.json,registry.json,report.*}
+just determinism  # export twice, require identical bytes
+just validate     # validate against schemas/ruleset.schema.json
+```
+
+## Documentation
+
+- [Architecture](docs/architecture.md): decisions, registry, breaking changes
+  from v0.1
+- [Trust model](docs/trust-model.md): what certification means and how to
+  re-check it
+- [M0 audit](docs/audit-m0.md): inspected revisions, Specification v0.1
+  findings, Trigonometry inventory
+- [Migration proposal](docs/migration-proposal.md): ecosystem plan, future
+  domains, research questions
+
+## License
+
+[MIT](LICENSE.md).  OpenMath content dictionaries are referenced by
+identifier; snapshots live in `OpenSymbolicRules/OpenMath`.
