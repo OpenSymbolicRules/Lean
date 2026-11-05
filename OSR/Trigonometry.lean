@@ -13,9 +13,11 @@ mathematical statement:
 * n-ary `Multiply` becomes left-nested binary `arith1#times`
   (`2 * sin x * cos x` is `(2 * sin x) * cos x`);
 * `Power` with exponent `2` becomes a natural-number literal power;
-* the `default` profile is the v0.1 default `load_order`; `sum_to_product` is
-  the v0.1 profile of the same name.  Priority is the v0.1 load position
-  (file order, then position in the file), times ten.
+* priority is the v0.1 load position (file order, then position in the
+  file), times ten;
+* profiles are redesigned: the v0.1 `default` and `sum_to_product` profiles do
+  not terminate (see `cycleFinding`), so v1 groups the rules by orientation
+  (`profiles`).
 
 Each proof reuses a Mathlib theorem directly, or rewrites with Mathlib
 theorems and closes the goal with `ring`.
@@ -51,7 +53,15 @@ private def migrated (legacy : String) (orig : List Source) : Provenance :=
 private def fungrim (entry file : String) : Source :=
   { name := "Fungrim MathJSON", locator := s!"corpus/{file}#{entry}", license := some "MIT" }
 
-private def both : List String := ["default", "sum_to_product"]
+/-- Every profile of the rule set.  Each profile is oriented consistently so
+that it terminates (see `docs/audit-m0.md`):
+
+* `default`: expansion (angle sum, double angle);
+* `product_to_sum`, `power_reduction`, `sum_to_product`: the corresponding
+  transformations alone.
+
+The Pythagorean identity and `tan ∘ arctan` belong to every profile. -/
+def profiles : List String := ["default", "product_to_sum", "power_reduction", "sum_to_product"]
 
 /-! ## Rules -/
 
@@ -62,7 +72,7 @@ def pythagorean : Rule where
   vars := ["x"]
   lhs := add (sq (sin x)) (sq (cos x))
   rhs := .int 1
-  profiles := both
+  profiles := profiles
   priority := 10
   description := "Pythagorean identity: sin^2(x) + cos^2(x) = 1"
   provenance := migrated "trigonometry:1-basic-identities/1.1-pythagorean:1" []
@@ -74,7 +84,7 @@ def sinAdd : Rule where
   vars := ["x", "y"]
   lhs := sin (add x y)
   rhs := add (mul (sin x) (cos y)) (mul (cos x) (sin y))
-  profiles := both
+  profiles := ["default"]
   priority := 20
   description := "Sine angle-sum identity"
   provenance := migrated "trigonometry:1-basic-identities/1.2-angle-sum:1" []
@@ -86,7 +96,7 @@ def cosSub : Rule where
   vars := ["x", "y"]
   lhs := cos (sub x y)
   rhs := add (mul (cos x) (cos y)) (mul (sin x) (sin y))
-  profiles := both
+  profiles := ["default"]
   priority := 30
   description := "Cosine angle-difference identity"
   provenance := migrated "trigonometry:1-basic-identities/1.2-angle-sum:2" []
@@ -98,7 +108,7 @@ def sinTwoMul : Rule where
   vars := ["x"]
   lhs := sin (mul two x)
   rhs := mul (mul two (sin x)) (cos x)
-  profiles := both
+  profiles := ["default"]
   priority := 40
   description := "Sine double-angle identity"
   provenance := migrated "trigonometry:1-basic-identities/1.3-double-angle:1" []
@@ -110,7 +120,7 @@ def cosTwoMul : Rule where
   vars := ["x"]
   lhs := cos (mul two x)
   rhs := sub (sq (cos x)) (sq (sin x))
-  profiles := both
+  profiles := ["default"]
   priority := 50
   description := "Cosine double-angle identity"
   provenance := migrated "trigonometry:1-basic-identities/1.3-double-angle:2" []
@@ -122,7 +132,7 @@ def sinMulCos : Rule where
   vars := ["a", "b"]
   lhs := mul (sin a) (cos b)
   rhs := div (add (sin (add a b)) (sin (sub a b))) two
-  profiles := ["default"]
+  profiles := ["product_to_sum"]
   priority := 60
   description := "Product-to-sum identity for sine times cosine"
   provenance := migrated "trigonometry:1-basic-identities/1.4-product-to-sum:1"
@@ -135,7 +145,7 @@ def sinMulSin : Rule where
   vars := ["a", "b"]
   lhs := mul (sin a) (sin b)
   rhs := div (sub (cos (sub a b)) (cos (add a b))) two
-  profiles := ["default"]
+  profiles := ["product_to_sum"]
   priority := 70
   description := "Product-to-sum identity for two sines"
   provenance := migrated "trigonometry:1-basic-identities/1.4-product-to-sum:2"
@@ -148,7 +158,7 @@ def sinSq : Rule where
   vars := ["x"]
   lhs := sq (sin x)
   rhs := div (sub (.int 1) (cos (mul two x))) two
-  profiles := both
+  profiles := ["power_reduction"]
   priority := 80
   description := "Sine-square power reduction"
   provenance := migrated "trigonometry:1-basic-identities/1.5-power-reduction:1"
@@ -161,7 +171,7 @@ def cosSq : Rule where
   vars := ["x"]
   lhs := sq (cos x)
   rhs := div (add (.int 1) (cos (mul two x))) two
-  profiles := both
+  profiles := ["power_reduction"]
   priority := 90
   description := "Cosine-square power reduction"
   provenance := migrated "trigonometry:1-basic-identities/1.5-power-reduction:2" []
@@ -209,7 +219,7 @@ def tanArctan : Rule where
   vars := ["z"]
   lhs := .app1 .tan (.app1 .arctan z)
   rhs := z
-  profiles := both
+  profiles := profiles
   priority := 130
   description := "Tangent cancels the principal inverse tangent"
   provenance := migrated "trigonometry:2-inverse-functions/2.1-tangent-inverse:1"
@@ -343,28 +353,37 @@ theorem tanArctan_complex : tanArctan.Holds .complex := by
 
 /-! ## Catalogue -/
 
-/-- The Trigonometry catalogue, in v0.1 load order. -/
+/-- Strategy finding shared by the rules involved in the v0.1 cycles. -/
+private def cycleFinding : String :=
+  "operational: the v0.1 profiles do not terminate. angle_sum.sin_add and product_to_sum.sin_cos reproduce sin(x + y), angle_sum.cos_sub and product_to_sum.sin_sin reproduce cos(x - y), and power_reduction with double_angle.cos reproduces sin(x)^2. All rules are proved; v1 splits them into consistently oriented profiles, each checked for termination on the catalogue patterns."
+
+/-- The Trigonometry catalogue, in v0.1 load order (= priority order). -/
 def catalog : List CatalogEntry := [
   { rule := pythagorean, ruleDecl := ``pythagorean,
     proofs := [(.real, ``pythagorean_real), (.complex, ``pythagorean_complex)] },
   { rule := sinAdd, ruleDecl := ``sinAdd,
     proofs := [(.real, ``sinAdd_real), (.complex, ``sinAdd_complex)],
-    findings := ["operational: in the default profile, trigonometry.angle_sum.sin_add and trigonometry.product_to_sum.sin_cos form a rewrite cycle (sin(x + y) is reproduced); a terminating strategy must not enable both. Both rules are proved; this is a strategy property, not a mathematical error."] },
+    findings := [cycleFinding] },
   { rule := cosSub, ruleDecl := ``cosSub,
-    proofs := [(.real, ``cosSub_real), (.complex, ``cosSub_complex)] },
+    proofs := [(.real, ``cosSub_real), (.complex, ``cosSub_complex)],
+    findings := [cycleFinding] },
   { rule := sinTwoMul, ruleDecl := ``sinTwoMul,
     proofs := [(.real, ``sinTwoMul_real), (.complex, ``sinTwoMul_complex)] },
   { rule := cosTwoMul, ruleDecl := ``cosTwoMul,
-    proofs := [(.real, ``cosTwoMul_real), (.complex, ``cosTwoMul_complex)] },
+    proofs := [(.real, ``cosTwoMul_real), (.complex, ``cosTwoMul_complex)],
+    findings := [cycleFinding] },
   { rule := sinMulCos, ruleDecl := ``sinMulCos,
     proofs := [(.real, ``sinMulCos_real), (.complex, ``sinMulCos_complex)],
-    findings := ["operational: in the default profile, trigonometry.angle_sum.sin_add and trigonometry.product_to_sum.sin_cos form a rewrite cycle (sin(x + y) is reproduced); a terminating strategy must not enable both. Both rules are proved; this is a strategy property, not a mathematical error."] },
+    findings := [cycleFinding] },
   { rule := sinMulSin, ruleDecl := ``sinMulSin,
-    proofs := [(.real, ``sinMulSin_real), (.complex, ``sinMulSin_complex)] },
+    proofs := [(.real, ``sinMulSin_real), (.complex, ``sinMulSin_complex)],
+    findings := [cycleFinding] },
   { rule := sinSq, ruleDecl := ``sinSq,
-    proofs := [(.real, ``sinSq_real), (.complex, ``sinSq_complex)] },
+    proofs := [(.real, ``sinSq_real), (.complex, ``sinSq_complex)],
+    findings := [cycleFinding] },
   { rule := cosSq, ruleDecl := ``cosSq,
-    proofs := [(.real, ``cosSq_real), (.complex, ``cosSq_complex)] },
+    proofs := [(.real, ``cosSq_real), (.complex, ``cosSq_complex)],
+    findings := [cycleFinding] },
   { rule := sinAddSin, ruleDecl := ``sinAddSin,
     proofs := [(.real, ``sinAddSin_real), (.complex, ``sinAddSin_complex)] },
   { rule := cosAddCos, ruleDecl := ``cosAddCos,
@@ -377,5 +396,59 @@ def catalog : List CatalogEntry := [
       "complex: OSR v0.1 states tan(arctan z) = z without condition and cites Fungrim 1f026d for complex z; arctan is undefined at z = ±i and Complex.tan_arctan requires z ≠ I and z ≠ -I. The rule is sound for defined patterns only; engines must not apply it at z = ±i.",
       "complex: certification is blocked by the provisional mapping of transc1#arctan to Complex.arctan (branch-cut agreement with the CD is unverified)."] }
 ]
+
+/-! ## Profiles and engine soundness -/
+
+/-- The rules of a profile, in priority order. -/
+def profileRules (p : String) : List Rule :=
+  (catalog.map (·.rule)).filter (p ∈ ·.profiles)
+
+private theorem catalog_sound_real : ∀ e ∈ catalog, e.rule.Holds .real ∧ e.rule.rhsClosed = true := by
+  intro e he
+  simp only [catalog, List.mem_cons, List.mem_nil_iff, or_false] at he
+  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+  exacts [⟨pythagorean_real, by decide⟩, ⟨sinAdd_real, by decide⟩, ⟨cosSub_real, by decide⟩,
+    ⟨sinTwoMul_real, by decide⟩, ⟨cosTwoMul_real, by decide⟩, ⟨sinMulCos_real, by decide⟩,
+    ⟨sinMulSin_real, by decide⟩, ⟨sinSq_real, by decide⟩, ⟨cosSq_real, by decide⟩,
+    ⟨sinAddSin_real, by decide⟩, ⟨cosAddCos_real, by decide⟩, ⟨cosSubCos_real, by decide⟩,
+    ⟨tanArctan_real, by decide⟩]
+
+private theorem catalog_sound_complex :
+    ∀ e ∈ catalog, e.rule.Holds .complex ∧ e.rule.rhsClosed = true := by
+  intro e he
+  simp only [catalog, List.mem_cons, List.mem_nil_iff, or_false] at he
+  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+  exacts [⟨pythagorean_complex, by decide⟩, ⟨sinAdd_complex, by decide⟩,
+    ⟨cosSub_complex, by decide⟩, ⟨sinTwoMul_complex, by decide⟩,
+    ⟨cosTwoMul_complex, by decide⟩, ⟨sinMulCos_complex, by decide⟩,
+    ⟨sinMulSin_complex, by decide⟩, ⟨sinSq_complex, by decide⟩, ⟨cosSq_complex, by decide⟩,
+    ⟨sinAddSin_complex, by decide⟩, ⟨cosAddCos_complex, by decide⟩,
+    ⟨cosSubCos_complex, by decide⟩, ⟨tanArctan_complex, by decide⟩]
+
+theorem profileRules_sound_real (p : String) : RulesSound Interp.real (profileRules p) := by
+  intro r hr
+  simp only [profileRules, List.mem_filter, List.mem_map] at hr
+  obtain ⟨⟨e, he, rfl⟩, _⟩ := hr
+  exact catalog_sound_real e he
+
+theorem profileRules_sound_complex (p : String) :
+    RulesSound Interp.complex (profileRules p) := by
+  intro r hr
+  simp only [profileRules, List.mem_filter, List.mem_map] at hr
+  obtain ⟨⟨e, he, rfl⟩, _⟩ := hr
+  exact catalog_sound_complex e he
+
+/-- Running the reference engine with any Trigonometry profile over ℝ
+preserves definedness and value. -/
+theorem normalize_sound_real (p : String) (fuel : Nat) (env : String → ℝ) (e : Expr) :
+    Preserves Interp.real env e (normalize (profileRules p) fuel e).result :=
+  normalize_sound _ (profileRules_sound_real p) fuel e
+
+/-- Running the reference engine with any Trigonometry profile over ℂ
+preserves definedness and value (Lean semantics; the `transc1#arctan` mapping
+over ℂ is provisional). -/
+theorem normalize_sound_complex (p : String) (fuel : Nat) (env : String → ℂ) (e : Expr) :
+    Preserves Interp.complex env e (normalize (profileRules p) fuel e).result :=
+  normalize_sound _ (profileRules_sound_complex p) fuel e
 
 end OSR.Trigonometry

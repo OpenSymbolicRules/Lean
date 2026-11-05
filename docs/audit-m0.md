@@ -118,13 +118,25 @@ The generated `report.md` is the authoritative per-rule record.
   arctan z = (i/2) ln((1 − iz)/(1 + iz)), Mathlib defines
   arctan z = −i/2 · log((1 + zi)/(1 − zi)), and their agreement on the branch
   cuts is not established.
-- **The v0.1 `default` profile does not terminate.**  Angle sum gives
-  `sin(x + y) ⟶ sin x cos y + cos x sin y`, and product-to-sum then gives
-  `sin x cos y ⟶ (sin(x + y) + sin(x − y))/2`.  The result contains `sin(x + y)`
-  again, so the two rules cycle under any strategy that applies both.  Both
-  rules are proved: this is a strategy property, observed in the Julia engine,
-  where the step budget is exhausted.  The `sum_to_product` profile already
-  excludes product-to-sum for the analogous reason; `default` needs the same
-  treatment.
+- **The v0.1 profiles do not terminate.**  Three cycles:
+  - angle sum gives `sin(x + y) ⟶ sin x cos y + cos x sin y`, and
+    product-to-sum then gives `sin x cos y ⟶ (sin(x + y) + sin(x − y))/2`,
+    which contains `sin(x + y)` again;
+  - `cos(x − y)` with the angle difference and `sin a sin b` product-to-sum;
+  - power reduction `sin² x ⟶ (1 − cos 2x)/2` with the cosine double angle
+    `cos 2x ⟶ cos² x − sin² x`.  This one also affects the v0.1
+    `sum_to_product` profile.
+
+  All rules are proved: these are strategy properties.  The first was observed
+  in the Julia engine; all three are regression tests of the Lean reference
+  rewriter (`OSRTest/Rewrite.lean`).  v1 replaces the two profiles with four
+  consistently oriented ones, each checked by the exporter:
+
+  | v1 profile | Rules (besides `pythagorean` and `tan_arctan`) |
+  |---|---|
+  | `default` | angle sum, angle difference, double angle (sin, cos) |
+  | `product_to_sum` | `sin·cos`, `sin·sin` |
+  | `power_reduction` | `sin²`, `cos²` |
+  | `sum_to_product` | `sin + sin`, `cos + cos`, `cos − cos` |
 - **Mixed-arity products in v0.1.**  `["Multiply", 2, sin, cos]` is n-ary while
   other rules are binary.  v1 uses binary `times`, left-nested.

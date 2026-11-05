@@ -176,6 +176,87 @@ and is not part of these figures.
   header ++ String.intercalate "\n" rows ++ "\n\n## Findings\n\n" ++
     String.intercalate "\n\n" findings ++ "\n"
 
+/-! ## Strategy analysis and conformance cases -/
+
+/-- Step budget of the termination check and of the conformance cases. -/
+def fuel : Nat := 64
+
+private def tv : OSR.Expr := .var "t"
+private def uv : OSR.Expr := .var "u"
+
+/-- Inputs beyond the rule patterns: nested redexes, contexts and literals. -/
+def extraSeeds : List (String × OSR.Expr) := [
+  ("nested.pythagorean_in_product",
+    .app2 .mul (.int 2) (.app2 .add (.powNat (.app1 .sin tv) 2) (.powNat (.app1 .cos tv) 2))),
+  ("nested.pythagorean_of_sum",
+    .app2 .add (.powNat (.app1 .sin (.app2 .add tv uv)) 2)
+      (.powNat (.app1 .cos (.app2 .add tv uv)) 2)),
+  ("nested.sin_of_double_sum", .app1 .sin (.app2 .add (.app2 .mul (.int 2) tv) uv)),
+  ("nested.tan_arctan_inside_sin", .app1 .sin (.app1 .tan (.app1 .arctan tv))),
+  ("literal.cube_is_not_square", .app2 .add (.powNat (.app1 .sin tv) 3) (.powNat (.app1 .cos tv) 3)),
+  ("literal.three_is_not_two", .app1 .sin (.app2 .mul (.int 3) tv)),
+  ("nonlinear.sin_add_sin_same", .app2 .add (.app1 .sin tv) (.app1 .sin tv)),
+  ("normal.atom", tv)]
+
+/-- Seeds of the termination check: every catalogue pattern, plus `extraSeeds`. -/
+def seeds : List (String × OSR.Expr) :=
+  Trigonometry.catalog.map (fun e => (s!"pattern.{e.rule.id}", e.rule.lhs)) ++ extraSeeds
+
+/-- One normalization per profile and seed. -/
+def strategyRuns : List (String × String × OSR.Expr × Normalization) :=
+  Trigonometry.profiles.flatMap fun p =>
+    seeds.map fun (name, e) => (p, name, e, normalize (Trigonometry.profileRules p) fuel e)
+
+def strategyJson : Json :=
+  Json.mkObj [
+    ("engine", Json.str "OSR.normalize (reference rewriter, proved sound: OSR.normalize_sound)"),
+    ("fuel", toJson fuel),
+    ("seeds", toJson seeds.length),
+    ("profiles", Json.mkObj (Trigonometry.profiles.map fun p =>
+      let runs := strategyRuns.filter (·.1 == p)
+      (p, Json.mkObj [
+        ("rules", Json.arr ((Trigonometry.profileRules p).map (Json.str ·.id)).toArray),
+        ("terminates_on_seeds", toJson (runs.all (·.2.2.2.normal))),
+        ("max_steps", toJson ((runs.map (·.2.2.2.trace.length)).foldl max 0))])))]
+
+def conformanceJson (b : BuildInfo) : Json :=
+  Json.mkObj [
+    ("osr_format", Json.str formatVersion),
+    ("suite", Json.str "trigonometry.rewrite"),
+    ("ruleset", Json.str "trigonometry.osr.json"),
+    ("source_digest", Json.str s!"sha256:{b.sourceDigest}"),
+    ("semantics", Json.mkObj [
+      ("domain", Json.str "real"),
+      ("rules", Json.str "the rules of the profile, unconditional only, in priority order"),
+      ("strategy", Json.str "outermost-leftmost: at each step, try the root (rules in order), then the arguments left to right; one rewrite per step"),
+      ("matching", Json.str "syntactic; a pattern variable occurring twice matches equal subterms; integers compare by value; input OMV are constants"),
+      ("fuel", toJson fuel),
+      ("reference", Json.str "OSR.normalize in OpenSymbolicRules/Lean (OSR/Rewrite.lean)")]),
+    ("cases", Json.arr (strategyRuns.map fun (p, name, e, n) =>
+      Json.mkObj [
+        ("id", Json.str s!"{p}/{name}"),
+        ("profile", Json.str p),
+        ("input", e.toOMJson),
+        ("expected", n.result.toOMJson),
+        ("trace", Json.arr (n.trace.map Json.str).toArray),
+        ("normal", toJson n.normal)]).toArray)]
+
+def strategyMarkdown : String :=
+  let rows := Trigonometry.profiles.map fun p =>
+    let runs := strategyRuns.filter (·.1 == p)
+    let ok := runs.all (·.2.2.2.normal)
+    let maxSteps := (runs.map (·.2.2.2.trace.length)).foldl max 0
+    s!"| `{p}` | {(Trigonometry.profileRules p).length} | {if ok then "yes" else "**no**"} | {maxSteps} |"
+  s!"## Strategy
+
+Each profile is run with the reference rewriter (`OSR.normalize`, proved
+sound) on {seeds.length} seeds: every catalogue pattern plus nested inputs.
+Termination is tested on these seeds with a budget of {fuel} steps, not proved.
+
+| Profile | Rules | Normal form on every seed | Max steps |
+|---|---|---|---|
+" ++ String.intercalate "\n" rows ++ "\n"
+
 unsafe def runExport : MetaM Unit := do
   let some outDir ← IO.getEnv "OSR_OUT_DIR" | throwError "OSR_OUT_DIR is not set"
   let some digest ← IO.getEnv "OSR_SOURCE_DIGEST" | throwError "OSR_SOURCE_DIGEST is not set"
@@ -186,6 +267,9 @@ unsafe def runExport : MetaM Unit := do
   let ids := Trigonometry.catalog.map (·.rule.id)
   unless ids.eraseDups.length == ids.length do
     throwError "duplicate rule identifiers in the Trigonometry catalogue"
+  let stuck := strategyRuns.filter (!·.2.2.2.normal)
+  unless stuck.isEmpty do
+    throwError "profiles do not terminate within {fuel} steps: {stuck.map fun r => (r.1, r.2.1)}"
   let mut audited := []
   for e in Trigonometry.catalog do
     audited := audited ++ [(e, ← auditEntry e)]
@@ -202,9 +286,13 @@ unsafe def runExport : MetaM Unit := do
     ("build", Json.mkObj [("lean_toolchain", Json.str build.leanToolchain),
       ("mathlib_revision", Json.str build.mathlibRevision),
       ("source_digest", Json.str s!"sha256:{build.sourceDigest}")]),
-    ("metrics", metricsJson audited)]
+    ("metrics", metricsJson audited),
+    ("strategy", strategyJson)]
   IO.FS.writeFile (outDir ++ "/report.json") (report.pretty ++ "\n")
-  IO.FS.writeFile (outDir ++ "/report.md") (reportMarkdown build audited)
+  IO.FS.writeFile (outDir ++ "/report.md") (reportMarkdown build audited ++ "\n" ++ strategyMarkdown)
+  IO.FS.createDirAll (outDir ++ "/conformance")
+  IO.FS.writeFile (outDir ++ "/conformance/trigonometry.cases.json")
+    ((conformanceJson build).pretty ++ "\n")
   logInfo m!"exported {audited.length} rules to {outDir}"
 
 #eval runExport

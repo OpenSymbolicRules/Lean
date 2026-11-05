@@ -46,6 +46,11 @@ The export carries the OpenMath expression (`arith1#plus`, `arith1#power`,
 `transc1#sin`, `transc1#cos`) and the verification record: theorem, statement,
 axioms, toolchain, Mathlib revision and source digest.
 
+Rewriting is verified as well: the reference engine `OSR.normalize`
+(outermost-first, syntactic matching) is proved to preserve definedness and
+value (`OSR.normalize_sound`), for every Trigonometry profile over ℝ and ℂ.
+Its runs are exported as conformance cases that other engines must reproduce.
+
 ## Usage
 
 Requires [elan](https://github.com/leanprover/elan) and
@@ -56,7 +61,8 @@ just setup        # fetch Mathlib (pinned) and its build cache
 just build        # compile registry, rules and proofs
 just test         # #guard tests and examples
 just check        # replay modules with leanchecker
-just export       # audit and write generated/{trigonometry.osr.json,registry.json,report.*}
+just export       # audit, check profile termination, write generated/
+                  #   trigonometry.osr.json, registry.json, report.*, conformance/
 just determinism  # export twice, require identical bytes
 just validate     # validate against schemas/ruleset.schema.json
 ```

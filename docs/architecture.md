@@ -28,9 +28,10 @@
    but can never change a defined value or produce an undefined result.
 5. **Mathematical truth, rewrite rule and strategy are separate.**  The theorem
    is about values.  Orientation, profiles and priority are rule metadata.
-   Termination and confluence of a strategy are a separate obligation that is
-   not proved here (see the cycle found in the v0.1 `default` profile, in
-   `docs/audit-m0.md`).
+   Rewrite soundness is proved once for the engine (`OSR.normalize_sound`).
+   Termination is tested per profile on the catalogue patterns and nested
+   inputs; it is not proved.  The v0.1 profiles cycle (`docs/audit-m0.md`),
+   so v1 profiles group rules by orientation.
 6. **Certification is per domain and has two independent inputs:**
    - the proof status of `Rule.Holds r d`;
    - the weakest assurance of the symbol mappings the rule uses in `d`.
@@ -61,11 +62,15 @@ OSR/Registry.lean      symbol identity, domains, assurance levels, CD references
 OSR/Expr.lean          expression fragment and its OpenMath JSON encoding
 OSR/Interp.lean        real and complex interpretations, `eval`, `Defined`
 OSR/Rule.lean          rules, conditions, well-formedness, `Rule.Holds`
+OSR/Rewrite.lean       reference rewriter (matching, substitution, outermost
+                       strategy) and its soundness proof
 OSR/Semantics.lean     registry contents and semantic obligations
 OSR/Catalog.lean       catalogue entries and the `osr_intro` proof helper
-OSR/Trigonometry.lean  the pilot rules and their proofs
+OSR/Trigonometry.lean  the pilot rules, their proofs, profiles and engine
+                       soundness per profile
 OSR/Export.lean        pure JSON rendering
-scripts/Export.lean    audit (types, axioms, registry) and generation
+scripts/Export.lean    audit (types, axioms, registry), termination check,
+                       generation of rule set, reports and conformance cases
 schemas/               JSON Schema of the generated rule set
 OSRTest/               `#guard` tests and examples
 ```
@@ -118,3 +123,28 @@ not a proof that the Lean function *is* the OpenMath function.
 | `meta.json` with `load_order` per file | `profiles` listing rule ids in priority order |
 | No proof information | Per-domain `verification` records (status, theorem, axioms, mapping assurance, toolchain, Mathlib revision, source digest) |
 | Unconditional rules over partial functions | `applicability: defined_pattern` with a machine-checked definedness semantics |
+
+## Reference rewriter
+
+`OSR/Rewrite.lean` defines a syntactic engine and proves it sound:
+
+| Definition | Theorem |
+|---|---|
+| `matchExpr p e` (non-linear, syntactic) | `matchExpr_subst`: the substitution instantiates `p` to `e` |
+| `Expr.subst σ` | `eval_subst`, `defined_subst`: substitution commutes with `eval` and `Defined` |
+| one root rewrite | `Rule.rewrite_sound`: definedness and value are preserved |
+| `rewriteStep` (outermost-leftmost, rules in order) | `rewriteStep_sound`: lifted through every context |
+| `normalize rules fuel e` | `normalize_sound`: for any budget |
+
+`Trigonometry.normalize_sound_real` and `normalize_sound_complex` instantiate
+the result for every profile: running the engine with Trigonometry rules on a
+defined expression yields a defined expression with the same value.  The
+engine only applies unconditional rules, and it requires each rule to be
+*closed* (`Rule.rhsClosed`: the replacement only uses pattern variables),
+which `#guard` tests check for the catalogue.
+
+The exporter runs every profile on every seed (rule patterns and nested
+inputs) and fails if a run does not reach a normal form within 64 steps.  The
+same runs are written as language-neutral conformance cases
+(`generated/conformance/trigonometry.cases.json`): input, expected result and
+rule trace.  OpenSymbolicRules.jl must reproduce each of them exactly.

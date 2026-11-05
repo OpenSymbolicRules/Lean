@@ -23,3 +23,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   verification reports; JSON Schema for the rule set.
 - Architecture, trust model, M0 audit and migration proposal documents.
 - `justfile` entry points and a CI workflow.
+- Reference rewriter (`OSR/Rewrite.lean`): syntactic matching, substitution,
+  outermost-leftmost strategy, with soundness proved (`normalize_sound`) and
+  instantiated for every Trigonometry profile over ℝ and ℂ.
+- Termination check of every profile at export, and generated conformance
+  cases (`generated/conformance/trigonometry.cases.json`).
+
+### Changed
+- Trigonometry profiles: the v0.1 `default` and `sum_to_product` profiles
+  cycle; they are replaced by `default` (expansion), `product_to_sum`,
+  `power_reduction` and `sum_to_product`.

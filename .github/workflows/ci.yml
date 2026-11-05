@@ -91,6 +91,7 @@ jobs:
         working-directory: OpenSymbolicRules.jl
         env:
           OSR1_RULESET: ${{ github.workspace }}/generated/trigonometry.osr.json
+          OSR1_CONFORMANCE: ${{ github.workspace }}/generated/conformance/trigonometry.cases.json
         run: |
           julia --project=test -e 'using Pkg; Pkg.instantiate()'
           julia --project=test -e 'using TestItemRunner; @run_package_tests filter=ti->startswith(ti.name, "OSRv1")'
