@@ -80,7 +80,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: OpenSymbolicRules/OpenSymbolicRules.jl
-          ref: feat/osr-v1-lean-export
+          ref: main
           path: OpenSymbolicRules.jl
 
       - uses: julia-actions/setup-julia@v2
