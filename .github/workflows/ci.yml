@@ -1,0 +1,96 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lean:
+    name: Build, verify, audit, export
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install elan (toolchain from lean-toolchain)
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Install just and check-jsonschema
+        run: |
+          sudo apt-get update && sudo apt-get install -y just
+          python3 -m pip install check-jsonschema==0.38.0
+
+      - name: Restore Lake packages
+        uses: actions/cache@v4
+        with:
+          path: .lake/packages
+          key: lake-${{ hashFiles('lake-manifest.json', 'lean-toolchain') }}
+
+      - name: Fetch Mathlib build cache
+        run: lake exe cache get
+
+      - name: Fail on dependency drift
+        run: git diff --exit-code lake-manifest.json lean-toolchain
+
+      - name: Build registry, rules and proofs
+        run: lake build
+
+      - name: Tests
+        run: lake build OSRTest
+
+      - name: Replay modules with leanchecker
+        run: just check
+
+      - name: Audit and export
+        run: just export generated
+
+      - name: Validate generated JSON
+        run: just validate generated
+
+      - name: Deterministic generation
+        run: just determinism
+
+      - name: Summary
+        if: always()
+        run: |
+          if [ -f generated/report.md ]; then cat generated/report.md >> "$GITHUB_STEP_SUMMARY"; fi
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: osr-export
+          path: generated/
+
+  julia:
+    name: Julia end-to-end (OpenSymbolicRules.jl)
+    needs: lean
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: osr-export
+          path: generated
+
+      - uses: actions/checkout@v4
+        with:
+          repository: OpenSymbolicRules/OpenSymbolicRules.jl
+          ref: feat/osr-v1-lean-export
+          path: OpenSymbolicRules.jl
+
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: "1.13"
+
+      - name: Run OSRv1 tests against the fresh export
+        working-directory: OpenSymbolicRules.jl
+        env:
+          OSR1_RULESET: ${{ github.workspace }}/generated/trigonometry.osr.json
+        run: |
+          julia --project=test -e 'using Pkg; Pkg.instantiate()'
+          julia --project=test -e 'using TestItemRunner; @run_package_tests filter=ti->startswith(ti.name, "OSRv1")'
