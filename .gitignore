@@ -1,0 +1,29 @@
+# --- Gitallow Pattern ---
+# Ignore everything, then allow tracked file types explicitly.
+*
+!*/
+!.gitignore
+!.github/**
+!*.lean
+!*.md
+!*.json
+!*.toml
+!*.sh
+!*.yml
+!*.jl
+!justfile
+!lean-toolchain
+
+# Build outputs and local state
+.lake/
+generated/
+.git/
+.DS_Store
+
+# Local assistant and planning files (never committed)
+.claude/
+.specify/
+CLAUDE.md
+AGENTS.md
+spec.md
+specs/
