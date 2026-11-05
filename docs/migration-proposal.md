@@ -1,7 +1,9 @@
 # M6 — Ecosystem migration proposal (draft)
 
-Status: proposal.  No existing repository has been modified; the Julia changes
-live on the local branch `feat/osr-v1-lean-export` of OpenSymbolicRules.jl.
+Status: in progress.  Done: `Lean`, `OpenMath`, `Conformance` and
+`Verification` are populated; `OSRv1` is merged into OpenSymbolicRules.jl; the
+v1 draft (`docs/osr-v1.md`, `schemas/v1/`) is merged into Specification.  The
+rule-set repositories (Trigonometry, …) still distribute v0.1.
 
 ## Breaking changes
 
