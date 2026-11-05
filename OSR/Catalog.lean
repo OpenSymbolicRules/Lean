@@ -1,4 +1,5 @@
 import OSR.Semantics
+import OSR.Rewrite
 
 /-!
 # Rule catalogues

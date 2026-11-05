@@ -17,7 +17,7 @@ test:
 # Replay each compiled module in the kernel with leanchecker.  Modules are
 # replayed one at a time: each replay loads Mathlib (about 3 GB of memory).
 check:
-	for m in OSR.Registry OSR.Expr OSR.Interp OSR.Rule OSR.Semantics OSR.Catalog OSR.Trigonometry OSR.Export; do lake env leanchecker $m || exit 1; done
+	for m in OSR.Registry OSR.Expr OSR.Interp OSR.Rule OSR.Rewrite OSR.Semantics OSR.Catalog OSR.Trigonometry OSR.Export; do lake env leanchecker $m || exit 1; done
 
 # Audit proofs and export the interchange JSON to `out`.
 export out="generated":
