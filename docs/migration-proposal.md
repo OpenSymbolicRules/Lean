@@ -75,8 +75,10 @@ in OSRv1).
 4. **Should the registry be authored in Lean?**  Yes: authoring it in Lean lets
    the build check that interpretations and obligations exist.  A JSON copy is
    exported for other tools.
-5. **Can the exporter preserve meaning?**  Structurally, yes (shared `Expr`).  A
-   proof needs a Lean model of OpenMath JSON; see `docs/trust-model.md`.
+5. **Can the exporter preserve meaning?**  Yes, at the level of OpenMath
+   objects: decoding the export by symbol identity recovers the expression
+   (`OSR/OMObject.lean`).  The JSON printer and the link between registry
+   names and `OSR.Interp` remain trusted; see `docs/trust-model.md`.
 6. **Can rule correctness and rewrite safety be checked separately?**  Yes.  The
    rule theorems are about values; soundness of rewriting with them is proved
    once for the reference engine (`normalize_sound`).  Termination is a third,
@@ -94,6 +96,7 @@ in OSRv1).
    counterpart, so the complex proof combines two lemmas instead.
 10. **What could be verified within Lean?**  Done: a reference matcher and
     strategy with a soundness theorem (`OSR/Rewrite.lean`), and termination
-    of every profile with monotone weights (`OSR/Termination.lean`).  Next
-    targets: the exporter (OpenMath JSON model) and the definedness semantics
-    of the registry against CD descriptions.
+    of every profile with monotone weights (`OSR/Termination.lean`), and
+    faithfulness of the export at the OpenMath object level
+    (`OSR/OMObject.lean`).  Next target: the definedness semantics of the
+    registry against CD descriptions.

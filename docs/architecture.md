@@ -64,12 +64,14 @@ OSR/Interp.lean        real and complex interpretations, `eval`, `Defined`
 OSR/Rule.lean          rules, conditions, well-formedness, `Rule.Holds`
 OSR/Rewrite.lean       reference rewriter (matching, substitution, outermost
                        strategy) and its soundness proof
+OSR/Termination.lean   monotone weights and the termination theorem
 OSR/Semantics.lean     registry contents and semantic obligations
+OSR/OMObject.lean      OpenMath object model; faithfulness of the export
 OSR/Catalog.lean       catalogue entries and the `osr_intro` proof helper
 OSR/Trigonometry.lean  the pilot rules, their proofs, profiles and engine
-                       soundness per profile
+                       soundness and termination per profile
 OSR/Export.lean        pure JSON rendering
-scripts/Export.lean    audit (types, axioms, registry), termination check,
+scripts/Export.lean    audit (types, axioms, registry, termination proofs),
                        generation of rule set, reports and conformance cases
 schemas/               JSON Schema of the generated rule set
 OSRTest/               `#guard` tests and examples
@@ -142,6 +144,15 @@ defined expression yields a defined expression with the same value.  The
 engine only applies unconditional rules, and it requires each rule to be
 *closed* (`Rule.rhsClosed`: the replacement only uses pattern variables),
 which `#guard` tests check for the catalogue.
+
+## Exporter
+
+`OSR/OMObject.lean` models the exported OpenMath objects (`OMObj`: `OMV`,
+`OMI`, `OMS`, `OMA` with a symbol head) and proves that `Expr.toOMJson` is
+their JSON serialization, that decoding by symbol identity and arity recovers
+the expression (`decode_toOM`, hence `evalOM_toOM`), and that the registry
+covers every emitted symbol at its arity (`registry_covers_toOM`).  See
+`docs/trust-model.md` for what remains trusted.
 
 ## Termination
 

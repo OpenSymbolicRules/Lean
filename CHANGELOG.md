@@ -33,6 +33,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   per Trigonometry profile (`Trigonometry.normalize_terminates`).  The export
   audits each termination theorem (exact statement, standard axioms) and
   records it in `report.json` and `report.md`.
+- OpenMath object model (`OSR/OMObject.lean`): the export is the JSON
+  serialization of `Expr.toOM`, decoding by symbol identity recovers the
+  expression (`decode_toOM`, `evalOM_toOM`), and the registry covers every
+  emitted symbol at its arity (`registry_covers_toOM`).
 
 ### Changed
 - Trigonometry profiles: the v0.1 `default` and `sum_to_product` profiles

@@ -5,6 +5,7 @@ import OSR.Rule
 import OSR.Rewrite
 import OSR.Termination
 import OSR.Semantics
+import OSR.OMObject
 import OSR.Catalog
 import OSR.Trigonometry
 import OSR.Export
