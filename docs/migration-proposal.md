@@ -2,8 +2,9 @@
 
 Status: in progress.  Done: `Lean`, `OpenMath`, `Conformance` and
 `Verification` are populated; `OSRv1` is merged into OpenSymbolicRules.jl; the
-v1 draft (`docs/osr-v1.md`, `schemas/v1/`) is merged into Specification.  The
-rule-set repositories (Trigonometry, …) still distribute v0.1.
+v1 draft (`docs/osr-v1.md`, `schemas/v1/`) is merged into Specification;
+Trigonometry distributes the generated v1 files in `v1/`, next to its v0.1
+`rules/`, which the v0.1 loader still reads.
 
 ## Breaking changes
 
