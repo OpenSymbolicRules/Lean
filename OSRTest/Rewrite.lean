@@ -63,4 +63,20 @@ private def sq (e : Expr) : Expr := .powNat e 2
 -- theorem.
 #guard Trigonometry.catalog.all fun e => e.rule.rhsClosed
 
+-- The proved step bound covers the observed runs: on every catalogue pattern,
+-- normalizing within the weight of the input reaches a normal form.
+#guard Trigonometry.profiles.all fun p =>
+  Trigonometry.catalog.all fun e =>
+    (normalize (Trigonometry.profileRules p)
+      ((Trigonometry.weight p).eval (fun _ => 0) e.rule.lhs) e.rule.lhs).normal
+
+-- A rule of a profile decreases the weight of that profile.
+#guard ((Trigonometry.weight "default").eval (fun _ => 0) Trigonometry.sinAdd.rhs) <
+  (Trigonometry.weight "default").eval (fun _ => 0) Trigonometry.sinAdd.lhs
+
+-- The opposite orientation does not: `sinMulCos` increases the weight of the
+-- `default` profile, which is why the v0.1 profiles could cycle.
+#guard ((Trigonometry.weight "default").eval (fun _ => 0) Trigonometry.sinMulCos.lhs) <
+  (Trigonometry.weight "default").eval (fun _ => 0) Trigonometry.sinMulCos.rhs
+
 end OSRTest.Rewrite

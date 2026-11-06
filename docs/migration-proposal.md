@@ -81,7 +81,8 @@ in OSRv1).
    rule theorems are about values; soundness of rewriting with them is proved
    once for the reference engine (`normalize_sound`).  Termination is a third,
    separate property: the Julia engine exposed a cycle that no value theorem
-   can detect, and the exporter now tests every profile.
+   can detect.  It is now proved per profile with a weight
+   (`OSR/Termination.lean`).
 7. **How should external engines consume assumptions?**  Through explicit
    conditions plus the `defined_pattern` applicability.  An engine either
    decides the conditions or does not apply the rule (OSRv1 does the latter).
@@ -92,7 +93,7 @@ in OSRv1).
    trigonometry.  `Real.sin_sq_eq_half_sub` exists without a `Complex`
    counterpart, so the complex proof combines two lemmas instead.
 10. **What could be verified within Lean?**  Done: a reference matcher and
-    strategy with a soundness theorem (`OSR/Rewrite.lean`).  Next targets: the
-    exporter (OpenMath JSON model), termination of profiles (a reduction
-    order), and the definedness semantics of the registry against CD
-    descriptions.
+    strategy with a soundness theorem (`OSR/Rewrite.lean`), and termination
+    of every profile with monotone weights (`OSR/Termination.lean`).  Next
+    targets: the exporter (OpenMath JSON model) and the definedness semantics
+    of the registry against CD descriptions.

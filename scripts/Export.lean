@@ -17,6 +17,10 @@ For every catalogue entry this script checks, in the elaborated environment:
 4. each proof depends only on the standard axioms
    `propext`, `Classical.choice`, `Quot.sound`.
 
+For every profile it checks that the termination theorem has type exactly
+`OSR.Terminates (OSR.Trigonometry.profileRules p) <weight>`, with the same
+axioms.
+
 Any violation is an error and the export fails.  Kernel checking itself
 happened when the modules were compiled; `just check` additionally replays the
 modules with `leanchecker`.
@@ -207,7 +211,40 @@ def strategyRuns : List (String × String × OSR.Expr × Normalization) :=
   Trigonometry.profiles.flatMap fun p =>
     seeds.map fun (name, e) => (p, name, e, normalize (Trigonometry.profileRules p) fuel e)
 
-def strategyJson : Json :=
+/-- Termination proof of each profile: weight and theorem. -/
+def terminationProofs : List (String × Name × Name) := [
+  ("default", ``Trigonometry.defaultWeight, ``Trigonometry.default_terminates),
+  ("product_to_sum", ``Trigonometry.productToSumWeight, ``Trigonometry.productToSum_terminates),
+  ("power_reduction", ``Trigonometry.powerReductionWeight,
+    ``Trigonometry.powerReduction_terminates),
+  ("sum_to_product", ``Trigonometry.sumToProductWeight, ``Trigonometry.sumToProduct_terminates)]
+
+/-- Check that a profile's termination theorem has type exactly
+`OSR.Terminates (OSR.Trigonometry.profileRules p) weight` and depends only on
+the standard axioms.  Returns the JSON record. -/
+def auditTermination (p : String) : MetaM Json := do
+  let some (_, w, thm) := terminationProofs.find? (·.1 == p)
+    | throwError "profile {p} has no termination proof"
+  let some info := (← getEnv).find? thm
+    | throwError "{p}: termination proof {thm} does not exist"
+  unless info matches .thmInfo _ do
+    throwError "{p}: {thm} is not a theorem"
+  let expected := mkApp2 (mkConst ``OSR.Terminates)
+    (mkApp (mkConst ``Trigonometry.profileRules) (mkStrLit p)) (mkConst w)
+  unless info.type == expected do
+    throwError "{p}: {thm} has type{indentExpr info.type}\nexpected{indentExpr expected}"
+  let axioms := (← collectAxioms thm).toList.mergeSort (·.toString ≤ ·.toString)
+  let forbidden := axioms.filter (· ∉ standardAxioms)
+  unless forbidden.isEmpty do
+    throwError "{p}: {thm} depends on forbidden axioms {forbidden}"
+  return Json.mkObj [
+    ("status", Json.str "proved"),
+    ("theorem", Json.str thm.toString),
+    ("statement", Json.str s!"OSR.Terminates (OSR.Trigonometry.profileRules \"{p}\") {w}"),
+    ("weight", Json.str w.toString),
+    ("axioms", Json.arr (axioms.map (Json.str ·.toString)).toArray)]
+
+def strategyJson (termination : List (String × Json)) : Json :=
   Json.mkObj [
     ("engine", Json.str "OSR.normalize (reference rewriter, proved sound: OSR.normalize_sound)"),
     ("fuel", toJson fuel),
@@ -216,6 +253,7 @@ def strategyJson : Json :=
       let runs := strategyRuns.filter (·.1 == p)
       (p, Json.mkObj [
         ("rules", Json.arr ((Trigonometry.profileRules p).map (Json.str ·.id)).toArray),
+        ("termination", (termination.lookup p).getD Json.null),
         ("terminates_on_seeds", toJson (runs.all (·.2.2.2.normal))),
         ("max_steps", toJson ((runs.map (·.2.2.2.trace.length)).foldl max 0))])))]
 
@@ -247,11 +285,21 @@ def strategyMarkdown : String :=
     let ok := runs.all (·.2.2.2.normal)
     let maxSteps := (runs.map (·.2.2.2.trace.length)).foldl max 0
     s!"| `{p}` | {(Trigonometry.profileRules p).length} | {if ok then "yes" else "**no**"} | {maxSteps} |"
+  let proofRows := terminationProofs.map fun (p, w, thm) => s!"| `{p}` | `{w}` | `{thm}` |"
   s!"## Strategy
 
-Each profile is run with the reference rewriter (`OSR.normalize`, proved
-sound) on {seeds.length} seeds: every catalogue pattern plus nested inputs.
-Termination is tested on these seeds with a budget of {fuel} steps, not proved.
+Termination of every profile is proved: each profile has a weight, a strictly
+monotone interpretation of the operators into ℕ, under which all its rules
+decrease, so the reference rewriter (`OSR.normalize`, proved sound) reaches a
+normal form within the weight of its input (`OSR.Terminates`).
+
+| Profile | Weight | Theorem |
+|---|---|---|
+" ++ String.intercalate "\n" proofRows ++ s!"
+
+Each profile is also run on {seeds.length} seeds (every catalogue pattern plus
+nested inputs) with a budget of {fuel} steps; these runs are the conformance
+cases.
 
 | Profile | Rules | Normal form on every seed | Max steps |
 |---|---|---|---|
@@ -270,6 +318,7 @@ unsafe def runExport : MetaM Unit := do
   let stuck := strategyRuns.filter (!·.2.2.2.normal)
   unless stuck.isEmpty do
     throwError "profiles do not terminate within {fuel} steps: {stuck.map fun r => (r.1, r.2.1)}"
+  let termination ← Trigonometry.profiles.mapM fun p => return (p, ← auditTermination p)
   let mut audited := []
   for e in Trigonometry.catalog do
     audited := audited ++ [(e, ← auditEntry e)]
@@ -287,7 +336,7 @@ unsafe def runExport : MetaM Unit := do
       ("mathlib_revision", Json.str build.mathlibRevision),
       ("source_digest", Json.str s!"sha256:{build.sourceDigest}")]),
     ("metrics", metricsJson audited),
-    ("strategy", strategyJson)]
+    ("strategy", strategyJson termination)]
   IO.FS.writeFile (outDir ++ "/report.json") (report.pretty ++ "\n")
   IO.FS.writeFile (outDir ++ "/report.md") (reportMarkdown build audited ++ "\n" ++ strategyMarkdown)
   IO.FS.createDirAll (outDir ++ "/conformance")

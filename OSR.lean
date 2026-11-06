@@ -3,6 +3,7 @@ import OSR.Expr
 import OSR.Interp
 import OSR.Rule
 import OSR.Rewrite
+import OSR.Termination
 import OSR.Semantics
 import OSR.Catalog
 import OSR.Trigonometry

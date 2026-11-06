@@ -29,9 +29,9 @@
 5. **Mathematical truth, rewrite rule and strategy are separate.**  The theorem
    is about values.  Orientation, profiles and priority are rule metadata.
    Rewrite soundness is proved once for the engine (`OSR.normalize_sound`).
-   Termination is tested per profile on the catalogue patterns and nested
-   inputs; it is not proved.  The v0.1 profiles cycle (`docs/audit-m0.md`),
-   so v1 profiles group rules by orientation.
+   Termination of each profile is proved with a weight (see "Termination"
+   below).  The v0.1 profiles cycle (`docs/audit-m0.md`), so v1 profiles group
+   rules by orientation.
 6. **Certification is per domain and has two independent inputs:**
    - the proof status of `Rule.Holds r d`;
    - the weakest assurance of the symbol mappings the rule uses in `d`.
@@ -142,6 +142,30 @@ defined expression yields a defined expression with the same value.  The
 engine only applies unconditional rules, and it requires each rule to be
 *closed* (`Rule.rhsClosed`: the replacement only uses pattern variables),
 which `#guard` tests check for the catalogue.
+
+## Termination
+
+`OSR/Termination.lean` proves termination with monotone interpretations.  A
+`Weight` maps every operator to a strictly monotone function on ℕ.  A rule
+*decreases* when its right-hand side weighs less than its left-hand side for
+every weight of its variables.  Since weighing commutes with substitution and
+contexts are monotone, every `rewriteStep` with decreasing rules strictly
+lowers the weight (`rewriteStep_lt`), and `normalize` reaches a normal form
+when its budget is at least the weight of the input
+(`Weight.normalize_normal`, `Terminates`).
+
+Each Trigonometry profile has its own weight, because the profiles orient
+rules in opposite directions:
+
+| Profile | Sine, cosine | Products | Sums, differences | Powers |
+|---|---|---|---|---|
+| `default` | `8^(a+1)` | `a+b+1` | `a+b+1` | `a+k+1` |
+| `product_to_sum` | `a+3` | `(a+1)(b+1)` | `a+b+1` | `a+k+1` |
+| `power_reduction` | `a+1` | `a+b+1` | `a+b+1` | `(a+1)^(k+1)` |
+| `sum_to_product` | `3a+5` | `a+b+1` | `(a+1)(b+1)` | `a+k+1` |
+
+Literals and `π` weigh 1; other operators add 1 to their argument.  The
+theorems `Trigonometry.default_terminates`, … are audited by the exporter.
 
 The exporter runs every profile on every seed (rule patterns and nested
 inputs) and fails if a run does not reach a normal form within 64 steps.  The

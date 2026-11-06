@@ -1,4 +1,5 @@
 import OSR.Catalog
+import OSR.Termination
 
 /-!
 # Trigonometry pilot
@@ -450,5 +451,172 @@ over ℂ is provisional). -/
 theorem normalize_sound_complex (p : String) (fuel : Nat) (env : String → ℂ) (e : Expr) :
     Preserves Interp.complex env e (normalize (profileRules p) fuel e).result :=
   normalize_sound _ (profileRules_sound_complex p) fuel e
+
+/-! ## Termination
+
+Each profile has a weight (`OSR.Weight`) under which all its rules are
+decreasing, so the reference engine terminates on every expression, within
+`(weight p).eval (fun _ => 0) e` steps.  The weights differ by profile
+because the profiles orient rules in opposite directions:
+
+* `default` expands angle sums: a sine or cosine weighs exponentially in its
+  argument, so splitting the argument pays for the extra operators;
+* `product_to_sum` removes products of sines and cosines: products weigh
+  multiplicatively;
+* `power_reduction` removes squares: powers weigh polynomially in their base;
+* `sum_to_product` removes sums and differences: they weigh multiplicatively,
+  and a sine or cosine weighs three times its argument.
+
+Integer literals and `π` weigh `1`; the other operators add `1` to the sum of
+their arguments. -/
+
+/-- Weight of the `default` profile. -/
+def defaultWeight : Weight where
+  int _ := 1
+  const _ := 1
+  op1 o a := match o with
+    | .sin | .cos => 8 ^ (a + 1)
+    | _ => a + 1
+  op2 _ a b := a + b + 1
+  pow a k := a + k + 1
+  mono1 o a a' h := by
+    cases o <;> simp only
+    all_goals first | omega | exact Nat.pow_lt_pow_right (by norm_num) (by omega)
+  mono2l _ _ _ _ h := by omega
+  mono2r _ _ _ _ h := by omega
+  monoPow _ _ _ h := by omega
+
+/-- Weight of the `product_to_sum` profile. -/
+def productToSumWeight : Weight where
+  int _ := 1
+  const _ := 1
+  op1 o a := match o with
+    | .sin | .cos => a + 3
+    | _ => a + 1
+  op2 o a b := match o with
+    | .mul => (a + 1) * (b + 1)
+    | _ => a + b + 1
+  pow a k := a + k + 1
+  mono1 o a a' h := by cases o <;> simp only <;> omega
+  mono2l o a a' b h := by cases o <;> simp only <;> first | omega | nlinarith
+  mono2r o a b b' h := by cases o <;> simp only <;> first | omega | nlinarith
+  monoPow _ _ _ h := by omega
+
+/-- Weight of the `power_reduction` profile. -/
+def powerReductionWeight : Weight where
+  int _ := 1
+  const _ := 1
+  op1 _ a := a + 1
+  op2 _ a b := a + b + 1
+  pow a k := (a + 1) ^ (k + 1)
+  mono1 _ _ _ h := by omega
+  mono2l _ _ _ _ h := by omega
+  mono2r _ _ _ _ h := by omega
+  monoPow _ _ k h := Nat.pow_lt_pow_left (by omega) (by omega)
+
+/-- Weight of the `sum_to_product` profile. -/
+def sumToProductWeight : Weight where
+  int _ := 1
+  const _ := 1
+  op1 o a := match o with
+    | .sin | .cos => 3 * a + 5
+    | _ => a + 1
+  op2 o a b := match o with
+    | .add | .sub => (a + 1) * (b + 1)
+    | _ => a + b + 1
+  pow a k := a + k + 1
+  mono1 o a a' h := by cases o <;> simp only <;> omega
+  mono2l o a a' b h := by cases o <;> simp only <;> first | omega | nlinarith
+  mono2r o a b b' h := by cases o <;> simp only <;> first | omega | nlinarith
+  monoPow _ _ _ h := by omega
+
+/-- The weight proving termination of a profile. -/
+def weight : String → Weight
+  | "default" => defaultWeight
+  | "product_to_sum" => productToSumWeight
+  | "power_reduction" => powerReductionWeight
+  | _ => sumToProductWeight
+
+theorem profileRules_default :
+    profileRules "default" = [pythagorean, sinAdd, cosSub, sinTwoMul, cosTwoMul, tanArctan] :=
+  rfl
+
+theorem profileRules_productToSum :
+    profileRules "product_to_sum" = [pythagorean, sinMulCos, sinMulSin, tanArctan] :=
+  rfl
+
+theorem profileRules_powerReduction :
+    profileRules "power_reduction" = [pythagorean, sinSq, cosSq, tanArctan] :=
+  rfl
+
+theorem profileRules_sumToProduct :
+    profileRules "sum_to_product" = [pythagorean, sinAddSin, cosAddCos, cosSubCos, tanArctan] :=
+  rfl
+
+private theorem one_le_eight_pow (n : Nat) : 1 ≤ 8 ^ n := Nat.one_le_pow _ _ (by norm_num)
+
+theorem default_decreasing : ∀ r ∈ profileRules "default", defaultWeight.Decreases r := by
+  rw [profileRules_default]
+  simp only [List.forall_mem_cons, List.not_mem_nil, IsEmpty.forall_iff, implies_true, and_true]
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ <;> intro env <;>
+    simp only [Weight.eval, defaultWeight, pythagorean, sinAdd, cosSub, sinTwoMul, cosTwoMul,
+      tanArctan]
+  · have := one_le_eight_pow (env "x"); ring_nf; nlinarith
+  · have := one_le_eight_pow (env "x"); have := one_le_eight_pow (env "y")
+    ring_nf; nlinarith
+  · have := one_le_eight_pow (env "x"); have := one_le_eight_pow (env "y")
+    ring_nf; nlinarith
+  · have := one_le_eight_pow (env "x"); ring_nf; nlinarith
+  · have := one_le_eight_pow (env "x"); ring_nf; nlinarith
+  · omega
+
+theorem productToSum_decreasing :
+    ∀ r ∈ profileRules "product_to_sum", productToSumWeight.Decreases r := by
+  rw [profileRules_productToSum]
+  simp only [List.forall_mem_cons, List.not_mem_nil, IsEmpty.forall_iff, implies_true, and_true]
+  refine ⟨?_, ?_, ?_, ?_⟩ <;> intro env <;>
+    simp only [Weight.eval, productToSumWeight, pythagorean, sinMulCos, sinMulSin, tanArctan]
+  all_goals nlinarith
+
+theorem powerReduction_decreasing :
+    ∀ r ∈ profileRules "power_reduction", powerReductionWeight.Decreases r := by
+  rw [profileRules_powerReduction]
+  simp only [List.forall_mem_cons, List.not_mem_nil, IsEmpty.forall_iff, implies_true, and_true]
+  refine ⟨?_, ?_, ?_, ?_⟩ <;> intro env <;>
+    simp only [Weight.eval, powerReductionWeight, pythagorean, sinSq, cosSq, tanArctan]
+  all_goals first | omega | (ring_nf; nlinarith)
+
+theorem sumToProduct_decreasing :
+    ∀ r ∈ profileRules "sum_to_product", sumToProductWeight.Decreases r := by
+  rw [profileRules_sumToProduct]
+  simp only [List.forall_mem_cons, List.not_mem_nil, IsEmpty.forall_iff, implies_true, and_true]
+  refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> intro env <;>
+    simp only [Weight.eval, sumToProductWeight, pythagorean, sinAddSin, cosAddCos, cosSubCos,
+      tanArctan]
+  all_goals first | omega | (ring_nf; nlinarith)
+
+theorem default_terminates : Terminates (profileRules "default") defaultWeight :=
+  defaultWeight.terminates _ default_decreasing
+
+theorem productToSum_terminates :
+    Terminates (profileRules "product_to_sum") productToSumWeight :=
+  productToSumWeight.terminates _ productToSum_decreasing
+
+theorem powerReduction_terminates :
+    Terminates (profileRules "power_reduction") powerReductionWeight :=
+  powerReductionWeight.terminates _ powerReduction_decreasing
+
+theorem sumToProduct_terminates :
+    Terminates (profileRules "sum_to_product") sumToProductWeight :=
+  sumToProductWeight.terminates _ sumToProduct_decreasing
+
+/-- **Termination.**  For every profile and every expression, the reference
+engine reaches a normal form within the weight of the expression. -/
+theorem normalize_terminates (p : String) (hp : p ∈ profiles) :
+    Terminates (profileRules p) (weight p) := by
+  simp only [profiles, List.mem_cons, List.mem_nil_iff, or_false] at hp
+  rcases hp with rfl | rfl | rfl | rfl
+  exacts [default_terminates, productToSum_terminates, powerReduction_terminates,
+    sumToProduct_terminates]
 
 end OSR.Trigonometry

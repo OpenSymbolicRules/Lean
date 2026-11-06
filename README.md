@@ -61,7 +61,7 @@ just setup        # fetch Mathlib (pinned) and its build cache
 just build        # compile registry, rules and proofs
 just test         # #guard tests and examples
 just check        # replay modules with leanchecker
-just export       # audit, check profile termination, write generated/
+just export       # audit rule and termination proofs, write generated/
                   #   trigonometry.osr.json, registry.json, report.*, conformance/
 just determinism  # export twice, require identical bytes
 just validate     # validate against schemas/ruleset.schema.json

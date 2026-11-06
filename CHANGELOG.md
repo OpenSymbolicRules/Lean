@@ -28,6 +28,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   instantiated for every Trigonometry profile over ℝ and ℂ.
 - Termination check of every profile at export, and generated conformance
   cases (`generated/conformance/trigonometry.cases.json`).
+- Termination proofs (`OSR/Termination.lean`): monotone weights into ℕ, a
+  `Terminates` predicate and `Weight.terminates`, instantiated by one weight
+  per Trigonometry profile (`Trigonometry.normalize_terminates`).  The export
+  audits each termination theorem (exact statement, standard axioms) and
+  records it in `report.json` and `report.md`.
 
 ### Changed
 - Trigonometry profiles: the v0.1 `default` and `sum_to_product` profiles
