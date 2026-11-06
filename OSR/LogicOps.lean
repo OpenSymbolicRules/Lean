@@ -26,6 +26,22 @@ def nor (a b : Bool) : Bool := !(a || b)
 /-- `logic1#xnor`. -/
 def xnor (a b : Bool) : Bool := !(Bool.xor a b)
 
+/-- `quant1#forall` over the truth values: `∀x. φ` is `φ[x := true] ∧ φ[x := false]`. -/
+def forallBool (f : Bool → Bool) : Bool := f true && f false
+
+/-- `quant1#exists` over the truth values. -/
+def existsBool (f : Bool → Bool) : Bool := f true || f false
+
+theorem forallBool_iff (f : Bool → Bool) : forallBool f = true ↔ ∀ b, f b = true := by
+  unfold forallBool; constructor
+  · intro h b; cases b <;> simp_all
+  · intro h; simp [h]
+
+theorem existsBool_iff (f : Bool → Bool) : existsBool f = true ↔ ∃ b, f b = true := by
+  unfold existsBool; constructor
+  · intro h; simp only [Bool.or_eq_true] at h; rcases h with h | h; exacts [⟨_, h⟩, ⟨_, h⟩]
+  · rintro ⟨b, h⟩; cases b <;> simp [h]
+
 /-! ## CMPs of `logic1` -/
 
 theorem and_cmp : ∀ x : Bool, (x && !x) = false := by decide

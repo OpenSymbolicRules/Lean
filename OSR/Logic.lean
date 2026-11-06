@@ -4,9 +4,10 @@ import OSR.LogicCore
 # Logic
 
 Migration of the propositional rules of `OpenSymbolicRules/Logic` at commit
-`9e1789735df1b91e82029fa3eb44010f224b8065`: 31 of its 39 rules, interpreted
-in the Boolean domain (`logic1` connectives on Lean's `Bool`).  The other 8
-use quantifiers (`quant1`), which need binders (`notMigrated`).
+`9e1789735df1b91e82029fa3eb44010f224b8065`: 35 of its 39 rules, interpreted
+in the Boolean domain (`logic1` connectives on Lean's `Bool`, `quant1`
+quantifiers over the truth values).  The other 4 need a "variable not free"
+side condition, which has no OpenMath symbol (`notMigrated`).
 
 Each rule is proved by evaluating both sides for every truth value of its
 variables.  The three profiles follow v0.1: `default` simplifies, pushes
@@ -402,110 +403,170 @@ def dnfRight : BRule where
   description := "Distribute conjunction over disjunction to construct DNF."
   provenance := migrated "logic:5-normal-forms/5.2-to-dnf:27"
 
+/-- The negation of a universal quantifier is an existential quantifier of the negated body. -/
+def notForall : BRule where
+  id := "logic.quantifier.not_forall"
+  legacyId := some "logic:6-quantifiers/6.1-negation:32"
+  vars := ["x", "p"]
+  lhs := (.not (.all "x" (.var "p")))
+  rhs := (.ex "x" (.not (.var "p")))
+  profiles := ["default"]
+  priority := 320
+  description := "The negation of a universal quantifier is an existential quantifier of the negated body."
+  provenance := migrated "logic:6-quantifiers/6.1-negation:32"
+
+/-- The negation of an existential quantifier is a universal quantifier of the negated body. -/
+def notExists : BRule where
+  id := "logic.quantifier.not_exists"
+  legacyId := some "logic:6-quantifiers/6.1-negation:33"
+  vars := ["x", "p"]
+  lhs := (.not (.ex "x" (.var "p")))
+  rhs := (.all "x" (.not (.var "p")))
+  profiles := ["default"]
+  priority := 330
+  description := "The negation of an existential quantifier is a universal quantifier of the negated body."
+  provenance := migrated "logic:6-quantifiers/6.1-negation:33"
+
+/-- A universal quantifier distributes over conjunction, so two universals over the same variables merge into one. -/
+def forallAnd : BRule where
+  id := "logic.quantifier.forall_and"
+  legacyId := some "logic:6-quantifiers/6.2-scope:34"
+  vars := ["x", "p", "q"]
+  lhs := (.bin .and (.all "x" (.var "p")) (.all "x" (.var "q")))
+  rhs := (.all "x" (.bin .and (.var "p") (.var "q")))
+  profiles := ["default"]
+  priority := 340
+  description := "A universal quantifier distributes over conjunction, so two universals over the same variables merge into one."
+  provenance := migrated "logic:6-quantifiers/6.2-scope:34"
+
+/-- An existential quantifier distributes over disjunction, so two existentials over the same variables merge into one. -/
+def existsOr : BRule where
+  id := "logic.quantifier.exists_or"
+  legacyId := some "logic:6-quantifiers/6.2-scope:35"
+  vars := ["x", "p", "q"]
+  lhs := (.bin .or (.ex "x" (.var "p")) (.ex "x" (.var "q")))
+  rhs := (.ex "x" (.bin .or (.var "p") (.var "q")))
+  profiles := ["default"]
+  priority := 350
+  description := "An existential quantifier distributes over disjunction, so two existentials over the same variables merge into one."
+  provenance := migrated "logic:6-quantifiers/6.2-scope:35"
+
 
 /-! ## Rules not migrated -/
 
 /-- v0.1 rules outside the fragment, with the reason. -/
 def notMigrated : List (String × String) :=
-  [32, 33, 34, 35, 36, 37, 38, 39].map fun i =>
-    (s!"logic:6-quantifiers/{if i ≤ 33 then "6.1-negation" else "6.2-scope"}:{i}",
-      "quantifiers (quant1#forall, quant1#exists) bind variables; the fragment has no binders")
+  [36, 37, 38, 39].map fun i =>
+    (s!"logic:6-quantifiers/6.2-scope:{i}",
+      "the side condition FreeQ (a variable does not occur free) has no OpenMath symbol, so the rule cannot be stated in v1 without inventing one")
 
 /-! ## Proofs -/
 
 
 theorem orFalse_holds : orFalse.Holds := by
-  intro env; simp only [orFalse, BExpr.eval]; generalize env "p" = p; revert p; decide
+  intro ν I ρ; simp only [orFalse, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
 
 theorem andTrue_holds : andTrue.Holds := by
-  intro env; simp only [andTrue, BExpr.eval]; generalize env "p" = p; revert p; decide
+  intro ν I ρ; simp only [andTrue, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
 
 theorem andFalse_holds : andFalse.Holds := by
-  intro env; simp only [andFalse, BExpr.eval]; generalize env "p" = p; revert p; decide
+  intro ν I ρ; simp only [andFalse, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
 
 theorem orSelf_holds : orSelf.Holds := by
-  intro env; simp only [orSelf, BExpr.eval]; generalize env "p" = p; revert p; decide
+  intro ν I ρ; simp only [orSelf, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
 
 theorem andSelf_holds : andSelf.Holds := by
-  intro env; simp only [andSelf, BExpr.eval]; generalize env "p" = p; revert p; decide
+  intro ν I ρ; simp only [andSelf, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
 
 theorem falseOr_holds : falseOr.Holds := by
-  intro env; simp only [falseOr, BExpr.eval]; generalize env "p" = p; revert p; decide
+  intro ν I ρ; simp only [falseOr, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
 
 theorem trueAnd_holds : trueAnd.Holds := by
-  intro env; simp only [trueAnd, BExpr.eval]; generalize env "p" = p; revert p; decide
+  intro ν I ρ; simp only [trueAnd, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
 
 theorem orTrue_holds : orTrue.Holds := by
-  intro env; simp only [orTrue, BExpr.eval]; generalize env "p" = p; revert p; decide
+  intro ν I ρ; simp only [orTrue, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
 
 theorem trueOr_holds : trueOr.Holds := by
-  intro env; simp only [trueOr, BExpr.eval]; generalize env "p" = p; revert p; decide
+  intro ν I ρ; simp only [trueOr, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
 
 theorem falseAnd_holds : falseAnd.Holds := by
-  intro env; simp only [falseAnd, BExpr.eval]; generalize env "p" = p; revert p; decide
+  intro ν I ρ; simp only [falseAnd, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
 
 theorem notNot_holds : notNot.Holds := by
-  intro env; simp only [notNot, BExpr.eval]; generalize env "p" = p; revert p; decide
+  intro ν I ρ; simp only [notNot, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
 
 theorem orNotSelf_holds : orNotSelf.Holds := by
-  intro env; simp only [orNotSelf, BExpr.eval]; generalize env "p" = p; revert p; decide
+  intro ν I ρ; simp only [orNotSelf, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
 
 theorem andNotSelf_holds : andNotSelf.Holds := by
-  intro env; simp only [andNotSelf, BExpr.eval]; generalize env "p" = p; revert p; decide
+  intro ν I ρ; simp only [andNotSelf, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
 
 theorem notAnd_holds : notAnd.Holds := by
-  intro env; simp only [notAnd, BExpr.eval]; generalize env "p" = p; generalize env "q" = q; revert p q; decide
+  intro ν I ρ; simp only [notAnd, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
 
 theorem notOr_holds : notOr.Holds := by
-  intro env; simp only [notOr, BExpr.eval]; generalize env "p" = p; generalize env "q" = q; revert p q; decide
+  intro ν I ρ; simp only [notOr, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
 
 theorem notTrue_holds : notTrue.Holds := by
-  intro env; simp only [notTrue, BExpr.eval]; decide
+  intro ν I ρ; simp only [notTrue, BExpr.rename, BExpr.evalM]; decide
 
 theorem notFalse_holds : notFalse.Holds := by
-  intro env; simp only [notFalse, BExpr.eval]; decide
+  intro ν I ρ; simp only [notFalse, BExpr.rename, BExpr.evalM]; decide
 
 theorem orAndLeft_holds : orAndLeft.Holds := by
-  intro env; simp only [orAndLeft, BExpr.eval]; generalize env "p" = p; generalize env "q" = q; revert p q; decide
+  intro ν I ρ; simp only [orAndLeft, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
 
 theorem orAndRight_holds : orAndRight.Holds := by
-  intro env; simp only [orAndRight, BExpr.eval]; generalize env "p" = p; generalize env "q" = q; revert p q; decide
+  intro ν I ρ; simp only [orAndRight, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
 
 theorem andOrLeft_holds : andOrLeft.Holds := by
-  intro env; simp only [andOrLeft, BExpr.eval]; generalize env "p" = p; generalize env "q" = q; revert p q; decide
+  intro ν I ρ; simp only [andOrLeft, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
 
 theorem andOrRight_holds : andOrRight.Holds := by
-  intro env; simp only [andOrRight, BExpr.eval]; generalize env "p" = p; generalize env "q" = q; revert p q; decide
+  intro ν I ρ; simp only [andOrRight, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
 
 theorem impliesElim_holds : impliesElim.Holds := by
-  intro env; simp only [impliesElim, BExpr.eval]; generalize env "p" = p; generalize env "q" = q; revert p q; decide
+  intro ν I ρ; simp only [impliesElim, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
 
 theorem equivalentElim_holds : equivalentElim.Holds := by
-  intro env; simp only [equivalentElim, BExpr.eval]; generalize env "p" = p; generalize env "q" = q; revert p q; decide
+  intro ν I ρ; simp only [equivalentElim, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
 
 theorem nandElim_holds : nandElim.Holds := by
-  intro env; simp only [nandElim, BExpr.eval]; generalize env "p" = p; generalize env "q" = q; revert p q; decide
+  intro ν I ρ; simp only [nandElim, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
 
 theorem norElim_holds : norElim.Holds := by
-  intro env; simp only [norElim, BExpr.eval]; generalize env "p" = p; generalize env "q" = q; revert p q; decide
+  intro ν I ρ; simp only [norElim, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
 
 theorem xorElim_holds : xorElim.Holds := by
-  intro env; simp only [xorElim, BExpr.eval]; generalize env "p" = p; generalize env "q" = q; revert p q; decide
+  intro ν I ρ; simp only [xorElim, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
 
 theorem xnorElim_holds : xnorElim.Holds := by
-  intro env; simp only [xnorElim, BExpr.eval]; generalize env "p" = p; generalize env "q" = q; revert p q; decide
+  intro ν I ρ; simp only [xnorElim, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
 
 theorem cnfLeft_holds : cnfLeft.Holds := by
-  intro env; simp only [cnfLeft, BExpr.eval]; generalize env "p" = p; generalize env "q" = q; generalize env "r" = r; revert p q r; decide
+  intro ν I ρ; simp only [cnfLeft, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; generalize I "r" ρ = r; revert p q r; decide
 
 theorem cnfRight_holds : cnfRight.Holds := by
-  intro env; simp only [cnfRight, BExpr.eval]; generalize env "q" = q; generalize env "r" = r; generalize env "p" = p; revert q r p; decide
+  intro ν I ρ; simp only [cnfRight, BExpr.rename, BExpr.evalM]; generalize I "q" ρ = q; generalize I "r" ρ = r; generalize I "p" ρ = p; revert q r p; decide
 
 theorem dnfLeft_holds : dnfLeft.Holds := by
-  intro env; simp only [dnfLeft, BExpr.eval]; generalize env "p" = p; generalize env "q" = q; generalize env "r" = r; revert p q r; decide
+  intro ν I ρ; simp only [dnfLeft, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; generalize I "r" ρ = r; revert p q r; decide
 
 theorem dnfRight_holds : dnfRight.Holds := by
-  intro env; simp only [dnfRight, BExpr.eval]; generalize env "q" = q; generalize env "r" = r; generalize env "p" = p; revert q r p; decide
+  intro ν I ρ; simp only [dnfRight, BExpr.rename, BExpr.evalM]; generalize I "q" ρ = q; generalize I "r" ρ = r; generalize I "p" ρ = p; revert q r p; decide
+
+theorem notForall_holds : notForall.Holds := by
+  intro ν I ρ; simp only [notForall, BExpr.rename, BExpr.evalM, forallBool, existsBool]; generalize I "p" (upd ρ (ν "x") true) = pt; generalize I "p" (upd ρ (ν "x") false) = pf; revert pt pf; decide
+
+theorem notExists_holds : notExists.Holds := by
+  intro ν I ρ; simp only [notExists, BExpr.rename, BExpr.evalM, forallBool, existsBool]; generalize I "p" (upd ρ (ν "x") true) = pt; generalize I "p" (upd ρ (ν "x") false) = pf; revert pt pf; decide
+
+theorem forallAnd_holds : forallAnd.Holds := by
+  intro ν I ρ; simp only [forallAnd, BExpr.rename, BExpr.evalM, forallBool]; generalize I "p" (upd ρ (ν "x") true) = pt; generalize I "p" (upd ρ (ν "x") false) = pf; generalize I "q" (upd ρ (ν "x") true) = qt; generalize I "q" (upd ρ (ν "x") false) = qf; revert pt pf qt qf; decide
+
+theorem existsOr_holds : existsOr.Holds := by
+  intro ν I ρ; simp only [existsOr, BExpr.rename, BExpr.evalM, existsBool]; generalize I "p" (upd ρ (ν "x") true) = pt; generalize I "p" (upd ρ (ν "x") false) = pf; generalize I "q" (upd ρ (ν "x") true) = qt; generalize I "q" (upd ρ (ν "x") false) = qf; revert pt pf qt qf; decide
 
 
 /-! ## Catalogue -/
@@ -552,7 +613,15 @@ def catalog : List LogicEntry := [
   { rule := cnfLeft, ruleDecl := ``cnfLeft, proof := ``cnfLeft_holds },
   { rule := cnfRight, ruleDecl := ``cnfRight, proof := ``cnfRight_holds },
   { rule := dnfLeft, ruleDecl := ``dnfLeft, proof := ``dnfLeft_holds },
-  { rule := dnfRight, ruleDecl := ``dnfRight, proof := ``dnfRight_holds }
+  { rule := dnfRight, ruleDecl := ``dnfRight, proof := ``dnfRight_holds },
+  { rule := notForall, ruleDecl := ``notForall, proof := ``notForall_holds,
+    findings := ["semantics: quantifiers range over the truth values (quantified Boolean formulas), as in the v0.1 tests; v0.1 binds a sequence of variables, v1 binds one (a sequence is a chain of binders)."] },
+  { rule := notExists, ruleDecl := ``notExists, proof := ``notExists_holds,
+    findings := ["semantics: quantifiers range over the truth values (quantified Boolean formulas), as in the v0.1 tests; v0.1 binds a sequence of variables, v1 binds one (a sequence is a chain of binders)."] },
+  { rule := forallAnd, ruleDecl := ``forallAnd, proof := ``forallAnd_holds,
+    findings := ["semantics: quantifiers range over the truth values (quantified Boolean formulas), as in the v0.1 tests; v0.1 binds a sequence of variables, v1 binds one (a sequence is a chain of binders)."] },
+  { rule := existsOr, ruleDecl := ``existsOr, proof := ``existsOr_holds,
+    findings := ["semantics: quantifiers range over the truth values (quantified Boolean formulas), as in the v0.1 tests; v0.1 binds a sequence of variables, v1 binds one (a sequence is a chain of binders)."] }
 ]
 
 /-- The rules of a profile, in priority order. -/
@@ -562,7 +631,10 @@ def profileRules (p : String) : List BRule :=
 /-- The rules shared by every profile. -/
 def commonRules : List BRule := [orFalse, andTrue, andFalse, orSelf, andSelf, falseOr, trueAnd, orTrue, trueOr, falseAnd, notNot, orNotSelf, andNotSelf, notAnd, notOr, notTrue, notFalse, orAndLeft, orAndRight, andOrLeft, andOrRight, impliesElim, equivalentElim, nandElim, norElim, xorElim, xnorElim]
 
-theorem profileRules_default : profileRules "default" = commonRules := rfl
+/-- The quantifier rules (`default` only, as in v0.1). -/
+def quantifierRules : List BRule := [notForall, notExists, forallAnd, existsOr]
+
+theorem profileRules_default : profileRules "default" = commonRules ++ quantifierRules := rfl
 theorem profileRules_cnf : profileRules "to_cnf" = commonRules ++ [cnfLeft, cnfRight] := rfl
 theorem profileRules_dnf : profileRules "to_dnf" = commonRules ++ [dnfLeft, dnfRight] := rfl
 
@@ -571,7 +643,7 @@ theorem profileRules_dnf : profileRules "to_dnf" = commonRules ++ [dnfLeft, dnfR
 theorem catalog_holds : ∀ e ∈ catalog, e.rule.Holds := by
   intro e he
   simp only [catalog, List.mem_cons, List.mem_nil_iff, or_false] at he
-  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
   exacts [orFalse_holds, andTrue_holds, andFalse_holds, orSelf_holds,
     andSelf_holds, falseOr_holds, trueAnd_holds, orTrue_holds,
     trueOr_holds, falseAnd_holds, notNot_holds, orNotSelf_holds,
@@ -579,7 +651,8 @@ theorem catalog_holds : ∀ e ∈ catalog, e.rule.Holds := by
     notFalse_holds, orAndLeft_holds, orAndRight_holds, andOrLeft_holds,
     andOrRight_holds, impliesElim_holds, equivalentElim_holds, nandElim_holds,
     norElim_holds, xorElim_holds, xnorElim_holds, cnfLeft_holds,
-    cnfRight_holds, dnfLeft_holds, dnfRight_holds]
+    cnfRight_holds, dnfLeft_holds, dnfRight_holds, notForall_holds,
+    notExists_holds, forallAnd_holds, existsOr_holds]
 
 theorem profileRules_hold (p : String) : RulesHold (profileRules p) := by
   intro r hr
@@ -699,7 +772,18 @@ def weight : String → BasicWeight
 
 theorem default_terminates : Terminates (profileRules "default") defaultWeight := by
   rw [profileRules_default]
-  exact defaultWeight.terminates _ (common_decreasing _)
+  refine defaultWeight.terminates _ fun r hr => ?_
+  simp only [quantifierRules, List.mem_append, List.mem_cons, List.mem_nil_iff, or_false] at hr
+  rcases hr with hr | rfl | rfl | rfl | rfl
+  · exact common_decreasing _ r hr
+  all_goals
+    intro env
+    simp only [notForall, notExists, forallAnd, existsOr, BasicWeight.weigh, BasicWeight.bin,
+      defaultWeight]
+  · have := two_pow_ge (env "p"); rw [pow_succ, pow_succ]; omega
+  · have := two_pow_ge (env "p"); rw [pow_succ, pow_succ]; omega
+  · omega
+  · omega
 
 theorem cnf_terminates : Terminates (profileRules "to_cnf") cnfWeight := by
   rw [profileRules_cnf]

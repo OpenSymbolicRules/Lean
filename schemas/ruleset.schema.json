@@ -133,13 +133,25 @@
         "arguments": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/expr" } }
       }
     },
+    "ombind": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "binder", "variables", "object"],
+      "properties": {
+        "kind": { "const": "OMBIND" },
+        "binder": { "$ref": "#/$defs/oms" },
+        "variables": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/omv" } },
+        "object": { "$ref": "#/$defs/expr" }
+      }
+    },
     "expr": {
-      "description": "The OSR expression fragment of OpenMath JSON: symbols, variables, integers and applications whose head is a symbol.",
+      "description": "The OSR expression fragment of OpenMath JSON: symbols, variables, integers, applications whose head is a symbol, and bindings (OMBIND, section 3.3.11) whose binder is a symbol.",
       "oneOf": [
         { "$ref": "#/$defs/oms" },
         { "$ref": "#/$defs/omv" },
         { "$ref": "#/$defs/omi" },
-        { "$ref": "#/$defs/oma" }
+        { "$ref": "#/$defs/oma" },
+        { "$ref": "#/$defs/ombind" }
       ]
     },
     "verification": {

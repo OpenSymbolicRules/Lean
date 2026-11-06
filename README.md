@@ -17,15 +17,16 @@ Status: **pilot** (`1.0.0-alpha.1` format).  Two rule sets are migrated:
 |---|---|---|---|---|
 | Trigonometry | 13 | 13 / 13 | 13 / 12 | 0 |
 | Algebra | 20 | 20 / 20 | 18 / 18 | 0 |
-| Logic (domain 𝔹) | 31 | 31 / 31 in 𝔹 | — | 8 (quantifiers) |
+| Logic (domain 𝔹) | 35 | 35 / 35 in 𝔹 | — | 4 (FreeQ conditions) |
 
 `tan(arctan z) = z` over ℂ is proved but not certified, because the mapping of
 `transc1#arctan` to `Complex.arctan` is provisional.  `ln(ab) = ln a + ln b`
 and `ln(a^b) = b ln a` are stated over ℝ only (their positivity conditions
 have no complex meaning).  Powers are interpreted for integer exponents only,
 so `1^x = 1` and `ln(a^b)` are certified where the exponent is an integer.
-Logic rules are stated in the Boolean domain (`logic1` on Lean's `Bool`); its
-8 quantifier rules need binders and are not migrated.
+Logic rules are stated in the Boolean domain (`logic1` on Lean's `Bool`,
+`quant1` quantifiers over the truth values, encoded as `OMBIND`); 4 rules need
+a "variable not free" condition, which has no OpenMath symbol.
 Every profile of both rule sets is proved to terminate.  See
 [`docs/audit-m0.md`](docs/audit-m0.md) and the generated reports.
 

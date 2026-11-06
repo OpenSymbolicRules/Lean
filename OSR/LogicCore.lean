@@ -4,9 +4,16 @@ import OSR.LogicOps
 /-!
 # Boolean expressions and their reference rewriter
 
-Propositional formulas over the `logic1` connectives, interpreted in `Bool`.
-Every connective is total, so a Boolean rule states plain equality of values
+Quantified Boolean formulas over the `logic1` connectives and the `quant1`
+quantifiers, interpreted in `Bool`: a quantifier ranges over the truth values.
+Every connective is total, so a rule states equality of truth values
 (`BRule.Holds`), with no definedness side condition.
+
+Bound variables make naive substitution unsound (capture), so rule
+statements are higher order: a pattern metavariable denotes an arbitrary
+function of the whole assignment (`evalM`), and the statement holds for every
+renaming of the rule's bound variables (`BExpr.rename`).  Instantiating a
+rule then needs no freshness condition (`eval_subst`).
 
 The rewriter mirrors `OSR/Rewrite.lean` (syntactic, non-linear matching;
 outermost-leftmost strategy) and is proved sound (`normalize_sound`).
@@ -30,6 +37,10 @@ inductive BExpr where
   | ff
   | not (a : BExpr)
   | bin (op : BOp) (a b : BExpr)
+  /-- `quant1#forall` over the truth values. -/
+  | all (x : String) (body : BExpr)
+  /-- `quant1#exists` over the truth values. -/
+  | ex (x : String) (body : BExpr)
   deriving DecidableEq, Repr, Inhabited, BEq
 
 def BOp.symbol : BOp → OMSymbol
@@ -45,6 +56,12 @@ def BOp.symbol : BOp → OMSymbol
 def notSymbol : OMSymbol := ⟨"logic1", "not"⟩
 def trueSymbol : OMSymbol := ⟨"logic1", "true"⟩
 def falseSymbol : OMSymbol := ⟨"logic1", "false"⟩
+def forallSymbol : OMSymbol := ⟨"quant1", "forall"⟩
+def existsSymbol : OMSymbol := ⟨"quant1", "exists"⟩
+
+/-- Update an assignment. -/
+def upd (ρ : String → Bool) (x : String) (v : Bool) : String → Bool :=
+  fun n => if n = x then v else ρ n
 
 /-- The Lean function interpreting a connective (see the registry). -/
 def BOp.eval : BOp → Bool → Bool → Bool
@@ -59,18 +76,37 @@ def BOp.eval : BOp → Bool → Bool → Bool
 
 namespace BExpr
 
-def eval (env : String → Bool) : BExpr → Bool
-  | .var n => env n
+/-- Truth value where each variable `n` denotes the function `I n` of the
+assignment (a pattern metavariable). -/
+def evalM (I : String → (String → Bool) → Bool) (ρ : String → Bool) : BExpr → Bool
+  | .var n => I n ρ
   | .tt => true
   | .ff => false
-  | .not a => !(a.eval env)
-  | .bin o a b => o.eval (a.eval env) (b.eval env)
+  | .not a => !(a.evalM I ρ)
+  | .bin o a b => o.eval (a.evalM I ρ) (b.evalM I ρ)
+  | .all x b => forallBool fun v => b.evalM I (upd ρ x v)
+  | .ex x b => existsBool fun v => b.evalM I (upd ρ x v)
 
+/-- Truth value of a formula under an assignment of its variables. -/
+def eval (ρ : String → Bool) (e : BExpr) : Bool := e.evalM (fun n ρ' => ρ' n) ρ
+
+/-- Rename the bound variables. -/
+def rename (ν : String → String) : BExpr → BExpr
+  | .var n => .var n
+  | .tt => .tt
+  | .ff => .ff
+  | .not a => .not (a.rename ν)
+  | .bin o a b => .bin o (a.rename ν) (b.rename ν)
+  | .all x b => .all (ν x) (b.rename ν)
+  | .ex x b => .ex (ν x) (b.rename ν)
+
+/-- Variables and bound variables, in first-occurrence order. -/
 def vars : BExpr → List String
   | .var n => [n]
   | .tt | .ff => []
   | .not a => a.vars
   | .bin _ a b => (a.vars ++ b.vars).eraseDups
+  | .all x b | .ex x b => (x :: b.vars).eraseDups
 
 def symbols : BExpr → List OMSymbol
   | .var _ => []
@@ -78,6 +114,8 @@ def symbols : BExpr → List OMSymbol
   | .ff => [falseSymbol]
   | .not a => (notSymbol :: a.symbols).eraseDups
   | .bin o a b => (o.symbol :: a.symbols ++ b.symbols).eraseDups
+  | .all _ b => (forallSymbol :: b.symbols).eraseDups
+  | .ex _ b => (existsSymbol :: b.symbols).eraseDups
 
 /-- The OpenMath object of a formula. -/
 def toOM : BExpr → OMObj
@@ -86,6 +124,8 @@ def toOM : BExpr → OMObj
   | .ff => .oms falseSymbol
   | .not a => .oma notSymbol [a.toOM]
   | .bin o a b => .oma o.symbol [a.toOM, b.toOM]
+  | .all x b => .ombind forallSymbol [x] b.toOM
+  | .ex x b => .ombind existsSymbol [x] b.toOM
 
 /-- The formula in the OpenMath 2.0 JSON encoding. -/
 def toOMJson (e : BExpr) : Lean.Json := e.toOM.toJson
@@ -117,6 +157,10 @@ def decode : OMObj → Option BExpr
   | .oma h [a, b] => do
     let o ← decodeBOp h
     return .bin o (← decode a) (← decode b)
+  | .ombind q [x] body =>
+    if q = forallSymbol then (decode body).map (.all x)
+    else if q = existsSymbol then (decode body).map (.ex x)
+    else none
   | _ => none
 
 /-- **Faithfulness of the exporter.** -/
@@ -126,6 +170,8 @@ theorem decode_toOM : ∀ e : BExpr, decode e.toOM = some e
   | .ff => by decide
   | .not a => by simp [BExpr.toOM, decode, decode_toOM a]
   | .bin o a b => by simp [BExpr.toOM, decode, decodeBOp_symbol, decode_toOM a, decode_toOM b]
+  | .all x b => by simp [BExpr.toOM, decode, decode_toOM b]
+  | .ex x b => by simp [BExpr.toOM, decode, decode_toOM b, forallSymbol, existsSymbol]
 
 /-! ## Rules -/
 
@@ -143,8 +189,11 @@ structure BRule where
   deriving Repr, Inhabited, BEq
 
 /-- The certified statement: both sides have the same truth value for every
-assignment. -/
-def BRule.Holds (r : BRule) : Prop := ∀ env : String → Bool, r.lhs.eval env = r.rhs.eval env
+renaming of the bound variables, every meaning of the metavariables (any
+function of the assignment) and every assignment. -/
+def BRule.Holds (r : BRule) : Prop :=
+  ∀ (ν : String → String) (I : String → (String → Bool) → Bool) (ρ : String → Bool),
+    (r.lhs.rename ν).evalM I ρ = (r.rhs.rename ν).evalM I ρ
 
 def BRule.symbols (r : BRule) : List OMSymbol := (r.lhs.symbols ++ r.rhs.symbols).eraseDups
 
@@ -169,12 +218,20 @@ theorem Extends.trans {σ τ υ : BSubst} (h₁ : σ.Extends τ) (h₂ : τ.Exte
 
 end BSubst
 
+/-- The name a substitution gives a bound variable. -/
+def BSubst.bname (σ : BSubst) (x : String) : String :=
+  match σ.find? x with
+  | some (.var y) => y
+  | _ => x
+
 def BExpr.subst (σ : BSubst) : BExpr → BExpr
   | .var n => σ.apply n
   | .tt => .tt
   | .ff => .ff
   | .not a => .not (a.subst σ)
   | .bin o a b => .bin o (a.subst σ) (b.subst σ)
+  | .all x b => .all (σ.bname x) (b.subst σ)
+  | .ex x b => .ex (σ.bname x) (b.subst σ)
 
 def matchAux : BExpr → BExpr → BSubst → Option BSubst
   | .var n, e, σ =>
@@ -190,6 +247,14 @@ def matchAux : BExpr → BExpr → BSubst → Option BSubst
       | some σ₁ => matchAux b b' σ₁
       | none => none
     else none
+  | .all x b, .all y b', σ =>
+    match σ.find? x with
+    | some e => if e = .var y then matchAux b b' σ else none
+    | none => matchAux b b' ((x, .var y) :: σ)
+  | .ex x b, .ex y b', σ =>
+    match σ.find? x with
+    | some e => if e = .var y then matchAux b b' σ else none
+    | none => matchAux b b' ((x, .var y) :: σ)
   | _, _, _ => none
 
 def matchExpr (p e : BExpr) : Option BSubst := matchAux p e []
@@ -244,18 +309,89 @@ theorem matchAux_spec : ∀ (p e : BExpr) (σ σ' : BSubst), matchAux p e σ = s
         simp [BExpr.subst, hsub₁ τ (hext₂.trans hτ), hsub₂ τ hτ, ho]
       · cases h
     · cases h
+  | .all x b, e, σ, σ', h => by
+    cases e <;> simp only [matchAux, reduceCtorEq] at h
+    rename_i y b'
+    split at h
+    · rename_i e' hf
+      split at h
+      · rename_i he
+        subst he
+        obtain ⟨hext, hsub⟩ := matchAux_spec b b' σ σ' h
+        refine ⟨hext, fun τ hτ => ?_⟩
+        have hx : τ.find? x = some (.var y) := hτ x _ (hext x _ hf)
+        simp [BExpr.subst, BSubst.bname, hx, hsub τ hτ]
+      · cases h
+    · rename_i hf
+      obtain ⟨hext, hsub⟩ := matchAux_spec b b' _ σ' h
+      refine ⟨fun k v hk => hext k v ?_, fun τ hτ => ?_⟩
+      · simp only [BSubst.find?]
+        split
+        · rename_i hk'
+          subst hk'
+          rw [hf] at hk
+          cases hk
+        · exact hk
+      · have h0 : BSubst.find? ((x, .var y) :: σ) x = some (.var y) := by simp [BSubst.find?]
+        have hx : τ.find? x = some (.var y) := hτ x _ (hext x _ h0)
+        simp [BExpr.subst, BSubst.bname, hx, hsub τ hτ]
+  | .ex x b, e, σ, σ', h => by
+    cases e <;> simp only [matchAux, reduceCtorEq] at h
+    rename_i y b'
+    split at h
+    · rename_i e' hf
+      split at h
+      · rename_i he
+        subst he
+        obtain ⟨hext, hsub⟩ := matchAux_spec b b' σ σ' h
+        refine ⟨hext, fun τ hτ => ?_⟩
+        have hx : τ.find? x = some (.var y) := hτ x _ (hext x _ hf)
+        simp [BExpr.subst, BSubst.bname, hx, hsub τ hτ]
+      · cases h
+    · rename_i hf
+      obtain ⟨hext, hsub⟩ := matchAux_spec b b' _ σ' h
+      refine ⟨fun k v hk => hext k v ?_, fun τ hτ => ?_⟩
+      · simp only [BSubst.find?]
+        split
+        · rename_i hk'
+          subst hk'
+          rw [hf] at hk
+          cases hk
+        · exact hk
+      · have h0 : BSubst.find? ((x, .var y) :: σ) x = some (.var y) := by simp [BSubst.find?]
+        have hx : τ.find? x = some (.var y) := hτ x _ (hext x _ h0)
+        simp [BExpr.subst, BSubst.bname, hx, hsub τ hτ]
 
 theorem matchExpr_subst {p e : BExpr} {σ : BSubst} (h : matchExpr p e = some σ) :
     p.subst σ = e :=
   (matchAux_spec p e [] σ h).2 σ (BSubst.Extends.refl σ)
 
-theorem eval_subst (env : String → Bool) (σ : BSubst) :
-    ∀ e : BExpr, (e.subst σ).eval env = e.eval (fun n => (σ.apply n).eval env)
-  | .var n => by simp [BExpr.subst, BExpr.eval]
-  | .tt => rfl
-  | .ff => rfl
-  | .not a => by simp [BExpr.subst, BExpr.eval, eval_subst env σ a]
-  | .bin o a b => by simp [BExpr.subst, BExpr.eval, eval_subst env σ a, eval_subst env σ b]
+/-- **Substitution lemma.**  Instantiating a pattern means interpreting each
+metavariable by its image (a function of the assignment, so occurrences
+under a binder see the bound value) and renaming the bound variables. -/
+theorem evalM_subst (σ : BSubst) :
+    ∀ (e : BExpr) (ρ : String → Bool),
+      (e.subst σ).eval ρ = (e.rename σ.bname).evalM (fun n ρ' => (σ.apply n).eval ρ') ρ
+  | .var n, ρ => rfl
+  | .tt, _ => rfl
+  | .ff, _ => rfl
+  | .not a, ρ => by
+    have := evalM_subst σ a ρ
+    simp only [BExpr.eval, BExpr.subst, BExpr.rename, BExpr.evalM] at this ⊢
+    rw [this]
+  | .bin o a b, ρ => by
+    have ha := evalM_subst σ a ρ
+    have hb := evalM_subst σ b ρ
+    simp only [BExpr.eval, BExpr.subst, BExpr.rename, BExpr.evalM] at ha hb ⊢
+    rw [ha, hb]
+  | .all x b, ρ => by
+    have hb := fun v => evalM_subst σ b (upd ρ (σ.bname x) v)
+    simp only [BExpr.eval, BExpr.subst, BExpr.rename, BExpr.evalM] at hb ⊢
+    simp only [hb]
+  | .ex x b, ρ => by
+    have hb := fun v => evalM_subst σ b (upd ρ (σ.bname x) v)
+    simp only [BExpr.eval, BExpr.subst, BExpr.rename, BExpr.evalM] at hb ⊢
+    simp only [hb]
 
 /-! ## Reference rewriter -/
 
@@ -284,6 +420,20 @@ def rewriteStep (rules : List BRule) : BExpr → Option (String × BExpr)
         match rewriteStep rules b with
         | some s => some (s.1, .bin o a s.2)
         | none => none
+  | .all x b =>
+    match rootRewrite rules (.all x b) with
+    | some s => some s
+    | none =>
+      match rewriteStep rules b with
+      | some s => some (s.1, .all x s.2)
+      | none => none
+  | .ex x b =>
+    match rootRewrite rules (.ex x b) with
+    | some s => some s
+    | none =>
+      match rewriteStep rules b with
+      | some s => some (s.1, .ex x s.2)
+      | none => none
   | e => rootRewrite rules e
 
 structure BNormalization where
@@ -305,9 +455,11 @@ def normalize (rules : List BRule) : Nat → BExpr → BNormalization
 
 def RulesHold (rules : List BRule) : Prop := ∀ r ∈ rules, r.Holds
 
-theorem rootRewrite_sound (env : String → Bool) : ∀ (rules : List BRule) (e : BExpr)
-    (s : String × BExpr), RulesHold rules → rootRewrite rules e = some s →
-      s.2.eval env = e.eval env
+/-- Two formulas have the same truth value under every assignment. -/
+def Equiv (a b : BExpr) : Prop := ∀ ρ, a.eval ρ = b.eval ρ
+
+theorem rootRewrite_sound : ∀ (rules : List BRule) (e : BExpr)
+    (s : String × BExpr), RulesHold rules → rootRewrite rules e = some s → Equiv s.2 e
   | [], _, _, _, h => by simp [rootRewrite] at h
   | r :: rs, e, s, hr, h => by
     unfold rootRewrite at h
@@ -315,28 +467,31 @@ theorem rootRewrite_sound (env : String → Bool) : ∀ (rules : List BRule) (e 
     · rename_i σ hm
       simp only [Option.some.injEq] at h
       subst h
-      rw [← matchExpr_subst hm, eval_subst, eval_subst]
-      exact (hr r List.mem_cons_self _).symm
-    · exact rootRewrite_sound env rs e s (fun r' h' => hr r' (List.mem_cons_of_mem _ h')) h
+      intro ρ
+      rw [← matchExpr_subst hm, evalM_subst, evalM_subst]
+      exact (hr r List.mem_cons_self _ _ _).symm
+    · exact rootRewrite_sound rs e s (fun r' h' => hr r' (List.mem_cons_of_mem _ h')) h
 
-theorem rewriteStep_sound (env : String → Bool) (rules : List BRule) (hr : RulesHold rules) :
-    ∀ (e : BExpr) (s : String × BExpr), rewriteStep rules e = some s →
-      s.2.eval env = e.eval env
-  | .var n, s, h => rootRewrite_sound env rules _ s hr (by simpa [rewriteStep] using h)
-  | .tt, s, h => rootRewrite_sound env rules _ s hr (by simpa [rewriteStep] using h)
-  | .ff, s, h => rootRewrite_sound env rules _ s hr (by simpa [rewriteStep] using h)
+theorem rewriteStep_sound (rules : List BRule) (hr : RulesHold rules) :
+    ∀ (e : BExpr) (s : String × BExpr), rewriteStep rules e = some s → Equiv s.2 e
+  | .var n, s, h => rootRewrite_sound rules _ s hr (by simpa [rewriteStep] using h)
+  | .tt, s, h => rootRewrite_sound rules _ s hr (by simpa [rewriteStep] using h)
+  | .ff, s, h => rootRewrite_sound rules _ s hr (by simpa [rewriteStep] using h)
   | .not a, s, h => by
     simp only [rewriteStep] at h
     split at h
     · rename_i s' hroot
       simp only [Option.some.injEq] at h
       subst h
-      exact rootRewrite_sound env rules _ s' hr hroot
+      exact rootRewrite_sound rules _ s' hr hroot
     · split at h
       · rename_i s' hs
         simp only [Option.some.injEq] at h
         subst h
-        simp [BExpr.eval, rewriteStep_sound env rules hr a s' hs]
+        intro ρ
+        have := rewriteStep_sound rules hr a s' hs ρ
+        simp only [BExpr.eval, BExpr.evalM] at this ⊢
+        rw [this]
       · cases h
   | .bin o a b, s, h => by
     simp only [rewriteStep] at h
@@ -344,31 +499,69 @@ theorem rewriteStep_sound (env : String → Bool) (rules : List BRule) (hr : Rul
     · rename_i s' hroot
       simp only [Option.some.injEq] at h
       subst h
-      exact rootRewrite_sound env rules _ s' hr hroot
+      exact rootRewrite_sound rules _ s' hr hroot
     · split at h
       · rename_i s' hs
         simp only [Option.some.injEq] at h
         subst h
-        simp [BExpr.eval, rewriteStep_sound env rules hr a s' hs]
+        intro ρ
+        have := rewriteStep_sound rules hr a s' hs ρ
+        simp only [BExpr.eval, BExpr.evalM] at this ⊢
+        rw [this]
       · split at h
         · rename_i s' hs
           simp only [Option.some.injEq] at h
           subst h
-          simp [BExpr.eval, rewriteStep_sound env rules hr b s' hs]
+          intro ρ
+          have := rewriteStep_sound rules hr b s' hs ρ
+          simp only [BExpr.eval, BExpr.evalM] at this ⊢
+          rw [this]
         · cases h
+  | .all x b, s, h => by
+    simp only [rewriteStep] at h
+    split at h
+    · rename_i s' hroot
+      simp only [Option.some.injEq] at h
+      subst h
+      exact rootRewrite_sound rules _ s' hr hroot
+    · split at h
+      · rename_i s' hs
+        simp only [Option.some.injEq] at h
+        subst h
+        intro ρ
+        have := fun v => rewriteStep_sound rules hr b s' hs (upd ρ x v)
+        simp only [BExpr.eval, BExpr.evalM] at this ⊢
+        simp only [this]
+      · cases h
+  | .ex x b, s, h => by
+    simp only [rewriteStep] at h
+    split at h
+    · rename_i s' hroot
+      simp only [Option.some.injEq] at h
+      subst h
+      exact rootRewrite_sound rules _ s' hr hroot
+    · split at h
+      · rename_i s' hs
+        simp only [Option.some.injEq] at h
+        subst h
+        intro ρ
+        have := fun v => rewriteStep_sound rules hr b s' hs (upd ρ x v)
+        simp only [BExpr.eval, BExpr.evalM] at this ⊢
+        simp only [this]
+      · cases h
 
 /-- **Engine soundness.**  Normalizing with proved rules preserves the truth
-value, whatever the step budget. -/
-theorem normalize_sound (rules : List BRule) (hr : RulesHold rules) (env : String → Bool) :
-    ∀ (fuel : Nat) (e : BExpr), (normalize rules fuel e).result.eval env = e.eval env
+value under every assignment, whatever the step budget. -/
+theorem normalize_sound (rules : List BRule) (hr : RulesHold rules) (ρ : String → Bool) :
+    ∀ (fuel : Nat) (e : BExpr), (normalize rules fuel e).result.eval ρ = e.eval ρ
   | 0, e => by simp [normalize]
   | fuel + 1, e => by
     simp only [normalize]
     split
     · rfl
     · rename_i id e' hs
-      rw [normalize_sound rules hr env fuel e']
-      exact rewriteStep_sound env rules hr e (id, e') hs
+      rw [normalize_sound rules hr ρ fuel e']
+      exact rewriteStep_sound rules hr e (id, e') hs ρ
 
 /-! ## Termination -/
 
@@ -462,6 +655,7 @@ def weigh (W : BasicWeight) (env : String → Nat) : BExpr → Nat
   | .tt | .ff => 1
   | .not a => W.nt (W.weigh env a)
   | .bin o a b => W.bin o (W.weigh env a) (W.weigh env b)
+  | .all _ b | .ex _ b => W.weigh env b + 1
 
 def Decreases (r : BRule) : Prop := ∀ env, W.weigh env r.rhs < W.weigh env r.lhs
 
@@ -472,6 +666,8 @@ theorem weigh_subst (env : String → Nat) (σ : BSubst) :
   | .ff => rfl
   | .not a => by simp [BExpr.subst, weigh, weigh_subst env σ a]
   | .bin o a b => by simp [BExpr.subst, weigh, weigh_subst env σ a, weigh_subst env σ b]
+  | .all x b => by simp [BExpr.subst, weigh, weigh_subst env σ b]
+  | .ex x b => by simp [BExpr.subst, weigh, weigh_subst env σ b]
 
 theorem rootRewrite_lt (env : String → Nat) : ∀ (rules : List BRule) (e : BExpr)
     (s : String × BExpr), (∀ r ∈ rules, W.Decreases r) → rootRewrite rules e = some s →
@@ -525,6 +721,34 @@ theorem rewriteStep_lt (env : String → Nat) (rules : List BRule)
           subst h
           exact W.bin_monor o _ _ _ (rewriteStep_lt env rules hr b s' hs)
         · cases h
+  | .all x b, s, h => by
+    simp only [rewriteStep] at h
+    split at h
+    · rename_i s' hroot
+      simp only [Option.some.injEq] at h
+      subst h
+      exact W.rootRewrite_lt env rules _ s' hr hroot
+    · split at h
+      · rename_i s' hs
+        simp only [Option.some.injEq] at h
+        subst h
+        have := rewriteStep_lt env rules hr b s' hs
+        simp only [weigh]; omega
+      · cases h
+  | .ex x b, s, h => by
+    simp only [rewriteStep] at h
+    split at h
+    · rename_i s' hroot
+      simp only [Option.some.injEq] at h
+      subst h
+      exact W.rootRewrite_lt env rules _ s' hr hroot
+    · split at h
+      · rename_i s' hs
+        simp only [Option.some.injEq] at h
+        subst h
+        have := rewriteStep_lt env rules hr b s' hs
+        simp only [weigh]; omega
+      · cases h
 
 theorem normalize_normal (env : String → Nat) (rules : List BRule)
     (hr : ∀ r ∈ rules, W.Decreases r) :

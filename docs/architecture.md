@@ -72,8 +72,8 @@ OSR/Trigonometry.lean  the pilot rules, their proofs, profiles and engine
                        soundness and termination per profile
 OSR/Algebra.lean       Algebra rules (all 20), same structure
 OSR/LogicOps.lean      Boolean interpretations of the logic1 connectives, CMPs
-OSR/LogicCore.lean     propositional formulas, rewriter, soundness, termination
-OSR/Logic.lean         Logic rules (31 of 39), profiles and their weights
+OSR/LogicCore.lean     quantified Boolean formulas, rewriter, soundness, termination
+OSR/Logic.lean         Logic rules (35 of 39), profiles and their weights
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
                        generation of rule set, reports and conformance cases
@@ -190,6 +190,17 @@ termination argument (`BasicWeight`): derived connectives weigh one more than
 their elimination, so only negation, conjunction and disjunction need weights,
 plus the De Morgan inequalities.  The exporter writes `logic.osr.json`, its
 report and conformance cases like the other rule sets.
+
+Quantifiers (`quant1#forall`, `quant1#exists`, exported as `OMBIND`) range over
+the truth values.  Binders make first-order substitution unsound (capture),
+so a Boolean rule statement is higher order: `BRule.Holds` interprets each
+pattern metavariable as an arbitrary function of the whole assignment
+(`evalM`) and holds for every renaming of the rule's bound variables.
+Matching binds a pattern's bound variable to the input's bound variable, and
+`evalM_subst` shows that instantiating a rule means interpreting its
+metavariables by their images under the current assignment, so no freshness
+condition is needed.  The four v0.1 rules with a `FreeQ` condition are not
+migrated: "variable not free" has no OpenMath symbol.
 
 ## Termination
 

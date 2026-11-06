@@ -49,4 +49,28 @@ private def q : BExpr := .var "q"
 -- Non-linear patterns need equal subterms.
 #guard (normalize (Logic.profileRules "default") 16 (.bin .or p (.not q))).trace == []
 
+-- Quantifiers range over the truth values.
+private def y : BExpr := .var "y"
+#guard (BExpr.all "y" (.bin .or y (.not y))).eval (fun _ => false) == true
+#guard (BExpr.ex "y" (.bin .and y q)).eval (fun _ => false) == false
+
+-- ¬∀y. (y ∧ q) ⟶ ∃y. ¬(y ∧ q) ⟶ … the binder name comes from the input.
+#guard (rewriteStep (Logic.profileRules "default") (.not (.all "y" (.bin .and y q)))).map (·.2) ==
+  some (.ex "y" (.not (.bin .and y q)))
+
+-- Merging two universals needs the same bound variable (non-linear binder).
+#guard (rewriteStep (Logic.profileRules "default")
+    (.bin .and (.all "y" (.bin .or y p)) (.all "y" (.bin .or y q)))).map (·.2) ==
+  some (.all "y" (.bin .and (.bin .or y p) (.bin .or y q)))
+#guard (rewriteStep (Logic.profileRules "default")
+    (.bin .and (.all "y" p) (.all "z" q))).isNone
+
+-- Soundness under binders, checked on every assignment of p and q: the
+-- instance body mentions the bound variable, which a first-order
+-- substitution would capture.
+#guard [false, true].all fun vp => [false, true].all fun vq =>
+  let ρ : String → Bool := fun n => if n = "p" then vp else if n = "q" then vq else false
+  let e : BExpr := .not (.all "p" (.bin .or (.var "p") q))
+  ((normalize (Logic.profileRules "default") 16 e).result.eval ρ == e.eval ρ)
+
 end OSRTest.Logic

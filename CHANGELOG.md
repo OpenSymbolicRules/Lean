@@ -52,12 +52,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `ln(a^b)`.
 
 - Logic (`OSR/LogicOps.lean`, `OSR/LogicCore.lean`, `OSR/Logic.lean`): a
-  `boolean` domain (carrier `setname2#Boolean`, CDs `logic1` and `setname2`
-  pinned), propositional formulas with a sound reference rewriter, a faithful
-  OpenMath encoding and generic termination weights; 31 of the 39 Logic
-  rules proved, three terminating profiles (`default`, `to_cnf`, `to_dnf`);
-  the 8 quantifier rules are reported as not migrated.  Exported as
-  `logic.osr.json` with its report and 117 conformance cases.
+  `boolean` domain (carrier `setname2#Boolean`, CDs `logic1`, `quant1` and
+  `setname2` pinned), quantified Boolean formulas with a sound reference
+  rewriter, a faithful OpenMath encoding (quantifiers as `OMBIND`) and
+  generic termination weights; rule statements are higher order, so
+  substitution under binders needs no freshness condition (`evalM_subst`).
+  35 of the 39 Logic rules proved, three terminating profiles (`default`,
+  `to_cnf`, `to_dnf`); the 4 rules with a `FreeQ` condition are reported as
+  not migrated (no OpenMath symbol).  Exported as `logic.osr.json` with its
+  report and conformance cases.
+- `OMObj.ombind` and `OMBIND` in the rule-set JSON Schema.
 
 ### Changed
 - `Expr.powNat` (natural literal exponent) is replaced by `Expr.pow` with an

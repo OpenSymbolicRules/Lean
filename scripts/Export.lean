@@ -477,6 +477,10 @@ def logicExtraSeeds : List (String × Logic.BExpr) := [
   ("nested.or_and", .bin .or logicP (.bin .and logicQ logicR)),
   ("nested.and_or", .bin .and logicP (.bin .or logicQ logicR)),
   ("nonlinear.or_not_other", .bin .or logicP (.not logicQ)),
+  ("quantifier.not_forall_body", .not (.all "y" (.bin .and (.var "y") logicQ))),
+  ("quantifier.merge_forall", .bin .and (.all "y" (.bin .or (.var "y") logicP))
+    (.all "y" (.bin .or (.var "y") logicQ))),
+  ("quantifier.different_binders", .bin .and (.all "y" logicP) (.all "z" logicQ)),
   ("normal.atom", logicP)]
 
 def logicSeeds : List (String × Logic.BExpr) :=

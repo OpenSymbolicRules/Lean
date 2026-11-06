@@ -31,6 +31,8 @@ def cds : List CDRef := [
     sha256 := "6d4995d2e7f1f24e062f52f600f33cceabe24e3055927e668dbea6a5dd0c5ea2" },
   { cd := "logic1", version := 4, revision := 0, date := "2004-03-30",
     sha256 := "5bd450962d9ee3f867770608ce6f823b0ad705123afb9af5d1950a39a46498cd" },
+  { cd := "quant1", version := 3, revision := 2, date := "2004-05-11",
+    sha256 := "58e065460b461514e83fc432372e1b598a5a589ed8c5992d20913a20c49db928" },
   { cd := "setname2", version := 3, revision := 1, date := "2004-03-30",
     sha256 := "666e623a6164874963ef8263a13f471ff0abaa14adb95c1609352dfe6667fb21" },
   { cd := "setname1", version := 3, revision := 1, date := "2004-03-30",
@@ -321,6 +323,18 @@ def entries : List SymbolEntry := [
         justification := "Two-valued Boolean function on Lean's Bool.",
         obligations := [
           { cmp := "not false = true", theoremName := ``OSR.Logic.false_cmp }] }] },
+  { symbol := ⟨"quant1", "forall"⟩, arity := 0,
+    fragment := "binder (OMBIND) with one bound variable; quantifies over the truth values",
+    interpretations := [
+      { domain := .boolean, leanConst := ``OSR.Logic.forallBool, assurance := .reviewed,
+        definedness := "everywhere",
+        justification := "Universal quantification over the Booleans: ∀x. φ is φ[x := true] ∧ φ[x := false] (OSR.Logic.forallBool_iff). The CD states no CMP." }] },
+  { symbol := ⟨"quant1", "exists"⟩, arity := 0,
+    fragment := "binder (OMBIND) with one bound variable; quantifies over the truth values",
+    interpretations := [
+      { domain := .boolean, leanConst := ``OSR.Logic.existsBool, assurance := .reviewed,
+        definedness := "everywhere",
+        justification := "Existential quantification over the Booleans: ∃x. φ is φ[x := true] ∨ φ[x := false] (OSR.Logic.existsBool_iff). The CD states no CMP." }] },
   { symbol := ⟨"setname2", "Boolean"⟩, arity := 0,
     fragment := "carrier of the boolean domain",
     interpretations := [

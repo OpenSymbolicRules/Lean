@@ -33,6 +33,8 @@ inductive OMObj where
   | omi (value : Int)
   | oms (symbol : OMSymbol)
   | oma (head : OMSymbol) (args : List OMObj)
+  /-- A binding `OMBIND(binder, [OMV ...], body)`. -/
+  | ombind (binder : OMSymbol) (vars : List String) (body : OMObj)
   deriving Repr, Inhabited
 
 namespace OMObj
@@ -44,12 +46,17 @@ def toJson : OMObj → Json
   | .omi z => Expr.omiJson z
   | .oms s => Expr.omsJson s
   | .oma h args => Expr.omaJson h (args.attach.map fun ⟨a, _⟩ => a.toJson)
+  | .ombind b vs body => Json.mkObj [("kind", Json.str "OMBIND"), ("binder", Expr.omsJson b),
+      ("variables", Json.arr (vs.map fun v => Json.mkObj
+        [("kind", Json.str "OMV"), ("name", Json.str v)]).toArray),
+      ("object", body.toJson)]
 
 /-- Symbols occurring in an object (heads and constants). -/
 def symbolsWithArity : OMObj → List (OMSymbol × Nat)
   | .omv _ | .omi _ => []
   | .oms s => [(s, 0)]
   | .oma h args => (h, args.length) :: (args.attach.flatMap fun ⟨a, _⟩ => a.symbolsWithArity)
+  | .ombind b _ body => (b, 0) :: body.symbolsWithArity
 
 end OMObj
 
@@ -129,6 +136,7 @@ def decode : OMObj → Option Expr
       let o ← decodeOp2 h
       return .app2 o (← decode a) (← decode b)
   | .oma _ _ => none
+  | .ombind _ _ _ => none
 
 /-- **Faithfulness of the exporter.**  Decoding the exported object by symbol
 identity recovers the expression. -/
