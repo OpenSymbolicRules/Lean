@@ -17,7 +17,8 @@ private def t : Expr := .var "t"
 #guard (Calculus.catalog.map (·.rule.id)).eraseDups.length == Calculus.catalog.length
 #guard Calculus.catalog.all (·.rule.wellFormed)
 
-private def rules : List CRule := Calculus.catalog.map (·.rule)
+private def rules : List CRule :=
+  (Calculus.catalog.filter fun e => (e.proofs.lookup .real).isSome).map (·.rule)
 
 -- The input's bound variable is kept.
 #guard (rewrite rules (.diff "t" (.app1 .sin t))).map (·.2) == some (.lam "t" (.app1 .cos t))
@@ -30,7 +31,7 @@ private def rules : List CRule := Calculus.catalog.map (·.rule)
 #guard (rewrite rules (.lam "t" (.app1 .cos t))).isNone
 
 -- Rules apply once: their results are lambdas or values.
-#guard Calculus.catalog.all fun e =>
+#guard (Calculus.catalog.filter fun e => (e.proofs.lookup .real).isSome).all fun e =>
   let r := e.rule
   let input := match r.shape with
     | .deriv => CTerm.diff r.x r.body
@@ -43,5 +44,10 @@ private def rules : List CRule := Calculus.catalog.map (·.rule)
 #guard match derivSin.patternOM with
   | .oma h [.ombind b ["x"] _] => h == diffSymbol && b == lambdaSymbol
   | _ => false
+
+-- An unproved rule is not applied by the reference engine.
+#guard (rewrite rules (.diff "t" (.app1 .arctanh t))).isNone
+#guard (rewrite rules (.diff "t" (.app1 .arcsin t))).map (·.2) ==
+  some (.lam "t" (.app2 .div (.int 1) (.app2 .root (.app2 .sub (.int 1) (.pow t (.int 2))) (.int 2))))
 
 end OSRTest.Calculus

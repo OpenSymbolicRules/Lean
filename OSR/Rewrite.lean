@@ -340,6 +340,8 @@ theorem Preserves.app2 (o : Op2) {a a' b b' : Expr} (ha : Preserves I env a a')
        exact ⟨⟨a₁, b₁, by rw [← b₂]; exact hd.2.2⟩, by rw [a₂, b₂]⟩)
     | (obtain ⟨a₁, a₂⟩ := ha hd.1; obtain ⟨b₁, b₂⟩ := hb hd.2
        exact ⟨⟨a₁, b₁⟩, by rw [a₂, b₂]⟩)
+    | (obtain ⟨a₁, a₂⟩ := ha hd.1; obtain ⟨b₁, b₂⟩ := hb hd.2.1
+       exact ⟨⟨a₁, b₁, by rw [← a₂, ← b₂]; exact hd.2.2⟩, by rw [a₂, b₂]⟩)
 
 theorem Preserves.pow {a a' b b' : Expr} (ha : Preserves I env a a')
     (hb : Preserves I env b b') : Preserves I env (.pow a b) (.pow a' b') := by

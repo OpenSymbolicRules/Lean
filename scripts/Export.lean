@@ -719,7 +719,10 @@ def calcSeeds : List (String × Calculus.CTerm) :=
    ("nomatch.square", .diff "t" (.pow tvar (.int 2))),
    ("normal.lambda", .lam "t" (.app1 .cos tvar))]
 
-def calcRules : List Calculus.CRule := Calculus.catalog.map (·.rule)
+/-- The rules the reference engine applies: those proved over ℝ (the domain of
+the conformance cases), in priority order. -/
+def calcRules : List Calculus.CRule :=
+  (Calculus.catalog.filter fun e => (e.proofs.lookup .real).isSome).map (·.rule)
 
 def calcRuleJson (b : BuildInfo) (e : Calculus.CEntry) (vs : List Verification) : Json :=
   let r := e.rule
@@ -861,7 +864,7 @@ conformance cases.
     ("source_digest", jstr s!"sha256:{build.sourceDigest}"),
     ("semantics", Json.mkObj [
       ("domain", jstr "real"),
-      ("rules", jstr "the rules of the profile, in priority order"),
+      ("rules", jstr "the rules of the profile certified over the reals, in priority order"),
       ("strategy", jstr "outermost-leftmost: at each step, try the root (rules in order), then the arguments left to right; one rewrite per step"),
       ("matching", jstr "syntactic; a pattern's bound variable matches the input's bound variable; integers compare by value"),
       ("fuel", toJson fuel),

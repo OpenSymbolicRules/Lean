@@ -114,6 +114,28 @@ theorem zpow_cmp2 {α : Type} [Field α] (x : α) (hx : x ≠ 0) (n : ℤ) :
 identity names the function a lambda term denotes. -/
 def lambda {α : Type} (f : α → α) : α → α := f
 
+/-! ## Obligations of the further transc1 functions and arith1#root -/
+
+theorem real_sinh_cmp (x : ℝ) : Real.sinh x = 1 / 2 * (Real.exp x - Real.exp (-x)) := by
+  rw [Real.sinh_eq]; ring
+theorem real_cosh_cmp (x : ℝ) : Real.cosh x = 1 / 2 * (Real.exp x + Real.exp (-x)) := by
+  rw [Real.cosh_eq]; ring
+theorem complex_sinh_cmp (z : ℂ) : Complex.sinh z = 1 / 2 * (Complex.exp z - Complex.exp (-z)) := by
+  rw [Complex.sinh]; ring
+theorem complex_cosh_cmp (z : ℂ) : Complex.cosh z = 1 / 2 * (Complex.exp z + Complex.exp (-z)) := by
+  rw [Complex.cosh]; ring
+theorem real_coth_cmp (x : ℝ) : Fn.coth x = 1 / Real.tanh x := rfl
+theorem real_sech_cmp (x : ℝ) : Fn.sech x = 1 / Real.cosh x := rfl
+theorem real_csch_cmp (x : ℝ) : Fn.csch x = 1 / Real.sinh x := rfl
+theorem real_sec_cmp (x : ℝ) : Fn.sec x = 1 / Real.cos x := rfl
+theorem real_csc_cmp (x : ℝ) : Fn.csc x = 1 / Real.sin x := rfl
+theorem real_cot_cmp (x : ℝ) : Real.cot x = 1 / Real.tan x := by
+  rw [Real.cot_eq_cos_div_sin, Real.tan_eq_sin_div_cos, one_div_div]
+theorem complex_cot_cmp (z : ℂ) : Complex.cot z = 1 / Complex.tan z := by
+  rw [Complex.cot_eq_cos_div_sin, Complex.tan_eq_sin_div_cos, one_div_div]
+theorem real_arcsinh_cmp (x : ℝ) : Real.arsinh x = Real.log (x + Real.sqrt (1 + x ^ 2)) := rfl
+theorem real_root_cmp (a : ℝ) (h : 0 ≤ a) : Real.sqrt a ^ 2 = a := Real.sq_sqrt h
+
 /-! ## Entries -/
 
 private def arithInterp (d : Domain) (c : Lean.Name) (obl : List Obligation)
@@ -378,6 +400,128 @@ def entries : List SymbolEntry := [
         obligations := [
           { cmp := "for all b in the booleans | (there exists an nb in the booleans | nb not= b implies nb = not b)",
             theoremName := ``OSR.Logic.boolean_cmp }] }] },
+  { symbol := ⟨"transc1", "sinh"⟩, arity := 1,
+    interpretations := [
+      { domain := .real, leanConst := ``Real.sinh, assurance := .formallyRelated,
+        definedness := "everywhere",
+        justification := "Mathlib's real hyperbolic sine.",
+        obligations := [
+          { cmp := "sinh A = 1/2 * (e^A - e^(-A))", theoremName := ``real_sinh_cmp }] },
+      { domain := .complex, leanConst := ``Complex.sinh, assurance := .formallyRelated,
+        definedness := "everywhere",
+        justification := "Mathlib's complex hyperbolic sine.",
+        obligations := [
+          { cmp := "sinh A = 1/2 * (e^A - e^(-A))", theoremName := ``complex_sinh_cmp }] }] },
+  { symbol := ⟨"transc1", "cosh"⟩, arity := 1,
+    interpretations := [
+      { domain := .real, leanConst := ``Real.cosh, assurance := .formallyRelated,
+        definedness := "everywhere",
+        justification := "Mathlib's real hyperbolic cosine.",
+        obligations := [
+          { cmp := "cosh A = 1/2 * (e^A + e^(-A))", theoremName := ``real_cosh_cmp }] },
+      { domain := .complex, leanConst := ``Complex.cosh, assurance := .formallyRelated,
+        definedness := "everywhere",
+        justification := "Mathlib's complex hyperbolic cosine.",
+        obligations := [
+          { cmp := "cosh A = 1/2 * (e^A + e^(-A))", theoremName := ``complex_cosh_cmp }] }] },
+  { symbol := ⟨"transc1", "tanh"⟩, arity := 1,
+    interpretations := [
+      { domain := .real, leanConst := ``Real.tanh, assurance := .formallyRelated,
+        definedness := "everywhere (cosh > 0)",
+        justification := "Mathlib's real hyperbolic tangent.",
+        obligations := [
+          { cmp := "tanh A = sinh A / cosh A", theoremName := ``Real.tanh_eq_sinh_div_cosh }] },
+      { domain := .complex, leanConst := ``Complex.tanh, assurance := .formallyRelated,
+        definedness := "cosh z ≠ 0",
+        justification := "Mathlib's complex hyperbolic tangent.",
+        obligations := [
+          { cmp := "tanh A = sinh A / cosh A", theoremName := ``Complex.tanh_eq_sinh_div_cosh }] }] },
+  { symbol := ⟨"transc1", "coth"⟩, arity := 1,
+    interpretations := [
+      { domain := .real, leanConst := ``OSR.Fn.coth, assurance := .formallyRelated,
+        definedness := "sinh x ≠ 0",
+        justification := "Defined as in the CMP.",
+        obligations := [
+          { cmp := "coth A = 1/tanh A", theoremName := ``real_coth_cmp }] }] },
+  { symbol := ⟨"transc1", "sech"⟩, arity := 1,
+    interpretations := [
+      { domain := .real, leanConst := ``OSR.Fn.sech, assurance := .formallyRelated,
+        definedness := "everywhere",
+        justification := "Defined as in the CMP.",
+        obligations := [
+          { cmp := "sech A = 1/cosh A", theoremName := ``real_sech_cmp }] }] },
+  { symbol := ⟨"transc1", "csch"⟩, arity := 1,
+    interpretations := [
+      { domain := .real, leanConst := ``OSR.Fn.csch, assurance := .formallyRelated,
+        definedness := "sinh x ≠ 0",
+        justification := "Defined as in the CMP.",
+        obligations := [
+          { cmp := "csch A = 1/sinh A", theoremName := ``real_csch_cmp }] }] },
+  { symbol := ⟨"transc1", "cot"⟩, arity := 1,
+    interpretations := [
+      { domain := .real, leanConst := ``Real.cot, assurance := .formallyRelated,
+        definedness := "sin x ≠ 0",
+        justification := "Mathlib's real cotangent.",
+        obligations := [
+          { cmp := "cot A = 1/tan A", theoremName := ``real_cot_cmp }] },
+      { domain := .complex, leanConst := ``Complex.cot, assurance := .formallyRelated,
+        definedness := "sin z ≠ 0",
+        justification := "Mathlib's complex cotangent.",
+        obligations := [
+          { cmp := "cot A = 1/tan A", theoremName := ``complex_cot_cmp }] }] },
+  { symbol := ⟨"transc1", "sec"⟩, arity := 1,
+    interpretations := [
+      { domain := .real, leanConst := ``OSR.Fn.sec, assurance := .formallyRelated,
+        definedness := "cos x ≠ 0",
+        justification := "Defined as in the CMP.",
+        obligations := [
+          { cmp := "sec A = 1/cos A", theoremName := ``real_sec_cmp }] }] },
+  { symbol := ⟨"transc1", "csc"⟩, arity := 1,
+    interpretations := [
+      { domain := .real, leanConst := ``OSR.Fn.csc, assurance := .formallyRelated,
+        definedness := "sin x ≠ 0",
+        justification := "Defined as in the CMP.",
+        obligations := [
+          { cmp := "csc A = 1/sin A", theoremName := ``real_csc_cmp }] }] },
+  { symbol := ⟨"transc1", "arcsin"⟩, arity := 1,
+    interpretations := [
+      { domain := .real, leanConst := ``Real.arcsin, assurance := .formallyRelated,
+        definedness := "-1 ≤ x ≤ 1 (Lean clamps outside)",
+        justification := "Mathlib's real arcsine, the inverse of sin on [-π/2, π/2].",
+        obligations := [
+          { cmp := "x in [-(pi/2),(pi/2)] implies arcsin(sin x) = x", theoremName := ``Real.arcsin_sin }] }] },
+  { symbol := ⟨"transc1", "arccos"⟩, arity := 1,
+    interpretations := [
+      { domain := .real, leanConst := ``Real.arccos, assurance := .formallyRelated,
+        definedness := "-1 ≤ x ≤ 1 (Lean clamps outside)",
+        justification := "Mathlib's real arccosine, the inverse of cos on [0, π].",
+        obligations := [
+          { cmp := "x in [0,pi] implies arccos(cos x) = x", theoremName := ``Real.arccos_cos }] }] },
+  { symbol := ⟨"transc1", "arcsinh"⟩, arity := 1,
+    interpretations := [
+      { domain := .real, leanConst := ``Real.arsinh, assurance := .formallyRelated,
+        definedness := "everywhere",
+        justification := "Mathlib's real inverse hyperbolic sine.",
+        obligations := [
+          { cmp := "arcsinh z = ln(z + sqrt(1+z^2))", theoremName := ``real_arcsinh_cmp }] }] },
+  { symbol := ⟨"transc1", "arccosh"⟩, arity := 1,
+    interpretations := [
+      { domain := .real, leanConst := ``Real.arcosh, assurance := .reviewed,
+        definedness := "x ≥ 1",
+        justification := "Mathlib's real inverse hyperbolic cosine on [1, ∞)." }] },
+  { symbol := ⟨"transc1", "arctanh"⟩, arity := 1,
+    interpretations := [
+      { domain := .real, leanConst := ``Real.artanh, assurance := .reviewed,
+        definedness := "-1 < x < 1",
+        justification := "Mathlib's real inverse hyperbolic tangent on (-1, 1)." }] },
+  { symbol := ⟨"arith1", "root"⟩, arity := 2,
+    fragment := "square root only (second argument 2); no complex interpretation",
+    interpretations := [
+      { domain := .real, leanConst := ``Real.sqrt, assurance := .formallyRelated,
+        definedness := "second argument 2 and first argument ≥ 0",
+        justification := "root(x, 2) is the nonnegative square root.",
+        obligations := [
+          { cmp := "for all a,n | power(root(a,n),n) = a (if the root exists!)", theoremName := ``real_root_cmp, note := "for n = 2 and a ≥ 0" }] }] },
   { symbol := ⟨"nums1", "pi"⟩, arity := 0,
     interpretations := [
       { domain := .real, leanConst := ``Real.pi, assurance := .reviewed, definedness := "constant",

@@ -74,7 +74,7 @@ OSR/Algebra.lean       Algebra rules (all 20), same structure
 OSR/LogicOps.lean      Boolean interpretations of the logic1 connectives, CMPs
 OSR/LogicCore.lean     quantified Boolean formulas, rewriter, soundness, termination
 OSR/Logic.lean         Logic rules (35 of 39), profiles and their weights
-OSR/Calculus.lean      derivative and limit rules, their proofs and rewriter
+OSR/Calculus.lean      derivative and limit rules (26), their proofs and rewriter
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
                        generation of rule set, reports and conformance cases

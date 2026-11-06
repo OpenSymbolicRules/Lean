@@ -5,8 +5,8 @@ import OSR.OMObject
 # Calculus
 
 Migration of `OpenSymbolicRules/Calculus` at commit
-`eb9eb87aa7ffcd6dd7da055fa6b6d87f35f840da`: the derivative and limit rules
-whose functions are in the fragment.
+`eb9eb87aa7ffcd6dd7da055fa6b6d87f35f840da`: 26 of its 32 rules (the others
+need `FreeQ` or the invented `osr#Apply`).
 
 A calculus rule has one of two shapes, with `F`, `G`, `L` field expressions:
 
@@ -123,6 +123,9 @@ private abbrev tan (e : Expr) : Expr := .app1 .tan e
 private abbrev exp (e : Expr) : Expr := .app1 .exp e
 private abbrev ln (e : Expr) : Expr := .app1 .ln e
 private abbrev arctan (e : Expr) : Expr := .app1 .arctan e
+private abbrev f1 (o : Op1) (e : Expr) : Expr := .app1 o e
+private abbrev root2 (e : Expr) : Expr := .app2 .root e (.int 2)
+private abbrev mone : Expr := .int (-1)
 private abbrev add (a b : Expr) : Expr := .app2 .add a b
 private abbrev sub (a b : Expr) : Expr := .app2 .sub a b
 private abbrev mul (a b : Expr) : Expr := .app2 .mul a b
@@ -200,6 +203,77 @@ def limitLogAdd : CRule where
   body := div (ln (add one x)) x; result := one; priority := 60
   description := "Limit of log(1 + x)/x at 0"; provenance := migrated (lim 6)
 
+
+def derivSinh : CRule where
+  id := "calculus.derivative.sinh"; legacyId := some (elem 7); shape := .deriv; x := "x"
+  body := f1 .sinh x; result := f1 .cosh x; priority := 170
+  description := "Derivative of the hyperbolic sine"; provenance := migrated (elem 7)
+
+def derivCosh : CRule where
+  id := "calculus.derivative.cosh"; legacyId := some (elem 8); shape := .deriv; x := "x"
+  body := f1 .cosh x; result := f1 .sinh x; priority := 180
+  description := "Derivative of the hyperbolic cosine"; provenance := migrated (elem 8)
+
+def derivTanh : CRule where
+  id := "calculus.derivative.tanh"; legacyId := some (elem 9); shape := .deriv; x := "x"
+  body := f1 .tanh x; result := div one (sq (f1 .cosh x)); priority := 190
+  description := "Derivative of the hyperbolic tangent"; provenance := migrated (elem 9)
+
+def derivArctanh : CRule where
+  id := "calculus.derivative.arctanh"; legacyId := some (elem 11); shape := .deriv; x := "x"
+  body := f1 .arctanh x; result := div one (sub one (sq x)); priority := 210
+  description := "Derivative of the inverse hyperbolic tangent"; provenance := migrated (elem 11)
+
+def derivArcsin : CRule where
+  id := "calculus.derivative.arcsin"; legacyId := some (elem 12); shape := .deriv; x := "x"
+  body := f1 .arcsin x; result := div one (root2 (sub one (sq x))); priority := 220
+  description := "Derivative of the inverse sine"; provenance := migrated (elem 12)
+
+def derivArccos : CRule where
+  id := "calculus.derivative.arccos"; legacyId := some (elem 13); shape := .deriv; x := "x"
+  body := f1 .arccos x; result := div mone (root2 (sub one (sq x))); priority := 230
+  description := "Derivative of the inverse cosine"; provenance := migrated (elem 13)
+
+def derivCot : CRule where
+  id := "calculus.derivative.cot"; legacyId := some (elem 14); shape := .deriv; x := "x"
+  body := f1 .cot x; result := div mone (sq (sin x)); priority := 240
+  description := "Derivative of cotangent"; provenance := migrated (elem 14)
+
+def derivSec : CRule where
+  id := "calculus.derivative.sec"; legacyId := some (elem 15); shape := .deriv; x := "x"
+  body := f1 .sec x; result := mul (f1 .sec x) (tan x); priority := 250
+  description := "Derivative of secant"; provenance := migrated (elem 15)
+
+def derivCsc : CRule where
+  id := "calculus.derivative.csc"; legacyId := some (elem 16); shape := .deriv; x := "x"
+  body := f1 .csc x; result := mul (mul mone (f1 .csc x)) (f1 .cot x); priority := 260
+  description := "Derivative of cosecant"; provenance := migrated (elem 16)
+
+def derivCoth : CRule where
+  id := "calculus.derivative.coth"; legacyId := some (elem 17); shape := .deriv; x := "x"
+  body := f1 .coth x; result := div mone (sq (f1 .sinh x)); priority := 270
+  description := "Derivative of the hyperbolic cotangent"; provenance := migrated (elem 17)
+
+def derivSech : CRule where
+  id := "calculus.derivative.sech"; legacyId := some (elem 18); shape := .deriv; x := "x"
+  body := f1 .sech x; result := mul (mul mone (f1 .sech x)) (f1 .tanh x); priority := 280
+  description := "Derivative of the hyperbolic secant"; provenance := migrated (elem 18)
+
+def derivCsch : CRule where
+  id := "calculus.derivative.csch"; legacyId := some (elem 19); shape := .deriv; x := "x"
+  body := f1 .csch x; result := mul (mul mone (f1 .csch x)) (f1 .coth x); priority := 290
+  description := "Derivative of the hyperbolic cosecant"; provenance := migrated (elem 19)
+
+def derivArcsinh : CRule where
+  id := "calculus.derivative.arcsinh"; legacyId := some (elem 20); shape := .deriv; x := "x"
+  body := f1 .arcsinh x; result := div one (root2 (add one (sq x))); priority := 300
+  description := "Derivative of the inverse hyperbolic sine"; provenance := migrated (elem 20)
+
+def derivArccosh : CRule where
+  id := "calculus.derivative.arccosh"; legacyId := some (elem 21); shape := .deriv; x := "x"
+  body := f1 .arccosh x; result := div one (root2 (sub (sq x) one)); priority := 310
+  description := "Derivative of the inverse hyperbolic cosine"; provenance := migrated (elem 21)
+
 /-- v0.1 rules outside the fragment, with the reason. -/
 def notMigrated : List (String × String) :=
   [(lim 1, "the side condition FreeQ (a variable does not occur free) has no OpenMath symbol"),
@@ -207,8 +281,6 @@ def notMigrated : List (String × String) :=
      "the side condition FreeQ (a variable does not occur free) has no OpenMath symbol"),
    ("calculus:2-derivatives/2.1-basic-derivatives:2",
      "the side condition FreeQ (a variable does not occur free) has no OpenMath symbol")] ++
-  ([7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21].map fun n =>
-    (elem n, "uses a function outside the fragment (hyperbolic, reciprocal trigonometric, inverse sine or cosine, or square root)")) ++
   ([1, 2, 3].map fun n =>
     (s!"calculus:2-derivatives/2.3-structural-derivatives:{n}",
       "uses osr#Apply, which is not an OpenMath symbol"))
@@ -383,6 +455,178 @@ theorem limitOneSubCos_complex : limitOneSubCos.Holds .complex := by
   field_simp
   ring
 
+
+/-! ### Hyperbolic, reciprocal and inverse functions -/
+
+private theorem ne_of_eventually_le {t c : ℝ} (h : ∀ᶠ v in 𝓝 t, v ≤ c) : t ≠ c := by
+  rintro rfl
+  obtain ⟨v, hv, hlt⟩ := (h.and_frequently (frequently_gt_nhds t)).exists
+  linarith
+
+private theorem ne_of_eventually_ge {t c : ℝ} (h : ∀ᶠ v in 𝓝 t, c ≤ v) : t ≠ c := by
+  rintro rfl
+  obtain ⟨v, hv, hlt⟩ := (h.and_frequently (frequently_lt_nhds t)).exists
+  linarith
+
+theorem derivSinh_real : derivSinh.Holds .real := by
+  deriv_intro derivSinh Interp.real
+  exact Real.hasDerivAt_sinh t
+
+theorem derivSinh_complex : derivSinh.Holds .complex := by
+  deriv_intro derivSinh Interp.complex
+  exact Complex.hasDerivAt_sinh t
+
+theorem derivCosh_real : derivCosh.Holds .real := by
+  deriv_intro derivCosh Interp.real
+  exact Real.hasDerivAt_cosh t
+
+theorem derivCosh_complex : derivCosh.Holds .complex := by
+  deriv_intro derivCosh Interp.complex
+  exact Complex.hasDerivAt_cosh t
+
+theorem derivTanh_real : derivTanh.Holds .real := by
+  deriv_intro derivTanh Interp.real
+  have hc : Real.cosh t ≠ 0 := (Real.cosh_pos t).ne'
+  refine ⟨pow_ne_zero 2 hc, ?_⟩
+  have h := (Real.hasDerivAt_sinh t).div (Real.hasDerivAt_cosh t) hc
+  have hf : Real.sinh / Real.cosh = Real.tanh := by
+    funext v; simp [Real.tanh_eq_sinh_div_cosh]
+  rw [hf] at h
+  refine h.congr_deriv ?_
+  have := Real.cosh_sq_sub_sinh_sq t
+  field_simp
+  linear_combination this
+
+theorem derivArcsin_real : derivArcsin.Holds .real := by
+  deriv_intro derivArcsin Interp.real
+  have h1 : t ≠ 1 := ne_of_eventually_le (hF.mono fun v h => h.2)
+  have h2 : t ≠ -1 := ne_of_eventually_ge (hF.mono fun v h => h.1)
+  have hle := hF.self_of_nhds
+  have hpos : 0 < 1 - t ^ 2 := by
+    have : t < 1 := lt_of_le_of_ne hle.2 h1
+    have : -1 < t := lt_of_le_of_ne hle.1 (Ne.symm h2)
+    nlinarith
+  refine ⟨⟨hpos.le, (Real.sqrt_pos.2 hpos).ne'⟩, ?_⟩
+  exact Real.hasDerivAt_arcsin h2 h1
+
+theorem derivArccos_real : derivArccos.Holds .real := by
+  deriv_intro derivArccos Interp.real
+  have h1 : t ≠ 1 := ne_of_eventually_le (hF.mono fun v h => h.2)
+  have h2 : t ≠ -1 := ne_of_eventually_ge (hF.mono fun v h => h.1)
+  have hle := hF.self_of_nhds
+  have hpos : 0 < 1 - t ^ 2 := by
+    have : t < 1 := lt_of_le_of_ne hle.2 h1
+    have : -1 < t := lt_of_le_of_ne hle.1 (Ne.symm h2)
+    nlinarith
+  refine ⟨⟨hpos.le, (Real.sqrt_pos.2 hpos).ne'⟩, ?_⟩
+  exact (Real.hasDerivAt_arccos h2 h1).congr_deriv (by ring)
+
+theorem derivCot_real : derivCot.Holds .real := by
+  deriv_intro derivCot Interp.real
+  have hs : Real.sin t ≠ 0 := hF.self_of_nhds
+  refine ⟨pow_ne_zero 2 hs, ?_⟩
+  have h := (Real.hasDerivAt_cos t).div (Real.hasDerivAt_sin t) hs
+  have hf : Real.cos / Real.sin = Real.cot := by
+    funext v; simp [Real.cot_eq_cos_div_sin]
+  rw [hf] at h
+  refine h.congr_deriv ?_
+  have := Real.sin_sq_add_cos_sq t
+  field_simp
+  linear_combination -this
+
+theorem derivCot_complex : derivCot.Holds .complex := by
+  deriv_intro derivCot Interp.complex
+  have hs : Complex.sin t ≠ 0 := hF.self_of_nhds
+  refine ⟨pow_ne_zero 2 hs, ?_⟩
+  have h := (Complex.hasDerivAt_cos t).div (Complex.hasDerivAt_sin t) hs
+  have hf : Complex.cos / Complex.sin = Complex.cot := by
+    funext v; simp [Complex.cot_eq_cos_div_sin]
+  rw [hf] at h
+  refine h.congr_deriv ?_
+  have := Complex.sin_sq_add_cos_sq t
+  field_simp
+  linear_combination -this
+
+theorem derivTanh_complex : derivTanh.Holds .complex := by
+  deriv_intro derivTanh Interp.complex
+  have hc : Complex.cosh t ≠ 0 := hF.self_of_nhds
+  refine ⟨pow_ne_zero 2 hc, ?_⟩
+  have h := (Complex.hasDerivAt_sinh t).div (Complex.hasDerivAt_cosh t) hc
+  have hf : Complex.sinh / Complex.cosh = Complex.tanh := by
+    funext v; simp [Complex.tanh_eq_sinh_div_cosh]
+  rw [hf] at h
+  refine h.congr_deriv ?_
+  have := Complex.cosh_sq_sub_sinh_sq t
+  field_simp
+  linear_combination this
+
+/-- `1/f` has derivative `-f'/f²`. -/
+private theorem hasDerivAt_one_div {f : ℝ → ℝ} {f' t : ℝ} (h : HasDerivAt f f' t) (hf : f t ≠ 0) :
+    HasDerivAt (fun v => 1 / f v) (-f' / f t ^ 2) t := by
+  have := (hasDerivAt_const t (1 : ℝ)).div h hf
+  exact this.congr_deriv (by ring)
+
+theorem derivSec_real : derivSec.Holds .real := by
+  deriv_intro derivSec Interp.real
+  have hc : Real.cos t ≠ 0 := hF.self_of_nhds
+  refine ⟨⟨hc, hc⟩, ?_⟩
+  have h := hasDerivAt_one_div (Real.hasDerivAt_cos t) hc
+  refine h.congr_deriv ?_
+  simp only [Fn.sec, Real.tan_eq_sin_div_cos]
+  field_simp
+
+theorem derivCsc_real : derivCsc.Holds .real := by
+  deriv_intro derivCsc Interp.real
+  have hs : Real.sin t ≠ 0 := hF.self_of_nhds
+  refine ⟨⟨hs, hs⟩, ?_⟩
+  have h := hasDerivAt_one_div (Real.hasDerivAt_sin t) hs
+  refine h.congr_deriv ?_
+  simp only [Fn.csc, Real.cot_eq_cos_div_sin]
+  field_simp
+
+theorem derivCoth_real : derivCoth.Holds .real := by
+  deriv_intro derivCoth Interp.real
+  have hs : Real.sinh t ≠ 0 := hF.self_of_nhds
+  refine ⟨pow_ne_zero 2 hs, ?_⟩
+  have h := (Real.hasDerivAt_cosh t).div (Real.hasDerivAt_sinh t) hs
+  have hf : Real.cosh / Real.sinh = Fn.coth := by
+    funext v; simp [Fn.coth, Real.tanh_eq_sinh_div_cosh]
+  rw [hf] at h
+  refine h.congr_deriv ?_
+  have := Real.cosh_sq_sub_sinh_sq t
+  field_simp
+  linear_combination -this
+
+theorem derivSech_real : derivSech.Holds .real := by
+  deriv_intro derivSech Interp.real
+  have hc : Real.cosh t ≠ 0 := (Real.cosh_pos t).ne'
+  have h := hasDerivAt_one_div (Real.hasDerivAt_cosh t) hc
+  refine h.congr_deriv ?_
+  simp only [Fn.sech, Real.tanh_eq_sinh_div_cosh]
+  field_simp
+
+theorem derivCsch_real : derivCsch.Holds .real := by
+  deriv_intro derivCsch Interp.real
+  have hs : Real.sinh t ≠ 0 := hF.self_of_nhds
+  refine ⟨⟨hs, hs⟩, ?_⟩
+  have h := hasDerivAt_one_div (Real.hasDerivAt_sinh t) hs
+  refine h.congr_deriv ?_
+  simp only [Fn.csch, Fn.coth, Real.tanh_eq_sinh_div_cosh]
+  field_simp
+
+theorem derivArcsinh_real : derivArcsinh.Holds .real := by
+  deriv_intro derivArcsinh Interp.real
+  have hpos : 0 < 1 + t ^ 2 := by positivity
+  refine ⟨⟨hpos.le, (Real.sqrt_pos.2 hpos).ne'⟩, ?_⟩
+  exact (Real.hasDerivAt_arsinh t).congr_deriv (inv_eq_one_div _)
+
+theorem derivArccosh_real : derivArccosh.Holds .real := by
+  deriv_intro derivArccosh Interp.real
+  have h1 : 1 < t := lt_of_le_of_ne hF.self_of_nhds (Ne.symm (ne_of_eventually_ge hF))
+  have hpos : 0 < t ^ 2 - 1 := by nlinarith
+  refine ⟨⟨hpos.le, (Real.sqrt_pos.2 hpos).ne'⟩, ?_⟩
+  exact (Real.hasDerivAt_arcosh h1).congr_deriv (inv_eq_one_div _)
+
 /-! ## Catalogue -/
 
 /-- A calculus rule with its proofs. -/
@@ -426,7 +670,26 @@ def catalog : List CEntry := [
     proofs := [(.real, ``derivTan_real), (.complex, ``derivTan_complex)] },
   { rule := derivArctan, ruleDecl := ``derivArctan,
     proofs := [(.real, ``derivArctan_real)], unproved := [.complex],
-    findings := [arctanComplexFinding] }
+    findings := [arctanComplexFinding] },
+  { rule := derivSinh, ruleDecl := ``derivSinh,
+    proofs := [(.real, ``derivSinh_real), (.complex, ``derivSinh_complex)] },
+  { rule := derivCosh, ruleDecl := ``derivCosh,
+    proofs := [(.real, ``derivCosh_real), (.complex, ``derivCosh_complex)] },
+  { rule := derivTanh, ruleDecl := ``derivTanh,
+    proofs := [(.real, ``derivTanh_real), (.complex, ``derivTanh_complex)] },
+  { rule := derivArctanh, ruleDecl := ``derivArctanh, proofs := [], unproved := [.real],
+    findings := ["real: not proved; Mathlib has no derivative lemma for Real.artanh at this revision."] },
+  { rule := derivArcsin, ruleDecl := ``derivArcsin, proofs := [(.real, ``derivArcsin_real)] },
+  { rule := derivArccos, ruleDecl := ``derivArccos, proofs := [(.real, ``derivArccos_real)] },
+  { rule := derivCot, ruleDecl := ``derivCot,
+    proofs := [(.real, ``derivCot_real), (.complex, ``derivCot_complex)] },
+  { rule := derivSec, ruleDecl := ``derivSec, proofs := [(.real, ``derivSec_real)] },
+  { rule := derivCsc, ruleDecl := ``derivCsc, proofs := [(.real, ``derivCsc_real)] },
+  { rule := derivCoth, ruleDecl := ``derivCoth, proofs := [(.real, ``derivCoth_real)] },
+  { rule := derivSech, ruleDecl := ``derivSech, proofs := [(.real, ``derivSech_real)] },
+  { rule := derivCsch, ruleDecl := ``derivCsch, proofs := [(.real, ``derivCsch_real)] },
+  { rule := derivArcsinh, ruleDecl := ``derivArcsinh, proofs := [(.real, ``derivArcsinh_real)] },
+  { rule := derivArccosh, ruleDecl := ``derivArccosh, proofs := [(.real, ``derivArccosh_real)] }
 ]
 
 /-! ## Reference rewriter -/
@@ -559,8 +822,9 @@ theorem defined_congr (I : Interp α) :
     have hb' : ∀ n ∈ b.varList, ρ n = ρ' n := fun n hn => h n (by simp [Expr.varList, hn])
     have hda := defined_congr I a ha'
     have hdb := defined_congr I b hb'
+    have hea := eval_congr I a ha'
     have heb := eval_congr I b hb'
-    cases o <;> simp [Defined, hda, hdb, heb]
+    cases o <;> simp [Defined, hda, hdb, hea, heb]
   | .pow a b, ρ, ρ', h => by
     have ha' : ∀ n ∈ a.varList, ρ n = ρ' n := fun n hn => h n (by simp [Expr.varList, hn])
     have hb' : ∀ n ∈ b.varList, ρ n = ρ' n := fun n hn => h n (by simp [Expr.varList, hn])
@@ -698,7 +962,7 @@ theorem holds_complex {r : CRule} (h : r.Holds .complex) : r.HoldsIn Interp.comp
 theorem catalog_wellFormed : ∀ e ∈ catalog, e.rule.wellFormed = true := by
   intro e he
   simp only [catalog, List.mem_cons, List.mem_nil_iff, or_false] at he
-  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 end OSR.Calculus
 

@@ -37,6 +37,21 @@ theorem intValue?_intCast {α : Type} [Field α] [CharZero α] (n : ℤ) :
     intValue? (n : α) = some n :=
   (intValue?_eq _ _).2 rfl
 
+namespace Fn
+
+/-- `transc1#coth`: `coth A = 1/tanh A` (CMP). -/
+noncomputable def coth (x : ℝ) : ℝ := 1 / Real.tanh x
+/-- `transc1#sech`: `sech A = 1/cosh A` (CMP). -/
+noncomputable def sech (x : ℝ) : ℝ := 1 / Real.cosh x
+/-- `transc1#csch`: `csch A = 1/sinh A` (CMP). -/
+noncomputable def csch (x : ℝ) : ℝ := 1 / Real.sinh x
+/-- `transc1#sec`: `sec A = 1/cos A` (CMP). -/
+noncomputable def sec (x : ℝ) : ℝ := 1 / Real.cos x
+/-- `transc1#csc`: `csc A = 1/sin A` (CMP). -/
+noncomputable def csc (x : ℝ) : ℝ := 1 / Real.sin x
+
+end Fn
+
 /-- The domain-specific part of an interpretation.  Arithmetic comes from the
 `Field` structure; transcendental symbols and their definedness conditions are
 given here. -/
@@ -61,6 +76,16 @@ structure Interp (α : Type) [Field α] where
   the fragment interprets for integer exponents only. -/
   toInt? : α → Option ℤ
   toInt?_eq : ∀ v n, toInt? v = some n ↔ v = (n : α)
+  /-- The further unary functions (hyperbolic, reciprocal trigonometric,
+  inverse trigonometric and hyperbolic). -/
+  fn : Op1 → α → α
+  /-- Where each further unary function is defined.  `False` marks a function
+  without an interpretation in this domain. -/
+  fnDefined : Op1 → α → Prop
+  /-- `arith1#root`. -/
+  root : α → α → α
+  /-- Where `arith1#root` is defined (the square root of a nonnegative real). -/
+  rootDefined : α → α → Prop
 
 /-- Real interpretation, using Mathlib's `Real` functions. -/
 noncomputable def Interp.real : Interp ℝ where
@@ -77,6 +102,23 @@ noncomputable def Interp.real : Interp ℝ where
   lt x y := x < y
   toInt? := intValue?
   toInt?_eq := intValue?_eq
+  fn o := match o with
+    | .sinh => Real.sinh | .cosh => Real.cosh | .tanh => Real.tanh
+    | .coth => Fn.coth | .sech => Fn.sech | .csch => Fn.csch
+    | .cot => Real.cot | .sec => Fn.sec | .csc => Fn.csc
+    | .arcsin => Real.arcsin | .arccos => Real.arccos
+    | .arcsinh => Real.arsinh | .arccosh => Real.arcosh | .arctanh => Real.artanh
+    | _ => id
+  fnDefined o := match o with
+    | .coth | .csch => fun x => Real.sinh x ≠ 0
+    | .cot | .csc => fun x => Real.sin x ≠ 0
+    | .sec => fun x => Real.cos x ≠ 0
+    | .arcsin | .arccos => fun x => -1 ≤ x ∧ x ≤ 1
+    | .arccosh => fun x => 1 ≤ x
+    | .arctanh => fun x => -1 < x ∧ x < 1
+    | _ => fun _ => True
+  root x _ := Real.sqrt x
+  rootDefined x n := intValue? n = some 2 ∧ 0 ≤ x
 
 /-- Complex interpretation, using Mathlib's `Complex` functions. -/
 noncomputable def Interp.complex : Interp ℂ where
@@ -95,6 +137,19 @@ noncomputable def Interp.complex : Interp ℂ where
   lt z w := z.im = 0 ∧ w.im = 0 ∧ z.re < w.re
   toInt? := intValue?
   toInt?_eq := intValue?_eq
+  fn o := match o with
+    | .sinh => Complex.sinh | .cosh => Complex.cosh | .tanh => Complex.tanh
+    | .cot => Complex.cot
+    | _ => fun _ => 0
+  -- Only sinh, cosh, tanh and cot have a complex interpretation here.
+  fnDefined o := match o with
+    | .sinh | .cosh => fun _ => True
+    | .tanh => fun z => Complex.cosh z ≠ 0
+    | .cot => fun z => Complex.sin z ≠ 0
+    | _ => fun _ => False
+  -- `arith1#root` has no complex interpretation (branch choice).
+  root _ _ := 0
+  rootDefined _ _ := False
 
 variable {α : Type} [Field α]
 
@@ -111,10 +166,12 @@ def eval (I : Interp α) (env : String → α) : Expr → α
   | .app1 .arctan a => I.arctan (eval I env a)
   | .app1 .exp a => I.exp (eval I env a)
   | .app1 .ln a => I.ln (eval I env a)
+  | .app1 o a => I.fn o (eval I env a)
   | .app2 .add a b => eval I env a + eval I env b
   | .app2 .sub a b => eval I env a - eval I env b
   | .app2 .mul a b => eval I env a * eval I env b
   | .app2 .div a b => eval I env a / eval I env b
+  | .app2 .root a b => I.root (eval I env a) (eval I env b)
   | .pow a e =>
     match I.toInt? (eval I env e) with
     | some n => eval I env a ^ n
@@ -133,7 +190,10 @@ def Defined (I : Interp α) (env : String → α) : Expr → Prop
   | .app1 .neg a => Defined I env a
   | .app1 .sin a => Defined I env a
   | .app1 .cos a => Defined I env a
+  | .app1 o a => Defined I env a ∧ I.fnDefined o (eval I env a)
   | .app2 .div a b => Defined I env a ∧ Defined I env b ∧ eval I env b ≠ 0
+  | .app2 .root a b => Defined I env a ∧ Defined I env b ∧
+      I.rootDefined (eval I env a) (eval I env b)
   | .app2 .add a b => Defined I env a ∧ Defined I env b
   | .app2 .sub a b => Defined I env a ∧ Defined I env b
   | .app2 .mul a b => Defined I env a ∧ Defined I env b

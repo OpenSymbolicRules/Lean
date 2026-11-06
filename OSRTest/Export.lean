@@ -47,9 +47,9 @@ private def render (e : Expr) : String := (Expr.toOMJson e).compress
   (Registry.entries.filter (·.symbol == e.symbol)).length == 1
 #guard Registry.entries.all fun e =>
   (e.interpretation? .real).isSome || (e.interpretation? .boolean).isSome
-#guard Registry.entries.all fun e =>
-  (e.interpretation? .complex).isSome || e.symbol == ⟨"relation1", "gt"⟩ ||
-    (e.interpretation? .boolean).isSome
+-- Symbols without a complex interpretation are not certified over ℂ.
+#guard Registry.mappingAssurance [⟨"transc1", "sec"⟩] .complex == .unsupported
+#guard Registry.mappingAssurance [⟨"arith1", "root"⟩] .complex == .unsupported
 -- The logic1 symbols are interpreted in the Boolean domain only.
 #guard Registry.entries.all fun e =>
   e.symbol.cd != "logic1" || ((e.interpretation? .boolean).isSome && (e.interpretation? .real).isNone)

@@ -26,6 +26,10 @@ inductive Op1 where
   | arctan
   | exp
   | ln
+  | sinh | cosh | tanh | coth | sech | csch
+  | cot | sec | csc
+  | arcsin | arccos
+  | arcsinh | arccosh | arctanh
   deriving DecidableEq, Repr, Inhabited, BEq
 
 /-- Binary operators of the fragment. -/
@@ -34,6 +38,8 @@ inductive Op2 where
   | sub
   | mul
   | div
+  /-- `arith1#root`, interpreted for the square root only. -/
+  | root
   deriving DecidableEq, Repr, Inhabited, BEq
 
 /-- Named constants of the fragment. -/
@@ -50,6 +56,20 @@ def Op1.symbol : Op1 → OMSymbol
   | .arctan => ⟨"transc1", "arctan"⟩
   | .exp => ⟨"transc1", "exp"⟩
   | .ln => ⟨"transc1", "ln"⟩
+  | .sinh => ⟨"transc1", "sinh"⟩
+  | .cosh => ⟨"transc1", "cosh"⟩
+  | .tanh => ⟨"transc1", "tanh"⟩
+  | .coth => ⟨"transc1", "coth"⟩
+  | .sech => ⟨"transc1", "sech"⟩
+  | .csch => ⟨"transc1", "csch"⟩
+  | .cot => ⟨"transc1", "cot"⟩
+  | .sec => ⟨"transc1", "sec"⟩
+  | .csc => ⟨"transc1", "csc"⟩
+  | .arcsin => ⟨"transc1", "arcsin"⟩
+  | .arccos => ⟨"transc1", "arccos"⟩
+  | .arcsinh => ⟨"transc1", "arcsinh"⟩
+  | .arccosh => ⟨"transc1", "arccosh"⟩
+  | .arctanh => ⟨"transc1", "arctanh"⟩
 
 /-- The OpenMath symbol of a binary operator. -/
 def Op2.symbol : Op2 → OMSymbol
@@ -57,6 +77,7 @@ def Op2.symbol : Op2 → OMSymbol
   | .sub => ⟨"arith1", "minus"⟩
   | .mul => ⟨"arith1", "times"⟩
   | .div => ⟨"arith1", "divide"⟩
+  | .root => ⟨"arith1", "root"⟩
 
 /-- The OpenMath symbol of a constant. -/
 def Const.symbol : Const → OMSymbol
@@ -102,8 +123,9 @@ def symbols : Expr → List OMSymbol
 
 /-- Every OpenMath symbol the fragment can emit. -/
 def allSymbols : List OMSymbol :=
-  [Op1.neg, .sin, .cos, .tan, .arctan, .exp, .ln].map Op1.symbol ++
-  [Op2.add, .sub, .mul, .div].map Op2.symbol ++
+  [Op1.neg, .sin, .cos, .tan, .arctan, .exp, .ln, .sinh, .cosh, .tanh, .coth, .sech, .csch,
+      .cot, .sec, .csc, .arcsin, .arccos, .arcsinh, .arccosh, .arctanh].map Op1.symbol ++
+  [Op2.add, .sub, .mul, .div, .root].map Op2.symbol ++
   [Const.pi].map Const.symbol ++ [powerSymbol]
 
 /-- Whether the expression is a bare variable. -/

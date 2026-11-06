@@ -99,6 +99,20 @@ def decodeOp1 (s : OMSymbol) : Option Op1 :=
   else if s = ⟨"transc1", "arctan"⟩ then some .arctan
   else if s = ⟨"transc1", "exp"⟩ then some .exp
   else if s = ⟨"transc1", "ln"⟩ then some .ln
+  else if s = ⟨"transc1", "sinh"⟩ then some .sinh
+  else if s = ⟨"transc1", "cosh"⟩ then some .cosh
+  else if s = ⟨"transc1", "tanh"⟩ then some .tanh
+  else if s = ⟨"transc1", "coth"⟩ then some .coth
+  else if s = ⟨"transc1", "sech"⟩ then some .sech
+  else if s = ⟨"transc1", "csch"⟩ then some .csch
+  else if s = ⟨"transc1", "cot"⟩ then some .cot
+  else if s = ⟨"transc1", "sec"⟩ then some .sec
+  else if s = ⟨"transc1", "csc"⟩ then some .csc
+  else if s = ⟨"transc1", "arcsin"⟩ then some .arcsin
+  else if s = ⟨"transc1", "arccos"⟩ then some .arccos
+  else if s = ⟨"transc1", "arcsinh"⟩ then some .arcsinh
+  else if s = ⟨"transc1", "arccosh"⟩ then some .arccosh
+  else if s = ⟨"transc1", "arctanh"⟩ then some .arctanh
   else none
 
 /-- The binary operation named by an OpenMath symbol. -/
@@ -107,6 +121,7 @@ def decodeOp2 (s : OMSymbol) : Option Op2 :=
   else if s = ⟨"arith1", "minus"⟩ then some .sub
   else if s = ⟨"arith1", "times"⟩ then some .mul
   else if s = ⟨"arith1", "divide"⟩ then some .div
+  else if s = ⟨"arith1", "root"⟩ then some .root
   else none
 
 theorem decodeConst_symbol : ∀ c : Const, decodeConst c.symbol = some c := by
@@ -169,8 +184,10 @@ theorem toOM_injective {e f : Expr} (h : e.toOM = f.toOM) : e = f := by
 
 /-- Symbols with the arity the fragment uses them at. -/
 def fragmentSymbols : List (OMSymbol × Nat) :=
-  [Op1.neg, .sin, .cos, .tan, .arctan, .exp, .ln].map (fun o => (o.symbol, 1)) ++
-  [Op2.add, .sub, .mul, .div].map (fun o => (o.symbol, 2)) ++
+  [Op1.neg, .sin, .cos, .tan, .arctan, .exp, .ln, .sinh, .cosh, .tanh, .coth, .sech, .csch,
+      .cot, .sec, .csc, .arcsin, .arccos, .arcsinh, .arccosh, .arctanh].map
+    (fun o => (o.symbol, 1)) ++
+  [Op2.add, .sub, .mul, .div, .root].map (fun o => (o.symbol, 2)) ++
   [Const.pi].map (fun c => (c.symbol, 0)) ++ [(powerSymbol, 2)]
 
 theorem symbolsWithArity_toOM_mem :
