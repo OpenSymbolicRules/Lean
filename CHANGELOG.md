@@ -41,10 +41,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   and the registry (ℝ and ℂ for exp/ln; ℝ only for gt), with CMP obligations.
 - Algebra pilot (`OSR/Algebra.lean`): 15 of the 20 v0.1 rules proved
   (ℝ: 15, ℂ: 14), two terminating profiles with termination proofs, engine
-  soundness; 5 v0.1 entries outside the fragment are listed in `notMigrated`.
-  Not yet exported.
+  soundness; the 5 v0.1 rules outside the fragment are listed in
+  `notMigrated` and in the report.  Exported as `algebra.osr.json` with its
+  report and 46 conformance cases.
 
 ### Changed
+- The exporter handles several rule sets (`RuleSet`, `ruleSets`); reports are
+  now written per rule set as `<set>.report.json` and `<set>.report.md`
+  (previously `report.json` and `report.md`), and include the rules not
+  migrated.
 - `RulesSound` only requires the unconditional rules of a profile to be
   sound, since the reference engine never applies conditional rules.
 - Trigonometry profiles: the v0.1 `default` and `sum_to_product` profiles

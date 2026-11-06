@@ -58,7 +58,7 @@ jobs:
       - name: Summary
         if: always()
         run: |
-          if [ -f generated/report.md ]; then cat generated/report.md >> "$GITHUB_STEP_SUMMARY"; fi
+          for f in generated/*.report.md; do cat "$f" >> "$GITHUB_STEP_SUMMARY"; done
 
       - name: Upload artifacts
         if: always()
@@ -91,7 +91,7 @@ jobs:
         working-directory: OpenSymbolicRules.jl
         env:
           OSR1_RULESET: ${{ github.workspace }}/generated/trigonometry.osr.json
-          OSR1_CONFORMANCE: ${{ github.workspace }}/generated/conformance/trigonometry.cases.json
+          OSR1_DIR: ${{ github.workspace }}/generated
         run: |
           julia --project=test -e 'using Pkg; Pkg.instantiate()'
           julia --project=test -e 'using TestItemRunner; @run_package_tests filter=ti->startswith(ti.name, "OSRv1")'

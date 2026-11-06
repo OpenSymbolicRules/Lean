@@ -11,15 +11,19 @@ OpenMath CDs ──► semantic registry ──► Lean rules + proofs ──►
                      OpenSymbolicRules.jl, other CAS ◄── OSR v1 JSON (audited export)
 ```
 
-Status: **pilot** (`1.0.0-alpha.1` format).  The 13 rules of the Trigonometry
-rule set are migrated:
+Status: **pilot** (`1.0.0-alpha.1` format).  Two rule sets are migrated:
 
-- ℝ: 13 rules proved, 13 certified;
-- ℂ: 13 rules proved, 12 certified.
+| Rule set | Rules | ℝ proved / certified | ℂ proved / certified | Not migrated |
+|---|---|---|---|---|
+| Trigonometry | 13 | 13 / 13 | 13 / 12 | 0 |
+| Algebra | 15 | 15 / 15 | 14 / 14 | 5 |
 
 `tan(arctan z) = z` over ℂ is proved but not certified, because the mapping of
-`transc1#arctan` to `Complex.arctan` is provisional.  See
-[`docs/audit-m0.md`](docs/audit-m0.md).
+`transc1#arctan` to `Complex.arctan` is provisional.  `ln(ab) = ln a + ln b`
+is stated over ℝ only (its positivity conditions have no complex meaning).
+Five Algebra rules use symbolic or negative exponents, outside the fragment.
+Every profile of both rule sets is proved to terminate.  See
+[`docs/audit-m0.md`](docs/audit-m0.md) and the generated reports.
 
 ## Example
 
@@ -62,7 +66,8 @@ just build        # compile registry, rules and proofs
 just test         # #guard tests and examples
 just check        # replay modules with leanchecker
 just export       # audit rule and termination proofs, write generated/
-                  #   trigonometry.osr.json, registry.json, report.*, conformance/
+                  #   <set>.osr.json, <set>.report.{json,md}, registry.json,
+                  #   conformance/<set>.cases.json for set in trigonometry, algebra
 just determinism  # export twice, require identical bytes
 just validate     # validate against schemas/ruleset.schema.json
 ```

@@ -70,6 +70,7 @@ OSR/OMObject.lean      OpenMath object model; faithfulness of the export
 OSR/Catalog.lean       catalogue entries and the `osr_intro` proof helper
 OSR/Trigonometry.lean  the pilot rules, their proofs, profiles and engine
                        soundness and termination per profile
+OSR/Algebra.lean       Algebra rules (15 of 20), same structure
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
                        generation of rule set, reports and conformance cases
@@ -154,6 +155,21 @@ the expression (`decode_toOM`, hence `evalOM_toOM`), and that the registry
 covers every emitted symbol at its arity (`registry_covers_toOM`).  See
 `docs/trust-model.md` for what remains trusted.
 
+## Rule sets
+
+The exporter knows rule sets through `RuleSet` records (`scripts/Export.lean`,
+`ruleSets`): name, catalogue, profiles, termination theorems, extra seeds and
+the v0.1 rules not migrated.  Per rule set it writes `<set>.osr.json`,
+`<set>.report.json`, `<set>.report.md` and `conformance/<set>.cases.json`;
+`registry.json` is shared.
+
+`OSR/Algebra.lean` adds `ln`, `exp` and positivity conditions
+(`relation1#gt`).  The conditions only have a real meaning: `Interp` carries an
+order, and the registry gives `relation1#gt` no complex mapping, so a rule
+with such a condition is stated over ℝ only.  Conditional rules are never
+applied by the reference engine, so engine soundness (`RulesSound`) only
+needs the unconditional ones.
+
 ## Termination
 
 `OSR/Termination.lean` proves termination with monotone interpretations.  A
@@ -181,5 +197,5 @@ theorems `Trigonometry.default_terminates`, … are audited by the exporter.
 The exporter runs every profile on every seed (rule patterns and nested
 inputs) and fails if a run does not reach a normal form within 64 steps.  The
 same runs are written as language-neutral conformance cases
-(`generated/conformance/trigonometry.cases.json`): input, expected result and
+(`generated/conformance/<set>.cases.json`): input, expected result and
 rule trace.  OpenSymbolicRules.jl must reproduce each of them exactly.

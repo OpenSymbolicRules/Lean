@@ -105,7 +105,7 @@ single-step rewrite.
 | `…/1.6-sum-to-product:3` | `trigonometry.sum_to_product.cos_sub_cos` | certified | certified |
 | `…/2.1-tangent-inverse:1` | `trigonometry.inverse.tan_arctan` | certified | proved, **not certified** |
 
-The generated `report.md` is the authoritative per-rule record.
+The generated `trigonometry.report.md` is the authoritative per-rule record.
 
 ### Findings
 

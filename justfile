@@ -32,7 +32,7 @@ determinism:
 
 # Validate the generated JSON against the interchange schema.
 validate out="generated":
-	check-jsonschema --schemafile schemas/ruleset.schema.json {{out}}/trigonometry.osr.json
+	check-jsonschema --schemafile schemas/ruleset.schema.json {{out}}/trigonometry.osr.json {{out}}/algebra.osr.json
 
 # Everything CI runs.
 ci: build test check export determinism validate
