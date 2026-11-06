@@ -647,6 +647,236 @@ steps; these runs are the conformance cases.
   IO.FS.writeFile (outDir ++ "/conformance/logic.cases.json") (cases.pretty ++ "\n")
   return audited.length
 
+/-! ## Calculus -/
+
+unsafe def evalCRule (decl : Name) : MetaM Calculus.CRule :=
+  evalExpr Calculus.CRule (mkConst ``OSR.Calculus.CRule) (mkConst decl)
+
+/-- Audit one calculus rule: declaration, well-formedness, registry symbols,
+and for each listed domain a theorem of type exactly
+`OSR.Calculus.CRule.Holds <decl> <domain>` with the standard axioms. -/
+unsafe def auditCalcEntry (e : Calculus.CEntry) : MetaM (List Verification) := do
+  let r ← evalCRule e.ruleDecl
+  unless r == e.rule do
+    throwError "{e.rule.id}: catalogue rule differs from declaration {e.ruleDecl}"
+  unless e.rule.wellFormed do
+    throwError "{e.rule.id}: ill-formed calculus rule"
+  for s in e.rule.symbols do
+    if (Registry.lookup s).isNone then
+      throwError "{e.rule.id}: OpenMath symbol {s.uri} is not in the registry"
+  let mut out := []
+  for d in [Domain.real, Domain.complex] do
+    let assurance := Registry.mappingAssurance e.rule.symbols d
+    match e.proofs.lookup d with
+    | some thm =>
+      let some info := (← getEnv).find? thm
+        | throwError "{e.rule.id}: proof {thm} does not exist"
+      unless info matches .thmInfo _ do
+        throwError "{e.rule.id}: {thm} is not a theorem"
+      let domainConst := match d with
+        | .real => ``OSR.Domain.real
+        | .complex => ``OSR.Domain.complex
+        | .boolean => ``OSR.Domain.boolean
+      let expected := mkApp2 (mkConst ``OSR.Calculus.CRule.Holds) (mkConst e.ruleDecl)
+        (mkConst domainConst)
+      unless info.type == expected do
+        throwError "{e.rule.id}: {thm} has type{indentExpr info.type}\nexpected{indentExpr expected}"
+      let axioms := (← collectAxioms thm).toList.mergeSort (·.toString ≤ ·.toString)
+      let forbidden := axioms.filter (· ∉ standardAxioms)
+      unless forbidden.isEmpty do
+        throwError "{e.rule.id}: {thm} depends on forbidden axioms {forbidden}"
+      let v : Verification :=
+        { domain := d, status := .proved, theoremName := some thm,
+          statement := some s!"OSR.Calculus.CRule.Holds {e.ruleDecl} {domainConst}", axioms,
+          mappingAssurance := assurance, certified := assurance.certifiable }
+      out := out ++ [v]
+    | none =>
+      let status := if e.unproved.contains d then Status.unproved else Status.unsupported
+      let v : Verification :=
+        { domain := d, status, theoremName := none, statement := none, axioms := [],
+          mappingAssurance := assurance, certified := false }
+      out := out ++ [v]
+  return out
+
+private def tvar : OSR.Expr := .var "t"
+
+/-- Inputs: every rule pattern, the patterns with another bound variable, and
+inputs no rule matches. -/
+def calcSeeds : List (String × Calculus.CTerm) :=
+  (Calculus.catalog.map fun e =>
+    let r := e.rule
+    (s!"pattern.{r.id}", match r.shape with
+      | .deriv => Calculus.CTerm.diff r.x r.body
+      | .limit => Calculus.CTerm.limit r.point r.x r.body)) ++
+  (Calculus.catalog.map fun e =>
+    let r := e.rule
+    let σ : Subst := [(r.x, .var "t")]
+    (s!"renamed.{r.id}", match r.shape with
+      | .deriv => Calculus.CTerm.diff "t" (r.body.subst σ)
+      | .limit => Calculus.CTerm.limit r.point "t" (r.body.subst σ))) ++
+  [("nomatch.sin_of_double", .diff "t" (.app1 .sin (.app2 .mul (.int 2) tvar))),
+   ("nomatch.limit_at_one", .limit (.int 1) "t" (.app2 .div (.app1 .sin tvar) tvar)),
+   ("nomatch.square", .diff "t" (.pow tvar (.int 2))),
+   ("normal.lambda", .lam "t" (.app1 .cos tvar))]
+
+def calcRules : List Calculus.CRule := Calculus.catalog.map (·.rule)
+
+def calcRuleJson (b : BuildInfo) (e : Calculus.CEntry) (vs : List Verification) : Json :=
+  let r := e.rule
+  Json.mkObj ([
+    ("id", jstr r.id),
+    ("description", jstr r.description),
+    ("variables", Json.arr #[omv r.x]),
+    ("pattern", r.patternOM.toJson),
+    ("replacement", r.replacementOM.toJson),
+    ("conditions", Json.arr #[]),
+    ("orientation", jstr "forward"),
+    ("applicability", jstr "defined_pattern"),
+    ("profiles", jstrs ["default"]),
+    ("priority", toJson r.priority),
+    ("symbols", jstrs (r.symbols.map OMSymbol.uri)),
+    ("provenance", provenanceJson r.provenance),
+    ("verification", Json.arr (vs.map (verificationJson b "OSR.Calculus")).toArray),
+    ("findings", jstrs e.findings)] ++
+    (match r.legacyId with | some l => [("legacy_id", jstr l)] | none => []))
+
+unsafe def exportCalculus (outDir : String) (build : BuildInfo) : MetaM Nat := do
+  let ids := Calculus.catalog.map (·.rule.id)
+  unless ids.eraseDups.length == ids.length do
+    throwError "duplicate rule identifiers in the Calculus catalogue"
+  let mut audited := []
+  for e in Calculus.catalog do
+    audited := audited ++ [(e, ← auditCalcEntry e)]
+  let syms := ((audited.map (·.1.rule.symbols)).flatten.eraseDups).filterMap Registry.lookup
+  let doc := Json.mkObj [
+    ("osr_format", jstr formatVersion),
+    ("ruleset", jstr "calculus"),
+    ("expression_encoding", Json.mkObj [
+      ("standard", jstr "OpenMath 2.0 JSON encoding (2019 revision, section 3.3)"),
+      ("cdbase", jstr OMSymbol.cdbase)]),
+    ("build", Json.mkObj [
+      ("generator", jstr "OpenSymbolicRules/Lean scripts/Export.lean"),
+      ("lean_toolchain", jstr build.leanToolchain),
+      ("mathlib_revision", jstr build.mathlibRevision),
+      ("source_digest", jstr s!"sha256:{build.sourceDigest}")]),
+    ("symbols", Json.arr (syms.map symbolJson).toArray),
+    ("profiles", Json.mkObj [("default", Json.mkObj [("rules", jstrs ids)])]),
+    ("rules", Json.arr (audited.map fun (e, vs) => calcRuleJson build e vs).toArray)]
+  IO.FS.writeFile (outDir ++ "/calculus.osr.json") (doc.pretty ++ "\n")
+  let count (d : Domain) (p : Verification → Bool) :=
+    (audited.filter fun (_, vs) => vs.any fun v => v.domain == d && p v).length
+  let dom (d : Domain) := Json.mkObj [
+    ("proved", toJson (count d (·.status == .proved))),
+    ("certified", toJson (count d (·.certified))),
+    ("unproved", toJson (count d (·.status == .unproved))),
+    ("counterexample", toJson (count d (·.status == .counterexample))),
+    ("unsupported", toJson (count d (·.status == .unsupported))),
+    ("blocked_by_mapping_assurance", toJson (count d fun v => v.status == .proved && !v.certified))]
+  let runs := calcSeeds.map fun (name, t) => (name, t, Calculus.rewrite calcRules t)
+  let report := Json.mkObj [
+    ("osr_format", jstr formatVersion),
+    ("ruleset", jstr "calculus"),
+    ("build", Json.mkObj [("lean_toolchain", jstr build.leanToolchain),
+      ("mathlib_revision", jstr build.mathlibRevision),
+      ("source_digest", jstr s!"sha256:{build.sourceDigest}")]),
+    ("metrics", Json.mkObj [
+      ("rules_migrated", toJson audited.length),
+      ("rules_exported", toJson audited.length),
+      ("rules_not_migrated", toJson Calculus.notMigrated.length),
+      ("rules_with_findings", toJson (audited.filter (!·.1.findings.isEmpty)).length),
+      ("real", dom .real), ("complex", dom .complex),
+      ("julia_execution", jstr "not measured by the exporter; see OpenSymbolicRules.jl test/test_osr_v1.jl")]),
+    ("not_migrated", Json.arr (Calculus.notMigrated.map fun (id, why) =>
+      Json.mkObj [("legacy_id", jstr id), ("reason", jstr why)]).toArray),
+    ("strategy", Json.mkObj [
+      ("engine", jstr "OSR.Calculus.rewrite (root rewriting; proved sound: OSR.Calculus.apply?_sound)"),
+      ("termination", Json.mkObj [("status", jstr "proved"),
+        ("theorem", jstr "OSR.Calculus.rewrite_result"),
+        ("statement", jstr "no rule applies to the result of a rule: normalization takes at most one step")]),
+      ("seeds", toJson calcSeeds.length)])]
+  IO.FS.writeFile (outDir ++ "/calculus.report.json") (report.pretty ++ "\n")
+  let cell (vs : List Verification) (d : Domain) : String :=
+    match vs.find? (·.domain == d) with
+    | some v => if v.status == .proved then
+        (if v.certified then "proved, certified" else s!"proved, not certified ({v.mappingAssurance.key} mapping)")
+      else v.status.key
+    | none => "—"
+  let rows := audited.map fun (e, vs) =>
+    s!"| `{e.rule.id}` | `{e.rule.legacyId.getD "—"}` | {cell vs .real} | {cell vs .complex} |"
+  let nm := String.intercalate "\n" (Calculus.notMigrated.map fun (id, why) => s!"| `{id}` | {why} |")
+  let findings := audited.filter (!·.1.findings.isEmpty) |>.map fun (e, _) =>
+    s!"### `{e.rule.id}`\n\n" ++ String.intercalate "\n" (e.findings.map ("- " ++ ·))
+  let md := s!"# Calculus verification report
+
+Generated by `scripts/Export.lean`. Do not edit by hand.
+
+- Lean toolchain: `{build.leanToolchain}`
+- Mathlib revision: `{build.mathlibRevision}`
+- Source digest: `sha256:{build.sourceDigest}`
+- Accepted axioms: `propext`, `Classical.choice`, `Quot.sound`
+
+A derivative rule `diff(λx. F) ⟶ λx. G` states that wherever `F` is defined
+near `t`, `v ↦ F[x := v]` has derivative `G[x := t]` at `t` (`HasDerivAt`). A
+limit rule `limit(a, both_sides, λx. F) ⟶ L` states `Tendsto` along `𝓝[≠] a`.
+
+## Metrics
+
+| Metric | ℝ | ℂ |
+|---|---|---|
+| Rules migrated | {audited.length} | {audited.length} |
+| Proved | {count .real (·.status == .proved)} | {count .complex (·.status == .proved)} |
+| Certified | {count .real (·.certified)} | {count .complex (·.certified)} |
+| Unproved | {count .real (·.status == .unproved)} | {count .complex (·.status == .unproved)} |
+| Rules not migrated | {Calculus.notMigrated.length} | {Calculus.notMigrated.length} |
+
+## Rules
+
+| Rule | v0.1 identity | ℝ | ℂ |
+|---|---|---|---|
+" ++ String.intercalate "\n" rows ++ "
+
+## Rules not migrated
+
+| v0.1 identity | Reason |
+|---|---|
+" ++ nm ++ "
+
+## Findings
+
+" ++ String.intercalate "\n\n" findings ++ s!"
+
+## Strategy
+
+Rules apply at the root of a `diff` or `limit` term (their bodies are field
+expressions, to which no calculus rule applies); the result of a rule is a
+lambda or a value, so normalization takes at most one step
+(`OSR.Calculus.rewrite_result`). The {calcSeeds.length} seeds below are the
+conformance cases.
+"
+  IO.FS.writeFile (outDir ++ "/calculus.report.md") md
+  let cases := Json.mkObj [
+    ("osr_format", jstr formatVersion),
+    ("suite", jstr "calculus.rewrite"),
+    ("ruleset", jstr "calculus.osr.json"),
+    ("source_digest", jstr s!"sha256:{build.sourceDigest}"),
+    ("semantics", Json.mkObj [
+      ("domain", jstr "real"),
+      ("rules", jstr "the rules of the profile, in priority order"),
+      ("strategy", jstr "outermost-leftmost: at each step, try the root (rules in order), then the arguments left to right; one rewrite per step"),
+      ("matching", jstr "syntactic; a pattern's bound variable matches the input's bound variable; integers compare by value"),
+      ("fuel", toJson fuel),
+      ("reference", jstr "OSR.Calculus.rewrite in OpenSymbolicRules/Lean (OSR/Calculus.lean)")]),
+    ("cases", Json.arr (runs.map fun (name, t, res) =>
+      Json.mkObj [
+        ("id", jstr s!"default/{name}"),
+        ("profile", jstr "default"),
+        ("input", t.toOM.toJson),
+        ("expected", ((res.map (·.2)).getD t).toOM.toJson),
+        ("trace", Json.arr ((res.map fun (id, _) => #[jstr id]).getD #[])),
+        ("normal", toJson true)]).toArray)]
+  IO.FS.writeFile (outDir ++ "/conformance/calculus.cases.json") (cases.pretty ++ "\n")
+  return audited.length
+
 unsafe def runExport : MetaM Unit := do
   let some outDir ← IO.getEnv "OSR_OUT_DIR" | throwError "OSR_OUT_DIR is not set"
   let some digest ← IO.getEnv "OSR_SOURCE_DIGEST" | throwError "OSR_SOURCE_DIGEST is not set"
@@ -665,5 +895,7 @@ unsafe def runExport : MetaM Unit := do
     logInfo m!"exported {n} {rs.name} rules to {outDir}"
   let n ← exportLogic outDir build
   logInfo m!"exported {n} logic rules to {outDir}"
+  let n ← exportCalculus outDir build
+  logInfo m!"exported {n} calculus rules to {outDir}"
 
 #eval runExport

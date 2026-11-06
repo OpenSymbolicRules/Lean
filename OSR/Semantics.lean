@@ -31,6 +31,12 @@ def cds : List CDRef := [
     sha256 := "6d4995d2e7f1f24e062f52f600f33cceabe24e3055927e668dbea6a5dd0c5ea2" },
   { cd := "logic1", version := 4, revision := 0, date := "2004-03-30",
     sha256 := "5bd450962d9ee3f867770608ce6f823b0ad705123afb9af5d1950a39a46498cd" },
+  { cd := "calculus1", version := 5, revision := 0, date := "2009-04-01",
+    sha256 := "bd61e71618800e50935bd4f8503ad3d7bd7f131456854cb5d7cb49fa3df780e7" },
+  { cd := "fns1", version := 4, revision := 0, date := "2009-04-01",
+    sha256 := "9d45eafcb9b527de68dee8f2a129fe8ec71667ef8490fa5e50ddb7eedd3f8c5e" },
+  { cd := "limit1", version := 3, revision := 1, date := "2004-03-30",
+    sha256 := "b104ee1a78b9c0528344b5b375ce1790296ddeaca9d8ef5429a80e4ae4e049c6" },
   { cd := "quant1", version := 3, revision := 2, date := "2004-05-11",
     sha256 := "58e065460b461514e83fc432372e1b598a5a589ed8c5992d20913a20c49db928" },
   { cd := "setname2", version := 3, revision := 1, date := "2004-03-30",
@@ -103,6 +109,10 @@ theorem zpow_cmp2 {α : Type} [Field α] (x : α) (hx : x ≠ 0) (n : ℤ) :
     x ^ n = x * x ^ (n - 1) := by
   rw [zpow_sub_one₀ hx]
   field_simp
+
+/-- `fns1#lambda`: Lean's own `fun` abstraction has no constant; this
+identity names the function a lambda term denotes. -/
+def lambda {α : Type} (f : α → α) : α → α := f
 
 /-! ## Entries -/
 
@@ -323,6 +333,30 @@ def entries : List SymbolEntry := [
         justification := "Two-valued Boolean function on Lean's Bool.",
         obligations := [
           { cmp := "not false = true", theoremName := ``OSR.Logic.false_cmp }] }] },
+  { symbol := ⟨"calculus1", "diff"⟩, arity := 1,
+    fragment := "applied to a lambda term; a rule states HasDerivAt where the body is defined near the point",
+    interpretations := [Domain.real, Domain.complex].map fun d =>
+      { domain := d, leanConst := ``deriv, assurance := .reviewed,
+        definedness := "where the function is differentiable",
+        justification := "Ordinary derivative of a unary function; rules state HasDerivAt, which implies deriv f t = f'(t). The CMPs (sum and product rules) hold for differentiable functions (deriv_add, deriv_mul)." } },
+  { symbol := ⟨"fns1", "lambda"⟩, arity := 0,
+    fragment := "binder (OMBIND) with one bound variable",
+    interpretations := [Domain.real, Domain.complex].map fun d =>
+      { domain := d, leanConst := ``OSR.Registry.lambda, assurance := .reviewed,
+        definedness := "everywhere",
+        justification := "Lambda abstraction: the function v ↦ body[x := v] (Lean's fun)." } },
+  { symbol := ⟨"limit1", "limit"⟩, arity := 3,
+    fragment := "two-sided limits only (limit1#both_sides), of a lambda term",
+    interpretations := [Domain.real, Domain.complex].map fun d =>
+      { domain := d, leanConst := ``Filter.Tendsto, assurance := .reviewed,
+        definedness := "where the limit exists",
+        justification := "limit(a, both_sides, f) = L is stated as Tendsto f (𝓝[≠] a) (𝓝 L)." } },
+  { symbol := ⟨"limit1", "both_sides"⟩, arity := 0,
+    fragment := "method of approach of limit1#limit",
+    interpretations := [Domain.real, Domain.complex].map fun d =>
+      { domain := d, leanConst := ``nhdsWithin, assurance := .reviewed,
+        definedness := "constant",
+        justification := "Approach from both sides: the punctured neighbourhood filter 𝓝[≠] a." } },
   { symbol := ⟨"quant1", "forall"⟩, arity := 0,
     fragment := "binder (OMBIND) with one bound variable; quantifies over the truth values",
     interpretations := [

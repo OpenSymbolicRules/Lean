@@ -74,6 +74,7 @@ OSR/Algebra.lean       Algebra rules (all 20), same structure
 OSR/LogicOps.lean      Boolean interpretations of the logic1 connectives, CMPs
 OSR/LogicCore.lean     quantified Boolean formulas, rewriter, soundness, termination
 OSR/Logic.lean         Logic rules (35 of 39), profiles and their weights
+OSR/Calculus.lean      derivative and limit rules, their proofs and rewriter
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
                        generation of rule set, reports and conformance cases
@@ -201,6 +202,19 @@ Matching binds a pattern's bound variable to the input's bound variable, and
 metavariables by their images under the current assignment, so no freshness
 condition is needed.  The four v0.1 rules with a `FreeQ` condition are not
 migrated: "variable not free" has no OpenMath symbol.
+
+## Calculus
+
+A calculus rule is `diff(λx. F) ⟶ λx. G` or `limit(a, both_sides, λx. F) ⟶ L`,
+where `F`, `G` and `L` are field expressions whose only variable is `x`.  The
+statements use Mathlib's analysis: `DerivHolds` says that wherever `F` is
+defined on a neighbourhood of `t`, `v ↦ F[x := v]` has derivative `G[x := t]`
+at `t` (`HasDerivAt`), and `LimitHolds` says that `F[x := v]` tends to `L`
+along `𝓝[≠] a`.  The rewriter applies a rule at the root of a `diff` or
+`limit` term, renaming its bound variable to the input's; `deriv_instance`
+and `limit_instance` prove the renamed instance from the rule's statement
+(`eval_rename`), and `apply?_sound` packages them.  A result is a lambda or a
+value, so normalization takes at most one step (`rewrite_result`).
 
 ## Termination
 

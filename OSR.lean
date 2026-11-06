@@ -12,4 +12,5 @@ import OSR.Algebra
 import OSR.LogicOps
 import OSR.LogicCore
 import OSR.Logic
+import OSR.Calculus
 import OSR.Export

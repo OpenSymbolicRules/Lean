@@ -18,6 +18,7 @@ Status: **pilot** (`1.0.0-alpha.1` format).  Two rule sets are migrated:
 | Trigonometry | 13 | 13 / 13 | 13 / 12 | 0 |
 | Algebra | 20 | 20 / 20 | 18 / 18 | 0 |
 | Logic (domain 𝔹) | 35 | 35 / 35 in 𝔹 | — | 4 (FreeQ conditions) |
+| Calculus | 12 | 12 / 12 | 10 / 10 | 20 |
 
 `tan(arctan z) = z` over ℂ is proved but not certified, because the mapping of
 `transc1#arctan` to `Complex.arctan` is provisional.  `ln(ab) = ln a + ln b`
@@ -26,7 +27,10 @@ have no complex meaning).  Powers are interpreted for integer exponents only,
 so `1^x = 1` and `ln(a^b)` are certified where the exponent is an integer.
 Logic rules are stated in the Boolean domain (`logic1` on Lean's `Bool`,
 `quant1` quantifiers over the truth values, encoded as `OMBIND`); 4 rules need
-a "variable not free" condition, which has no OpenMath symbol.
+a "variable not free" condition, which has no OpenMath symbol.  Calculus
+rules state derivatives (`HasDerivAt`) and two-sided limits (`Tendsto`) of
+lambda terms (`OMBIND fns1#lambda`); 20 v0.1 rules use functions outside the
+fragment, `FreeQ`, or the invented symbol `osr#Apply`.
 Every profile of both rule sets is proved to terminate.  See
 [`docs/audit-m0.md`](docs/audit-m0.md) and the generated reports.
 
@@ -73,7 +77,7 @@ just check        # replay modules with leanchecker
 just export       # audit rule and termination proofs, write generated/
                   #   <set>.osr.json, <set>.report.{json,md}, registry.json,
                   #   conformance/<set>.cases.json for set in trigonometry,
-                  #   algebra, logic
+                  #   algebra, logic, calculus
 just determinism  # export twice, require identical bytes
 just validate     # validate against schemas/ruleset.schema.json
 ```

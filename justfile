@@ -17,7 +17,7 @@ test:
 # Replay each compiled module in the kernel with leanchecker.  Modules are
 # replayed one at a time: each replay loads Mathlib (about 3 GB of memory).
 check:
-	for m in OSR.Registry OSR.LogicOps OSR.Expr OSR.Interp OSR.Rule OSR.Rewrite OSR.Termination OSR.Semantics OSR.OMObject OSR.Catalog OSR.Trigonometry OSR.Algebra OSR.LogicCore OSR.Logic OSR.Export; do lake env leanchecker $m || exit 1; done
+	for m in OSR.Registry OSR.LogicOps OSR.Expr OSR.Interp OSR.Rule OSR.Rewrite OSR.Termination OSR.Semantics OSR.OMObject OSR.Catalog OSR.Trigonometry OSR.Algebra OSR.LogicCore OSR.Logic OSR.Calculus OSR.Export; do lake env leanchecker $m || exit 1; done
 
 # Audit proofs and export the interchange JSON to `out`.
 export out="generated":
@@ -32,7 +32,7 @@ determinism:
 
 # Validate the generated JSON against the interchange schema.
 validate out="generated":
-	check-jsonschema --schemafile schemas/ruleset.schema.json {{out}}/trigonometry.osr.json {{out}}/algebra.osr.json {{out}}/logic.osr.json
+	check-jsonschema --schemafile schemas/ruleset.schema.json {{out}}/trigonometry.osr.json {{out}}/algebra.osr.json {{out}}/logic.osr.json {{out}}/calculus.osr.json
 
 # Everything CI runs.
 ci: build test check export determinism validate

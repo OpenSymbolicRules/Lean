@@ -62,6 +62,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   not migrated (no OpenMath symbol).  Exported as `logic.osr.json` with its
   report and conformance cases.
 - `OMObj.ombind` and `OMBIND` in the rule-set JSON Schema.
+- Calculus (`OSR/Calculus.lean`): derivative rules stated with `HasDerivAt`
+  and two-sided limits with `Tendsto` along `𝓝[≠] a`, over lambda terms
+  (`fns1#lambda`, CDs `calculus1`, `fns1` and `limit1` pinned); 12 of the 32
+  v0.1 rules proved over ℝ and 10 over ℂ, with a sound root rewriter whose
+  instances rename the bound variable (`apply?_sound`) and one-step
+  termination (`rewrite_result`).  Exported as `calculus.osr.json` with its
+  report and conformance cases.
 
 ### Changed
 - `Expr.powNat` (natural literal exponent) is replaced by `Expr.pow` with an
