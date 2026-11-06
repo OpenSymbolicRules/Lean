@@ -56,6 +56,7 @@ unsafe def auditProof (e : CatalogEntry) (d : Domain) (thm : Name) : MetaM Verif
   let domainConst := match d with
     | .real => ``OSR.Domain.real
     | .complex => ``OSR.Domain.complex
+    | .boolean => ``OSR.Domain.boolean
   let expected := mkApp2 (mkConst ``OSR.Rule.Holds) (mkConst e.ruleDecl) (mkConst domainConst)
   unless info.type == expected do
     throwError "{e.rule.id}: {thm} has type{indentExpr info.type}\nexpected{indentExpr expected}"
@@ -406,6 +407,242 @@ unsafe def exportRuleSet (outDir : String) (build : BuildInfo) (rs : RuleSet) : 
     ((conformanceJson rs build).pretty ++ "\n")
   return audited.length
 
+/-! ## Logic: the Boolean rule set -/
+
+private def jstr (s : String) : Json := Json.str s
+private def jstrs (l : List String) : Json := Json.arr (l.map Json.str).toArray
+
+unsafe def evalBRule (decl : Name) : MetaM Logic.BRule :=
+  evalExpr Logic.BRule (mkConst ``OSR.Logic.BRule) (mkConst decl)
+
+/-- Audit one Boolean rule: declaration, registry symbols, and a theorem of
+type exactly `OSR.Logic.BRule.Holds <decl>` with the standard axioms. -/
+unsafe def auditLogicEntry (e : Logic.LogicEntry) : MetaM Verification := do
+  let r ← evalBRule e.ruleDecl
+  unless r == e.rule do
+    throwError "{e.rule.id}: catalogue rule differs from declaration {e.ruleDecl}"
+  unless e.rule.rhs.vars.all (· ∈ e.rule.lhs.vars) do
+    throwError "{e.rule.id}: replacement uses unbound variables"
+  for s in e.rule.symbols do
+    if (Registry.lookup s).isNone then
+      throwError "{e.rule.id}: OpenMath symbol {s.uri} is not in the registry"
+  let some info := (← getEnv).find? e.proof
+    | throwError "{e.rule.id}: proof {e.proof} does not exist"
+  unless info matches .thmInfo _ do
+    throwError "{e.rule.id}: {e.proof} is not a theorem"
+  let expected := mkApp (mkConst ``OSR.Logic.BRule.Holds) (mkConst e.ruleDecl)
+  unless info.type == expected do
+    throwError "{e.rule.id}: {e.proof} has type{indentExpr info.type}\nexpected{indentExpr expected}"
+  let axioms := (← collectAxioms e.proof).toList.mergeSort (·.toString ≤ ·.toString)
+  let forbidden := axioms.filter (· ∉ standardAxioms)
+  unless forbidden.isEmpty do
+    throwError "{e.rule.id}: {e.proof} depends on forbidden axioms {forbidden}"
+  let assurance := Registry.mappingAssurance e.rule.symbols .boolean
+  return { domain := .boolean, status := .proved, theoremName := some e.proof,
+           statement := some s!"OSR.Logic.BRule.Holds {e.ruleDecl}", axioms,
+           mappingAssurance := assurance, certified := assurance.certifiable }
+
+def logicTermination : List (String × Name × Name) := [
+  ("default", ``Logic.defaultWeight, ``Logic.default_terminates),
+  ("to_cnf", ``Logic.cnfWeight, ``Logic.cnf_terminates),
+  ("to_dnf", ``Logic.dnfWeight, ``Logic.dnf_terminates)]
+
+def auditLogicTermination (p : String) : MetaM Json := do
+  let some (_, w, thm) := logicTermination.find? (·.1 == p)
+    | throwError "logic: profile {p} has no termination proof"
+  let some info := (← getEnv).find? thm
+    | throwError "logic/{p}: termination proof {thm} does not exist"
+  let expected := mkApp2 (mkConst ``OSR.Logic.Terminates)
+    (mkApp (mkConst ``Logic.profileRules) (mkStrLit p)) (mkConst w)
+  unless info.type == expected do
+    throwError "logic/{p}: {thm} has type{indentExpr info.type}\nexpected{indentExpr expected}"
+  let axioms := (← collectAxioms thm).toList.mergeSort (·.toString ≤ ·.toString)
+  unless (axioms.filter (· ∉ standardAxioms)).isEmpty do
+    throwError "logic/{p}: {thm} depends on forbidden axioms"
+  return Json.mkObj [
+    ("status", jstr "proved"), ("theorem", jstr thm.toString),
+    ("statement", jstr s!"OSR.Logic.Terminates (OSR.Logic.profileRules \"{p}\") {w}"),
+    ("weight", jstr w.toString),
+    ("axioms", Json.arr (axioms.map (jstr ·.toString)).toArray)]
+
+private def logicP : Logic.BExpr := .var "p"
+private def logicQ : Logic.BExpr := .var "q"
+private def logicR : Logic.BExpr := .var "r"
+
+def logicExtraSeeds : List (String × Logic.BExpr) := [
+  ("nested.not_implies", .not (.bin .implies logicP logicQ)),
+  ("nested.not_equivalent", .not (.bin .equivalent logicP logicQ)),
+  ("nested.xor_self", .bin .xor logicP logicP),
+  ("nested.nand_or", .bin .nand (.bin .or logicP logicQ) logicR),
+  ("nested.or_and", .bin .or logicP (.bin .and logicQ logicR)),
+  ("nested.and_or", .bin .and logicP (.bin .or logicQ logicR)),
+  ("nonlinear.or_not_other", .bin .or logicP (.not logicQ)),
+  ("normal.atom", logicP)]
+
+def logicSeeds : List (String × Logic.BExpr) :=
+  Logic.catalog.map (fun e => (s!"pattern.{e.rule.id}", e.rule.lhs)) ++ logicExtraSeeds
+
+def logicRuns : List (String × String × Logic.BExpr × Logic.BNormalization) :=
+  Logic.profiles.flatMap fun p =>
+    logicSeeds.map fun (name, e) => (p, name, e, Logic.normalize (Logic.profileRules p) fuel e)
+
+def bruleJson (b : BuildInfo) (e : Logic.LogicEntry) (v : Verification) : Json :=
+  let r := e.rule
+  Json.mkObj ([
+    ("id", jstr r.id),
+    ("description", jstr r.description),
+    ("variables", Json.arr (r.vars.map omv).toArray),
+    ("pattern", r.lhs.toOMJson),
+    ("replacement", r.rhs.toOMJson),
+    ("conditions", Json.arr #[]),
+    ("orientation", jstr "forward"),
+    ("applicability", jstr "defined_pattern"),
+    ("profiles", jstrs r.profiles),
+    ("priority", toJson r.priority),
+    ("symbols", jstrs (r.symbols.map OMSymbol.uri)),
+    ("provenance", provenanceJson r.provenance),
+    ("verification", Json.arr #[verificationJson b "OSR.Logic" v]),
+    ("findings", jstrs e.findings)] ++
+    (match r.legacyId with | some l => [("legacy_id", jstr l)] | none => []))
+
+def logicRulesetJson (b : BuildInfo) (audited : List (Logic.LogicEntry × Verification)) : Json :=
+  let syms := (((audited.map (·.1.rule.symbols)).flatten ++ [Domain.boolean.carrier]).eraseDups).filterMap Registry.lookup
+  Json.mkObj [
+    ("osr_format", jstr formatVersion),
+    ("ruleset", jstr "logic"),
+    ("expression_encoding", Json.mkObj [
+      ("standard", jstr "OpenMath 2.0 JSON encoding (2019 revision, section 3.3)"),
+      ("cdbase", jstr OMSymbol.cdbase)]),
+    ("build", Json.mkObj [
+      ("generator", jstr "OpenSymbolicRules/Lean scripts/Export.lean"),
+      ("lean_toolchain", jstr b.leanToolchain),
+      ("mathlib_revision", jstr b.mathlibRevision),
+      ("source_digest", jstr s!"sha256:{b.sourceDigest}")]),
+    ("symbols", Json.arr (syms.map symbolJson).toArray),
+    ("profiles", Json.mkObj (Logic.profiles.map fun p =>
+      (p, Json.mkObj [("rules", jstrs ((Logic.profileRules p).map (·.id)))]))),
+    ("rules", Json.arr (audited.map fun (e, v) => bruleJson b e v).toArray)]
+
+unsafe def exportLogic (outDir : String) (build : BuildInfo) : MetaM Nat := do
+  let ids := Logic.catalog.map (·.rule.id)
+  unless ids.eraseDups.length == ids.length do
+    throwError "duplicate rule identifiers in the Logic catalogue"
+  let stuck := logicRuns.filter (!·.2.2.2.normal)
+  unless stuck.isEmpty do
+    throwError "logic: profiles do not terminate within {fuel} steps: {stuck.map fun r => (r.1, r.2.1)}"
+  let termination ← Logic.profiles.mapM fun p => return (p, ← auditLogicTermination p)
+  let mut audited := []
+  for e in Logic.catalog do
+    audited := audited ++ [(e, ← auditLogicEntry e)]
+  IO.FS.writeFile (outDir ++ "/logic.osr.json") ((logicRulesetJson build audited).pretty ++ "\n")
+  let proved := (audited.filter (·.2.status == .proved)).length
+  let certified := (audited.filter (·.2.certified)).length
+  let report := Json.mkObj [
+    ("osr_format", jstr formatVersion),
+    ("ruleset", jstr "logic"),
+    ("build", Json.mkObj [("lean_toolchain", jstr build.leanToolchain),
+      ("mathlib_revision", jstr build.mathlibRevision),
+      ("source_digest", jstr s!"sha256:{build.sourceDigest}")]),
+    ("metrics", Json.mkObj [
+      ("rules_migrated", toJson audited.length),
+      ("rules_exported", toJson audited.length),
+      ("rules_not_migrated", toJson Logic.notMigrated.length),
+      ("rules_with_findings", toJson (audited.filter (!·.1.findings.isEmpty)).length),
+      ("boolean", Json.mkObj [("proved", toJson proved), ("certified", toJson certified),
+        ("unproved", toJson 0), ("counterexample", toJson 0), ("unsupported", toJson 0),
+        ("blocked_by_mapping_assurance", toJson (proved - certified))]),
+      ("julia_execution", jstr "not measured by the exporter; see OpenSymbolicRules.jl test/test_osr_v1.jl")]),
+    ("not_migrated", Json.arr (Logic.notMigrated.map fun (id, why) =>
+      Json.mkObj [("legacy_id", jstr id), ("reason", jstr why)]).toArray),
+    ("strategy", Json.mkObj [
+      ("engine", jstr "OSR.Logic.normalize (reference rewriter, proved sound: OSR.Logic.normalize_sound)"),
+      ("fuel", toJson fuel),
+      ("seeds", toJson logicSeeds.length),
+      ("profiles", Json.mkObj (Logic.profiles.map fun p =>
+        let runs := logicRuns.filter (·.1 == p)
+        (p, Json.mkObj [
+          ("rules", jstrs ((Logic.profileRules p).map (·.id))),
+          ("termination", (termination.lookup p).getD Json.null),
+          ("terminates_on_seeds", toJson (runs.all (·.2.2.2.normal))),
+          ("max_steps", toJson ((runs.map (·.2.2.2.trace.length)).foldl max 0))])))])]
+  IO.FS.writeFile (outDir ++ "/logic.report.json") (report.pretty ++ "\n")
+  let rows := audited.map fun (e, v) =>
+    s!"| `{e.rule.id}` | `{e.rule.legacyId.getD "—"}` | {if v.certified then "proved, certified" else v.status.key} | `{e.proof}` |"
+  let nm := String.intercalate "\n" (Logic.notMigrated.map fun (id, why) => s!"| `{id}` | {why} |")
+  let profRows := Logic.profiles.map fun p =>
+    let runs := logicRuns.filter (·.1 == p)
+    let w := (logicTermination.find? (·.1 == p)).map (·.2.1.toString) |>.getD "—"
+    let t := (logicTermination.find? (·.1 == p)).map (·.2.2.toString) |>.getD "—"
+    s!"| `{p}` | {(Logic.profileRules p).length} | `{w}` | `{t}` | {(runs.map (·.2.2.2.trace.length)).foldl max 0} |"
+  let md := s!"# Logic verification report
+
+Generated by `scripts/Export.lean`. Do not edit by hand.
+
+- Lean toolchain: `{build.leanToolchain}`
+- Mathlib revision: `{build.mathlibRevision}`
+- Source digest: `sha256:{build.sourceDigest}`
+- Accepted axioms: `propext`, `Classical.choice`, `Quot.sound`
+
+Rules are interpreted in the Boolean domain (carrier `setname2#Boolean`, Lean
+`Bool`).  A rule is *certified* when its theorem `OSR.Logic.BRule.Holds rule`
+(both sides have the same truth value for every assignment) is proved with
+accepted axioms only **and** every OpenMath symbol it uses has a `reviewed` or
+`formally_related` mapping.
+
+## Metrics
+
+| Metric | 𝔹 |
+|---|---|
+| Rules migrated | {audited.length} |
+| Proved | {proved} |
+| Certified | {certified} |
+| Rules not migrated | {Logic.notMigrated.length} |
+
+## Rules
+
+| Rule | v0.1 identity | 𝔹 | Theorem |
+|---|---|---|---|
+" ++ String.intercalate "\n" rows ++ s!"
+
+## Rules not migrated
+
+| v0.1 identity | Reason |
+|---|---|
+" ++ nm ++ s!"
+
+## Strategy
+
+Termination of every profile is proved with a weight (`OSR.Logic.BasicWeight`).
+Each profile is also run on {logicSeeds.length} seeds with a budget of {fuel}
+steps; these runs are the conformance cases.
+
+| Profile | Rules | Weight | Theorem | Max steps |
+|---|---|---|---|---|
+" ++ String.intercalate "\n" profRows ++ "\n"
+  IO.FS.writeFile (outDir ++ "/logic.report.md") md
+  let cases := Json.mkObj [
+    ("osr_format", jstr formatVersion),
+    ("suite", jstr "logic.rewrite"),
+    ("ruleset", jstr "logic.osr.json"),
+    ("source_digest", jstr s!"sha256:{build.sourceDigest}"),
+    ("semantics", Json.mkObj [
+      ("domain", jstr "boolean"),
+      ("rules", jstr "the rules of the profile, unconditional only, in priority order"),
+      ("strategy", jstr "outermost-leftmost: at each step, try the root (rules in order), then the arguments left to right; one rewrite per step"),
+      ("matching", jstr "syntactic; a pattern variable occurring twice matches equal subterms; input OMV are constants"),
+      ("fuel", toJson fuel),
+      ("reference", jstr "OSR.Logic.normalize in OpenSymbolicRules/Lean (OSR/LogicCore.lean)")]),
+    ("cases", Json.arr (logicRuns.map fun (p, name, e, n) =>
+      Json.mkObj [
+        ("id", jstr s!"{p}/{name}"),
+        ("profile", jstr p),
+        ("input", e.toOMJson),
+        ("expected", n.result.toOMJson),
+        ("trace", Json.arr (n.trace.map Json.str).toArray),
+        ("normal", toJson n.normal)]).toArray)]
+  IO.FS.writeFile (outDir ++ "/conformance/logic.cases.json") (cases.pretty ++ "\n")
+  return audited.length
+
 unsafe def runExport : MetaM Unit := do
   let some outDir ← IO.getEnv "OSR_OUT_DIR" | throwError "OSR_OUT_DIR is not set"
   let some digest ← IO.getEnv "OSR_SOURCE_DIGEST" | throwError "OSR_SOURCE_DIGEST is not set"
@@ -422,5 +659,7 @@ unsafe def runExport : MetaM Unit := do
   for rs in ruleSets do
     let n ← exportRuleSet outDir build rs
     logInfo m!"exported {n} {rs.name} rules to {outDir}"
+  let n ← exportLogic outDir build
+  logInfo m!"exported {n} logic rules to {outDir}"
 
 #eval runExport

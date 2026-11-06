@@ -38,7 +38,7 @@
     "rule_id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$" },
     "sha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
     "assurance": { "enum": ["reviewed", "formally_related", "provisional", "unsupported"] },
-    "domain": { "enum": ["real", "complex"] },
+    "domain": { "enum": ["real", "complex", "boolean"] },
     "build": {
       "type": "object",
       "additionalProperties": false,

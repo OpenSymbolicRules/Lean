@@ -135,5 +135,7 @@ end Rule
 def Rule.Holds (r : Rule) : Domain → Prop
   | .real => r.Sound Interp.real
   | .complex => r.Sound Interp.complex
+  -- Field expressions have no Boolean interpretation.
+  | .boolean => False
 
 end OSR

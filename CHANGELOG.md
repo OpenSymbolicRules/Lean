@@ -51,6 +51,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `IntegerQ`.  They migrate `(x^p)^q`, `x^p x^q`, `x^(-1)`, `1^x` and
   `ln(a^b)`.
 
+- Logic (`OSR/LogicOps.lean`, `OSR/LogicCore.lean`, `OSR/Logic.lean`): a
+  `boolean` domain (carrier `setname2#Boolean`, CDs `logic1` and `setname2`
+  pinned), propositional formulas with a sound reference rewriter, a faithful
+  OpenMath encoding and generic termination weights; 31 of the 39 Logic
+  rules proved, three terminating profiles (`default`, `to_cnf`, `to_dnf`);
+  the 8 quantifier rules are reported as not migrated.  Exported as
+  `logic.osr.json` with its report and 117 conformance cases.
+
 ### Changed
 - `Expr.powNat` (natural literal exponent) is replaced by `Expr.pow` with an
   expression exponent; `arith1#power` is registered for integer exponents.

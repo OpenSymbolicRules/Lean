@@ -1,4 +1,5 @@
 import OSR.Rule
+import OSR.LogicOps
 
 /-!
 # Registry contents for the Trigonometry pilot
@@ -28,6 +29,10 @@ def cds : List CDRef := [
     sha256 := "1c50e72514373c6d60c3f82c28936670ccb8615e8cf85b40de6ee747487842e6" },
   { cd := "set1", version := 3, revision := 1, date := "2004-03-30",
     sha256 := "6d4995d2e7f1f24e062f52f600f33cceabe24e3055927e668dbea6a5dd0c5ea2" },
+  { cd := "logic1", version := 4, revision := 0, date := "2004-03-30",
+    sha256 := "5bd450962d9ee3f867770608ce6f823b0ad705123afb9af5d1950a39a46498cd" },
+  { cd := "setname2", version := 3, revision := 1, date := "2004-03-30",
+    sha256 := "666e623a6164874963ef8263a13f471ff0abaa14adb95c1609352dfe6667fb21" },
   { cd := "setname1", version := 3, revision := 1, date := "2004-03-30",
     sha256 := "746cc460c6aec8601d72dbfe16b99451dcd24f165b2d9ec4f77b4f391bd54abd" }
 ]
@@ -229,6 +234,102 @@ def entries : List SymbolEntry := [
             note := "lower bound" },
           { cmp := "-pi < Im ln x <= pi", theoremName := ``Complex.log_im_le_pi,
             note := "upper bound" }] }] },
+  { symbol := ⟨"logic1", "and"⟩, arity := 2,
+    fragment := "binary only; the CD symbol is n-ary (longer chains are left-nested)",
+    interpretations := [
+      { domain := .boolean, leanConst := ``and, assurance := .formallyRelated,
+        definedness := "everywhere",
+        justification := "Two-valued Boolean function on Lean's Bool.",
+        obligations := [
+          { cmp := "for all x | x and not(x) = false", theoremName := ``OSR.Logic.and_cmp }] }] },
+  { symbol := ⟨"logic1", "or"⟩, arity := 2,
+    fragment := "binary only; the CD symbol is n-ary (longer chains are left-nested)",
+    interpretations := [
+      { domain := .boolean, leanConst := ``or, assurance := .formallyRelated,
+        definedness := "everywhere",
+        justification := "Two-valued Boolean function on Lean's Bool.",
+        obligations := [
+          { cmp := "for all x | x or not(x) = true", theoremName := ``OSR.Logic.or_cmp1 },
+          { cmp := "for all a,b | not(a and b)= (not(a) or not(b))", theoremName := ``OSR.Logic.or_cmp2 }] }] },
+  { symbol := ⟨"logic1", "not"⟩, arity := 1,
+    interpretations := [
+      { domain := .boolean, leanConst := ``not, assurance := .formallyRelated,
+        definedness := "everywhere",
+        justification := "Two-valued Boolean function on Lean's Bool.",
+        obligations := [
+          { cmp := "for all x | not(not(x))=x", theoremName := ``OSR.Logic.not_cmp }] }] },
+  { symbol := ⟨"logic1", "implies"⟩, arity := 2,
+    interpretations := [
+      { domain := .boolean, leanConst := ``OSR.Logic.implies, assurance := .formallyRelated,
+        definedness := "everywhere",
+        justification := "Two-valued Boolean function on Lean's Bool.",
+        obligations := [
+          { cmp := "for all x | false implies x", theoremName := ``OSR.Logic.implies_cmp }] }] },
+  { symbol := ⟨"logic1", "equivalent"⟩, arity := 2,
+    interpretations := [
+      { domain := .boolean, leanConst := ``OSR.Logic.equivalent, assurance := .formallyRelated,
+        definedness := "everywhere",
+        justification := "Two-valued Boolean function on Lean's Bool.",
+        obligations := [
+          { cmp := "The condition (A is equivalent to B) is equivalent to the condition that (A implies B and B implies A)", theoremName := ``OSR.Logic.equivalent_cmp }] }] },
+  { symbol := ⟨"logic1", "nand"⟩, arity := 2,
+    fragment := "binary only; the CD symbol is n-ary (longer chains are left-nested)",
+    interpretations := [
+      { domain := .boolean, leanConst := ``OSR.Logic.nand, assurance := .formallyRelated,
+        definedness := "everywhere",
+        justification := "Two-valued Boolean function on Lean's Bool.",
+        obligations := [
+          { cmp := "for all x | x nand not(x) = true", theoremName := ``OSR.Logic.nand_cmp }] }] },
+  { symbol := ⟨"logic1", "nor"⟩, arity := 2,
+    fragment := "binary only; the CD symbol is n-ary (longer chains are left-nested)",
+    interpretations := [
+      { domain := .boolean, leanConst := ``OSR.Logic.nor, assurance := .formallyRelated,
+        definedness := "everywhere",
+        justification := "Two-valued Boolean function on Lean's Bool.",
+        obligations := [
+          { cmp := "for all x | x nor not(x) = false", theoremName := ``OSR.Logic.nor_cmp1 },
+          { cmp := "for all a,b | a and b = (not(a) nor not(b))", theoremName := ``OSR.Logic.nor_cmp2 }] }] },
+  { symbol := ⟨"logic1", "xor"⟩, arity := 2,
+    fragment := "binary only; the CD symbol is n-ary (longer chains are left-nested)",
+    interpretations := [
+      { domain := .boolean, leanConst := ``Bool.xor, assurance := .formallyRelated,
+        definedness := "everywhere",
+        justification := "Two-valued Boolean function on Lean's Bool.",
+        obligations := [
+          { cmp := "for all x | x xor x = false", theoremName := ``OSR.Logic.xor_cmp1 },
+          { cmp := "for all x | x xor not(x) = true", theoremName := ``OSR.Logic.xor_cmp2 }] }] },
+  { symbol := ⟨"logic1", "xnor"⟩, arity := 2,
+    fragment := "binary only; the CD symbol is n-ary (longer chains are left-nested)",
+    interpretations := [
+      { domain := .boolean, leanConst := ``OSR.Logic.xnor, assurance := .formallyRelated,
+        definedness := "everywhere",
+        justification := "Two-valued Boolean function on Lean's Bool.",
+        obligations := [
+          { cmp := "for all x | x xnor x = true", theoremName := ``OSR.Logic.xnor_cmp1 },
+          { cmp := "for all x | x xnor not(x) = false", theoremName := ``OSR.Logic.xnor_cmp2 }] }] },
+  { symbol := ⟨"logic1", "true"⟩, arity := 0,
+    interpretations := [
+      { domain := .boolean, leanConst := ``Bool.true, assurance := .formallyRelated,
+        definedness := "everywhere",
+        justification := "Two-valued Boolean function on Lean's Bool.",
+        obligations := [
+          { cmp := "not true = false", theoremName := ``OSR.Logic.true_cmp }] }] },
+  { symbol := ⟨"logic1", "false"⟩, arity := 0,
+    interpretations := [
+      { domain := .boolean, leanConst := ``Bool.false, assurance := .formallyRelated,
+        definedness := "everywhere",
+        justification := "Two-valued Boolean function on Lean's Bool.",
+        obligations := [
+          { cmp := "not false = true", theoremName := ``OSR.Logic.false_cmp }] }] },
+  { symbol := ⟨"setname2", "Boolean"⟩, arity := 0,
+    fragment := "carrier of the boolean domain",
+    interpretations := [
+      { domain := .boolean, leanConst := ``Bool, assurance := .formallyRelated,
+        definedness := "constant",
+        justification := "Lean's two-valued type Bool.",
+        obligations := [
+          { cmp := "for all b in the booleans | (there exists an nb in the booleans | nb not= b implies nb = not b)",
+            theoremName := ``OSR.Logic.boolean_cmp }] }] },
   { symbol := ⟨"nums1", "pi"⟩, arity := 0,
     interpretations := [
       { domain := .real, leanConst := ``Real.pi, assurance := .reviewed, definedness := "constant",

@@ -71,6 +71,9 @@ OSR/Catalog.lean       catalogue entries and the `osr_intro` proof helper
 OSR/Trigonometry.lean  the pilot rules, their proofs, profiles and engine
                        soundness and termination per profile
 OSR/Algebra.lean       Algebra rules (all 20), same structure
+OSR/LogicOps.lean      Boolean interpretations of the logic1 connectives, CMPs
+OSR/LogicCore.lean     propositional formulas, rewriter, soundness, termination
+OSR/Logic.lean         Logic rules (31 of 39), profiles and their weights
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
                        generation of rule set, reports and conformance cases
@@ -173,6 +176,20 @@ order, and the registry gives `relation1#gt` no complex mapping, so a rule
 with such a condition is stated over ℝ only.  Conditional rules are never
 applied by the reference engine, so engine soundness (`RulesSound`) only
 needs the unconditional ones.
+
+## Logic
+
+Propositional rules live in their own sort: `OSR.Logic.BExpr` (variables,
+`true`, `false`, `not` and the binary `logic1` connectives), evaluated in
+`Bool` in the `boolean` domain (carrier `setname2#Boolean`).  Every connective
+is total, so `BRule.Holds` is plain equality of truth values and each proof
+evaluates both sides on every assignment of the variables (`decide`).
+`OSR/LogicCore.lean` repeats the rewriter of `OSR/Rewrite.lean` for this sort
+(matching, outermost-leftmost strategy, `normalize_sound`), with a generic
+termination argument (`BasicWeight`): derived connectives weigh one more than
+their elimination, so only negation, conjunction and disjunction need weights,
+plus the De Morgan inequalities.  The exporter writes `logic.osr.json`, its
+report and conformance cases like the other rule sets.
 
 ## Termination
 

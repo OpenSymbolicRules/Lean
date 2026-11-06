@@ -45,9 +45,14 @@ private def render (e : Expr) : String := (Expr.toOMJson e).compress
 -- entry except `relation1#gt` (ℂ is not ordered) covers ℂ.
 #guard Registry.entries.all fun e =>
   (Registry.entries.filter (·.symbol == e.symbol)).length == 1
-#guard Registry.entries.all fun e => (e.interpretation? .real).isSome
 #guard Registry.entries.all fun e =>
-  (e.interpretation? .complex).isSome || e.symbol == ⟨"relation1", "gt"⟩
+  (e.interpretation? .real).isSome || (e.interpretation? .boolean).isSome
+#guard Registry.entries.all fun e =>
+  (e.interpretation? .complex).isSome || e.symbol == ⟨"relation1", "gt"⟩ ||
+    (e.interpretation? .boolean).isSome
+-- The logic1 symbols are interpreted in the Boolean domain only.
+#guard Registry.entries.all fun e =>
+  e.symbol.cd != "logic1" || ((e.interpretation? .boolean).isSome && (e.interpretation? .real).isNone)
 #guard Registry.mappingAssurance [⟨"relation1", "gt"⟩] .complex == .unsupported
 
 -- Symbols of an expression are collected without duplicates, in first-use order.

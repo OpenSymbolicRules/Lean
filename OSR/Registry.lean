@@ -36,17 +36,21 @@ def OMSymbol.uri (s : OMSymbol) : String := s!"{OMSymbol.cdbase}/{s.cd}#{s.name}
 inductive Domain where
   | real
   | complex
+  /-- Truth values, for the `logic1` connectives (`OSR.Logic`). -/
+  | boolean
   deriving DecidableEq, Repr, Inhabited, BEq
 
 /-- Stable key of a domain in exported artifacts. -/
 def Domain.key : Domain → String
   | .real => "real"
   | .complex => "complex"
+  | .boolean => "boolean"
 
 /-- The OpenMath symbol naming the carrier set of a domain (`setname1`). -/
 def Domain.carrier : Domain → OMSymbol
   | .real => ⟨"setname1", "R"⟩
   | .complex => ⟨"setname1", "C"⟩
+  | .boolean => ⟨"setname2", "Boolean"⟩
 
 /-- Assurance that a Lean interpretation faithfully represents an OpenMath
 symbol.  This is about the *mapping*, not about any rule. -/

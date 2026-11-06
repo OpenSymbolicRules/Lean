@@ -9,4 +9,7 @@ import OSR.OMObject
 import OSR.Catalog
 import OSR.Trigonometry
 import OSR.Algebra
+import OSR.LogicOps
+import OSR.LogicCore
+import OSR.Logic
 import OSR.Export

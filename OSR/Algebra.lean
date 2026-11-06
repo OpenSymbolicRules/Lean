@@ -646,7 +646,7 @@ private theorem catalog_closed : ∀ e ∈ catalog, e.rule.rhsClosed = true := b
   rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
-private theorem unconditional_holds (d : Domain) :
+private theorem unconditional_holds (d : Domain) (hd : d ≠ .boolean) :
     ∀ e ∈ catalog, e.rule.conditions.isEmpty → e.rule.Holds d := by
   intro e he hc
   simp only [catalog, List.mem_cons, List.mem_nil_iff, or_false] at he
@@ -654,6 +654,7 @@ private theorem unconditional_holds (d : Domain) :
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
     simp [powPow, powMulPow, powZero, powNegOne, lnMul, lnPow, expLn] at hc <;> cases d
   all_goals first
+    | exact absurd rfl hd
     | exact powOne_real | exact powOne_complex | exact onePow_real | exact onePow_complex
     | exact distribute_real
     | exact distribute_complex | exact factorLeftAdd_real | exact factorLeftAdd_complex
@@ -667,14 +668,14 @@ theorem profileRules_sound_real (p : String) : RulesSound Interp.real (profileRu
   intro r hr hc
   simp only [profileRules, List.mem_filter, List.mem_map] at hr
   obtain ⟨⟨e, he, rfl⟩, _⟩ := hr
-  exact ⟨unconditional_holds .real e he hc, catalog_closed e he⟩
+  exact ⟨unconditional_holds .real (by decide) e he hc, catalog_closed e he⟩
 
 theorem profileRules_sound_complex (p : String) :
     RulesSound Interp.complex (profileRules p) := by
   intro r hr hc
   simp only [profileRules, List.mem_filter, List.mem_map] at hr
   obtain ⟨⟨e, he, rfl⟩, _⟩ := hr
-  exact ⟨unconditional_holds .complex e he hc, catalog_closed e he⟩
+  exact ⟨unconditional_holds .complex (by decide) e he hc, catalog_closed e he⟩
 
 /-- Running the reference engine with any Algebra profile over ℝ preserves
 definedness and value. -/
