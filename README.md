@@ -16,12 +16,13 @@ Status: **pilot** (`1.0.0-alpha.1` format).  Two rule sets are migrated:
 | Rule set | Rules | ℝ proved / certified | ℂ proved / certified | Not migrated |
 |---|---|---|---|---|
 | Trigonometry | 13 | 13 / 13 | 13 / 12 | 0 |
-| Algebra | 16 | 16 / 16 | 15 / 15 | 4 |
+| Algebra | 20 | 20 / 20 | 18 / 18 | 0 |
 
 `tan(arctan z) = z` over ℂ is proved but not certified, because the mapping of
 `transc1#arctan` to `Complex.arctan` is provisional.  `ln(ab) = ln a + ln b`
-is stated over ℝ only (its positivity conditions have no complex meaning).
-Four Algebra rules use symbolic exponents, outside the fragment.
+and `ln(a^b) = b ln a` are stated over ℝ only (their positivity conditions
+have no complex meaning).  Powers are interpreted for integer exponents only,
+so `1^x = 1` and `ln(a^b)` are certified where the exponent is an integer.
 Every profile of both rule sets is proved to terminate.  See
 [`docs/audit-m0.md`](docs/audit-m0.md) and the generated reports.
 

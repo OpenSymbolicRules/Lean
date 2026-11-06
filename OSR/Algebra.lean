@@ -5,18 +5,18 @@ import OSR.Termination
 # Algebra
 
 Migration of `OpenSymbolicRules/Algebra` at commit
-`e8152ba57aa7a10a270a1e9ed16f75bede335ad1`: 16 of its 20 rules.  The other
-four use symbolic exponents, which the fragment does not represent
-(`notMigrated`).
+`e8152ba57aa7a10a270a1e9ed16f75bede335ad1`: all 20 rules.
 
 Changes of representation relative to OSR v0.1, none of which changes the
 mathematical statement:
 
 * `Log` and `Exp` become `transc1#ln` and `transc1#exp`;
 * `PositiveQ a` becomes the condition `a > 0` (`relation1#gt`), `NonzeroQ x`
-  becomes `x ≠ 0` (`relation1#neq`);
-* `Power` with a literal integer exponent becomes a natural-number power
-  (`powNat`) or a negative one (`powNeg`).
+  becomes `x ≠ 0` (`relation1#neq`), `IntegerQ p` becomes `p ∈ ℤ`
+  (`set1#in` with `setname1#Z`);
+* `Power` becomes `arith1#power`, which the fragment interprets for integer
+  exponents only: rules with a symbolic exponent (`1^x`, `log(a^b)`) apply
+  where the exponent is an integer.
 
 `relation1#gt` has no complex interpretation, so the logarithm-of-a-product
 rule is stated and certified over ℝ only.
@@ -31,6 +31,8 @@ private abbrev z : Expr := .var "z"
 private abbrev a : Expr := .var "a"
 private abbrev b : Expr := .var "b"
 private abbrev c : Expr := .var "c"
+private abbrev p : Expr := .var "p"
+private abbrev q : Expr := .var "q"
 private abbrev zero : Expr := .int 0
 private abbrev one : Expr := .int 1
 private abbrev add (e f : Expr) : Expr := .app2 .add e f
@@ -38,6 +40,7 @@ private abbrev sub (e f : Expr) : Expr := .app2 .sub e f
 private abbrev mul (e f : Expr) : Expr := .app2 .mul e f
 private abbrev ln (e : Expr) : Expr := .app1 .ln e
 private abbrev exp (e : Expr) : Expr := .app1 .exp e
+private abbrev pow (e f : Expr) : Expr := .pow e f
 
 private def repo : String := "OpenSymbolicRules/Algebra"
 private def rev : String := "e8152ba57aa7a10a270a1e9ed16f75bede335ad1"
@@ -53,12 +56,38 @@ def profiles : List String := ["default", "factor_polynomials"]
 
 /-! ## Powers -/
 
+/-- `(x^p)^q ⟶ x^(p q)` for integers `p`, `q`. -/
+def powPow : Rule where
+  id := "algebra.power.pow_pow"
+  legacyId := some "algebra:1-powers/1.1-basic-exponents:1"
+  vars := ["x", "p", "q"]
+  lhs := pow (pow x p) q
+  rhs := pow x (mul p q)
+  conditions := [.int p, .int q]
+  profiles := ["default"]
+  priority := 10
+  description := "Power of a power: (x^p)^q = x^(p*q) for integer powers"
+  provenance := migrated "algebra:1-powers/1.1-basic-exponents:1"
+
+/-- `x^p x^q ⟶ x^(p + q)` for integers `p`, `q`. -/
+def powMulPow : Rule where
+  id := "algebra.power.mul_pow"
+  legacyId := some "algebra:1-powers/1.1-basic-exponents:2"
+  vars := ["x", "p", "q"]
+  lhs := mul (pow x p) (pow x q)
+  rhs := pow x (add p q)
+  conditions := [.int p, .int q]
+  profiles := ["default"]
+  priority := 20
+  description := "Product of integer powers: x^p * x^q = x^(p+q)"
+  provenance := migrated "algebra:1-powers/1.1-basic-exponents:2"
+
 /-- `x^1 ⟶ x`. -/
 def powOne : Rule where
   id := "algebra.power.one"
   legacyId := some "algebra:1-powers/1.1-basic-exponents:3"
   vars := ["x"]
-  lhs := .powNat x 1
+  lhs := pow x one
   rhs := x
   profiles := ["default"]
   priority := 30
@@ -70,7 +99,7 @@ def powZero : Rule where
   id := "algebra.power.zero"
   legacyId := some "algebra:1-powers/1.1-basic-exponents:4"
   vars := ["x"]
-  lhs := .powNat x 0
+  lhs := pow x zero
   rhs := one
   conditions := [.ne x zero]
   profiles := ["default"]
@@ -83,13 +112,25 @@ def powNegOne : Rule where
   id := "algebra.power.neg_one"
   legacyId := some "algebra:1-powers/1.1-basic-exponents:5"
   vars := ["x"]
-  lhs := .powNeg x 0
+  lhs := pow x (.int (-1))
   rhs := .app2 .div one x
   conditions := [.ne x zero]
   profiles := ["default"]
   priority := 50
   description := "Inverse power: x^(-1) = 1/x for x != 0"
   provenance := migrated "algebra:1-powers/1.1-basic-exponents:5"
+
+/-- `1^x ⟶ 1`. -/
+def onePow : Rule where
+  id := "algebra.power.one_pow"
+  legacyId := some "algebra:1-powers/1.1-basic-exponents:6"
+  vars := ["x"]
+  lhs := pow one x
+  rhs := one
+  profiles := ["default"]
+  priority := 60
+  description := "Unit base: 1^x = 1"
+  provenance := migrated "algebra:1-powers/1.1-basic-exponents:6"
 
 /-! ## Logarithms -/
 
@@ -105,6 +146,19 @@ def lnMul : Rule where
   priority := 70
   description := "Log of a product: log(a * b) = log(a) + log(b)"
   provenance := migrated "algebra:2-logarithms/2.1-basic-logarithms:1"
+
+/-- `ln(a^b) ⟶ b ln a` for `a > 0` (real). -/
+def lnPow : Rule where
+  id := "algebra.log.ln_pow"
+  legacyId := some "algebra:2-logarithms/2.1-basic-logarithms:2"
+  vars := ["a", "b"]
+  lhs := ln (pow a b)
+  rhs := mul b (ln a)
+  conditions := [.gt a zero]
+  profiles := ["default"]
+  priority := 80
+  description := "Log of a power: log(a^b) = b * log(a)"
+  provenance := migrated "algebra:2-logarithms/2.1-basic-logarithms:2"
 
 /-- `exp(ln z) ⟶ z` for `z ≠ 0`. -/
 def expLn : Rule where
@@ -258,16 +312,9 @@ def zeroMul : Rule where
 
 /-! ## Rules not migrated -/
 
-/-- v0.1 rules outside the fragment, with the reason. -/
-def notMigrated : List (String × String) := [
-  ("algebra:1-powers/1.1-basic-exponents:1",
-    "(x^p)^q = x^(p*q) with integer variables p, q: the fragment has no integer-valued variables or symbolic exponents"),
-  ("algebra:1-powers/1.1-basic-exponents:2",
-    "x^p * x^q = x^(p+q) with integer variables p, q: the fragment has no integer-valued variables or symbolic exponents"),
-  ("algebra:1-powers/1.1-basic-exponents:6",
-    "1^x = 1 with a symbolic exponent: general arith1#power (exp(a ln x)) is outside the fragment"),
-  ("algebra:2-logarithms/2.1-basic-logarithms:2",
-    "log(a^b) = b log(a) with a symbolic exponent: general arith1#power is outside the fragment")]
+/-- v0.1 rules outside the fragment, with the reason: none since integer
+exponents are represented. -/
+def notMigrated : List (String × String) := []
 
 /-! ## Proofs -/
 
@@ -279,21 +326,84 @@ local macro "alg_intro" r:ident i:ident : tactic => do
   `(tactic|
     (simp only [Rule.Holds, Rule.Sound]
      intro env $hc:ident $hd:ident
-     simp only [$r:ident, $i:ident, Defined, eval, Cond.Holds, List.mem_cons, List.mem_nil_iff,
-       or_false, forall_eq_or_imp, forall_eq, Int.cast_ofNat, Int.cast_one, Int.cast_zero,
-       Int.cast_neg, true_and, and_true] at $hc:ident $hd:ident ⊢))
+     simp only [$r:ident, $i:ident, Defined, eval, Cond.Holds, intValue?_intCast, List.mem_cons,
+       List.mem_nil_iff, or_false, forall_eq_or_imp, forall_eq] at $hc:ident $hd:ident ⊢
+     simp only [Int.cast_ofNat, Int.cast_one, Int.cast_zero, Int.cast_neg, zpow_one, zpow_zero,
+       zpow_neg_one, Option.some.injEq, exists_eq_left', Int.reduceLT, false_implies,
+       true_implies, implies_true, true_and, and_true] at $hc:ident $hd:ident ⊢))
+
+section Generic
+
+variable {α : Type} [Field α]
+
+theorem powPow_sound (I : Interp α) : powPow.Sound I := by
+  intro env hc hd
+  simp only [powPow, Cond.Holds, Defined, eval, List.mem_cons, List.mem_nil_iff, or_false,
+    forall_eq_or_imp, forall_eq, true_and] at hc hd ⊢
+  obtain ⟨⟨m, hm⟩, ⟨n, hn⟩⟩ := hc
+  have hpq : I.toInt? (env "p" * env "q") = some (m * n) := by
+    rw [(I.toInt?_eq _ _).1 hm, (I.toInt?_eq _ _).1 hn, ← Int.cast_mul]
+    exact I.toInt?_cast _
+  simp only [hm, hn, hpq, Option.some.injEq, exists_eq_left'] at hd ⊢
+  obtain ⟨h1, h2⟩ := hd
+  refine ⟨fun hmn hx => ?_, (zpow_mul _ _ _).symm⟩
+  rcases lt_or_ge m 0 with hm0 | hm0
+  · exact h1 hm0 hx
+  · rcases eq_or_lt_of_le hm0 with h | h
+    · subst h; simp at hmn
+    · have hn0 : n < 0 := by
+        by_contra hn0
+        exact absurd hmn (not_lt.2 (mul_nonneg h.le (not_lt.1 hn0)))
+      exact h2 hn0 (by rw [hx]; exact zero_zpow m h.ne')
+
+theorem powMulPow_sound (I : Interp α) : powMulPow.Sound I := by
+  intro env hc hd
+  simp only [powMulPow, Cond.Holds, Defined, eval, List.mem_cons, List.mem_nil_iff, or_false,
+    forall_eq_or_imp, forall_eq, true_and] at hc hd ⊢
+  obtain ⟨⟨m, hm⟩, ⟨n, hn⟩⟩ := hc
+  have hpq : I.toInt? (env "p" + env "q") = some (m + n) := by
+    rw [(I.toInt?_eq _ _).1 hm, (I.toInt?_eq _ _).1 hn, ← Int.cast_add]
+    exact I.toInt?_cast _
+  simp only [hm, hn, hpq, Option.some.injEq, exists_eq_left'] at hd ⊢
+  obtain ⟨h1, h2⟩ := hd
+  refine ⟨fun hmn hx => ?_, ?_⟩
+  · rcases lt_or_ge m 0 with hm0 | hm0
+    · exact h1 hm0 hx
+    · exact h2 (by omega) hx
+  · have h : env "x" ≠ 0 ∨ m + n ≠ 0 ∨ m = 0 ∧ n = 0 := by
+      by_cases hx : env "x" = 0
+      · have : 0 ≤ m := by by_contra h; exact h1 (by omega) hx
+        have : 0 ≤ n := by by_contra h; exact h2 (by omega) hx
+        right; omega
+      · exact Or.inl hx
+    exact (zpow_add' h).symm
+
+theorem onePow_sound (I : Interp α) : onePow.Sound I := by
+  intro env _ hd
+  simp only [onePow, Defined, eval, true_and] at hd ⊢
+  obtain ⟨k, hk, _⟩ := hd
+  simp [hk]
+
+end Generic
+
+theorem powPow_real : powPow.Holds .real := powPow_sound _
+theorem powPow_complex : powPow.Holds .complex := powPow_sound _
+theorem powMulPow_real : powMulPow.Holds .real := powMulPow_sound _
+theorem powMulPow_complex : powMulPow.Holds .complex := powMulPow_sound _
+theorem onePow_real : onePow.Holds .real := onePow_sound _
+theorem onePow_complex : onePow.Holds .complex := onePow_sound _
 
 theorem powOne_real : powOne.Holds .real := by
-  alg_intro powOne Interp.real; exact pow_one _
+  alg_intro powOne Interp.real
 
 theorem powOne_complex : powOne.Holds .complex := by
-  alg_intro powOne Interp.complex; exact pow_one _
+  alg_intro powOne Interp.complex
 
 theorem powZero_real : powZero.Holds .real := by
-  alg_intro powZero Interp.real; exact pow_zero _
+  alg_intro powZero Interp.real
 
 theorem powZero_complex : powZero.Holds .complex := by
-  alg_intro powZero Interp.complex; exact pow_zero _
+  alg_intro powZero Interp.complex
 
 theorem powNegOne_real : powNegOne.Holds .real := by
   alg_intro powNegOne Interp.real
@@ -306,6 +416,16 @@ theorem powNegOne_complex : powNegOne.Holds .complex := by
 theorem lnMul_real : lnMul.Holds .real := by
   alg_intro lnMul Interp.real
   exact ⟨⟨hc.1, hc.2⟩, Real.log_mul hc.1.ne' hc.2.ne'⟩
+
+theorem lnPow_real : lnPow.Holds .real := by
+  simp only [Rule.Holds, Rule.Sound]
+  intro env hc hd
+  simp only [lnPow, Interp.real, Cond.Holds, Defined, eval, List.mem_cons, List.mem_nil_iff,
+    or_false, forall_eq, true_and, Int.cast_zero] at hc hd ⊢
+  obtain ⟨⟨k, hk, _⟩, _⟩ := hd
+  have hb := (intValue?_eq _ _).1 hk
+  simp only [hk]
+  exact ⟨hc, by rw [Real.log_zpow, hb]⟩
 
 /-- Over ℝ, `ln z` is defined only for `z > 0`, which is what `Real.exp_log`
 needs.  The v0.1 condition `z ≠ 0` alone would not suffice: Lean's
@@ -389,6 +509,12 @@ private def domainFinding : String :=
 
 /-- The Algebra catalogue, in v0.1 load order (= priority order). -/
 def catalog : List CatalogEntry := [
+  { rule := powPow, ruleDecl := ``powPow,
+    proofs := [(.real, ``powPow_real), (.complex, ``powPow_complex)],
+    findings := ["semantics: the conditions p, q ∈ ℤ repeat what the definedness of the pattern already requires (integer exponents); they are kept."] },
+  { rule := powMulPow, ruleDecl := ``powMulPow,
+    proofs := [(.real, ``powMulPow_real), (.complex, ``powMulPow_complex)],
+    findings := ["semantics: the conditions p, q ∈ ℤ repeat what the definedness of the pattern already requires (integer exponents); they are kept."] },
   { rule := powOne, ruleDecl := ``powOne,
     proofs := [(.real, ``powOne_real), (.complex, ``powOne_complex)] },
   { rule := powZero, ruleDecl := ``powZero,
@@ -397,9 +523,16 @@ def catalog : List CatalogEntry := [
   { rule := powNegOne, ruleDecl := ``powNegOne,
     proofs := [(.real, ``powNegOne_real), (.complex, ``powNegOne_complex)],
     findings := ["semantics: x^(-1) is defined only for x != 0, so the v0.1 condition repeats the definedness of the pattern; it is kept."] },
+  { rule := onePow, ruleDecl := ``onePow,
+    proofs := [(.real, ``onePow_real), (.complex, ``onePow_complex)],
+    findings := ["semantics: the fragment interprets arith1#power for integer exponents only, so the rule is certified where the exponent is an integer; the v0.1 rule states no condition on the exponent."] },
   { rule := lnMul, ruleDecl := ``lnMul,
     proofs := [(.real, ``lnMul_real)],
     findings := ["complex: not stated; the condition a > 0 (relation1#gt) has no complex interpretation."] },
+  { rule := lnPow, ruleDecl := ``lnPow,
+    proofs := [(.real, ``lnPow_real)],
+    findings := ["semantics: the fragment interprets arith1#power for integer exponents only, so the rule is certified where the exponent is an integer; the v0.1 rule states no condition on the exponent.",
+      "complex: not stated; the condition a > 0 (relation1#gt) has no complex interpretation."] },
   { rule := expLn, ruleDecl := ``expLn,
     proofs := [(.real, ``expLn_real), (.complex, ``expLn_complex)],
     findings := ["real: the v0.1 condition z != 0 (from the complex Fungrim entry d87f6e) does not suffice over ℝ; the rule holds because ln is defined only for z > 0 there, so engines must not apply it to a negative real z."] },
@@ -436,8 +569,8 @@ def profileRules (p : String) : List Rule :=
   (catalog.map (·.rule)).filter (p ∈ ·.profiles)
 
 theorem profileRules_default :
-    profileRules "default" = [powOne, powZero, powNegOne, lnMul, expLn, distribute, addZero, zeroAdd,
-      mulOne, oneMul, mulZero, zeroMul] :=
+    profileRules "default" = [powPow, powMulPow, powOne, powZero, powNegOne, onePow, lnMul,
+      lnPow, expLn, distribute, addZero, zeroAdd, mulOne, oneMul, mulZero, zeroMul] :=
   rfl
 
 theorem profileRules_factor :
@@ -457,15 +590,14 @@ def defaultWeight : Weight where
   op2 o a b := match o with
     | .mul => (a + 2) * (b + 2)
     | _ => a + b + 5
-  pow a k := a + k + 2
-  powNeg a k := a + k + 7
+  pow a b := a + b + 2
   mono1 o a a' h := by
     cases o <;> simp only
     all_goals first | omega | exact Nat.pow_lt_pow_right (by norm_num) (by omega)
   mono2l o a a' b h := by cases o <;> simp only <;> first | omega | nlinarith
   mono2r o a b b' h := by cases o <;> simp only <;> first | omega | nlinarith
-  monoPow _ _ _ h := by omega
-  monoPowNeg _ _ _ h := by omega
+  monoPowl _ _ _ h := by omega
+  monoPowr _ _ _ h := by omega
 
 /-- Weight of the `factor_polynomials` profile: every operator adds one, so
 factoring removes one occurrence of the common factor. -/
@@ -474,45 +606,31 @@ def factorWeight : Weight where
   const _ := 1
   op1 _ a := a + 1
   op2 _ a b := a + b + 1
-  pow a k := a + k + 1
-  powNeg a k := a + k + 2
+  pow a b := a + b + 1
   mono1 _ _ _ h := by omega
   mono2l _ _ _ _ h := by omega
   mono2r _ _ _ _ h := by omega
-  monoPow _ _ _ h := by omega
-  monoPowNeg _ _ _ h := by omega
+  monoPowl _ _ _ h := by omega
+  monoPowr _ _ _ h := by omega
 
-private theorem lnMul_decreases (p q : Nat) :
-    4 ^ (p + 1) + 4 ^ (q + 1) + 5 < 4 ^ ((p + 2) * (q + 2) + 1) := by
-  have hp : 1 ≤ 4 ^ p := Nat.one_le_pow _ _ (by norm_num)
-  have hq : 1 ≤ 4 ^ q := Nat.one_le_pow _ _ (by norm_num)
-  have hle : p + q + 5 ≤ (p + 2) * (q + 2) + 1 := by nlinarith
-  have hmono : 4 ^ (p + q + 5) ≤ 4 ^ ((p + 2) * (q + 2) + 1) :=
-    Nat.pow_le_pow_right (by norm_num) hle
-  have hexp : 4 ^ (p + q + 5) = 4 ^ p * 4 ^ q * 1024 := by ring
-  rw [hexp] at hmono
-  have : 4 ^ (p + 1) + 4 ^ (q + 1) + 5 < 4 ^ p * 4 ^ q * 1024 := by
-    rw [pow_succ, pow_succ]; nlinarith
-  omega
-
-theorem default_decreasing : ∀ r ∈ profileRules "default", defaultWeight.Decreases r := by
+/-- Only the unconditional rules of a profile must decrease: the engine never
+applies the others. -/
+theorem default_decreasing : defaultWeight.RulesDecrease (profileRules "default") := by
   rw [profileRules_default]
-  simp only [List.forall_mem_cons, List.not_mem_nil, IsEmpty.forall_iff, implies_true, and_true]
-  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> intro env <;>
-    simp only [Weight.eval, defaultWeight, powOne, powZero, powNegOne, lnMul, expLn, distribute, addZero,
-      zeroAdd, mulOne, oneMul, mulZero, zeroMul]
-  · omega
-  · omega
-  · omega
-  · exact lnMul_decreases _ _
-  · have : env "z" + 1 < 4 ^ (env "z" + 1) := Nat.lt_pow_self (by norm_num); omega
-  all_goals nlinarith
+  simp only [Weight.RulesDecrease, List.forall_mem_cons, List.not_mem_nil, IsEmpty.forall_iff,
+    implies_true, and_true]
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> intro hc env <;>
+    simp only [Weight.eval, defaultWeight, powPow, powMulPow, powOne, powZero, powNegOne, onePow,
+      lnMul, lnPow, expLn, distribute, addZero, zeroAdd, mulOne, oneMul, mulZero, zeroMul,
+      List.isEmpty_cons, Bool.false_eq_true] at hc ⊢
+  all_goals first | omega | nlinarith
 
 theorem factor_decreasing :
-    ∀ r ∈ profileRules "factor_polynomials", factorWeight.Decreases r := by
+    factorWeight.RulesDecrease (profileRules "factor_polynomials") := by
   rw [profileRules_factor]
-  simp only [List.forall_mem_cons, List.not_mem_nil, IsEmpty.forall_iff, implies_true, and_true]
-  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> intro env <;>
+  simp only [Weight.RulesDecrease, List.forall_mem_cons, List.not_mem_nil, IsEmpty.forall_iff,
+    implies_true, and_true]
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> intro _ env <;>
     simp only [Weight.eval, factorWeight, factorLeftAdd, factorRightAdd, factorLeftSub,
       factorRightSub, addZero, zeroAdd, mulOne, oneMul, mulZero, zeroMul] <;> omega
 
@@ -526,16 +644,18 @@ private theorem catalog_closed : ∀ e ∈ catalog, e.rule.rhsClosed = true := b
   intro e he
   simp only [catalog, List.mem_cons, List.mem_nil_iff, or_false] at he
   rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 private theorem unconditional_holds (d : Domain) :
     ∀ e ∈ catalog, e.rule.conditions.isEmpty → e.rule.Holds d := by
   intro e he hc
   simp only [catalog, List.mem_cons, List.mem_nil_iff, or_false] at he
   rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl <;> simp [powZero, powNegOne, lnMul, expLn] at hc <;> cases d
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
+    simp [powPow, powMulPow, powZero, powNegOne, lnMul, lnPow, expLn] at hc <;> cases d
   all_goals first
-    | exact powOne_real | exact powOne_complex | exact distribute_real
+    | exact powOne_real | exact powOne_complex | exact onePow_real | exact onePow_complex
+    | exact distribute_real
     | exact distribute_complex | exact factorLeftAdd_real | exact factorLeftAdd_complex
     | exact factorRightAdd_real | exact factorRightAdd_complex | exact factorLeftSub_real
     | exact factorLeftSub_complex | exact factorRightSub_real | exact factorRightSub_complex

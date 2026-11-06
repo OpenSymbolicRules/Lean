@@ -33,7 +33,7 @@ private def render (e : Expr) : String := (Expr.toOMJson e).compress
   "\"kind\":\"OMA\"}"
 
 -- Powers are restricted to natural-number literal exponents.
-#guard render (.powNat (.var "x") 2) ==
+#guard render (.pow (.var "x") (.int 2)) ==
   "{\"applicant\":{\"cd\":\"arith1\",\"kind\":\"OMS\",\"name\":\"power\"}," ++
   "\"arguments\":[{\"kind\":\"OMV\",\"name\":\"x\"},{\"integer\":2,\"kind\":\"OMI\"}]," ++
   "\"kind\":\"OMA\"}"
@@ -51,8 +51,8 @@ private def render (e : Expr) : String := (Expr.toOMJson e).compress
 #guard Registry.mappingAssurance [⟨"relation1", "gt"⟩] .complex == .unsupported
 
 -- Symbols of an expression are collected without duplicates, in first-use order.
-#guard (Expr.symbols (.app2 .add (.powNat (.app1 .sin (.var "x")) 2)
-    (.powNat (.app1 .cos (.var "x")) 2))).map OMSymbol.uri ==
+#guard (Expr.symbols (.app2 .add (.pow (.app1 .sin (.var "x")) (.int 2))
+    (.pow (.app1 .cos (.var "x")) (.int 2)))).map OMSymbol.uri ==
   ["http://www.openmath.org/cd/arith1#plus",
    "http://www.openmath.org/cd/arith1#power",
    "http://www.openmath.org/cd/transc1#sin",

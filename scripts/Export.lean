@@ -160,14 +160,14 @@ def trigonometry : RuleSet where
       ``Trigonometry.sumToProduct_terminates)]
   extraSeeds := [
     ("nested.pythagorean_in_product",
-      .app2 .mul (.int 2) (.app2 .add (.powNat (.app1 .sin tv) 2) (.powNat (.app1 .cos tv) 2))),
+      .app2 .mul (.int 2) (.app2 .add (.pow (.app1 .sin tv) (.int 2)) (.pow (.app1 .cos tv) (.int 2)))),
     ("nested.pythagorean_of_sum",
-      .app2 .add (.powNat (.app1 .sin (.app2 .add tv uv)) 2)
-        (.powNat (.app1 .cos (.app2 .add tv uv)) 2)),
+      .app2 .add (.pow (.app1 .sin (.app2 .add tv uv)) (.int 2))
+        (.pow (.app1 .cos (.app2 .add tv uv)) (.int 2))),
     ("nested.sin_of_double_sum", .app1 .sin (.app2 .add (.app2 .mul (.int 2) tv) uv)),
     ("nested.tan_arctan_inside_sin", .app1 .sin (.app1 .tan (.app1 .arctan tv))),
     ("literal.cube_is_not_square",
-      .app2 .add (.powNat (.app1 .sin tv) 3) (.powNat (.app1 .cos tv) 3)),
+      .app2 .add (.pow (.app1 .sin tv) (.int 3)) (.pow (.app1 .cos tv) (.int 3))),
     ("literal.three_is_not_two", .app1 .sin (.app2 .mul (.int 3) tv)),
     ("nonlinear.sin_add_sin_same", .app2 .add (.app1 .sin tv) (.app1 .sin tv)),
     ("normal.atom", tv)]

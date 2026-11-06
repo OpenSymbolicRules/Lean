@@ -39,17 +39,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   emitted symbol at its arity (`registry_covers_toOM`).
 - `transc1#exp`, `transc1#ln` and `relation1#gt` conditions in the fragment
   and the registry (ℝ and ℂ for exp/ln; ℝ only for gt), with CMP obligations.
-- Algebra pilot (`OSR/Algebra.lean`): 16 of the 20 v0.1 rules proved
-  (ℝ: 16, ℂ: 15), two terminating profiles with termination proofs, engine
-  soundness; the 4 v0.1 rules with symbolic exponents are listed in
-  `notMigrated` and in the report.  Exported as `algebra.osr.json` with its
-  report and conformance cases.
-- Negative integer literal exponents (`Expr.powNeg`, `arith1#power` with a
-  negative `OMI`), defined for a nonzero base, through the rewriter, the
-  termination weights and the OpenMath object model; they carry the Algebra
-  rule `x^(-1) = 1/x`.
+- Algebra pilot (`OSR/Algebra.lean`): all 20 v0.1 rules proved (ℝ: 20,
+  ℂ: 18; the two logarithm rules with a positivity condition are stated over
+  ℝ only), two terminating profiles with termination proofs, engine
+  soundness.  Exported as `algebra.osr.json` with its report and conformance
+  cases.
+- Integer exponents: `Expr.pow a e` takes an expression exponent and is
+  interpreted only where the exponent is an integer (`Interp.toInt?`), with a
+  nonzero base for a negative exponent; integer conditions `p ∈ ℤ`
+  (`Cond.int`, `set1#in` with `setname1#Z`, CD `set1` pinned) carry v0.1
+  `IntegerQ`.  They migrate `(x^p)^q`, `x^p x^q`, `x^(-1)`, `1^x` and
+  `ln(a^b)`.
 
 ### Changed
+- `Expr.powNat` (natural literal exponent) is replaced by `Expr.pow` with an
+  expression exponent; `arith1#power` is registered for integer exponents.
+- Termination (`Weight.RulesDecrease`) only requires the unconditional rules
+  of a profile to decrease, as the engine never applies the others.
 - The exporter handles several rule sets (`RuleSet`, `ruleSets`); reports are
   now written per rule set as `<set>.report.json` and `<set>.report.md`
   (previously `report.json` and `report.md`), and include the rules not

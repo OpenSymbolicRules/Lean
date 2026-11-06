@@ -62,8 +62,7 @@ def toOM : Expr → OMObj
   | .const c => .oms c.symbol
   | .app1 op a => .oma op.symbol [a.toOM]
   | .app2 op a b => .oma op.symbol [a.toOM, b.toOM]
-  | .powNat a n => .oma powerSymbol [a.toOM, .omi n]
-  | .powNeg a n => .oma powerSymbol [a.toOM, .omi (-((n : Int) + 1))]
+  | .pow a b => .oma powerSymbol [a.toOM, b.toOM]
 
 theorem toOMJson_eq_toJson_toOM : ∀ e : Expr, e.toOMJson = e.toOM.toJson
   | .var n => by simp [toOMJson, toOM, OMObj.toJson]
@@ -73,10 +72,8 @@ theorem toOMJson_eq_toJson_toOM : ∀ e : Expr, e.toOMJson = e.toOM.toJson
     simp [toOMJson, toOM, OMObj.toJson, toOMJson_eq_toJson_toOM a]
   | .app2 op a b => by
     simp [toOMJson, toOM, OMObj.toJson, toOMJson_eq_toJson_toOM a, toOMJson_eq_toJson_toOM b]
-  | .powNat a n => by
-    simp [toOMJson, toOM, OMObj.toJson, toOMJson_eq_toJson_toOM a]
-  | .powNeg a n => by
-    simp [toOMJson, toOM, OMObj.toJson, toOMJson_eq_toJson_toOM a]
+  | .pow a b => by
+    simp [toOMJson, toOM, OMObj.toJson, toOMJson_eq_toJson_toOM a, toOMJson_eq_toJson_toOM b]
 
 end Expr
 
@@ -126,16 +123,11 @@ def decode : OMObj → Option Expr
   | .oma h [a] => do
     let o ← decodeOp1 h
     return .app1 o (← decode a)
-  | .oma h [a, .omi k] =>
-    if h = powerSymbol then
-      if 0 ≤ k then return .powNat (← decode a) k.toNat
-      else return .powNeg (← decode a) (-k - 1).toNat
+  | .oma h [a, b] =>
+    if h = powerSymbol then return .pow (← decode a) (← decode b)
     else do
       let o ← decodeOp2 h
-      return .app2 o (← decode a) (.int k)
-  | .oma h [a, b] => do
-    let o ← decodeOp2 h
-    return .app2 o (← decode a) (← decode b)
+      return .app2 o (← decode a) (← decode b)
   | .oma _ _ => none
 
 /-- **Faithfulness of the exporter.**  Decoding the exported object by symbol
@@ -146,15 +138,9 @@ theorem decode_toOM : ∀ e : Expr, decode e.toOM = some e
   | .const c => by simp [Expr.toOM, decode, decodeConst_symbol]
   | .app1 o a => by simp [Expr.toOM, decode, decodeOp1_symbol, decode_toOM a]
   | .app2 o a b => by
-    have ha := decode_toOM a
-    have hb := decode_toOM b
     have hne : o.symbol ≠ powerSymbol := by cases o <;> decide
-    cases b <;> simp_all [Expr.toOM, decode, decodeOp2_symbol, decodeConst_symbol]
-  | .powNat a n => by simp [Expr.toOM, decode, decode_toOM a]
-  | .powNeg a n => by
-    simp only [Expr.toOM, decode, decode_toOM a]
-    simp
-    omega
+    simp [Expr.toOM, decode, decodeOp2_symbol, decode_toOM a, decode_toOM b, hne]
+  | .pow a b => by simp [Expr.toOM, decode, decode_toOM a, decode_toOM b]
 
 /-- The value of an OpenMath object read through its symbols. -/
 def evalOM {α : Type} [Field α] (I : Interp α) (env : String → α) (o : OMObj) : Option α :=
@@ -202,7 +188,7 @@ theorem symbolsWithArity_toOM_mem :
       rcases hp with hp | hp
       · exact symbolsWithArity_toOM_mem a p hp
       · exact symbolsWithArity_toOM_mem b p hp
-  | .powNat a k => by
+  | .pow a b => by
     intro p hp
     simp only [Expr.toOM, OMObj.symbolsWithArity, List.mem_cons] at hp
     rcases hp with rfl | hp
@@ -211,17 +197,7 @@ theorem symbolsWithArity_toOM_mem :
         List.flatMap_cons, List.flatMap_nil, List.append_nil, List.mem_append] at hp
       rcases hp with hp | hp
       · exact symbolsWithArity_toOM_mem a p hp
-      · simp [OMObj.symbolsWithArity] at hp
-  | .powNeg a k => by
-    intro p hp
-    simp only [Expr.toOM, OMObj.symbolsWithArity, List.mem_cons] at hp
-    rcases hp with rfl | hp
-    · simp [fragmentSymbols]
-    · simp only [List.attach_cons, List.attach_nil, List.map_cons, List.map_nil,
-        List.flatMap_cons, List.flatMap_nil, List.append_nil, List.mem_append] at hp
-      rcases hp with hp | hp
-      · exact symbolsWithArity_toOM_mem a p hp
-      · simp [OMObj.symbolsWithArity] at hp
+      · exact symbolsWithArity_toOM_mem b p hp
 
 /-- Every symbol of the fragment has a registry entry with the same arity. -/
 theorem registry_covers_fragment :

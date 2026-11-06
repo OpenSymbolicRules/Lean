@@ -40,7 +40,7 @@ private abbrev add (e f : Expr) : Expr := .app2 .add e f
 private abbrev sub (e f : Expr) : Expr := .app2 .sub e f
 private abbrev mul (e f : Expr) : Expr := .app2 .mul e f
 private abbrev div (e f : Expr) : Expr := .app2 .div e f
-private abbrev sq (e : Expr) : Expr := .powNat e 2
+private abbrev sq (e : Expr) : Expr := .pow e two
 
 private def repo : String := "OpenSymbolicRules/Trigonometry"
 private def rev : String := "e9b6ef0e46495c9896b5dc168dabd5f7c1fa39b5"
@@ -478,15 +478,14 @@ def defaultWeight : Weight where
     | .sin | .cos => 8 ^ (a + 1)
     | _ => a + 1
   op2 _ a b := a + b + 1
-  pow a k := a + k + 1
-  powNeg a k := a + k + 2
+  pow a b := a + b + 1
   mono1 o a a' h := by
     cases o <;> simp only
     all_goals first | omega | exact Nat.pow_lt_pow_right (by norm_num) (by omega)
   mono2l _ _ _ _ h := by omega
   mono2r _ _ _ _ h := by omega
-  monoPow _ _ _ h := by omega
-  monoPowNeg _ _ _ h := by omega
+  monoPowl _ _ _ h := by omega
+  monoPowr _ _ _ h := by omega
 
 /-- Weight of the `product_to_sum` profile. -/
 def productToSumWeight : Weight where
@@ -498,13 +497,12 @@ def productToSumWeight : Weight where
   op2 o a b := match o with
     | .mul => (a + 1) * (b + 1)
     | _ => a + b + 1
-  pow a k := a + k + 1
-  powNeg a k := a + k + 2
+  pow a b := a + b + 1
   mono1 o a a' h := by cases o <;> simp only <;> omega
   mono2l o a a' b h := by cases o <;> simp only <;> first | omega | nlinarith
   mono2r o a b b' h := by cases o <;> simp only <;> first | omega | nlinarith
-  monoPow _ _ _ h := by omega
-  monoPowNeg _ _ _ h := by omega
+  monoPowl _ _ _ h := by omega
+  monoPowr _ _ _ h := by omega
 
 /-- Weight of the `power_reduction` profile. -/
 def powerReductionWeight : Weight where
@@ -512,13 +510,12 @@ def powerReductionWeight : Weight where
   const _ := 1
   op1 _ a := a + 1
   op2 _ a b := a + b + 1
-  pow a k := (a + 1) ^ (k + 1)
-  powNeg a k := a + k + 2
+  pow a b := (a + 2) ^ (b + 2)
   mono1 _ _ _ h := by omega
   mono2l _ _ _ _ h := by omega
   mono2r _ _ _ _ h := by omega
-  monoPow _ _ k h := Nat.pow_lt_pow_left (by omega) (by omega)
-  monoPowNeg _ _ _ h := by omega
+  monoPowl _ _ _ h := Nat.pow_lt_pow_left (by omega) (by omega)
+  monoPowr _ _ _ h := Nat.pow_lt_pow_right (by omega) (by omega)
 
 /-- Weight of the `sum_to_product` profile. -/
 def sumToProductWeight : Weight where
@@ -530,13 +527,12 @@ def sumToProductWeight : Weight where
   op2 o a b := match o with
     | .add | .sub => (a + 1) * (b + 1)
     | _ => a + b + 1
-  pow a k := a + k + 1
-  powNeg a k := a + k + 2
+  pow a b := a + b + 1
   mono1 o a a' h := by cases o <;> simp only <;> omega
   mono2l o a a' b h := by cases o <;> simp only <;> first | omega | nlinarith
   mono2r o a b b' h := by cases o <;> simp only <;> first | omega | nlinarith
-  monoPow _ _ _ h := by omega
-  monoPowNeg _ _ _ h := by omega
+  monoPowl _ _ _ h := by omega
+  monoPowr _ _ _ h := by omega
 
 /-- The weight proving termination of a profile. -/
 def weight : String → Weight
@@ -604,19 +600,19 @@ theorem sumToProduct_decreasing :
   all_goals first | omega | (ring_nf; nlinarith)
 
 theorem default_terminates : Terminates (profileRules "default") defaultWeight :=
-  defaultWeight.terminates _ default_decreasing
+  defaultWeight.terminates _ (fun r hr _ => default_decreasing r hr)
 
 theorem productToSum_terminates :
     Terminates (profileRules "product_to_sum") productToSumWeight :=
-  productToSumWeight.terminates _ productToSum_decreasing
+  productToSumWeight.terminates _ (fun r hr _ => productToSum_decreasing r hr)
 
 theorem powerReduction_terminates :
     Terminates (profileRules "power_reduction") powerReductionWeight :=
-  powerReductionWeight.terminates _ powerReduction_decreasing
+  powerReductionWeight.terminates _ (fun r hr _ => powerReduction_decreasing r hr)
 
 theorem sumToProduct_terminates :
     Terminates (profileRules "sum_to_product") sumToProductWeight :=
-  sumToProductWeight.terminates _ sumToProduct_decreasing
+  sumToProductWeight.terminates _ (fun r hr _ => sumToProduct_decreasing r hr)
 
 /-- **Termination.**  For every profile and every expression, the reference
 engine reaches a normal form within the weight of the expression. -/

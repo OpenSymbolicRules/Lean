@@ -59,8 +59,7 @@ def subst (σ : Subst) : Expr → Expr
   | .const c => .const c
   | .app1 o a => .app1 o (a.subst σ)
   | .app2 o a b => .app2 o (a.subst σ) (b.subst σ)
-  | .powNat a k => .powNat (a.subst σ) k
-  | .powNeg a k => .powNeg (a.subst σ) k
+  | .pow a e => .pow (a.subst σ) (e.subst σ)
 
 /-- Variable occurrences, with repetitions, left to right. -/
 def varList : Expr → List String
@@ -68,7 +67,7 @@ def varList : Expr → List String
   | .int _ | .const _ => []
   | .app1 _ a => a.varList
   | .app2 _ a b => a.varList ++ b.varList
-  | .powNat a _ | .powNeg a _ => a.varList
+  | .pow a e => a.varList ++ e.varList
 
 end Expr
 
@@ -87,8 +86,10 @@ def matchAux : Expr → Expr → Subst → Option Subst
       | some σ₁ => matchAux b b' σ₁
       | none => none
     else none
-  | .powNat a k, .powNat a' k', σ => if k = k' then matchAux a a' σ else none
-  | .powNeg a k, .powNeg a' k', σ => if k = k' then matchAux a a' σ else none
+  | .pow a e, .pow a' e', σ =>
+    match matchAux a a' σ with
+    | some σ₁ => matchAux e e' σ₁
+    | none => none
   | _, _, _ => none
 
 /-- Match a pattern against an expression from the empty substitution. -/
@@ -157,21 +158,15 @@ theorem matchAux_spec : ∀ (p e : Expr) (σ σ' : Subst), matchAux p e σ = som
         simp [Expr.subst, hsub₁ τ (hext₂.trans hτ), hsub₂ τ hτ, ho]
       · cases h
     · cases h
-  | .powNat a k, e, σ, σ', h => by
+  | .pow a b, e, σ, σ', h => by
     cases e <;> simp only [matchAux, reduceCtorEq] at h
-    rename_i a' k'
+    rename_i a' b'
     split at h
-    · rename_i hk
-      obtain ⟨hext, hsub⟩ := matchAux_spec a a' σ σ' h
-      exact ⟨hext, fun τ hτ => by simp [Expr.subst, hsub τ hτ, hk]⟩
-    · cases h
-  | .powNeg a k, e, σ, σ', h => by
-    cases e <;> simp only [matchAux, reduceCtorEq] at h
-    rename_i a' k'
-    split at h
-    · rename_i hk
-      obtain ⟨hext, hsub⟩ := matchAux_spec a a' σ σ' h
-      exact ⟨hext, fun τ hτ => by simp [Expr.subst, hsub τ hτ, hk]⟩
+    · rename_i σ₁ h₁
+      obtain ⟨hext₁, hsub₁⟩ := matchAux_spec a a' σ σ₁ h₁
+      obtain ⟨hext₂, hsub₂⟩ := matchAux_spec b b' σ₁ σ' h
+      refine ⟨hext₁.trans hext₂, fun τ hτ => ?_⟩
+      simp [Expr.subst, hsub₁ τ (hext₂.trans hτ), hsub₂ τ hτ]
     · cases h
 
 theorem matchExpr_subst {p e : Expr} {σ : Subst} (h : matchExpr p e = some σ) :
@@ -195,8 +190,7 @@ theorem eval_subst (I : Interp α) (env : String → α) (σ : Subst) :
     cases o <;> simp [Expr.subst, eval, eval_subst I env σ a]
   | .app2 o a b => by
     cases o <;> simp [Expr.subst, eval, eval_subst I env σ a, eval_subst I env σ b]
-  | .powNat a k => by simp [Expr.subst, eval, eval_subst I env σ a]
-  | .powNeg a k => by simp [Expr.subst, eval, eval_subst I env σ a]
+  | .pow a e => by simp [Expr.subst, eval, eval_subst I env σ a, eval_subst I env σ e]
 
 theorem defined_subst (I : Interp α) (env : String → α) (σ : Subst) :
     ∀ e : Expr, Defined I env (e.subst σ) ↔
@@ -213,10 +207,11 @@ theorem defined_subst (I : Interp α) (env : String → α) (σ : Subst) :
     cases o <;>
       simp only [Expr.subst, Defined, Expr.varList, eval_subst, iha, ihb, List.mem_append,
         or_imp, forall_and] <;> tauto
-  | .powNat a k => by
-    simp only [Expr.subst, Defined, Expr.varList, defined_subst I env σ a]
-  | .powNeg a k => by
-    simp only [Expr.subst, Defined, Expr.varList, defined_subst I env σ a, eval_subst]
+  | .pow a e => by
+    have iha := defined_subst I env σ a
+    have ihe := defined_subst I env σ e
+    simp only [Expr.subst, Defined, Expr.varList, eval_subst, iha, ihe, List.mem_append,
+      or_imp, forall_and]
     tauto
 
 end Semantics
@@ -277,20 +272,16 @@ def rewriteStep (rules : List Rule) : Expr → Option (String × Expr)
         match rewriteStep rules b with
         | some s => some (s.1, .app2 o a s.2)
         | none => none
-  | .powNat a k =>
-    match rootRewrite rules (.powNat a k) with
+  | .pow a b =>
+    match rootRewrite rules (.pow a b) with
     | some s => some s
     | none =>
       match rewriteStep rules a with
-      | some s => some (s.1, .powNat s.2 k)
-      | none => none
-  | .powNeg a k =>
-    match rootRewrite rules (.powNeg a k) with
-    | some s => some s
-    | none =>
-      match rewriteStep rules a with
-      | some s => some (s.1, .powNeg s.2 k)
-      | none => none
+      | some s => some (s.1, .pow s.2 b)
+      | none =>
+        match rewriteStep rules b with
+        | some s => some (s.1, .pow a s.2)
+        | none => none
   | e => rootRewrite rules e
 
 /-- Outcome of `normalize`. -/
@@ -350,19 +341,13 @@ theorem Preserves.app2 (o : Op2) {a a' b b' : Expr} (ha : Preserves I env a a')
     | (obtain ⟨a₁, a₂⟩ := ha hd.1; obtain ⟨b₁, b₂⟩ := hb hd.2
        exact ⟨⟨a₁, b₁⟩, by rw [a₂, b₂]⟩)
 
-theorem Preserves.powNat (k : Nat) {a a' : Expr} (h : Preserves I env a a') :
-    Preserves I env (.powNat a k) (.powNat a' k) := by
-  simp only [Preserves, Defined, eval] at h ⊢
+theorem Preserves.pow {a a' b b' : Expr} (ha : Preserves I env a a')
+    (hb : Preserves I env b b') : Preserves I env (.pow a b) (.pow a' b') := by
+  simp only [Preserves, Defined, eval] at ha hb ⊢
   intro hd
-  obtain ⟨h₁, h₂⟩ := h hd
-  exact ⟨h₁, by rw [h₂]⟩
-
-theorem Preserves.powNeg (k : Nat) {a a' : Expr} (h : Preserves I env a a') :
-    Preserves I env (.powNeg a k) (.powNeg a' k) := by
-  simp only [Preserves, Defined, eval] at h ⊢
-  intro hd
-  obtain ⟨h₁, h₂⟩ := h hd.1
-  exact ⟨⟨h₁, by rw [← h₂]; exact hd.2⟩, by rw [h₂]⟩
+  obtain ⟨a₁, a₂⟩ := ha hd.1
+  obtain ⟨b₁, b₂⟩ := hb hd.2.1
+  refine ⟨⟨a₁, b₁, by rw [← a₂, ← b₂]; exact hd.2.2⟩, by rw [a₂, b₂]⟩
 
 theorem rootRewrite_sound : ∀ (rules : List Rule) (e : Expr) (s : String × Expr),
     RulesSound I rules → rootRewrite rules e = some s → Preserves I env e s.2
@@ -420,7 +405,7 @@ theorem rewriteStep_sound (rules : List Rule) (hr : RulesSound I rules) :
           subst h
           exact Preserves.app2 o (Preserves.refl a) (rewriteStep_sound rules hr b s' hs)
         · cases h
-  | .powNat a k, s, h => by
+  | .pow a b, s, h => by
     simp only [rewriteStep] at h
     split at h
     · rename_i s' hroot
@@ -431,21 +416,13 @@ theorem rewriteStep_sound (rules : List Rule) (hr : RulesSound I rules) :
       · rename_i s' hs
         simp only [Option.some.injEq] at h
         subst h
-        exact Preserves.powNat k (rewriteStep_sound rules hr a s' hs)
-      · cases h
-  | .powNeg a k, s, h => by
-    simp only [rewriteStep] at h
-    split at h
-    · rename_i s' hroot
-      simp only [Option.some.injEq] at h
-      subst h
-      exact rootRewrite_sound rules _ s' hr hroot
-    · split at h
-      · rename_i s' hs
-        simp only [Option.some.injEq] at h
-        subst h
-        exact Preserves.powNeg k (rewriteStep_sound rules hr a s' hs)
-      · cases h
+        exact Preserves.pow (rewriteStep_sound rules hr a s' hs) (Preserves.refl b)
+      · split at h
+        · rename_i s' hs
+          simp only [Option.some.injEq] at h
+          subst h
+          exact Preserves.pow (Preserves.refl a) (rewriteStep_sound rules hr b s' hs)
+        · cases h
 
 /-- **Engine soundness.**  Normalizing a defined expression with sound rules
 yields a defined expression with the same value, whatever the step budget. -/

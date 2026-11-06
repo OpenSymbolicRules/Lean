@@ -9,10 +9,10 @@ same `Expr` value is used to state the Lean theorem (through `OSR.eval`) and
 to produce the portable OpenMath JSON (through `Expr.toOMJson`), so the
 theorem and the export cannot drift apart.
 
-Unsupported constructs are not representable.  In particular, powers only take
-integer literal exponents (`powNat` for natural ones, `powNeg` for negative
-ones, defined for a nonzero base), which avoids the totalization of `rpow` and
-`cpow` and the branch choices of non-integer powers.
+Unsupported constructs are not representable.  Powers take an expression as
+exponent, but are interpreted only where the exponent is an integer (and the
+base nonzero if the exponent is negative), which avoids the totalization of
+`rpow` and `cpow` and the branch choices of non-integer powers.
 -/
 
 namespace OSR
@@ -62,7 +62,7 @@ def Op2.symbol : Op2 → OMSymbol
 def Const.symbol : Const → OMSymbol
   | .pi => ⟨"nums1", "pi"⟩
 
-/-- The OpenMath symbol used for natural-number powers. -/
+/-- The OpenMath symbol used for powers. -/
 def powerSymbol : OMSymbol := ⟨"arith1", "power"⟩
 
 /-- Expressions of the supported fragment. -/
@@ -77,11 +77,9 @@ inductive Expr where
   | app1 (op : Op1) (arg : Expr)
   /-- A binary application. -/
   | app2 (op : Op2) (lhs rhs : Expr)
-  /-- A power with a natural-number literal exponent. -/
-  | powNat (base : Expr) (exponent : Nat)
-  /-- A power with a negative integer literal exponent: `powNeg a n` is
-  `a ^ (-(n + 1))`, encoded as `arith1#power` with the integer `-(n + 1)`. -/
-  | powNeg (base : Expr) (n : Nat)
+  /-- A power `base ^ exponent`, interpreted only for an integer exponent
+  (`arith1#power`). -/
+  | pow (base exponent : Expr)
   deriving DecidableEq, Repr, Inhabited, BEq
 
 namespace Expr
@@ -92,7 +90,7 @@ def vars : Expr → List String
   | .int _ | .const _ => []
   | .app1 _ a => a.vars
   | .app2 _ a b => (a.vars ++ b.vars).eraseDups
-  | .powNat a _ | .powNeg a _ => a.vars
+  | .pow a e => (a.vars ++ e.vars).eraseDups
 
 /-- OpenMath symbols occurring in an expression, in first-use order. -/
 def symbols : Expr → List OMSymbol
@@ -100,7 +98,7 @@ def symbols : Expr → List OMSymbol
   | .const c => [c.symbol]
   | .app1 op a => (op.symbol :: a.symbols).eraseDups
   | .app2 op a b => (op.symbol :: a.symbols ++ b.symbols).eraseDups
-  | .powNat a _ | .powNeg a _ => (powerSymbol :: a.symbols).eraseDups
+  | .pow a e => (powerSymbol :: a.symbols ++ e.symbols).eraseDups
 
 /-- Every OpenMath symbol the fragment can emit. -/
 def allSymbols : List OMSymbol :=
@@ -137,8 +135,7 @@ def toOMJson : Expr → Json
   | .const c => omsJson c.symbol
   | .app1 op a => omaJson op.symbol [a.toOMJson]
   | .app2 op a b => omaJson op.symbol [a.toOMJson, b.toOMJson]
-  | .powNat a n => omaJson powerSymbol [a.toOMJson, omiJson n]
-  | .powNeg a n => omaJson powerSymbol [a.toOMJson, omiJson (-((n : Int) + 1))]
+  | .pow a e => omaJson powerSymbol [a.toOMJson, e.toOMJson]
 
 end Expr
 

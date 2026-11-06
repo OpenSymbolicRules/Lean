@@ -16,7 +16,7 @@ private def t : Expr := .var "t"
 private def sin (e : Expr) : Expr := .app1 .sin e
 private def cos (e : Expr) : Expr := .app1 .cos e
 private def add (e f : Expr) : Expr := .app2 .add e f
-private def sq (e : Expr) : Expr := .powNat e 2
+private def sq (e : Expr) : Expr := .pow e (.int 2)
 
 -- Matching binds pattern variables.
 #guard matchExpr (sin x) (sin (add t t)) == some [("x", add t t)]
@@ -26,7 +26,7 @@ private def sq (e : Expr) : Expr := .powNat e 2
 #guard matchExpr (add x x) (add t (.int 1)) == none
 
 -- Integer literals match by value (regression: OSRv1 BigInt identity).
-#guard matchExpr (.powNat x 2) (.powNat t 2) == some [("x", t)]
+#guard matchExpr (.pow x (.int 2)) (.pow t (.int 2)) == some [("x", t)]
 #guard matchExpr (.int 2) (.int 2) == some []
 #guard matchExpr (.int 2) (.int 3) == none
 

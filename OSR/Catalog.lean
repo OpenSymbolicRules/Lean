@@ -36,7 +36,9 @@ macro_rules
     `(tactic|
       (simp only [Rule.Holds, Rule.Sound]
        intro env _ $hd:ident
-       simp only [$r:ident, $i:ident, Defined, eval, Int.cast_ofNat, Int.cast_one,
-         Int.cast_neg, true_and, and_true] at $hd:ident ⊢))
+       simp only [$r:ident, $i:ident, Defined, eval, intValue?_intCast] at $hd:ident ⊢
+       simp only [Int.cast_ofNat, Int.cast_one, Int.cast_neg, zpow_ofNat, Option.some.injEq,
+         exists_eq_left', Int.reduceLT, false_implies, implies_true, true_and,
+         and_true] at $hd:ident ⊢))
 
 end OSR

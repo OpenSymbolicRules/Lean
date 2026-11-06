@@ -70,7 +70,7 @@ OSR/OMObject.lean      OpenMath object model; faithfulness of the export
 OSR/Catalog.lean       catalogue entries and the `osr_intro` proof helper
 OSR/Trigonometry.lean  the pilot rules, their proofs, profiles and engine
                        soundness and termination per profile
-OSR/Algebra.lean       Algebra rules (16 of 20), same structure
+OSR/Algebra.lean       Algebra rules (all 20), same structure
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
                        generation of rule set, reports and conformance cases
@@ -163,8 +163,12 @@ the v0.1 rules not migrated.  Per rule set it writes `<set>.osr.json`,
 `<set>.report.json`, `<set>.report.md` and `conformance/<set>.cases.json`;
 `registry.json` is shared.
 
-`OSR/Algebra.lean` adds `ln`, `exp` and positivity conditions
-(`relation1#gt`).  The conditions only have a real meaning: `Interp` carries an
+`OSR/Algebra.lean` adds `ln`, `exp`, positivity conditions (`relation1#gt`)
+and integer conditions (`set1#in` with `setname1#Z`).  `Expr.pow a e` takes an
+expression exponent; `Interp.toInt?` (with `toInt?_eq`) recovers the integer
+an exponent equals, and the power is defined only when there is one (and the
+base is nonzero for a negative exponent).  An integer-valued rule variable is
+an ordinary variable with the condition `p ∈ ℤ`.  The conditions only have a real meaning: `Interp` carries an
 order, and the registry gives `relation1#gt` no complex mapping, so a rule
 with such a condition is stated over ℝ only.  Conditional rules are never
 applied by the reference engine, so engine soundness (`RulesSound`) only

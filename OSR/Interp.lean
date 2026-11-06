@@ -13,10 +13,34 @@ rewrite merely because both sides agree on totalized junk values.
 
 namespace OSR
 
+/-- The integer a value is equal to, if any (classical).  In a field of
+characteristic zero this integer is unique (`intValue?_eq`). -/
+noncomputable def intValue? {α : Type} [Field α] (v : α) : Option ℤ :=
+  open Classical in if h : ∃ n : ℤ, (n : α) = v then some h.choose else none
+
+theorem intValue?_eq {α : Type} [Field α] [CharZero α] (v : α) (n : ℤ) :
+    intValue? v = some n ↔ v = n := by
+  unfold intValue?
+  split
+  · rename_i h
+    constructor
+    · intro hs
+      cases hs
+      exact h.choose_spec.symm
+    · intro hv
+      exact congrArg some (Int.cast_injective (h.choose_spec.trans hv))
+  · rename_i h
+    simp only [reduceCtorEq, false_iff]
+    exact fun hv => h ⟨n, hv.symm⟩
+
+theorem intValue?_intCast {α : Type} [Field α] [CharZero α] (n : ℤ) :
+    intValue? (n : α) = some n :=
+  (intValue?_eq _ _).2 rfl
+
 /-- The domain-specific part of an interpretation.  Arithmetic comes from the
 `Field` structure; transcendental symbols and their definedness conditions are
 given here. -/
-structure Interp (α : Type) where
+structure Interp (α : Type) [Field α] where
   sin : α → α
   cos : α → α
   tan : α → α
@@ -33,6 +57,10 @@ structure Interp (α : Type) where
   /-- The order used by `relation1#gt` conditions, `lt a b` meaning `a < b`.
   Only the real interpretation is an OpenMath mapping; see the registry. -/
   lt : α → α → Prop
+  /-- The integer a value is equal to, if any; used for `arith1#power`, which
+  the fragment interprets for integer exponents only. -/
+  toInt? : α → Option ℤ
+  toInt?_eq : ∀ v n, toInt? v = some n ↔ v = (n : α)
 
 /-- Real interpretation, using Mathlib's `Real` functions. -/
 noncomputable def Interp.real : Interp ℝ where
@@ -47,6 +75,8 @@ noncomputable def Interp.real : Interp ℝ where
   arctanDefined _ := True
   lnDefined x := 0 < x
   lt x y := x < y
+  toInt? := intValue?
+  toInt?_eq := intValue?_eq
 
 /-- Complex interpretation, using Mathlib's `Complex` functions. -/
 noncomputable def Interp.complex : Interp ℂ where
@@ -63,6 +93,8 @@ noncomputable def Interp.complex : Interp ℂ where
   -- Not an OpenMath mapping (`relation1#gt` has no complex interpretation):
   -- both operands real and ordered.
   lt z w := z.im = 0 ∧ w.im = 0 ∧ z.re < w.re
+  toInt? := intValue?
+  toInt?_eq := intValue?_eq
 
 variable {α : Type} [Field α]
 
@@ -83,8 +115,10 @@ def eval (I : Interp α) (env : String → α) : Expr → α
   | .app2 .sub a b => eval I env a - eval I env b
   | .app2 .mul a b => eval I env a * eval I env b
   | .app2 .div a b => eval I env a / eval I env b
-  | .powNat a n => eval I env a ^ n
-  | .powNeg a n => (eval I env a ^ (n + 1))⁻¹
+  | .pow a e =>
+    match I.toInt? (eval I env e) with
+    | some n => eval I env a ^ n
+    | none => 0
 
 /-- Whether every operation in the expression is applied inside its domain of
 definition, following the OpenMath operation rather than Lean's totalization. -/
@@ -103,7 +137,14 @@ def Defined (I : Interp α) (env : String → α) : Expr → Prop
   | .app2 .add a b => Defined I env a ∧ Defined I env b
   | .app2 .sub a b => Defined I env a ∧ Defined I env b
   | .app2 .mul a b => Defined I env a ∧ Defined I env b
-  | .powNat a _ => Defined I env a
-  | .powNeg a _ => Defined I env a ∧ eval I env a ≠ 0
+  | .pow a e => Defined I env a ∧ Defined I env e ∧
+      ∃ n, I.toInt? (eval I env e) = some n ∧ (n < 0 → eval I env a ≠ 0)
+
+theorem Interp.toInt?_cast (I : Interp α) (n : ℤ) : I.toInt? (n : α) = some n :=
+  (I.toInt?_eq _ _).2 rfl
+
+theorem eval_pow_of {I : Interp α} {env : String → α} {a e : Expr} {n : ℤ}
+    (h : I.toInt? (eval I env e) = some n) : eval I env (.pow a e) = eval I env a ^ n := by
+  simp [eval, h]
 
 end OSR

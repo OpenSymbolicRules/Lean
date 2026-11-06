@@ -26,6 +26,8 @@ def cds : List CDRef := [
     sha256 := "691c8ebfaad1375bdd54c6084b223a093782aacc634151bdb49ba70938ddbbe5" },
   { cd := "relation1", version := 3, revision := 1, date := "2004-03-30",
     sha256 := "1c50e72514373c6d60c3f82c28936670ccb8615e8cf85b40de6ee747487842e6" },
+  { cd := "set1", version := 3, revision := 1, date := "2004-03-30",
+    sha256 := "6d4995d2e7f1f24e062f52f600f33cceabe24e3055927e668dbea6a5dd0c5ea2" },
   { cd := "setname1", version := 3, revision := 1, date := "2004-03-30",
     sha256 := "746cc460c6aec8601d72dbfe16b99451dcd24f165b2d9ec4f77b4f391bd54abd" }
 ]
@@ -73,8 +75,27 @@ theorem complex_exp_cmp (z : ℂ) (k : ℤ) :
   have : (2 * Real.pi * k * Complex.I : ℂ) = k * (2 * Real.pi * Complex.I) := by ring
   rw [this, Complex.exp_int_mul_two_pi_mul_I, mul_one]
 
+/-- `setname1#Z` CMP: `z` is an integer iff `z` or `-z` is a natural number;
+the set of integers of a field is the range of the cast. -/
+theorem setname1_Z_cmp {α : Type} [Field α] (v : α) :
+    v ∈ Set.range (Int.cast : ℤ → α) ↔ ∃ n : ℕ, v = n ∨ -v = n := by
+  constructor
+  · rintro ⟨z, rfl⟩
+    obtain ⟨n, h | h⟩ := Int.eq_nat_or_neg z
+    · exact ⟨n, Or.inl (by simp [h])⟩
+    · exact ⟨n, Or.inr (by simp [h])⟩
+  · rintro ⟨n, h | h⟩
+    · exact ⟨n, by simp [h]⟩
+    · exact ⟨-n, by simp [← h]⟩
+
 /-- `relation1#gt` CMP: `a > b ∧ b > c → a > c` (real). -/
 theorem real_gt_cmp (a b c : ℝ) (h₁ : a > b) (h₂ : b > c) : a > c := lt_trans h₂ h₁
+
+/-- `arith1#power` CMP 2 for integer exponents and a nonzero base. -/
+theorem zpow_cmp2 {α : Type} [Field α] (x : α) (hx : x ≠ 0) (n : ℤ) :
+    x ^ n = x * x ^ (n - 1) := by
+  rw [zpow_sub_one₀ hx]
+  field_simp
 
 /-! ## Entries -/
 
@@ -108,15 +129,17 @@ def entries : List SymbolEntry := [
     interpretations := [Domain.real, Domain.complex].map fun d =>
       arithInterp d ``Neg.neg [{ cmp := "for all a | a + (-a) = 0", theoremName := ``add_neg_cancel }] },
   { symbol := ⟨"arith1", "power"⟩, arity := 2,
-    fragment := "exponent restricted to a natural-number literal; general powers (CMP 1, exp/ln) are out of scope",
+    fragment := "interpreted for integer exponents only; general powers (CMP 1, exp/ln) are out of scope, so a power with a non-integer exponent is undefined in the fragment",
     interpretations := [Domain.real, Domain.complex].map fun d =>
       { domain := d, leanConst := ``HPow.hPow, assurance := .formallyRelated,
-        definedness := "everywhere (natural exponents; 0^0 = 1 as in CMP 2)",
-        justification := "Monoid power by a natural number agrees with the integer-exponent recursion of CMP 2.",
+        definedness := "integer exponent, and nonzero base if the exponent is negative (0^0 = 1 as in CMP 2)",
+        justification := "Group-with-zero power by an integer (zpow) agrees with the integer-exponent recursion of CMP 2.",
         obligations := [
-          { cmp := "if n is an integer then x^0 = 1", theoremName := ``pow_zero },
+          { cmp := "if n is an integer then x^0 = 1", theoremName := ``zpow_zero },
+          { cmp := "if n is an integer then x^n = x * x^(n-1)", theoremName := ``zpow_cmp2,
+            note := "for x ≠ 0; at x = 0 the CMP would need 0^(-1), which is undefined" },
           { cmp := "if n is an integer then x^n = x * x^(n-1)", theoremName := ``pow_cmp2,
-            note := "stated for natural n as x^(n+1) = x * x^n" }] } },
+            note := "for natural n, every x, as x^(n+1) = x * x^n" }] } },
   { symbol := ⟨"transc1", "sin"⟩, arity := 1,
     interpretations := [
       { domain := .real, leanConst := ``Real.sin, assurance := .formallyRelated, definedness := "everywhere",
@@ -216,6 +239,21 @@ def entries : List SymbolEntry := [
     interpretations := [Domain.real, Domain.complex].map fun d =>
       { domain := d, leanConst := ``Ne, assurance := .reviewed, definedness := "both operands defined",
         justification := "Propositional inequality; OSR conditions additionally require both operands to be defined." } },
+  { symbol := ⟨"set1", "in"⟩, arity := 2,
+    fragment := "conditions only, as `x ∈ setname1#Z`",
+    interpretations := [Domain.real, Domain.complex].map fun d =>
+      { domain := d, leanConst := ``Membership.mem, assurance := .reviewed,
+        definedness := "element defined",
+        justification := "Set membership; OSR conditions additionally require the element to be defined." } },
+  { symbol := ⟨"setname1", "Z"⟩, arity := 0,
+    fragment := "conditions only, as the set of `set1#in`",
+    interpretations := [Domain.real, Domain.complex].map fun d =>
+      { domain := d, leanConst := ``Set.range, assurance := .formallyRelated,
+        definedness := "constant",
+        justification := "The integers of the carrier, Set.range Int.cast (ℤ embeds in ℝ and ℂ).",
+        obligations := [
+          { cmp := "for all z | the statements z is an integer and z is a natural number or -z is a natural number are equivalent",
+            theoremName := ``setname1_Z_cmp }] } },
   { symbol := ⟨"relation1", "gt"⟩, arity := 2,
     fragment := "conditions only; no complex interpretation (ℂ is not ordered)",
     interpretations := [

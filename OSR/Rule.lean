@@ -30,6 +30,8 @@ inductive Cond where
   /-- The two expressions are defined and the first is greater than the second
   (`relation1#gt`). -/
   | gt (a b : Expr)
+  /-- The expression is defined and an integer (`set1#in` with `setname1#Z`). -/
+  | int (a : Expr)
   deriving DecidableEq, Repr, Inhabited, BEq
 
 namespace Cond
@@ -37,11 +39,13 @@ namespace Cond
 /-- Variables occurring in a condition. -/
 def vars : Cond → List String
   | .ne a b | .gt a b => (a.vars ++ b.vars).eraseDups
+  | .int a => a.vars
 
 /-- OpenMath symbols occurring in a condition (`relation1#neq` included). -/
 def symbols : Cond → List OMSymbol
   | .ne a b => (⟨"relation1", "neq"⟩ :: a.symbols ++ b.symbols).eraseDups
   | .gt a b => (⟨"relation1", "gt"⟩ :: a.symbols ++ b.symbols).eraseDups
+  | .int a => (⟨"set1", "in"⟩ :: ⟨"setname1", "Z"⟩ :: a.symbols).eraseDups
 
 variable {α : Type} [Field α]
 
@@ -49,6 +53,7 @@ variable {α : Type} [Field α]
 def Holds (I : Interp α) (env : String → α) : Cond → Prop
   | .ne a b => Defined I env a ∧ Defined I env b ∧ eval I env a ≠ eval I env b
   | .gt a b => Defined I env a ∧ Defined I env b ∧ I.lt (eval I env b) (eval I env a)
+  | .int a => Defined I env a ∧ ∃ n, I.toInt? (eval I env a) = some n
 
 end Cond
 
