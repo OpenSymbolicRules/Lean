@@ -479,12 +479,14 @@ def defaultWeight : Weight where
     | _ => a + 1
   op2 _ a b := a + b + 1
   pow a k := a + k + 1
+  powNeg a k := a + k + 2
   mono1 o a a' h := by
     cases o <;> simp only
     all_goals first | omega | exact Nat.pow_lt_pow_right (by norm_num) (by omega)
   mono2l _ _ _ _ h := by omega
   mono2r _ _ _ _ h := by omega
   monoPow _ _ _ h := by omega
+  monoPowNeg _ _ _ h := by omega
 
 /-- Weight of the `product_to_sum` profile. -/
 def productToSumWeight : Weight where
@@ -497,10 +499,12 @@ def productToSumWeight : Weight where
     | .mul => (a + 1) * (b + 1)
     | _ => a + b + 1
   pow a k := a + k + 1
+  powNeg a k := a + k + 2
   mono1 o a a' h := by cases o <;> simp only <;> omega
   mono2l o a a' b h := by cases o <;> simp only <;> first | omega | nlinarith
   mono2r o a b b' h := by cases o <;> simp only <;> first | omega | nlinarith
   monoPow _ _ _ h := by omega
+  monoPowNeg _ _ _ h := by omega
 
 /-- Weight of the `power_reduction` profile. -/
 def powerReductionWeight : Weight where
@@ -509,10 +513,12 @@ def powerReductionWeight : Weight where
   op1 _ a := a + 1
   op2 _ a b := a + b + 1
   pow a k := (a + 1) ^ (k + 1)
+  powNeg a k := a + k + 2
   mono1 _ _ _ h := by omega
   mono2l _ _ _ _ h := by omega
   mono2r _ _ _ _ h := by omega
   monoPow _ _ k h := Nat.pow_lt_pow_left (by omega) (by omega)
+  monoPowNeg _ _ _ h := by omega
 
 /-- Weight of the `sum_to_product` profile. -/
 def sumToProductWeight : Weight where
@@ -525,10 +531,12 @@ def sumToProductWeight : Weight where
     | .add | .sub => (a + 1) * (b + 1)
     | _ => a + b + 1
   pow a k := a + k + 1
+  powNeg a k := a + k + 2
   mono1 o a a' h := by cases o <;> simp only <;> omega
   mono2l o a a' b h := by cases o <;> simp only <;> first | omega | nlinarith
   mono2r o a b b' h := by cases o <;> simp only <;> first | omega | nlinarith
   monoPow _ _ _ h := by omega
+  monoPowNeg _ _ _ h := by omega
 
 /-- The weight proving termination of a profile. -/
 def weight : String → Weight

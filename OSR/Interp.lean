@@ -84,6 +84,7 @@ def eval (I : Interp α) (env : String → α) : Expr → α
   | .app2 .mul a b => eval I env a * eval I env b
   | .app2 .div a b => eval I env a / eval I env b
   | .powNat a n => eval I env a ^ n
+  | .powNeg a n => (eval I env a ^ (n + 1))⁻¹
 
 /-- Whether every operation in the expression is applied inside its domain of
 definition, following the OpenMath operation rather than Lean's totalization. -/
@@ -103,5 +104,6 @@ def Defined (I : Interp α) (env : String → α) : Expr → Prop
   | .app2 .sub a b => Defined I env a ∧ Defined I env b
   | .app2 .mul a b => Defined I env a ∧ Defined I env b
   | .powNat a _ => Defined I env a
+  | .powNeg a _ => Defined I env a ∧ eval I env a ≠ 0
 
 end OSR

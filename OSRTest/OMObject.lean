@@ -21,8 +21,12 @@ private def sinSym : OMSymbol := ⟨"transc1", "sin"⟩
 #guard decode (.oma ⟨"arith1", "times"⟩ [t, .omi 2]) == some (.app2 .mul (.var "t") (.int 2))
 #guard decode (.oma powerSymbol [t, .omi 2]) == some (.powNat (.var "t") 2)
 
--- Rejected: negative or symbolic exponents, wrong arity, unknown symbols.
-#guard decode (.oma powerSymbol [t, .omi (-1)]) == none
+-- Negative integer exponents decode to `powNeg`, with the offset by one.
+#guard decode (.oma powerSymbol [t, .omi (-1)]) == some (.powNeg (.var "t") 0)
+#guard decode (.oma powerSymbol [t, .omi (-3)]) == some (.powNeg (.var "t") 2)
+#guard decode (Expr.toOM (.powNeg (.var "t") 4)) == some (.powNeg (.var "t") 4)
+
+-- Rejected: symbolic exponents, wrong arity, unknown symbols.
 #guard decode (.oma powerSymbol [t, t]) == none
 #guard decode (.oma sinSym [t, t]) == none
 #guard decode (.oma sinSym []) == none

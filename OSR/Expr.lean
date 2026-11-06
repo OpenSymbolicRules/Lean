@@ -10,7 +10,8 @@ to produce the portable OpenMath JSON (through `Expr.toOMJson`), so the
 theorem and the export cannot drift apart.
 
 Unsupported constructs are not representable.  In particular, powers only take
-natural-number literal exponents, which avoids the totalization of `rpow` and
+integer literal exponents (`powNat` for natural ones, `powNeg` for negative
+ones, defined for a nonzero base), which avoids the totalization of `rpow` and
 `cpow` and the branch choices of non-integer powers.
 -/
 
@@ -78,6 +79,9 @@ inductive Expr where
   | app2 (op : Op2) (lhs rhs : Expr)
   /-- A power with a natural-number literal exponent. -/
   | powNat (base : Expr) (exponent : Nat)
+  /-- A power with a negative integer literal exponent: `powNeg a n` is
+  `a ^ (-(n + 1))`, encoded as `arith1#power` with the integer `-(n + 1)`. -/
+  | powNeg (base : Expr) (n : Nat)
   deriving DecidableEq, Repr, Inhabited, BEq
 
 namespace Expr
@@ -88,7 +92,7 @@ def vars : Expr → List String
   | .int _ | .const _ => []
   | .app1 _ a => a.vars
   | .app2 _ a b => (a.vars ++ b.vars).eraseDups
-  | .powNat a _ => a.vars
+  | .powNat a _ | .powNeg a _ => a.vars
 
 /-- OpenMath symbols occurring in an expression, in first-use order. -/
 def symbols : Expr → List OMSymbol
@@ -96,7 +100,7 @@ def symbols : Expr → List OMSymbol
   | .const c => [c.symbol]
   | .app1 op a => (op.symbol :: a.symbols).eraseDups
   | .app2 op a b => (op.symbol :: a.symbols ++ b.symbols).eraseDups
-  | .powNat a _ => (powerSymbol :: a.symbols).eraseDups
+  | .powNat a _ | .powNeg a _ => (powerSymbol :: a.symbols).eraseDups
 
 /-- Every OpenMath symbol the fragment can emit. -/
 def allSymbols : List OMSymbol :=
@@ -134,6 +138,7 @@ def toOMJson : Expr → Json
   | .app1 op a => omaJson op.symbol [a.toOMJson]
   | .app2 op a b => omaJson op.symbol [a.toOMJson, b.toOMJson]
   | .powNat a n => omaJson powerSymbol [a.toOMJson, omiJson n]
+  | .powNeg a n => omaJson powerSymbol [a.toOMJson, omiJson (-((n : Int) + 1))]
 
 end Expr
 

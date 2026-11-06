@@ -39,11 +39,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   emitted symbol at its arity (`registry_covers_toOM`).
 - `transc1#exp`, `transc1#ln` and `relation1#gt` conditions in the fragment
   and the registry (ℝ and ℂ for exp/ln; ℝ only for gt), with CMP obligations.
-- Algebra pilot (`OSR/Algebra.lean`): 15 of the 20 v0.1 rules proved
-  (ℝ: 15, ℂ: 14), two terminating profiles with termination proofs, engine
-  soundness; the 5 v0.1 rules outside the fragment are listed in
+- Algebra pilot (`OSR/Algebra.lean`): 16 of the 20 v0.1 rules proved
+  (ℝ: 16, ℂ: 15), two terminating profiles with termination proofs, engine
+  soundness; the 4 v0.1 rules with symbolic exponents are listed in
   `notMigrated` and in the report.  Exported as `algebra.osr.json` with its
-  report and 46 conformance cases.
+  report and conformance cases.
+- Negative integer literal exponents (`Expr.powNeg`, `arith1#power` with a
+  negative `OMI`), defined for a nonzero base, through the rewriter, the
+  termination weights and the OpenMath object model; they carry the Algebra
+  rule `x^(-1) = 1/x`.
 
 ### Changed
 - The exporter handles several rule sets (`RuleSet`, `ruleSets`); reports are

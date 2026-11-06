@@ -5,8 +5,8 @@ import OSR.Termination
 # Algebra
 
 Migration of `OpenSymbolicRules/Algebra` at commit
-`e8152ba57aa7a10a270a1e9ed16f75bede335ad1`: 15 of its 20 rules.  The other
-five use exponents the fragment does not represent (symbolic or negative)
+`e8152ba57aa7a10a270a1e9ed16f75bede335ad1`: 16 of its 20 rules.  The other
+four use symbolic exponents, which the fragment does not represent
 (`notMigrated`).
 
 Changes of representation relative to OSR v0.1, none of which changes the
@@ -15,7 +15,8 @@ mathematical statement:
 * `Log` and `Exp` become `transc1#ln` and `transc1#exp`;
 * `PositiveQ a` becomes the condition `a > 0` (`relation1#gt`), `NonzeroQ x`
   becomes `x ≠ 0` (`relation1#neq`);
-* `Power` with a literal natural exponent becomes a natural-number power.
+* `Power` with a literal integer exponent becomes a natural-number power
+  (`powNat`) or a negative one (`powNeg`).
 
 `relation1#gt` has no complex interpretation, so the logarithm-of-a-product
 rule is stated and certified over ℝ only.
@@ -76,6 +77,19 @@ def powZero : Rule where
   priority := 40
   description := "Zero power: x^0 = 1 for x != 0"
   provenance := migrated "algebra:1-powers/1.1-basic-exponents:4"
+
+/-- `x^(-1) ⟶ 1/x` for `x ≠ 0`. -/
+def powNegOne : Rule where
+  id := "algebra.power.neg_one"
+  legacyId := some "algebra:1-powers/1.1-basic-exponents:5"
+  vars := ["x"]
+  lhs := .powNeg x 0
+  rhs := .app2 .div one x
+  conditions := [.ne x zero]
+  profiles := ["default"]
+  priority := 50
+  description := "Inverse power: x^(-1) = 1/x for x != 0"
+  provenance := migrated "algebra:1-powers/1.1-basic-exponents:5"
 
 /-! ## Logarithms -/
 
@@ -250,8 +264,6 @@ def notMigrated : List (String × String) := [
     "(x^p)^q = x^(p*q) with integer variables p, q: the fragment has no integer-valued variables or symbolic exponents"),
   ("algebra:1-powers/1.1-basic-exponents:2",
     "x^p * x^q = x^(p+q) with integer variables p, q: the fragment has no integer-valued variables or symbolic exponents"),
-  ("algebra:1-powers/1.1-basic-exponents:5",
-    "x^(-1) = 1/x: the fragment only has natural-number exponents"),
   ("algebra:1-powers/1.1-basic-exponents:6",
     "1^x = 1 with a symbolic exponent: general arith1#power (exp(a ln x)) is outside the fragment"),
   ("algebra:2-logarithms/2.1-basic-logarithms:2",
@@ -282,6 +294,14 @@ theorem powZero_real : powZero.Holds .real := by
 
 theorem powZero_complex : powZero.Holds .complex := by
   alg_intro powZero Interp.complex; exact pow_zero _
+
+theorem powNegOne_real : powNegOne.Holds .real := by
+  alg_intro powNegOne Interp.real
+  exact ⟨hd, by simp⟩
+
+theorem powNegOne_complex : powNegOne.Holds .complex := by
+  alg_intro powNegOne Interp.complex
+  exact ⟨hd, by simp⟩
 
 theorem lnMul_real : lnMul.Holds .real := by
   alg_intro lnMul Interp.real
@@ -374,6 +394,9 @@ def catalog : List CatalogEntry := [
   { rule := powZero, ruleDecl := ``powZero,
     proofs := [(.real, ``powZero_real), (.complex, ``powZero_complex)],
     findings := ["semantics: x^0 = 1 holds in Lean for every x, including 0; the v0.1 condition x != 0 is kept, so the rule is not strengthened."] },
+  { rule := powNegOne, ruleDecl := ``powNegOne,
+    proofs := [(.real, ``powNegOne_real), (.complex, ``powNegOne_complex)],
+    findings := ["semantics: x^(-1) is defined only for x != 0, so the v0.1 condition repeats the definedness of the pattern; it is kept."] },
   { rule := lnMul, ruleDecl := ``lnMul,
     proofs := [(.real, ``lnMul_real)],
     findings := ["complex: not stated; the condition a > 0 (relation1#gt) has no complex interpretation."] },
@@ -413,7 +436,7 @@ def profileRules (p : String) : List Rule :=
   (catalog.map (·.rule)).filter (p ∈ ·.profiles)
 
 theorem profileRules_default :
-    profileRules "default" = [powOne, powZero, lnMul, expLn, distribute, addZero, zeroAdd,
+    profileRules "default" = [powOne, powZero, powNegOne, lnMul, expLn, distribute, addZero, zeroAdd,
       mulOne, oneMul, mulZero, zeroMul] :=
   rfl
 
@@ -435,12 +458,14 @@ def defaultWeight : Weight where
     | .mul => (a + 2) * (b + 2)
     | _ => a + b + 5
   pow a k := a + k + 2
+  powNeg a k := a + k + 7
   mono1 o a a' h := by
     cases o <;> simp only
     all_goals first | omega | exact Nat.pow_lt_pow_right (by norm_num) (by omega)
   mono2l o a a' b h := by cases o <;> simp only <;> first | omega | nlinarith
   mono2r o a b b' h := by cases o <;> simp only <;> first | omega | nlinarith
   monoPow _ _ _ h := by omega
+  monoPowNeg _ _ _ h := by omega
 
 /-- Weight of the `factor_polynomials` profile: every operator adds one, so
 factoring removes one occurrence of the common factor. -/
@@ -450,10 +475,12 @@ def factorWeight : Weight where
   op1 _ a := a + 1
   op2 _ a b := a + b + 1
   pow a k := a + k + 1
+  powNeg a k := a + k + 2
   mono1 _ _ _ h := by omega
   mono2l _ _ _ _ h := by omega
   mono2r _ _ _ _ h := by omega
   monoPow _ _ _ h := by omega
+  monoPowNeg _ _ _ h := by omega
 
 private theorem lnMul_decreases (p q : Nat) :
     4 ^ (p + 1) + 4 ^ (q + 1) + 5 < 4 ^ ((p + 2) * (q + 2) + 1) := by
@@ -471,9 +498,10 @@ private theorem lnMul_decreases (p q : Nat) :
 theorem default_decreasing : ∀ r ∈ profileRules "default", defaultWeight.Decreases r := by
   rw [profileRules_default]
   simp only [List.forall_mem_cons, List.not_mem_nil, IsEmpty.forall_iff, implies_true, and_true]
-  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> intro env <;>
-    simp only [Weight.eval, defaultWeight, powOne, powZero, lnMul, expLn, distribute, addZero,
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> intro env <;>
+    simp only [Weight.eval, defaultWeight, powOne, powZero, powNegOne, lnMul, expLn, distribute, addZero,
       zeroAdd, mulOne, oneMul, mulZero, zeroMul]
+  · omega
   · omega
   · omega
   · exact lnMul_decreases _ _
@@ -498,14 +526,14 @@ private theorem catalog_closed : ∀ e ∈ catalog, e.rule.rhsClosed = true := b
   intro e he
   simp only [catalog, List.mem_cons, List.mem_nil_iff, or_false] at he
   rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl <;> decide
 
 private theorem unconditional_holds (d : Domain) :
     ∀ e ∈ catalog, e.rule.conditions.isEmpty → e.rule.Holds d := by
   intro e he hc
   simp only [catalog, List.mem_cons, List.mem_nil_iff, or_false] at he
   rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl <;> simp [powZero, lnMul, expLn] at hc <;> cases d
+    rfl | rfl | rfl | rfl <;> simp [powZero, powNegOne, lnMul, expLn] at hc <;> cases d
   all_goals first
     | exact powOne_real | exact powOne_complex | exact distribute_real
     | exact distribute_complex | exact factorLeftAdd_real | exact factorLeftAdd_complex

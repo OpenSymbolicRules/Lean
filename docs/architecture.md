@@ -70,7 +70,7 @@ OSR/OMObject.lean      OpenMath object model; faithfulness of the export
 OSR/Catalog.lean       catalogue entries and the `osr_intro` proof helper
 OSR/Trigonometry.lean  the pilot rules, their proofs, profiles and engine
                        soundness and termination per profile
-OSR/Algebra.lean       Algebra rules (15 of 20), same structure
+OSR/Algebra.lean       Algebra rules (16 of 20), same structure
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
                        generation of rule set, reports and conformance cases

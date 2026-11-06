@@ -63,6 +63,7 @@ def toOM : Expr → OMObj
   | .app1 op a => .oma op.symbol [a.toOM]
   | .app2 op a b => .oma op.symbol [a.toOM, b.toOM]
   | .powNat a n => .oma powerSymbol [a.toOM, .omi n]
+  | .powNeg a n => .oma powerSymbol [a.toOM, .omi (-((n : Int) + 1))]
 
 theorem toOMJson_eq_toJson_toOM : ∀ e : Expr, e.toOMJson = e.toOM.toJson
   | .var n => by simp [toOMJson, toOM, OMObj.toJson]
@@ -73,6 +74,8 @@ theorem toOMJson_eq_toJson_toOM : ∀ e : Expr, e.toOMJson = e.toOM.toJson
   | .app2 op a b => by
     simp [toOMJson, toOM, OMObj.toJson, toOMJson_eq_toJson_toOM a, toOMJson_eq_toJson_toOM b]
   | .powNat a n => by
+    simp [toOMJson, toOM, OMObj.toJson, toOMJson_eq_toJson_toOM a]
+  | .powNeg a n => by
     simp [toOMJson, toOM, OMObj.toJson, toOMJson_eq_toJson_toOM a]
 
 end Expr
@@ -125,7 +128,8 @@ def decode : OMObj → Option Expr
     return .app1 o (← decode a)
   | .oma h [a, .omi k] =>
     if h = powerSymbol then
-      if 0 ≤ k then return .powNat (← decode a) k.toNat else none
+      if 0 ≤ k then return .powNat (← decode a) k.toNat
+      else return .powNeg (← decode a) (-k - 1).toNat
     else do
       let o ← decodeOp2 h
       return .app2 o (← decode a) (.int k)
@@ -147,6 +151,10 @@ theorem decode_toOM : ∀ e : Expr, decode e.toOM = some e
     have hne : o.symbol ≠ powerSymbol := by cases o <;> decide
     cases b <;> simp_all [Expr.toOM, decode, decodeOp2_symbol, decodeConst_symbol]
   | .powNat a n => by simp [Expr.toOM, decode, decode_toOM a]
+  | .powNeg a n => by
+    simp only [Expr.toOM, decode, decode_toOM a]
+    simp
+    omega
 
 /-- The value of an OpenMath object read through its symbols. -/
 def evalOM {α : Type} [Field α] (I : Interp α) (env : String → α) (o : OMObj) : Option α :=
@@ -195,6 +203,16 @@ theorem symbolsWithArity_toOM_mem :
       · exact symbolsWithArity_toOM_mem a p hp
       · exact symbolsWithArity_toOM_mem b p hp
   | .powNat a k => by
+    intro p hp
+    simp only [Expr.toOM, OMObj.symbolsWithArity, List.mem_cons] at hp
+    rcases hp with rfl | hp
+    · simp [fragmentSymbols]
+    · simp only [List.attach_cons, List.attach_nil, List.map_cons, List.map_nil,
+        List.flatMap_cons, List.flatMap_nil, List.append_nil, List.mem_append] at hp
+      rcases hp with hp | hp
+      · exact symbolsWithArity_toOM_mem a p hp
+      · simp [OMObj.symbolsWithArity] at hp
+  | .powNeg a k => by
     intro p hp
     simp only [Expr.toOM, OMObj.symbolsWithArity, List.mem_cons] at hp
     rcases hp with rfl | hp

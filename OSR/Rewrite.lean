@@ -60,6 +60,7 @@ def subst (σ : Subst) : Expr → Expr
   | .app1 o a => .app1 o (a.subst σ)
   | .app2 o a b => .app2 o (a.subst σ) (b.subst σ)
   | .powNat a k => .powNat (a.subst σ) k
+  | .powNeg a k => .powNeg (a.subst σ) k
 
 /-- Variable occurrences, with repetitions, left to right. -/
 def varList : Expr → List String
@@ -67,7 +68,7 @@ def varList : Expr → List String
   | .int _ | .const _ => []
   | .app1 _ a => a.varList
   | .app2 _ a b => a.varList ++ b.varList
-  | .powNat a _ => a.varList
+  | .powNat a _ | .powNeg a _ => a.varList
 
 end Expr
 
@@ -87,6 +88,7 @@ def matchAux : Expr → Expr → Subst → Option Subst
       | none => none
     else none
   | .powNat a k, .powNat a' k', σ => if k = k' then matchAux a a' σ else none
+  | .powNeg a k, .powNeg a' k', σ => if k = k' then matchAux a a' σ else none
   | _, _, _ => none
 
 /-- Match a pattern against an expression from the empty substitution. -/
@@ -163,6 +165,14 @@ theorem matchAux_spec : ∀ (p e : Expr) (σ σ' : Subst), matchAux p e σ = som
       obtain ⟨hext, hsub⟩ := matchAux_spec a a' σ σ' h
       exact ⟨hext, fun τ hτ => by simp [Expr.subst, hsub τ hτ, hk]⟩
     · cases h
+  | .powNeg a k, e, σ, σ', h => by
+    cases e <;> simp only [matchAux, reduceCtorEq] at h
+    rename_i a' k'
+    split at h
+    · rename_i hk
+      obtain ⟨hext, hsub⟩ := matchAux_spec a a' σ σ' h
+      exact ⟨hext, fun τ hτ => by simp [Expr.subst, hsub τ hτ, hk]⟩
+    · cases h
 
 theorem matchExpr_subst {p e : Expr} {σ : Subst} (h : matchExpr p e = some σ) :
     p.subst σ = e :=
@@ -186,6 +196,7 @@ theorem eval_subst (I : Interp α) (env : String → α) (σ : Subst) :
   | .app2 o a b => by
     cases o <;> simp [Expr.subst, eval, eval_subst I env σ a, eval_subst I env σ b]
   | .powNat a k => by simp [Expr.subst, eval, eval_subst I env σ a]
+  | .powNeg a k => by simp [Expr.subst, eval, eval_subst I env σ a]
 
 theorem defined_subst (I : Interp α) (env : String → α) (σ : Subst) :
     ∀ e : Expr, Defined I env (e.subst σ) ↔
@@ -204,6 +215,9 @@ theorem defined_subst (I : Interp α) (env : String → α) (σ : Subst) :
         or_imp, forall_and] <;> tauto
   | .powNat a k => by
     simp only [Expr.subst, Defined, Expr.varList, defined_subst I env σ a]
+  | .powNeg a k => by
+    simp only [Expr.subst, Defined, Expr.varList, defined_subst I env σ a, eval_subst]
+    tauto
 
 end Semantics
 
@@ -270,6 +284,13 @@ def rewriteStep (rules : List Rule) : Expr → Option (String × Expr)
       match rewriteStep rules a with
       | some s => some (s.1, .powNat s.2 k)
       | none => none
+  | .powNeg a k =>
+    match rootRewrite rules (.powNeg a k) with
+    | some s => some s
+    | none =>
+      match rewriteStep rules a with
+      | some s => some (s.1, .powNeg s.2 k)
+      | none => none
   | e => rootRewrite rules e
 
 /-- Outcome of `normalize`. -/
@@ -335,6 +356,13 @@ theorem Preserves.powNat (k : Nat) {a a' : Expr} (h : Preserves I env a a') :
   intro hd
   obtain ⟨h₁, h₂⟩ := h hd
   exact ⟨h₁, by rw [h₂]⟩
+
+theorem Preserves.powNeg (k : Nat) {a a' : Expr} (h : Preserves I env a a') :
+    Preserves I env (.powNeg a k) (.powNeg a' k) := by
+  simp only [Preserves, Defined, eval] at h ⊢
+  intro hd
+  obtain ⟨h₁, h₂⟩ := h hd.1
+  exact ⟨⟨h₁, by rw [← h₂]; exact hd.2⟩, by rw [h₂]⟩
 
 theorem rootRewrite_sound : ∀ (rules : List Rule) (e : Expr) (s : String × Expr),
     RulesSound I rules → rootRewrite rules e = some s → Preserves I env e s.2
@@ -404,6 +432,19 @@ theorem rewriteStep_sound (rules : List Rule) (hr : RulesSound I rules) :
         simp only [Option.some.injEq] at h
         subst h
         exact Preserves.powNat k (rewriteStep_sound rules hr a s' hs)
+      · cases h
+  | .powNeg a k, s, h => by
+    simp only [rewriteStep] at h
+    split at h
+    · rename_i s' hroot
+      simp only [Option.some.injEq] at h
+      subst h
+      exact rootRewrite_sound rules _ s' hr hroot
+    · split at h
+      · rename_i s' hs
+        simp only [Option.some.injEq] at h
+        subst h
+        exact Preserves.powNeg k (rewriteStep_sound rules hr a s' hs)
       · cases h
 
 /-- **Engine soundness.**  Normalizing a defined expression with sound rules
