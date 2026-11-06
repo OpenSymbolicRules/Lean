@@ -41,11 +41,14 @@ private def render (e : Expr) : String := (Expr.toOMJson e).compress
 -- Every symbol the expression language can emit is present in the registry.
 #guard Expr.allSymbols.all fun s => (Registry.lookup s).isSome
 
--- Each symbol has exactly one registry entry and every entry covers both domains.
+-- Each symbol has exactly one registry entry.  Every entry covers ℝ, and every
+-- entry except `relation1#gt` (ℂ is not ordered) covers ℂ.
 #guard Registry.entries.all fun e =>
   (Registry.entries.filter (·.symbol == e.symbol)).length == 1
+#guard Registry.entries.all fun e => (e.interpretation? .real).isSome
 #guard Registry.entries.all fun e =>
-  [Domain.real, Domain.complex].all fun d => (e.interpretation? d).isSome
+  (e.interpretation? .complex).isSome || e.symbol == ⟨"relation1", "gt"⟩
+#guard Registry.mappingAssurance [⟨"relation1", "gt"⟩] .complex == .unsupported
 
 -- Symbols of an expression are collected without duplicates, in first-use order.
 #guard (Expr.symbols (.app2 .add (.powNat (.app1 .sin (.var "x")) 2)

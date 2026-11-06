@@ -66,6 +66,16 @@ theorem complex_cos_cmp3 (a : ℂ) : Complex.cos a = Complex.cos (-a) := (Comple
 theorem pow_cmp2 {α : Type} [Monoid α] (x : α) (n : ℕ) : x ^ (n + 1) = x * x ^ n :=
   pow_succ' x n
 
+/-- `transc1#exp` CMP: `e^(z + 2πki) = e^z` for every integer `k` (complex). -/
+theorem complex_exp_cmp (z : ℂ) (k : ℤ) :
+    Complex.exp (z + 2 * Real.pi * k * Complex.I) = Complex.exp z := by
+  rw [Complex.exp_add]
+  have : (2 * Real.pi * k * Complex.I : ℂ) = k * (2 * Real.pi * Complex.I) := by ring
+  rw [this, Complex.exp_int_mul_two_pi_mul_I, mul_one]
+
+/-- `relation1#gt` CMP: `a > b ∧ b > c → a > c` (real). -/
+theorem real_gt_cmp (a b c : ℝ) (h₁ : a > b) (h₂ : b > c) : a > c := lt_trans h₂ h₁
+
 /-! ## Entries -/
 
 private def arithInterp (d : Domain) (c : Lean.Name) (obl : List Obligation)
@@ -166,6 +176,36 @@ def entries : List SymbolEntry := [
           "Mathlib defines arctan z = -i/2 · log((1 + z i)/(1 - z i)); CMP 1 is (i/2) ln((1 - i z)/(1 + i z)). Equality off the branch cuts is not proved here.",
           "Values on the branch cuts (z = i y, |y| > 1) depend on the logarithm's cut convention; agreement with OpenMath there is unverified.",
           "Complex.arctan_tan requires -(π/2) < re z ≤ π/2 and z ≠ π/2, not the open real interval of CMP 2."] }] },
+  { symbol := ⟨"transc1", "exp"⟩, arity := 1,
+    interpretations := [
+      { domain := .real, leanConst := ``Real.exp, assurance := .formallyRelated,
+        definedness := "everywhere",
+        justification := "The real exponential; the restriction of the complex one.",
+        obligations := [
+          { cmp := "(real/complex agreement)", theoremName := ``Complex.ofReal_exp,
+            note := "not a CMP; relates the real and complex interpretations" }] },
+      { domain := .complex, leanConst := ``Complex.exp, assurance := .formallyRelated,
+        definedness := "everywhere",
+        justification := "The complex exponential (power series), as in Abramowitz and Stegun 4.2.",
+        obligations := [
+          { cmp := "for all k if k is an integer then e^(z+2*pi*k*i)=e^z",
+            theoremName := ``complex_exp_cmp }] }] },
+  { symbol := ⟨"transc1", "ln"⟩, arity := 1,
+    interpretations := [
+      { domain := .real, leanConst := ``Real.log, assurance := .formallyRelated,
+        definedness := "x > 0 (Lean totalizes: log 0 = 0, log (-x) = log x)",
+        justification := "The natural logarithm on the positive reals, where it agrees with the principal complex logarithm.",
+        obligations := [
+          { cmp := "(real/complex agreement)", theoremName := ``Complex.ofReal_log,
+            note := "not a CMP; for x ≥ 0 the real logarithm is the principal complex one" }] },
+      { domain := .complex, leanConst := ``Complex.log, assurance := .formallyRelated,
+        definedness := "z ≠ 0 (Lean assigns log 0 = 0)",
+        justification := "Principal logarithm log |z| + i arg z with arg in (-π, π], the branch cut of the CMP.",
+        obligations := [
+          { cmp := "-pi < Im ln x <= pi", theoremName := ``Complex.neg_pi_lt_log_im,
+            note := "lower bound" },
+          { cmp := "-pi < Im ln x <= pi", theoremName := ``Complex.log_im_le_pi,
+            note := "upper bound" }] }] },
   { symbol := ⟨"nums1", "pi"⟩, arity := 0,
     interpretations := [
       { domain := .real, leanConst := ``Real.pi, assurance := .reviewed, definedness := "constant",
@@ -175,7 +215,14 @@ def entries : List SymbolEntry := [
   { symbol := ⟨"relation1", "neq"⟩, arity := 2,
     interpretations := [Domain.real, Domain.complex].map fun d =>
       { domain := d, leanConst := ``Ne, assurance := .reviewed, definedness := "both operands defined",
-        justification := "Propositional inequality; OSR conditions additionally require both operands to be defined." } }
+        justification := "Propositional inequality; OSR conditions additionally require both operands to be defined." } },
+  { symbol := ⟨"relation1", "gt"⟩, arity := 2,
+    fragment := "conditions only; no complex interpretation (ℂ is not ordered)",
+    interpretations := [
+      { domain := .real, leanConst := ``GT.gt, assurance := .formallyRelated,
+        definedness := "both operands defined",
+        justification := "The order of the reals; OSR conditions additionally require both operands to be defined.",
+        obligations := [{ cmp := "a>b and b>c implies a>c", theoremName := ``real_gt_cmp }] }] }
 ]
 
 /-- Look up the entry of an OpenMath symbol.  Unknown symbols return `none`

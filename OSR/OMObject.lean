@@ -90,6 +90,8 @@ def decodeOp1 (s : OMSymbol) : Option Op1 :=
   else if s = ⟨"transc1", "cos"⟩ then some .cos
   else if s = ⟨"transc1", "tan"⟩ then some .tan
   else if s = ⟨"transc1", "arctan"⟩ then some .arctan
+  else if s = ⟨"transc1", "exp"⟩ then some .exp
+  else if s = ⟨"transc1", "ln"⟩ then some .ln
   else none
 
 /-- The binary operation named by an OpenMath symbol. -/
@@ -165,7 +167,7 @@ theorem toOM_injective {e f : Expr} (h : e.toOM = f.toOM) : e = f := by
 
 /-- Symbols with the arity the fragment uses them at. -/
 def fragmentSymbols : List (OMSymbol × Nat) :=
-  [Op1.neg, .sin, .cos, .tan, .arctan].map (fun o => (o.symbol, 1)) ++
+  [Op1.neg, .sin, .cos, .tan, .arctan, .exp, .ln].map (fun o => (o.symbol, 1)) ++
   [Op2.add, .sub, .mul, .div].map (fun o => (o.symbol, 2)) ++
   [Const.pi].map (fun c => (c.symbol, 0)) ++ [(powerSymbol, 2)]
 

@@ -27,23 +27,28 @@ namespace OSR
 inductive Cond where
   /-- The two expressions are defined and have different values. -/
   | ne (a b : Expr)
+  /-- The two expressions are defined and the first is greater than the second
+  (`relation1#gt`). -/
+  | gt (a b : Expr)
   deriving DecidableEq, Repr, Inhabited, BEq
 
 namespace Cond
 
 /-- Variables occurring in a condition. -/
 def vars : Cond → List String
-  | .ne a b => (a.vars ++ b.vars).eraseDups
+  | .ne a b | .gt a b => (a.vars ++ b.vars).eraseDups
 
 /-- OpenMath symbols occurring in a condition (`relation1#neq` included). -/
 def symbols : Cond → List OMSymbol
   | .ne a b => (⟨"relation1", "neq"⟩ :: a.symbols ++ b.symbols).eraseDups
+  | .gt a b => (⟨"relation1", "gt"⟩ :: a.symbols ++ b.symbols).eraseDups
 
 variable {α : Type} [Field α]
 
 /-- Meaning of a condition. -/
 def Holds (I : Interp α) (env : String → α) : Cond → Prop
   | .ne a b => Defined I env a ∧ Defined I env b ∧ eval I env a ≠ eval I env b
+  | .gt a b => Defined I env a ∧ Defined I env b ∧ I.lt (eval I env b) (eval I env a)
 
 end Cond
 

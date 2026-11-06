@@ -27,7 +27,8 @@ private def sinSym : OMSymbol := ⟨"transc1", "sin"⟩
 #guard decode (.oma sinSym [t, t]) == none
 #guard decode (.oma sinSym []) == none
 #guard decode (.oma ⟨"arith1", "plus"⟩ [t]) == none
-#guard decode (.oma ⟨"transc1", "exp"⟩ [t]) == none
+#guard decode (.oma ⟨"transc1", "sinh"⟩ [t]) == none
+#guard decode (.oma ⟨"transc1", "exp"⟩ [t]) == some (.app1 .exp (.var "t"))
 #guard decode (.oms ⟨"nums1", "e"⟩) == none
 
 -- The registry knows every symbol of the fragment at its arity.

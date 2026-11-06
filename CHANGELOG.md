@@ -37,8 +37,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   serialization of `Expr.toOM`, decoding by symbol identity recovers the
   expression (`decode_toOM`, `evalOM_toOM`), and the registry covers every
   emitted symbol at its arity (`registry_covers_toOM`).
+- `transc1#exp`, `transc1#ln` and `relation1#gt` conditions in the fragment
+  and the registry (ℝ and ℂ for exp/ln; ℝ only for gt), with CMP obligations.
+- Algebra pilot (`OSR/Algebra.lean`): 15 of the 20 v0.1 rules proved
+  (ℝ: 15, ℂ: 14), two terminating profiles with termination proofs, engine
+  soundness; 5 v0.1 entries outside the fragment are listed in `notMigrated`.
+  Not yet exported.
 
 ### Changed
+- `RulesSound` only requires the unconditional rules of a profile to be
+  sound, since the reference engine never applies conditional rules.
 - Trigonometry profiles: the v0.1 `default` and `sum_to_product` profiles
   cycle; they are replaced by `default` (expansion), `product_to_sum`,
   `power_reduction` and `sum_to_product`.

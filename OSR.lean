@@ -8,4 +8,5 @@ import OSR.Semantics
 import OSR.OMObject
 import OSR.Catalog
 import OSR.Trigonometry
+import OSR.Algebra
 import OSR.Export

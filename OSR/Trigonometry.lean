@@ -427,14 +427,14 @@ private theorem catalog_sound_complex :
     ⟨cosSubCos_complex, by decide⟩, ⟨tanArctan_complex, by decide⟩]
 
 theorem profileRules_sound_real (p : String) : RulesSound Interp.real (profileRules p) := by
-  intro r hr
+  intro r hr _
   simp only [profileRules, List.mem_filter, List.mem_map] at hr
   obtain ⟨⟨e, he, rfl⟩, _⟩ := hr
   exact catalog_sound_real e he
 
 theorem profileRules_sound_complex (p : String) :
     RulesSound Interp.complex (profileRules p) := by
-  intro r hr
+  intro r hr _
   simp only [profileRules, List.mem_filter, List.mem_map] at hr
   obtain ⟨⟨e, he, rfl⟩, _⟩ := hr
   exact catalog_sound_complex e he

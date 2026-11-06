@@ -23,6 +23,8 @@ inductive Op1 where
   | cos
   | tan
   | arctan
+  | exp
+  | ln
   deriving DecidableEq, Repr, Inhabited, BEq
 
 /-- Binary operators of the fragment. -/
@@ -45,6 +47,8 @@ def Op1.symbol : Op1 → OMSymbol
   | .cos => ⟨"transc1", "cos"⟩
   | .tan => ⟨"transc1", "tan"⟩
   | .arctan => ⟨"transc1", "arctan"⟩
+  | .exp => ⟨"transc1", "exp"⟩
+  | .ln => ⟨"transc1", "ln"⟩
 
 /-- The OpenMath symbol of a binary operator. -/
 def Op2.symbol : Op2 → OMSymbol
@@ -96,7 +100,7 @@ def symbols : Expr → List OMSymbol
 
 /-- Every OpenMath symbol the fragment can emit. -/
 def allSymbols : List OMSymbol :=
-  [Op1.neg, .sin, .cos, .tan, .arctan].map Op1.symbol ++
+  [Op1.neg, .sin, .cos, .tan, .arctan, .exp, .ln].map Op1.symbol ++
   [Op2.add, .sub, .mul, .div].map Op2.symbol ++
   [Const.pi].map Const.symbol ++ [powerSymbol]
 

@@ -21,11 +21,18 @@ structure Interp (α : Type) where
   cos : α → α
   tan : α → α
   arctan : α → α
+  exp : α → α
+  ln : α → α
   pi : α
   /-- Where OpenMath `transc1#tan` is defined. -/
   tanDefined : α → Prop
   /-- Where OpenMath `transc1#arctan` is defined. -/
   arctanDefined : α → Prop
+  /-- Where OpenMath `transc1#ln` is defined. -/
+  lnDefined : α → Prop
+  /-- The order used by `relation1#gt` conditions, `lt a b` meaning `a < b`.
+  Only the real interpretation is an OpenMath mapping; see the registry. -/
+  lt : α → α → Prop
 
 /-- Real interpretation, using Mathlib's `Real` functions. -/
 noncomputable def Interp.real : Interp ℝ where
@@ -33,9 +40,13 @@ noncomputable def Interp.real : Interp ℝ where
   cos := Real.cos
   tan := Real.tan
   arctan := Real.arctan
+  exp := Real.exp
+  ln := Real.log
   pi := Real.pi
   tanDefined x := Real.cos x ≠ 0
   arctanDefined _ := True
+  lnDefined x := 0 < x
+  lt x y := x < y
 
 /-- Complex interpretation, using Mathlib's `Complex` functions. -/
 noncomputable def Interp.complex : Interp ℂ where
@@ -43,9 +54,15 @@ noncomputable def Interp.complex : Interp ℂ where
   cos := Complex.cos
   tan := Complex.tan
   arctan := Complex.arctan
+  exp := Complex.exp
+  ln := Complex.log
   pi := (Real.pi : ℂ)
   tanDefined z := Complex.cos z ≠ 0
   arctanDefined z := z ≠ Complex.I ∧ z ≠ -Complex.I
+  lnDefined z := z ≠ 0
+  -- Not an OpenMath mapping (`relation1#gt` has no complex interpretation):
+  -- both operands real and ordered.
+  lt z w := z.im = 0 ∧ w.im = 0 ∧ z.re < w.re
 
 variable {α : Type} [Field α]
 
@@ -60,6 +77,8 @@ def eval (I : Interp α) (env : String → α) : Expr → α
   | .app1 .cos a => I.cos (eval I env a)
   | .app1 .tan a => I.tan (eval I env a)
   | .app1 .arctan a => I.arctan (eval I env a)
+  | .app1 .exp a => I.exp (eval I env a)
+  | .app1 .ln a => I.ln (eval I env a)
   | .app2 .add a b => eval I env a + eval I env b
   | .app2 .sub a b => eval I env a - eval I env b
   | .app2 .mul a b => eval I env a * eval I env b
@@ -74,6 +93,8 @@ def Defined (I : Interp α) (env : String → α) : Expr → Prop
   | .const _ => True
   | .app1 .tan a => Defined I env a ∧ I.tanDefined (eval I env a)
   | .app1 .arctan a => Defined I env a ∧ I.arctanDefined (eval I env a)
+  | .app1 .ln a => Defined I env a ∧ I.lnDefined (eval I env a)
+  | .app1 .exp a => Defined I env a
   | .app1 .neg a => Defined I env a
   | .app1 .sin a => Defined I env a
   | .app1 .cos a => Defined I env a

@@ -72,6 +72,7 @@ def omv (n : String) : Json := Json.mkObj [("kind", str "OMV"), ("name", str n)]
 /-- A condition as an OpenMath application. -/
 def condJson : Cond → Json
   | .ne a b => Expr.omaJson ⟨"relation1", "neq"⟩ [a.toOMJson, b.toOMJson]
+  | .gt a b => Expr.omaJson ⟨"relation1", "gt"⟩ [a.toOMJson, b.toOMJson]
 
 /-- Provenance as JSON. -/
 def provenanceJson (p : Provenance) : Json :=

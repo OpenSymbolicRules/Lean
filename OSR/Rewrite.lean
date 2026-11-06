@@ -296,9 +296,10 @@ section EngineSoundness
 
 variable {α : Type} [Field α] {I : Interp α} {env : String → α}
 
-/-- The rules an engine may apply soundly. -/
+/-- The rules an engine may apply soundly.  The engine never applies a rule
+with conditions, so only the unconditional rules need to be sound. -/
 def RulesSound (I : Interp α) (rules : List Rule) : Prop :=
-  ∀ r ∈ rules, r.Sound I ∧ r.rhsClosed = true
+  ∀ r ∈ rules, r.conditions.isEmpty → r.Sound I ∧ r.rhsClosed = true
 
 /-- "`a` may be replaced by `a'`": definedness and value are preserved. -/
 def Preserves (I : Interp α) (env : String → α) (a a' : Expr) : Prop :=
@@ -347,7 +348,7 @@ theorem rootRewrite_sound : ∀ (rules : List Rule) (e : Expr) (s : String × Ex
       · rename_i σ hm
         simp only [Option.some.injEq] at h
         subst h
-        obtain ⟨hs, hc⟩ := hr r List.mem_cons_self
+        obtain ⟨hs, hc⟩ := hr r List.mem_cons_self hempty
         intro hd
         refine Rule.rewrite_sound hs hc hm (fun c hc' => ?_) hd
         simp only [List.isEmpty_iff] at hempty
