@@ -186,6 +186,11 @@ structure BRule where
   priority : Nat
   description : String
   provenance : Provenance
+  /-- Matching constraints: `(p, x)` means that the subterm matched by `p` must
+  not mention the variable bound by the binder `x` ("p free of x", v0.1
+  `FreeQ`).  This is a constraint on the match, like the treatment of bound
+  variables, not a mathematical condition. -/
+  independent : List (String × String) := []
   deriving Repr, Inhabited, BEq
 
 /-- The certified statement: both sides have the same truth value for every
@@ -193,9 +198,66 @@ renaming of the bound variables, every meaning of the metavariables (any
 function of the assignment) and every assignment. -/
 def BRule.Holds (r : BRule) : Prop :=
   ∀ (ν : String → String) (I : String → (String → Bool) → Bool) (ρ : String → Bool),
+    (∀ q ∈ r.independent, ∀ (ρ' : String → Bool) (v : Bool),
+      I q.1 (upd ρ' (ν q.2) v) = I q.1 ρ') →
     (r.lhs.rename ν).evalM I ρ = (r.rhs.rename ν).evalM I ρ
 
 def BRule.symbols (r : BRule) : List OMSymbol := (r.lhs.symbols ++ r.rhs.symbols).eraseDups
+
+/-- Free variables of a formula. -/
+def BExpr.free : BExpr → List String
+  | .var n => [n]
+  | .tt | .ff => []
+  | .not a => a.free
+  | .bin _ a b => a.free ++ b.free
+  | .all x b | .ex x b => b.free.filter (· ≠ x)
+
+theorem upd_same (ρ : String → Bool) (y : String) (v w : Bool) :
+    upd (upd ρ y v) y w = upd ρ y w := by
+  funext n; simp only [upd]; split <;> rfl
+
+theorem upd_comm (ρ : String → Bool) {x y : String} (h : x ≠ y) (v w : Bool) :
+    upd (upd ρ y v) x w = upd (upd ρ x w) y v := by
+  funext n; simp only [upd]; split <;> split <;> simp_all
+
+/-- A formula does not depend on a variable that is not free in it. -/
+theorem eval_upd_notFree (y : String) (v : Bool) :
+    ∀ (e : BExpr) (ρ : String → Bool), y ∉ e.free → e.eval (upd ρ y v) = e.eval ρ
+  | .var n, ρ, h => by
+    simp only [BExpr.free, List.mem_singleton] at h
+    simp [BExpr.eval, BExpr.evalM, upd, Ne.symm h]
+  | .tt, _, _ => rfl
+  | .ff, _, _ => rfl
+  | .not a, ρ, h => by
+    have := eval_upd_notFree y v a ρ (by simpa [BExpr.free] using h)
+    simp only [BExpr.eval, BExpr.evalM] at this ⊢
+    rw [this]
+  | .bin o a b, ρ, h => by
+    simp only [BExpr.free, List.mem_append, not_or] at h
+    have ha := eval_upd_notFree y v a ρ h.1
+    have hb := eval_upd_notFree y v b ρ h.2
+    simp only [BExpr.eval, BExpr.evalM] at ha hb ⊢
+    rw [ha, hb]
+  | .all x b, ρ, h => by
+    simp only [BExpr.eval, BExpr.evalM]
+    congr 1
+    funext w
+    by_cases hxy : x = y
+    · subst hxy; rw [upd_same]
+    · rw [upd_comm ρ hxy]
+      have hb : y ∉ b.free := by
+        intro hm; exact h (by simp [BExpr.free, hm, Ne.symm hxy])
+      exact eval_upd_notFree y v b (upd ρ x w) hb
+  | .ex x b, ρ, h => by
+    simp only [BExpr.eval, BExpr.evalM]
+    congr 1
+    funext w
+    by_cases hxy : x = y
+    · subst hxy; rw [upd_same]
+    · rw [upd_comm ρ hxy]
+      have hb : y ∉ b.free := by
+        intro hm; exact h (by simp [BExpr.free, hm, Ne.symm hxy])
+      exact eval_upd_notFree y v b (upd ρ x w) hb
 
 /-! ## Matching and substitution -/
 
@@ -395,11 +457,15 @@ theorem evalM_subst (σ : BSubst) :
 
 /-! ## Reference rewriter -/
 
+/-- The independence constraints of a rule hold for a match. -/
+def independentOk (r : BRule) (σ : BSubst) : Bool :=
+  r.independent.all fun q => σ.bname q.2 ∉ (σ.apply q.1).free
+
 def rootRewrite : List BRule → BExpr → Option (String × BExpr)
   | [], _ => none
   | r :: rs, e =>
     match matchExpr r.lhs e with
-    | some σ => some (r.id, r.rhs.subst σ)
+    | some σ => if independentOk r σ then some (r.id, r.rhs.subst σ) else rootRewrite rs e
     | none => rootRewrite rs e
 
 def rewriteStep (rules : List BRule) : BExpr → Option (String × BExpr)
@@ -462,15 +528,21 @@ theorem rootRewrite_sound : ∀ (rules : List BRule) (e : BExpr)
     (s : String × BExpr), RulesHold rules → rootRewrite rules e = some s → Equiv s.2 e
   | [], _, _, _, h => by simp [rootRewrite] at h
   | r :: rs, e, s, hr, h => by
+    have hrs : RulesHold rs := fun r' h' => hr r' (List.mem_cons_of_mem _ h')
     unfold rootRewrite at h
     split at h
     · rename_i σ hm
-      simp only [Option.some.injEq] at h
-      subst h
-      intro ρ
-      rw [← matchExpr_subst hm, evalM_subst, evalM_subst]
-      exact (hr r List.mem_cons_self _ _ _).symm
-    · exact rootRewrite_sound rs e s (fun r' h' => hr r' (List.mem_cons_of_mem _ h')) h
+      split at h
+      · rename_i hind
+        simp only [Option.some.injEq] at h
+        subst h
+        intro ρ
+        rw [← matchExpr_subst hm, evalM_subst, evalM_subst]
+        refine (hr r List.mem_cons_self _ _ _ fun q hq ρ' v => ?_).symm
+        simp only [independentOk, List.all_eq_true, decide_eq_true_eq] at hind
+        exact eval_upd_notFree _ v _ ρ' (hind q hq)
+      · exact rootRewrite_sound rs e s hrs h
+    · exact rootRewrite_sound rs e s hrs h
 
 theorem rewriteStep_sound (rules : List BRule) (hr : RulesHold rules) :
     ∀ (e : BExpr) (s : String × BExpr), rewriteStep rules e = some s → Equiv s.2 e
@@ -655,7 +727,7 @@ def weigh (W : BasicWeight) (env : String → Nat) : BExpr → Nat
   | .tt | .ff => 1
   | .not a => W.nt (W.weigh env a)
   | .bin o a b => W.bin o (W.weigh env a) (W.weigh env b)
-  | .all _ b | .ex _ b => W.weigh env b + 1
+  | .all _ b | .ex _ b => 2 * W.weigh env b + 6
 
 def Decreases (r : BRule) : Prop := ∀ env, W.weigh env r.rhs < W.weigh env r.lhs
 
@@ -674,14 +746,17 @@ theorem rootRewrite_lt (env : String → Nat) : ∀ (rules : List BRule) (e : BE
       W.weigh env s.2 < W.weigh env e
   | [], _, _, _, h => by simp [rootRewrite] at h
   | r :: rs, e, s, hr, h => by
+    have hrs : ∀ r' ∈ rs, W.Decreases r' := fun r' h' => hr r' (List.mem_cons_of_mem _ h')
     unfold rootRewrite at h
     split at h
     · rename_i σ hm
-      simp only [Option.some.injEq] at h
-      subst h
-      rw [← matchExpr_subst hm, W.weigh_subst, W.weigh_subst]
-      exact hr r List.mem_cons_self _
-    · exact rootRewrite_lt env rs e s (fun r' h' => hr r' (List.mem_cons_of_mem _ h')) h
+      split at h
+      · simp only [Option.some.injEq] at h
+        subst h
+        rw [← matchExpr_subst hm, W.weigh_subst, W.weigh_subst]
+        exact hr r List.mem_cons_self _
+      · exact rootRewrite_lt env rs e s hrs h
+    · exact rootRewrite_lt env rs e s hrs h
 
 theorem rewriteStep_lt (env : String → Nat) (rules : List BRule)
     (hr : ∀ r ∈ rules, W.Decreases r) :

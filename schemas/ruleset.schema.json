@@ -197,6 +197,16 @@
                    "orientation", "applicability", "profiles", "priority", "symbols",
                    "provenance", "verification", "findings"],
       "properties": {
+        "independent": {
+          "description": "Matching constraints (v0.1 FreeQ): the subterm matched by `variable` must not mention the variable bound by the binder whose pattern variable is `of`.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["variable", "of"],
+            "properties": { "variable": { "type": "string" }, "of": { "type": "string" } }
+          }
+        },
         "id": { "$ref": "#/$defs/rule_id" },
         "legacy_id": { "type": "string" },
         "description": { "type": "string" },

@@ -63,7 +63,8 @@ private def y : BExpr := .var "y"
     (.bin .and (.all "y" (.bin .or y p)) (.all "y" (.bin .or y q)))).map (·.2) ==
   some (.all "y" (.bin .and (.bin .or y p) (.bin .or y q)))
 #guard (rewriteStep (Logic.profileRules "default")
-    (.bin .and (.all "y" p) (.all "z" q))).isNone
+    (.bin .and (.all "y" (.bin .or y p)) (.all "z" (.bin .or (.var "z") q)))).map (·.1) !=
+  some "logic.quantifier.forall_and"
 
 -- Soundness under binders, checked on every assignment of p and q: the
 -- instance body mentions the bound variable, which a first-order
@@ -72,5 +73,14 @@ private def y : BExpr := .var "y"
   let ρ : String → Bool := fun n => if n = "p" then vp else if n = "q" then vq else false
   let e : BExpr := .not (.all "p" (.bin .or (.var "p") q))
   ((normalize (Logic.profileRules "default") 16 e).result.eval ρ == e.eval ρ)
+
+-- FreeQ as a matching constraint: ∀y. (p ∨ q) is vacuous, ∀y. (y ∨ q) is not.
+#guard (rewriteStep (Logic.profileRules "default") (.all "y" (.bin .or p q))).map (·.2) ==
+  some (.bin .or p q)
+#guard (rewriteStep (Logic.profileRules "default") (.all "y" (.bin .or y q))).map (·.1) ==
+  some "logic.quantifier.forall_or_right"
+#guard (rewriteStep (Logic.profileRules "default") (.all "y" (.bin .or y q))).map (·.2) ==
+  some (.bin .or (.all "y" y) q)
+#guard (rewriteStep (Logic.profileRules "default") (.ex "y" (.bin .and q y))).isNone
 
 end OSRTest.Logic

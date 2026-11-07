@@ -4,10 +4,11 @@ import OSR.LogicCore
 # Logic
 
 Migration of the propositional rules of `OpenSymbolicRules/Logic` at commit
-`9e1789735df1b91e82029fa3eb44010f224b8065`: 35 of its 39 rules, interpreted
-in the Boolean domain (`logic1` connectives on Lean's `Bool`, `quant1`
-quantifiers over the truth values).  The other 4 need a "variable not free"
-side condition, which has no OpenMath symbol (`notMigrated`).
+`9e1789735df1b91e82029fa3eb44010f224b8065`: all 39 rules, interpreted in the
+Boolean domain (`logic1` connectives on Lean's `Bool`, `quant1` quantifiers
+over the truth values).  v0.1 `FreeQ` side conditions become matching
+constraints (`BRule.independent`): the matched subterm must not mention the
+bound variable.
 
 Each rule is proved by evaluating both sides for every truth value of its
 variables.  The three profiles follow v0.1: `default` simplifies, pushes
@@ -451,122 +452,183 @@ def existsOr : BRule where
   description := "An existential quantifier distributes over disjunction, so two existentials over the same variables merge into one."
   provenance := migrated "logic:6-quantifiers/6.2-scope:35"
 
+/-- A universal quantifier whose body does not mention its variables is vacuous. This assumes a non-empty domain of quantification. -/
+def forallVacuous : BRule where
+  id := "logic.quantifier.forall_vacuous"
+  legacyId := some "logic:6-quantifiers/6.2-scope:36"
+  vars := ["x", "p"]
+  lhs := (.all "x" (.var "p"))
+  rhs := (.var "p")
+  profiles := ["default"]
+  priority := 360
+  description := "A universal quantifier whose body does not mention its variables is vacuous. This assumes a non-empty domain of quantification."
+  provenance := migrated "logic:6-quantifiers/6.2-scope:36"
+  independent := [("p", "x")]
+
+/-- An existential quantifier whose body does not mention its variables is vacuous. This assumes a non-empty domain of quantification. -/
+def existsVacuous : BRule where
+  id := "logic.quantifier.exists_vacuous"
+  legacyId := some "logic:6-quantifiers/6.2-scope:37"
+  vars := ["x", "p"]
+  lhs := (.ex "x" (.var "p"))
+  rhs := (.var "p")
+  profiles := ["default"]
+  priority := 370
+  description := "An existential quantifier whose body does not mention its variables is vacuous. This assumes a non-empty domain of quantification."
+  provenance := migrated "logic:6-quantifiers/6.2-scope:37"
+  independent := [("p", "x")]
+
+/-- An existential quantifier moves through a conjunction when the other conjunct is independent of its bound variables. -/
+def existsAndRight : BRule where
+  id := "logic.quantifier.exists_and_right"
+  legacyId := some "logic:6-quantifiers/6.2-scope:38"
+  vars := ["x", "p", "q"]
+  lhs := (.ex "x" (.bin .and (.var "p") (.var "q")))
+  rhs := (.bin .and (.ex "x" (.var "p")) (.var "q"))
+  profiles := ["default"]
+  priority := 380
+  description := "An existential quantifier moves through a conjunction when the other conjunct is independent of its bound variables."
+  provenance := migrated "logic:6-quantifiers/6.2-scope:38"
+  independent := [("q", "x")]
+
+/-- A universal quantifier moves through a disjunction when the other disjunct is independent of its bound variables. -/
+def forallOrRight : BRule where
+  id := "logic.quantifier.forall_or_right"
+  legacyId := some "logic:6-quantifiers/6.2-scope:39"
+  vars := ["x", "p", "q"]
+  lhs := (.all "x" (.bin .or (.var "p") (.var "q")))
+  rhs := (.bin .or (.all "x" (.var "p")) (.var "q"))
+  profiles := ["default"]
+  priority := 390
+  description := "A universal quantifier moves through a disjunction when the other disjunct is independent of its bound variables."
+  provenance := migrated "logic:6-quantifiers/6.2-scope:39"
+  independent := [("q", "x")]
+
 
 /-! ## Rules not migrated -/
 
-/-- v0.1 rules outside the fragment, with the reason. -/
-def notMigrated : List (String × String) :=
-  [36, 37, 38, 39].map fun i =>
-    (s!"logic:6-quantifiers/6.2-scope:{i}",
-      "the side condition FreeQ (a variable does not occur free) has no OpenMath symbol, so the rule cannot be stated in v1 without inventing one")
+/-- v0.1 rules outside the fragment, with the reason: none. -/
+def notMigrated : List (String × String) := []
 
 /-! ## Proofs -/
 
 
 theorem orFalse_holds : orFalse.Holds := by
-  intro ν I ρ; simp only [orFalse, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
+  intro ν I ρ _; simp only [orFalse, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
 
 theorem andTrue_holds : andTrue.Holds := by
-  intro ν I ρ; simp only [andTrue, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
+  intro ν I ρ _; simp only [andTrue, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
 
 theorem andFalse_holds : andFalse.Holds := by
-  intro ν I ρ; simp only [andFalse, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
+  intro ν I ρ _; simp only [andFalse, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
 
 theorem orSelf_holds : orSelf.Holds := by
-  intro ν I ρ; simp only [orSelf, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
+  intro ν I ρ _; simp only [orSelf, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
 
 theorem andSelf_holds : andSelf.Holds := by
-  intro ν I ρ; simp only [andSelf, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
+  intro ν I ρ _; simp only [andSelf, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
 
 theorem falseOr_holds : falseOr.Holds := by
-  intro ν I ρ; simp only [falseOr, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
+  intro ν I ρ _; simp only [falseOr, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
 
 theorem trueAnd_holds : trueAnd.Holds := by
-  intro ν I ρ; simp only [trueAnd, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
+  intro ν I ρ _; simp only [trueAnd, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
 
 theorem orTrue_holds : orTrue.Holds := by
-  intro ν I ρ; simp only [orTrue, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
+  intro ν I ρ _; simp only [orTrue, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
 
 theorem trueOr_holds : trueOr.Holds := by
-  intro ν I ρ; simp only [trueOr, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
+  intro ν I ρ _; simp only [trueOr, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
 
 theorem falseAnd_holds : falseAnd.Holds := by
-  intro ν I ρ; simp only [falseAnd, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
+  intro ν I ρ _; simp only [falseAnd, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
 
 theorem notNot_holds : notNot.Holds := by
-  intro ν I ρ; simp only [notNot, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
+  intro ν I ρ _; simp only [notNot, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
 
 theorem orNotSelf_holds : orNotSelf.Holds := by
-  intro ν I ρ; simp only [orNotSelf, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
+  intro ν I ρ _; simp only [orNotSelf, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
 
 theorem andNotSelf_holds : andNotSelf.Holds := by
-  intro ν I ρ; simp only [andNotSelf, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
+  intro ν I ρ _; simp only [andNotSelf, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; revert p; decide
 
 theorem notAnd_holds : notAnd.Holds := by
-  intro ν I ρ; simp only [notAnd, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
+  intro ν I ρ _; simp only [notAnd, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
 
 theorem notOr_holds : notOr.Holds := by
-  intro ν I ρ; simp only [notOr, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
+  intro ν I ρ _; simp only [notOr, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
 
 theorem notTrue_holds : notTrue.Holds := by
-  intro ν I ρ; simp only [notTrue, BExpr.rename, BExpr.evalM]; decide
+  intro ν I ρ _; simp only [notTrue, BExpr.rename, BExpr.evalM]; decide
 
 theorem notFalse_holds : notFalse.Holds := by
-  intro ν I ρ; simp only [notFalse, BExpr.rename, BExpr.evalM]; decide
+  intro ν I ρ _; simp only [notFalse, BExpr.rename, BExpr.evalM]; decide
 
 theorem orAndLeft_holds : orAndLeft.Holds := by
-  intro ν I ρ; simp only [orAndLeft, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
+  intro ν I ρ _; simp only [orAndLeft, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
 
 theorem orAndRight_holds : orAndRight.Holds := by
-  intro ν I ρ; simp only [orAndRight, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
+  intro ν I ρ _; simp only [orAndRight, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
 
 theorem andOrLeft_holds : andOrLeft.Holds := by
-  intro ν I ρ; simp only [andOrLeft, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
+  intro ν I ρ _; simp only [andOrLeft, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
 
 theorem andOrRight_holds : andOrRight.Holds := by
-  intro ν I ρ; simp only [andOrRight, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
+  intro ν I ρ _; simp only [andOrRight, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
 
 theorem impliesElim_holds : impliesElim.Holds := by
-  intro ν I ρ; simp only [impliesElim, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
+  intro ν I ρ _; simp only [impliesElim, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
 
 theorem equivalentElim_holds : equivalentElim.Holds := by
-  intro ν I ρ; simp only [equivalentElim, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
+  intro ν I ρ _; simp only [equivalentElim, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
 
 theorem nandElim_holds : nandElim.Holds := by
-  intro ν I ρ; simp only [nandElim, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
+  intro ν I ρ _; simp only [nandElim, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
 
 theorem norElim_holds : norElim.Holds := by
-  intro ν I ρ; simp only [norElim, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
+  intro ν I ρ _; simp only [norElim, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
 
 theorem xorElim_holds : xorElim.Holds := by
-  intro ν I ρ; simp only [xorElim, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
+  intro ν I ρ _; simp only [xorElim, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
 
 theorem xnorElim_holds : xnorElim.Holds := by
-  intro ν I ρ; simp only [xnorElim, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
+  intro ν I ρ _; simp only [xnorElim, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; revert p q; decide
 
 theorem cnfLeft_holds : cnfLeft.Holds := by
-  intro ν I ρ; simp only [cnfLeft, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; generalize I "r" ρ = r; revert p q r; decide
+  intro ν I ρ _; simp only [cnfLeft, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; generalize I "r" ρ = r; revert p q r; decide
 
 theorem cnfRight_holds : cnfRight.Holds := by
-  intro ν I ρ; simp only [cnfRight, BExpr.rename, BExpr.evalM]; generalize I "q" ρ = q; generalize I "r" ρ = r; generalize I "p" ρ = p; revert q r p; decide
+  intro ν I ρ _; simp only [cnfRight, BExpr.rename, BExpr.evalM]; generalize I "q" ρ = q; generalize I "r" ρ = r; generalize I "p" ρ = p; revert q r p; decide
 
 theorem dnfLeft_holds : dnfLeft.Holds := by
-  intro ν I ρ; simp only [dnfLeft, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; generalize I "r" ρ = r; revert p q r; decide
+  intro ν I ρ _; simp only [dnfLeft, BExpr.rename, BExpr.evalM]; generalize I "p" ρ = p; generalize I "q" ρ = q; generalize I "r" ρ = r; revert p q r; decide
 
 theorem dnfRight_holds : dnfRight.Holds := by
-  intro ν I ρ; simp only [dnfRight, BExpr.rename, BExpr.evalM]; generalize I "q" ρ = q; generalize I "r" ρ = r; generalize I "p" ρ = p; revert q r p; decide
+  intro ν I ρ _; simp only [dnfRight, BExpr.rename, BExpr.evalM]; generalize I "q" ρ = q; generalize I "r" ρ = r; generalize I "p" ρ = p; revert q r p; decide
 
 theorem notForall_holds : notForall.Holds := by
-  intro ν I ρ; simp only [notForall, BExpr.rename, BExpr.evalM, forallBool, existsBool]; generalize I "p" (upd ρ (ν "x") true) = pt; generalize I "p" (upd ρ (ν "x") false) = pf; revert pt pf; decide
+  intro ν I ρ _; simp only [notForall, BExpr.rename, BExpr.evalM, forallBool, existsBool]; generalize I "p" (upd ρ (ν "x") true) = pt; generalize I "p" (upd ρ (ν "x") false) = pf; revert pt pf; decide
 
 theorem notExists_holds : notExists.Holds := by
-  intro ν I ρ; simp only [notExists, BExpr.rename, BExpr.evalM, forallBool, existsBool]; generalize I "p" (upd ρ (ν "x") true) = pt; generalize I "p" (upd ρ (ν "x") false) = pf; revert pt pf; decide
+  intro ν I ρ _; simp only [notExists, BExpr.rename, BExpr.evalM, forallBool, existsBool]; generalize I "p" (upd ρ (ν "x") true) = pt; generalize I "p" (upd ρ (ν "x") false) = pf; revert pt pf; decide
 
 theorem forallAnd_holds : forallAnd.Holds := by
-  intro ν I ρ; simp only [forallAnd, BExpr.rename, BExpr.evalM, forallBool]; generalize I "p" (upd ρ (ν "x") true) = pt; generalize I "p" (upd ρ (ν "x") false) = pf; generalize I "q" (upd ρ (ν "x") true) = qt; generalize I "q" (upd ρ (ν "x") false) = qf; revert pt pf qt qf; decide
+  intro ν I ρ _; simp only [forallAnd, BExpr.rename, BExpr.evalM, forallBool]; generalize I "p" (upd ρ (ν "x") true) = pt; generalize I "p" (upd ρ (ν "x") false) = pf; generalize I "q" (upd ρ (ν "x") true) = qt; generalize I "q" (upd ρ (ν "x") false) = qf; revert pt pf qt qf; decide
 
 theorem existsOr_holds : existsOr.Holds := by
-  intro ν I ρ; simp only [existsOr, BExpr.rename, BExpr.evalM, existsBool]; generalize I "p" (upd ρ (ν "x") true) = pt; generalize I "p" (upd ρ (ν "x") false) = pf; generalize I "q" (upd ρ (ν "x") true) = qt; generalize I "q" (upd ρ (ν "x") false) = qf; revert pt pf qt qf; decide
+  intro ν I ρ _; simp only [existsOr, BExpr.rename, BExpr.evalM, existsBool]; generalize I "p" (upd ρ (ν "x") true) = pt; generalize I "p" (upd ρ (ν "x") false) = pf; generalize I "q" (upd ρ (ν "x") true) = qt; generalize I "q" (upd ρ (ν "x") false) = qf; revert pt pf qt qf; decide
+
+theorem forallVacuous_holds : forallVacuous.Holds := by
+  intro ν I ρ hI; have h := hI ("p", "x") (by simp [forallVacuous]); simp only [forallVacuous, BExpr.rename, BExpr.evalM, forallBool, h]; generalize I "p" ρ = p0; revert p0; decide
+
+theorem existsVacuous_holds : existsVacuous.Holds := by
+  intro ν I ρ hI; have h := hI ("p", "x") (by simp [existsVacuous]); simp only [existsVacuous, BExpr.rename, BExpr.evalM, existsBool, h]; generalize I "p" ρ = p0; revert p0; decide
+
+theorem existsAndRight_holds : existsAndRight.Holds := by
+  intro ν I ρ hI; have h := hI ("q", "x") (by simp [existsAndRight]); simp only [existsAndRight, BExpr.rename, BExpr.evalM, existsBool, h]; generalize I "p" (upd ρ (ν "x") true) = pt; generalize I "p" (upd ρ (ν "x") false) = pf; generalize I "q" ρ = q0; revert pt pf q0; decide
+
+theorem forallOrRight_holds : forallOrRight.Holds := by
+  intro ν I ρ hI; have h := hI ("q", "x") (by simp [forallOrRight]); simp only [forallOrRight, BExpr.rename, BExpr.evalM, forallBool, h]; generalize I "p" (upd ρ (ν "x") true) = pt; generalize I "p" (upd ρ (ν "x") false) = pf; generalize I "q" ρ = q0; revert pt pf q0; decide
 
 
 /-! ## Catalogue -/
@@ -621,7 +683,11 @@ def catalog : List LogicEntry := [
   { rule := forallAnd, ruleDecl := ``forallAnd, proof := ``forallAnd_holds,
     findings := ["semantics: quantifiers range over the truth values (quantified Boolean formulas), as in the v0.1 tests; v0.1 binds a sequence of variables, v1 binds one (a sequence is a chain of binders)."] },
   { rule := existsOr, ruleDecl := ``existsOr, proof := ``existsOr_holds,
-    findings := ["semantics: quantifiers range over the truth values (quantified Boolean formulas), as in the v0.1 tests; v0.1 binds a sequence of variables, v1 binds one (a sequence is a chain of binders)."] }
+    findings := ["semantics: quantifiers range over the truth values (quantified Boolean formulas), as in the v0.1 tests; v0.1 binds a sequence of variables, v1 binds one (a sequence is a chain of binders)."] },
+  { rule := forallVacuous, ruleDecl := ``forallVacuous, proof := ``forallVacuous_holds },
+  { rule := existsVacuous, ruleDecl := ``existsVacuous, proof := ``existsVacuous_holds },
+  { rule := existsAndRight, ruleDecl := ``existsAndRight, proof := ``existsAndRight_holds },
+  { rule := forallOrRight, ruleDecl := ``forallOrRight, proof := ``forallOrRight_holds }
 ]
 
 /-- The rules of a profile, in priority order. -/
@@ -632,7 +698,9 @@ def profileRules (p : String) : List BRule :=
 def commonRules : List BRule := [orFalse, andTrue, andFalse, orSelf, andSelf, falseOr, trueAnd, orTrue, trueOr, falseAnd, notNot, orNotSelf, andNotSelf, notAnd, notOr, notTrue, notFalse, orAndLeft, orAndRight, andOrLeft, andOrRight, impliesElim, equivalentElim, nandElim, norElim, xorElim, xnorElim]
 
 /-- The quantifier rules (`default` only, as in v0.1). -/
-def quantifierRules : List BRule := [notForall, notExists, forallAnd, existsOr]
+def quantifierRules : List BRule :=
+  [notForall, notExists, forallAnd, existsOr, forallVacuous, existsVacuous, existsAndRight,
+    forallOrRight]
 
 theorem profileRules_default : profileRules "default" = commonRules ++ quantifierRules := rfl
 theorem profileRules_cnf : profileRules "to_cnf" = commonRules ++ [cnfLeft, cnfRight] := rfl
@@ -643,7 +711,7 @@ theorem profileRules_dnf : profileRules "to_dnf" = commonRules ++ [dnfLeft, dnfR
 theorem catalog_holds : ∀ e ∈ catalog, e.rule.Holds := by
   intro e he
   simp only [catalog, List.mem_cons, List.mem_nil_iff, or_false] at he
-  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
   exacts [orFalse_holds, andTrue_holds, andFalse_holds, orSelf_holds,
     andSelf_holds, falseOr_holds, trueAnd_holds, orTrue_holds,
     trueOr_holds, falseAnd_holds, notNot_holds, orNotSelf_holds,
@@ -652,7 +720,8 @@ theorem catalog_holds : ∀ e ∈ catalog, e.rule.Holds := by
     andOrRight_holds, impliesElim_holds, equivalentElim_holds, nandElim_holds,
     norElim_holds, xorElim_holds, xnorElim_holds, cnfLeft_holds,
     cnfRight_holds, dnfLeft_holds, dnfRight_holds, notForall_holds,
-    notExists_holds, forallAnd_holds, existsOr_holds]
+    notExists_holds, forallAnd_holds, existsOr_holds, forallVacuous_holds,
+    existsVacuous_holds, existsAndRight_holds, forallOrRight_holds]
 
 theorem profileRules_hold (p : String) : RulesHold (profileRules p) := by
   intro r hr
@@ -774,16 +843,19 @@ theorem default_terminates : Terminates (profileRules "default") defaultWeight :
   rw [profileRules_default]
   refine defaultWeight.terminates _ fun r hr => ?_
   simp only [quantifierRules, List.mem_append, List.mem_cons, List.mem_nil_iff, or_false] at hr
-  rcases hr with hr | rfl | rfl | rfl | rfl
+  rcases hr with hr | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
   · exact common_decreasing _ r hr
   all_goals
     intro env
-    simp only [notForall, notExists, forallAnd, existsOr, BasicWeight.weigh, BasicWeight.bin,
-      defaultWeight]
-  · have := two_pow_ge (env "p"); rw [pow_succ, pow_succ]; omega
-  · have := two_pow_ge (env "p"); rw [pow_succ, pow_succ]; omega
-  · omega
-  · omega
+    simp only [notForall, notExists, forallAnd, existsOr, forallVacuous, existsVacuous,
+      existsAndRight, forallOrRight, BasicWeight.weigh, BasicWeight.bin, defaultWeight]
+  · have := two_pow_ge (env "p")
+    have h : 2 ^ (2 * env "p" + 6 + 1) = 2 ^ env "p" * 2 ^ env "p" * 128 := by ring
+    rw [h, pow_succ]; nlinarith
+  · have := two_pow_ge (env "p")
+    have h : 2 ^ (2 * env "p" + 6 + 1) = 2 ^ env "p" * 2 ^ env "p" * 128 := by ring
+    rw [h, pow_succ]; nlinarith
+  all_goals omega
 
 theorem cnf_terminates : Terminates (profileRules "to_cnf") cnfWeight := by
   rw [profileRules_cnf]

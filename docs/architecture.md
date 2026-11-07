@@ -73,7 +73,7 @@ OSR/Trigonometry.lean  the pilot rules, their proofs, profiles and engine
 OSR/Algebra.lean       Algebra rules (all 20), same structure
 OSR/LogicOps.lean      Boolean interpretations of the logic1 connectives, CMPs
 OSR/LogicCore.lean     quantified Boolean formulas, rewriter, soundness, termination
-OSR/Logic.lean         Logic rules (35 of 39), profiles and their weights
+OSR/Logic.lean         Logic rules (all 39), profiles and their weights
 OSR/Calculus.lean      derivative and limit rules (26), their proofs and rewriter
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
@@ -200,8 +200,13 @@ pattern metavariable as an arbitrary function of the whole assignment
 Matching binds a pattern's bound variable to the input's bound variable, and
 `evalM_subst` shows that instantiating a rule means interpreting its
 metavariables by their images under the current assignment, so no freshness
-condition is needed.  The four v0.1 rules with a `FreeQ` condition are not
-migrated: "variable not free" has no OpenMath symbol.
+condition is needed.  v0.1 `FreeQ` ("p does not mention x") is a matching
+constraint, not a mathematical condition: a rule lists it in `independent`,
+the rewriter checks that the bound name is not free in the matched subterm
+(`independentOk`), and the rule statement assumes the metavariable's meaning
+does not depend on the bound variable; `eval_upd_notFree` connects the two.
+Quantifiers weigh `2b + 6`, so that both pulling a conjunction into a
+universal and pulling one out of an existential decrease the weight.
 
 ## Calculus
 

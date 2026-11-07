@@ -507,7 +507,10 @@ def bruleJson (b : BuildInfo) (e : Logic.LogicEntry) (v : Verification) : Json :
     ("provenance", provenanceJson r.provenance),
     ("verification", Json.arr #[verificationJson b "OSR.Logic" v]),
     ("findings", jstrs e.findings)] ++
-    (match r.legacyId with | some l => [("legacy_id", jstr l)] | none => []))
+    (match r.legacyId with | some l => [("legacy_id", jstr l)] | none => []) ++
+    (if r.independent.isEmpty then [] else
+      [("independent", Json.arr (r.independent.map fun (v, x) =>
+        Json.mkObj [("variable", jstr v), ("of", jstr x)]).toArray)]))
 
 def logicRulesetJson (b : BuildInfo) (audited : List (Logic.LogicEntry × Verification)) : Json :=
   let syms := (((audited.map (·.1.rule.symbols)).flatten ++ [Domain.boolean.carrier]).eraseDups).filterMap Registry.lookup
