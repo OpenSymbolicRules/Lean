@@ -12,6 +12,7 @@ private def t : Expr := .var "t"
 
 -- Every v0.1 rule is migrated or reported.
 #guard Calculus.catalog.length + Calculus.notMigrated.length == 32
+#guard Calculus.notMigrated.length == 3
 
 -- Identifiers are unique and every rule is well formed.
 #guard (Calculus.catalog.map (·.rule.id)).eraseDups.length == Calculus.catalog.length
@@ -45,8 +46,14 @@ private def rules : List CRule :=
   | .oma h [.ombind b ["x"] _] => h == diffSymbol && b == lambdaSymbol
   | _ => false
 
--- Every rule is proved over ℝ, so the engine uses all of them.
-#guard rules.length == Calculus.catalog.length
+-- Every rule but the refuted power rule is proved over ℝ.
+#guard rules.length + 1 == Calculus.catalog.length
+#guard !(rules.contains derivPow)
+
+-- FreeQ as an independence constraint: diff(λt. sin u) is a constant, diff(λt. t u) is not.
+#guard (rewrite rules (.diff "t" (.app1 .sin (.var "u")))).map (·.2) == some (.lam "t" (.int 0))
+#guard (rewrite rules (.diff "t" (.app2 .mul t (.var "u")))).isNone
+#guard (rewrite rules (.limit (.int 1) "t" (.var "u"))).map (·.2) == some (.val (.var "u"))
 #guard (rewrite rules (.diff "t" (.app1 .arctanh t))).isSome
 #guard (rewrite rules (.diff "t" (.app1 .arcsin t))).map (·.2) ==
   some (.lam "t" (.app2 .div (.int 1) (.app2 .root (.app2 .sub (.int 1) (.pow t (.int 2))) (.int 2))))

@@ -694,11 +694,32 @@ unsafe def auditCalcEntry (e : Calculus.CEntry) : MetaM (List Verification) := d
           mappingAssurance := assurance, certified := assurance.certifiable }
       out := out ++ [v]
     | none =>
-      let status := if e.unproved.contains d then Status.unproved else Status.unsupported
-      let v : Verification :=
-        { domain := d, status, theoremName := none, statement := none, axioms := [],
-          mappingAssurance := assurance, certified := false }
-      out := out ++ [v]
+      match e.counterexamples.lookup d with
+      | some thm =>
+        let some info := (← getEnv).find? thm
+          | throwError "{e.rule.id}: counterexample {thm} does not exist"
+        let domainConst := match d with
+          | .real => ``OSR.Domain.real
+          | .complex => ``OSR.Domain.complex
+          | .boolean => ``OSR.Domain.boolean
+        let expected := mkApp (mkConst ``Not) (mkApp2 (mkConst ``OSR.Calculus.CRule.Holds)
+          (mkConst e.ruleDecl) (mkConst domainConst))
+        unless info.type == expected do
+          throwError "{e.rule.id}: {thm} has type{indentExpr info.type}\nexpected{indentExpr expected}"
+        let axioms := (← collectAxioms thm).toList.mergeSort (·.toString ≤ ·.toString)
+        unless (axioms.filter (· ∉ standardAxioms)).isEmpty do
+          throwError "{e.rule.id}: {thm} depends on forbidden axioms"
+        let v : Verification :=
+          { domain := d, status := .counterexample, theoremName := some thm,
+            statement := some s!"¬ OSR.Calculus.CRule.Holds {e.ruleDecl} {domainConst}", axioms,
+            mappingAssurance := assurance, certified := false }
+        out := out ++ [v]
+      | none =>
+        let status := if e.unproved.contains d then Status.unproved else Status.unsupported
+        let v : Verification :=
+          { domain := d, status, theoremName := none, statement := none, axioms := [],
+            mappingAssurance := assurance, certified := false }
+        out := out ++ [v]
   return out
 
 private def tvar : OSR.Expr := .var "t"
@@ -717,7 +738,10 @@ def calcSeeds : List (String × Calculus.CTerm) :=
     (s!"renamed.{r.id}", match r.shape with
       | .deriv => Calculus.CTerm.diff "t" (r.body.subst σ)
       | .limit => Calculus.CTerm.limit r.point "t" (r.body.subst σ))) ++
-  [("nomatch.sin_of_double", .diff "t" (.app1 .sin (.app2 .mul (.int 2) tvar))),
+  [("independent.constant_body", .diff "t" (.app1 .sin (.var "u"))),
+   ("independent.limit_of_constant", .limit (.int 1) "t" (.app1 .sin (.var "u"))),
+   ("independent.body_mentions_bound", .diff "t" (.app2 .mul tvar (.var "u"))),
+   ("nomatch.sin_of_double", .diff "t" (.app1 .sin (.app2 .mul (.int 2) tvar))),
    ("nomatch.limit_at_one", .limit (.int 1) "t" (.app2 .div (.app1 .sin tvar) tvar)),
    ("nomatch.square", .diff "t" (.pow tvar (.int 2))),
    ("normal.lambda", .lam "t" (.app1 .cos tvar))]
@@ -732,7 +756,8 @@ def calcRuleJson (b : BuildInfo) (e : Calculus.CEntry) (vs : List Verification) 
   Json.mkObj ([
     ("id", jstr r.id),
     ("description", jstr r.description),
-    ("variables", Json.arr #[omv r.x]),
+    ("variables", Json.arr ((r.x :: (r.body.vars ++ r.point.vars ++ r.result.vars)).eraseDups.map
+      omv).toArray),
     ("pattern", r.patternOM.toJson),
     ("replacement", r.replacementOM.toJson),
     ("conditions", Json.arr #[]),
@@ -744,7 +769,10 @@ def calcRuleJson (b : BuildInfo) (e : Calculus.CEntry) (vs : List Verification) 
     ("provenance", provenanceJson r.provenance),
     ("verification", Json.arr (vs.map (verificationJson b "OSR.Calculus")).toArray),
     ("findings", jstrs e.findings)] ++
-    (match r.legacyId with | some l => [("legacy_id", jstr l)] | none => []))
+    (match r.legacyId with | some l => [("legacy_id", jstr l)] | none => []) ++
+    (if r.independent.isEmpty then [] else
+      [("independent", Json.arr (r.independent.map fun c =>
+        Json.mkObj [("variable", jstr c), ("of", jstr r.x)]).toArray)]))
 
 unsafe def exportCalculus (outDir : String) (build : BuildInfo) : MetaM Nat := do
   let ids := Calculus.catalog.map (·.rule.id)
@@ -833,6 +861,7 @@ limit rule `limit(a, both_sides, λx. F) ⟶ L` states `Tendsto` along `𝓝[≠
 | Proved | {count .real (·.status == .proved)} | {count .complex (·.status == .proved)} |
 | Certified | {count .real (·.certified)} | {count .complex (·.certified)} |
 | Unproved | {count .real (·.status == .unproved)} | {count .complex (·.status == .unproved)} |
+| Counterexamples | {count .real (·.status == .counterexample)} | {count .complex (·.status == .counterexample)} |
 | Rules not migrated | {Calculus.notMigrated.length} | {Calculus.notMigrated.length} |
 
 ## Rules

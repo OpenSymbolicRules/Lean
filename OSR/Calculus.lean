@@ -5,8 +5,10 @@ import OSR.OMObject
 # Calculus
 
 Migration of `OpenSymbolicRules/Calculus` at commit
-`eb9eb87aa7ffcd6dd7da055fa6b6d87f35f840da`: 26 of its 32 rules (the others
-need `FreeQ` or the invented `osr#Apply`).
+`eb9eb87aa7ffcd6dd7da055fa6b6d87f35f840da`: 29 of its 32 rules (the other 3
+use the invented `osr#Apply`).  v0.1 `FreeQ` becomes an independence
+constraint (`CRule.independent`); the v0.1 power rule is refuted
+(`derivPow_counterexample`).
 
 A calculus rule has one of two shapes, with `F`, `G`, `L` field expressions:
 
@@ -47,6 +49,9 @@ structure CRule where
   priority : Nat
   description : String
   provenance : Provenance
+  /-- Metavariables whose match must not mention the bound variable (v0.1
+  `FreeQ`, an `independent` matching constraint). -/
+  independent : List String := []
   deriving Repr, Inhabited, BEq
 
 def diffSymbol : OMSymbol := ⟨"calculus1", "diff"⟩
@@ -76,10 +81,13 @@ def CRule.symbols (r : CRule) : List OMSymbol :=
   (shape ++ r.point.symbols.filter (fun _ => r.shape == .limit) ++ r.body.symbols ++
     r.result.symbols).eraseDups
 
-/-- Well-formedness: the bound variable is the only variable of the body and
-of the result, and the limit point is closed. -/
+/-- Well-formedness: the body only mentions the bound variable and
+independent metavariables, the result only variables of the body, and the
+bound variable is not a metavariable of the point. -/
 def CRule.wellFormed (r : CRule) : Bool :=
-  r.body.varList.all (· = r.x) && r.result.varList.all (· = r.x) && r.point.varList.isEmpty
+  r.body.varList.all (fun n => n = r.x ∨ n ∈ r.independent) &&
+    r.result.varList.all (fun n => n = r.x ∨ n ∈ r.body.varList) &&
+    !(r.point.varList.contains r.x) && !(r.independent.contains r.x)
 
 /-! ## Statements -/
 
@@ -98,6 +106,7 @@ def DerivHolds (I : Interp 𝕜) (x : String) (F G : Expr) : Prop :=
 /-- `limit(a, both_sides, λx. F) = L` in the interpretation `I`. -/
 def LimitHolds (I : Interp 𝕜) (x : String) (a F L : Expr) : Prop :=
   ∀ env : String → 𝕜,
+    (∀ᶠ v in 𝓝[≠] (eval I env a), Defined I (Function.update env x v) F) →
     Defined I env L ∧
       Tendsto (fun v => eval I (Function.update env x v) F) (𝓝[≠] (eval I env a))
         (𝓝 (eval I env L))
@@ -274,13 +283,31 @@ def derivArccosh : CRule where
   body := f1 .arccosh x; result := div one (root2 (sub (sq x) one)); priority := 310
   description := "Derivative of the inverse hyperbolic cosine"; provenance := migrated (elem 21)
 
+
+private def basic (n : Nat) : String := s!"calculus:2-derivatives/2.1-basic-derivatives:{n}"
+
+/-- `limit(a, both_sides, λx. c) ⟶ c` for `c` free of `x`. -/
+def limitConst : CRule where
+  id := "calculus.limit.const"; legacyId := some (lim 1); shape := .limit; x := "x"
+  point := .var "a"; body := .var "c"; result := .var "c"; independent := ["c"]; priority := 10
+  description := "Limit of a constant"; provenance := migrated (lim 1)
+
+/-- `diff(λx. c) ⟶ λx. 0` for `c` free of `x`. -/
+def derivConst : CRule where
+  id := "calculus.derivative.const"; legacyId := some (basic 1); shape := .deriv; x := "x"
+  body := .var "c"; result := .int 0; independent := ["c"]; priority := 70
+  description := "Derivative of a constant"; provenance := migrated (basic 1)
+
+/-- `diff(λx. x^n) ⟶ λx. n x^(n - 1)` for `n` free of `x`: false at `n = 0`,
+`x = 0` (`derivPow_counterexample`). -/
+def derivPow : CRule where
+  id := "calculus.derivative.power"; legacyId := some (basic 2); shape := .deriv; x := "x"
+  body := .pow x (.var "n"); result := mul (.var "n") (.pow x (add (.var "n") (.int (-1))))
+  independent := ["n"]; priority := 80
+  description := "Power rule"; provenance := migrated (basic 2)
+
 /-- v0.1 rules outside the fragment, with the reason. -/
 def notMigrated : List (String × String) :=
-  [(lim 1, "the side condition FreeQ (a variable does not occur free) has no OpenMath symbol"),
-   ("calculus:2-derivatives/2.1-basic-derivatives:1",
-     "the side condition FreeQ (a variable does not occur free) has no OpenMath symbol"),
-   ("calculus:2-derivatives/2.1-basic-derivatives:2",
-     "the side condition FreeQ (a variable does not occur free) has no OpenMath symbol")] ++
   ([1, 2, 3].map fun n =>
     (s!"calculus:2-derivatives/2.3-structural-derivatives:{n}",
       "uses osr#Apply, which is not an OpenMath symbol"))
@@ -355,7 +382,7 @@ theorem derivArctan_real : derivArctan.Holds .real := by
 local macro "limit_intro" r:ident i:ident : tactic =>
   `(tactic|
     (simp only [CRule.Holds, $r:ident, LimitHolds]
-     intro env
+     intro env _
      simp only [Defined, eval, $i:ident, Function.update_self, intValue?_intCast]
      simp only [Int.cast_one, Int.cast_zero, Int.cast_ofNat, zpow_ofNat, Option.some.injEq,
        exists_eq_left', Int.reduceLT, false_implies, true_and, and_true]))
@@ -649,6 +676,56 @@ theorem derivArccosh_real : derivArccosh.Holds .real := by
   refine ⟨⟨hpos.le, (Real.sqrt_pos.2 hpos).ne'⟩, ?_⟩
   exact (Real.hasDerivAt_arcosh h1).congr_deriv (inv_eq_one_div _)
 
+
+/-! ### Rules with independent metavariables -/
+
+theorem limitConst_real : limitConst.Holds .real := by
+  simp only [CRule.Holds, limitConst, LimitHolds]
+  intro env _
+  simp only [Defined, eval, Function.update_apply, show ("c" : String) ≠ "x" by decide, ite_false]
+  exact ⟨trivial, tendsto_const_nhds⟩
+
+theorem limitConst_complex : limitConst.Holds .complex := by
+  simp only [CRule.Holds, limitConst, LimitHolds]
+  intro env _
+  simp only [Defined, eval, Function.update_apply, show ("c" : String) ≠ "x" by decide, ite_false]
+  exact ⟨trivial, tendsto_const_nhds⟩
+
+theorem derivConst_real : derivConst.Holds .real := by
+  simp only [CRule.Holds, derivConst, DerivHolds]
+  intro env t _
+  simp only [Defined, eval, Function.update_apply, show ("c" : String) ≠ "x" by decide, ite_false,
+    Int.cast_zero]
+  exact ⟨trivial, hasDerivAt_const t _⟩
+
+theorem derivConst_complex : derivConst.Holds .complex := by
+  simp only [CRule.Holds, derivConst, DerivHolds]
+  intro env t _
+  simp only [Defined, eval, Function.update_apply, show ("c" : String) ≠ "x" by decide, ite_false,
+    Int.cast_zero]
+  exact ⟨trivial, hasDerivAt_const t _⟩
+
+/-- **Counterexample.**  The v0.1 power rule is false at `n = 0`, `x = 0`:
+`x^0` is defined around `0`, but `0 · x^(-1)` is undefined at `0`. -/
+theorem derivPow_counterexample : ¬ derivPow.Holds .real := by
+  simp only [CRule.Holds, derivPow, DerivHolds]
+  intro h
+  have hdef : ∀ v : ℝ, Defined Interp.real (Function.update (fun _ => (0 : ℝ)) "x" v)
+      (.pow x (.var "n")) := by
+    intro v
+    simp only [Defined, eval, Interp.real, Function.update_apply,
+      show ("n" : String) ≠ "x" by decide, ite_false]
+    exact ⟨trivial, trivial, 0, by simpa using intValue?_intCast (α := ℝ) 0, by omega⟩
+  obtain ⟨hG, -⟩ := h (fun _ => 0) 0 (Filter.Eventually.of_forall hdef)
+  simp only [Defined, eval, Interp.real, Function.update_apply,
+    show ("n" : String) ≠ "x" by decide, ite_false, ite_true] at hG
+  obtain ⟨-, -, -, k, hk, hne⟩ := hG
+  have hk' : k = -1 := by
+    have := (intValue?_eq _ _).1 hk
+    push_cast at this
+    exact_mod_cast this.symm
+  exact hne (by omega) rfl
+
 /-! ## Catalogue -/
 
 /-- A calculus rule with its proofs. -/
@@ -657,6 +734,8 @@ structure CEntry where
   ruleDecl : Lean.Name
   proofs : List (Domain × Lean.Name)
   unproved : List Domain := []
+  /-- Theorems refuting `CRule.Holds rule d`, per domain. -/
+  counterexamples : List (Domain × Lean.Name) := []
   findings : List String := []
   deriving Repr, Inhabited
 
@@ -668,6 +747,13 @@ private def arctanComplexFinding : String :=
 
 /-- The Calculus catalogue (limits, then derivatives, in v0.1 load order). -/
 def catalog : List CEntry := [
+  { rule := limitConst, ruleDecl := ``limitConst,
+    proofs := [(.real, ``limitConst_real), (.complex, ``limitConst_complex)] },
+  { rule := derivConst, ruleDecl := ``derivConst,
+    proofs := [(.real, ``derivConst_real), (.complex, ``derivConst_complex)] },
+  { rule := derivPow, ruleDecl := ``derivPow, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``derivPow_counterexample)],
+    findings := ["counterexample: at n = 0 and x = 0, x^0 is defined around 0 but n * x^(n - 1) = 0 * x^(-1) is undefined at 0, so the v0.1 rule, whose only condition is FreeQ, fails there (Lean theorem derivPow_counterexample). It would hold with the condition n ≠ 0."] },
   { rule := limitSinDiv, ruleDecl := ``limitSinDiv,
     proofs := [(.real, ``limitSinDiv_real), (.complex, ``limitSinDiv_complex)] },
   { rule := limitTanDiv, ruleDecl := ``limitTanDiv,
@@ -735,16 +821,28 @@ def CTerm.toOM : CTerm → OMObj
   | .lam y e => lamOM y e
   | .val e => e.toOM
 
+/-- The independence constraints hold for a match binding the bound
+variable to `y`. -/
+def CRule.indepOk (r : CRule) (σ : Subst) (y : String) : Bool :=
+  r.independent.all fun c => y ∉ (σ.apply c).varList
+
 /-- Apply a rule at the root: the input's bound variable replaces the rule's,
-and the limit point must be the rule's. -/
+the limit point is matched, and the independence constraints are checked. -/
 def CRule.apply? (r : CRule) : CTerm → Option CTerm
   | .diff y e =>
     if r.shape = .deriv then
-      (matchAux r.body e [(r.x, .var y)]).map fun σ => .lam y (r.result.subst σ)
+      match matchAux r.body e [(r.x, .var y)] with
+      | some σ => if r.indepOk σ y then some (.lam y (r.result.subst σ)) else none
+      | none => none
     else none
   | .limit a y e =>
-    if r.shape = .limit ∧ a = r.point then
-      (matchAux r.body e [(r.x, .var y)]).map fun σ => .val (r.result.subst σ)
+    if r.shape = .limit then
+      match matchAux r.body e [(r.x, .var y)] with
+      | some σ =>
+        match matchAux r.point a σ with
+        | some σ' => if r.indepOk σ' y then some (.val (r.result.subst σ')) else none
+        | none => none
+      | none => none
     else none
   | _ => none
 
@@ -763,16 +861,22 @@ theorem apply?_result {r : CRule} {t t' : CTerm} (h : r.apply? t = some t') (q :
   | diff y e =>
     simp only [CRule.apply?] at h
     split at h
-    · simp only [Option.map_eq_some_iff] at h
-      obtain ⟨σ, -, rfl⟩ := h
-      rfl
+    · split at h
+      · split at h
+        · simp only [Option.some.injEq] at h; subst h; rfl
+        · cases h
+      · cases h
     · cases h
   | limit a y e =>
     simp only [CRule.apply?] at h
     split at h
-    · simp only [Option.map_eq_some_iff] at h
-      obtain ⟨σ, -, rfl⟩ := h
-      rfl
+    · split at h
+      · split at h
+        · split at h
+          · simp only [Option.some.injEq] at h; subst h; rfl
+          · cases h
+        · cases h
+      · cases h
     · cases h
   | lam _ _ => simp [CRule.apply?] at h
   | val _ => simp [CRule.apply?] at h
@@ -853,26 +957,40 @@ theorem defined_congr (I : Interp α) :
     simp [Defined, defined_congr I a ha', defined_congr I b hb', eval_congr I a ha',
       eval_congr I b hb']
 
-/-- Under a substitution that renames `x` to `y`, an expression whose only
-variable is `x` evaluates as the original with `x` given the value of `y`. -/
+/-- Under a substitution that renames `x` to `y`, an expression whose other
+variables are matched by terms not mentioning `y` evaluates as the original,
+with `x` given the value `v` and the other variables their images. -/
 theorem eval_rename (I : Interp α) {x y : String} {σ : Subst}
-    (hσ : σ.find? x = some (.var y)) {e : Expr} (he : ∀ n ∈ e.varList, n = x)
-    (ρ : String → α) (v : α) :
-    eval I (Function.update ρ y v) (e.subst σ) = eval I (Function.update ρ x v) e ∧
-      (Defined I (Function.update ρ y v) (e.subst σ) ↔ Defined I (Function.update ρ x v) e) := by
+    (hσ : σ.find? x = some (.var y)) {e : Expr}
+    (he : ∀ n ∈ e.varList, n = x ∨ y ∉ (σ.apply n).varList) (ρ : String → α) (v : α) :
+    eval I (Function.update ρ y v) (e.subst σ) = eval I (Function.update (σ.env I ρ) x v) e ∧
+      (Defined I (Function.update ρ y v) (e.subst σ) ↔
+        Defined I (Function.update (σ.env I ρ) x v) e ∧
+          ∀ n ∈ e.varList, n ≠ x → Defined I ρ (σ.apply n)) := by
   have hx : σ.apply x = .var y := by simp [Subst.apply, hσ]
-  have henv : ∀ n ∈ e.varList, σ.env I (Function.update ρ y v) n = Function.update ρ x v n := by
+  have himg : ∀ n ∈ e.varList, n ≠ x →
+      (∀ m ∈ (σ.apply n).varList, Function.update ρ y v m = ρ m) := by
+    intro n hn hnx m hm
+    have hy : y ∉ (σ.apply n).varList := (he n hn).resolve_left hnx
+    have : m ≠ y := fun h => hy (h ▸ hm)
+    simp [Function.update_of_ne this]
+  have henv : ∀ n ∈ e.varList,
+      σ.env I (Function.update ρ y v) n = Function.update (σ.env I ρ) x v n := by
     intro n hn
-    rw [he n hn]
-    simp [Subst.env, hx, eval]
+    by_cases hnx : n = x
+    · subst hnx; simp [Subst.env, hx, eval]
+    · rw [Function.update_of_ne hnx]
+      exact eval_congr I _ (himg n hn hnx)
   refine ⟨by rw [eval_subst]; exact eval_congr I e henv, ?_⟩
   rw [defined_subst, defined_congr I e henv]
   constructor
-  · exact fun h => h.1
-  · intro h
-    refine ⟨h, fun n hn => ?_⟩
-    rw [he n hn, hx]
-    trivial
+  · rintro ⟨h1, h2⟩
+    exact ⟨h1, fun n hn hnx => (defined_congr I _ (himg n hn hnx)).1 (h2 n hn)⟩
+  · rintro ⟨h1, h2⟩
+    refine ⟨h1, fun n hn => ?_⟩
+    by_cases hnx : n = x
+    · subst hnx; rw [hx]; trivial
+    · exact (defined_congr I _ (himg n hn hnx)).2 (h2 n hn hnx)
 
 end Instance
 
@@ -880,58 +998,95 @@ theorem matched_find {x y : String} {p e : Expr} {σ : Subst}
     (h : matchAux p e [(x, .var y)] = some σ) : σ.find? x = some (.var y) :=
   (matchAux_spec p e _ σ h).1 x _ (by simp [Subst.find?])
 
+theorem indep_vars {r : CRule} (hw : r.wellFormed = true) {σ : Subst} {y : String}
+    (hi : r.indepOk σ y = true) :
+    (∀ n ∈ r.body.varList, n = r.x ∨ y ∉ (σ.apply n).varList) ∧
+      (∀ n ∈ r.result.varList, n = r.x ∨ y ∉ (σ.apply n).varList) := by
+  simp only [CRule.wellFormed, Bool.and_eq_true, List.all_eq_true, decide_eq_true_eq] at hw
+  simp only [CRule.indepOk, List.all_eq_true, decide_eq_true_eq] at hi
+  have hb : ∀ n ∈ r.body.varList, n = r.x ∨ y ∉ (σ.apply n).varList := by
+    intro n hn
+    rcases hw.1.1.1 n hn with h | h
+    · exact Or.inl h
+    · exact Or.inr (hi n h)
+  refine ⟨hb, fun n hn => ?_⟩
+  rcases hw.1.1.2 n hn with h | h
+  · exact Or.inl h
+  · exact hb n h
+
 /-- **Instantiation soundness for derivatives.**  If a derivative rule holds,
 its instance on `diff(λy. e)` holds with the input's bound variable. -/
 theorem deriv_instance {𝕜 : Type} [NontriviallyNormedField 𝕜] (I : Interp 𝕜) (r : CRule)
     (hw : r.wellFormed = true) (hr : DerivHolds I r.x r.body r.result) {y : String} {e : Expr}
-    {σ : Subst} (hm : matchAux r.body e [(r.x, .var y)] = some σ) :
+    {σ : Subst} (hm : matchAux r.body e [(r.x, .var y)] = some σ)
+    (hi : r.indepOk σ y = true) :
     DerivHolds I y e (r.result.subst σ) := by
-  simp only [CRule.wellFormed, Bool.and_eq_true, List.all_eq_true, decide_eq_true_eq] at hw
+  obtain ⟨hb, hres⟩ := indep_vars hw hi
   have hσ := matched_find hm
   have he : r.body.subst σ = e := (matchAux_spec r.body e _ σ hm).2 σ (Subst.Extends.refl σ)
+  have hrv : ∀ n ∈ r.result.varList, n ≠ r.x → n ∈ r.body.varList := by
+    simp only [CRule.wellFormed, Bool.and_eq_true, List.all_eq_true, decide_eq_true_eq] at hw
+    intro n hn hnx; exact (hw.1.1.2 n hn).resolve_left hnx
   intro env t hF
-  have hF' : ∀ᶠ v in 𝓝 t, Defined I (Function.update env r.x v) r.body := by
+  have hF' : ∀ᶠ v in 𝓝 t, Defined I (Function.update (σ.env I env) r.x v) r.body := by
     filter_upwards [hF] with v hv
     rw [← he] at hv
-    exact (eval_rename I hσ hw.1.1 env v).2.1 hv
-  obtain ⟨hG, hD⟩ := hr env t hF'
-  refine ⟨(eval_rename I hσ hw.1.2 env t).2.2 hG, ?_⟩
-  rw [(eval_rename I hσ hw.1.2 env t).1]
+    exact ((eval_rename I hσ hb env v).2.1 hv).1
+  have himg : ∀ n ∈ r.body.varList, n ≠ r.x → Defined I env (σ.apply n) := by
+    have ht := hF.self_of_nhds
+    rw [← he] at ht
+    exact ((eval_rename I hσ hb env t).2.1 ht).2
+  obtain ⟨hG, hD⟩ := hr (σ.env I env) t hF'
+  refine ⟨(eval_rename I hσ hres env t).2.2 ⟨hG, fun n hn hnx => himg n (hrv n hn hnx) hnx⟩, ?_⟩
+  rw [(eval_rename I hσ hres env t).1]
   have hfun : (fun v => eval I (Function.update env y v) e) =
-      fun v => eval I (Function.update env r.x v) r.body := by
+      fun v => eval I (Function.update (σ.env I env) r.x v) r.body := by
     funext v
     rw [← he]
-    exact (eval_rename I hσ hw.1.1 env v).1
+    exact (eval_rename I hσ hb env v).1
   rw [hfun]
   exact hD
 
 /-- **Instantiation soundness for limits.** -/
 theorem limit_instance {𝕜 : Type} [NontriviallyNormedField 𝕜] (I : Interp 𝕜) (r : CRule)
     (hw : r.wellFormed = true) (hr : LimitHolds I r.x r.point r.body r.result) {y : String}
-    {e : Expr} {σ : Subst} (hm : matchAux r.body e [(r.x, .var y)] = some σ) :
-    LimitHolds I y r.point e (r.result.subst σ) := by
-  simp only [CRule.wellFormed, Bool.and_eq_true, List.all_eq_true, decide_eq_true_eq,
-    List.isEmpty_iff] at hw
-  have hσ := matched_find hm
-  have he : r.body.subst σ = e := (matchAux_spec r.body e _ σ hm).2 σ (Subst.Extends.refl σ)
-  intro env
-  let env' := Function.update env r.x (env y)
-  obtain ⟨hL, hT⟩ := hr env'
-  have hself : Function.update env y (env y) = env := Function.update_eq_self y env
-  have hR := eval_rename I hσ hw.1.2 env (env y)
-  rw [hself] at hR
-  refine ⟨hR.2.2 hL, ?_⟩
-  rw [hR.1]
-  have hpt : eval I env r.point = eval I env' r.point :=
-    eval_congr I r.point (fun n hn => by simp [hw.2] at hn)
-  rw [hpt]
-  have hfun : (fun v => eval I (Function.update env y v) e) =
-      fun v => eval I (Function.update env' r.x v) r.body := by
-    funext v
-    rw [← he, (eval_rename I hσ hw.1.1 env v).1]
-    simp [env']
-  rw [hfun]
-  exact hT
+    {a e : Expr} {σ σ' : Subst} (hm : matchAux r.body e [(r.x, .var y)] = some σ)
+    (hp : matchAux r.point a σ = some σ') (hi : r.indepOk σ' y = true) :
+    LimitHolds I y a e (r.result.subst σ') := by
+  obtain ⟨hb, hres⟩ := indep_vars hw hi
+  have hext := (matchAux_spec r.point a σ σ' hp)
+  have hσ : σ'.find? r.x = some (.var y) := hext.1 _ _ (matched_find hm)
+  have he : r.body.subst σ' = e :=
+    (matchAux_spec r.body e _ σ hm).2 σ' hext.1
+  have ha : r.point.subst σ' = a := hext.2 σ' (Subst.Extends.refl σ')
+  intro env hF
+  have hpt : eval I env a = eval I (σ'.env I env) r.point := by rw [← ha, eval_subst]
+  rw [hpt] at hF
+  have hF' : ∀ᶠ v in 𝓝[≠] (eval I (σ'.env I env) r.point),
+      Defined I (Function.update (σ'.env I env) r.x v) r.body := by
+    filter_upwards [hF] with v hv
+    rw [← he] at hv
+    exact ((eval_rename I hσ hb env v).2.1 hv).1
+  have himg : ∀ n ∈ r.body.varList, n ≠ r.x → Defined I env (σ'.apply n) := by
+    obtain ⟨v, hv⟩ := hF.exists
+    rw [← he] at hv
+    exact ((eval_rename I hσ hb env v).2.1 hv).2
+  obtain ⟨hL, hT⟩ := hr (σ'.env I env) hF'
+  refine ⟨?_, ?_⟩
+  · rw [defined_subst]
+    refine ⟨hL, fun n hn => ?_⟩
+    by_cases hnx : n = r.x
+    · subst hnx; simp [Subst.apply, hσ, Defined]
+    · simp only [CRule.wellFormed, Bool.and_eq_true, List.all_eq_true, decide_eq_true_eq] at hw
+      exact himg n ((hw.1.1.2 n hn).resolve_left hnx) hnx
+  · rw [hpt, eval_subst]
+    have hfun : (fun v => eval I (Function.update env y v) e) =
+        fun v => eval I (Function.update (σ'.env I env) r.x v) r.body := by
+      funext v
+      rw [← he]
+      exact (eval_rename I hσ hb env v).1
+    rw [hfun]
+    exact hT
 
 /-- What a rewrite step means: the derivative or limit statement for the
 input and the result. -/
@@ -956,20 +1111,34 @@ theorem apply?_sound {𝕜 : Type} [NontriviallyNormedField 𝕜] (I : Interp �
     simp only [CRule.apply?] at h
     split at h
     · rename_i hs
-      simp only [Option.map_eq_some_iff] at h
-      obtain ⟨σ, hm, rfl⟩ := h
-      simp only [CRule.HoldsIn, hs] at hr
-      exact ⟨rfl, deriv_instance I r hw hr hm⟩
+      split at h
+      · rename_i σ hm
+        split at h
+        · rename_i hi
+          simp only [Option.some.injEq] at h
+          subst h
+          simp only [CRule.HoldsIn, hs] at hr
+          exact ⟨rfl, deriv_instance I r hw hr hm hi⟩
+        · cases h
+      · cases h
     · cases h
   | limit a y e =>
     simp only [CRule.apply?] at h
     split at h
     · rename_i hs
-      simp only [Option.map_eq_some_iff] at h
-      obtain ⟨σ, hm, rfl⟩ := h
-      simp only [CRule.HoldsIn, hs.1] at hr
-      rw [hs.2]
-      exact limit_instance I r hw hr hm
+      split at h
+      · rename_i σ hm
+        split at h
+        · rename_i σ' hp
+          split at h
+          · rename_i hi
+            simp only [Option.some.injEq] at h
+            subst h
+            simp only [CRule.HoldsIn, hs] at hr
+            exact limit_instance I r hw hr hm hp hi
+          · cases h
+        · cases h
+      · cases h
     · cases h
   | lam _ _ => simp [CRule.apply?] at h
   | val _ => simp [CRule.apply?] at h
@@ -984,7 +1153,7 @@ theorem holds_complex {r : CRule} (h : r.Holds .complex) : r.HoldsIn Interp.comp
 theorem catalog_wellFormed : ∀ e ∈ catalog, e.rule.wellFormed = true := by
   intro e he
   simp only [catalog, List.mem_cons, List.mem_nil_iff, or_false] at he
-  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 end OSR.Calculus
 

@@ -71,9 +71,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   complex domain interprets `sinh`, `cosh`, `tanh` and `cot` only.
 - Calculus (`OSR/Calculus.lean`): derivative rules stated with `HasDerivAt`
   and two-sided limits with `Tendsto` along `𝓝[≠] a`, over lambda terms
-  (`fns1#lambda`, CDs `calculus1`, `fns1` and `limit1` pinned); 26 of the 32
-  v0.1 rules migrated, all 26 proved over ℝ (the derivative of `artanh` is
-  derived from its logarithmic form, Mathlib having no lemma for it) and 14
+  (`fns1#lambda`, CDs `calculus1`, `fns1` and `limit1` pinned); 29 of the 32
+  v0.1 rules migrated, 28 proved over ℝ, and the v0.1 power rule refuted
+  (`derivPow_counterexample`: false at `n = 0`, `x = 0`; reported with the
+  status `counterexample`); `FreeQ` becomes `CRule.independent`; all proved (the derivative of `artanh` is
+  derived from its logarithmic form, Mathlib having no lemma for it) and 16
   over ℂ, with a sound root rewriter whose
   instances rename the bound variable (`apply?_sound`) and one-step
   termination (`rewrite_result`).  Exported as `calculus.osr.json` with its

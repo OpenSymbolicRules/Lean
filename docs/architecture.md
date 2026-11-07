@@ -74,7 +74,7 @@ OSR/Algebra.lean       Algebra rules (all 20), same structure
 OSR/LogicOps.lean      Boolean interpretations of the logic1 connectives, CMPs
 OSR/LogicCore.lean     quantified Boolean formulas, rewriter, soundness, termination
 OSR/Logic.lean         Logic rules (all 39), profiles and their weights
-OSR/Calculus.lean      derivative and limit rules (26), their proofs and rewriter
+OSR/Calculus.lean      derivative and limit rules (29), their proofs and rewriter
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
                        generation of rule set, reports and conformance cases
@@ -220,6 +220,12 @@ along `𝓝[≠] a`.  The rewriter applies a rule at the root of a `diff` or
 and `limit_instance` prove the renamed instance from the rule's statement
 (`eval_rename`), and `apply?_sound` packages them.  A result is a lambda or a
 value, so normalization takes at most one step (`rewrite_result`).
+Metavariables other than the bound variable must be `independent` of it
+(v0.1 `FreeQ`): the rewriter checks that their matches do not mention the
+input's bound variable (`indepOk`), which `eval_rename` turns into the
+semantic independence the statements need.  A rule can also be refuted: the
+v0.1 power rule `diff(λx. x^n) = λx. n x^(n-1)` is false at `n = 0`, `x = 0`
+(`derivPow_counterexample`), and the exporter audits the type `¬ CRule.Holds`.
 
 ## Termination
 
