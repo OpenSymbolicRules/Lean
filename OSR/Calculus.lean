@@ -560,6 +560,28 @@ theorem derivTanh_complex : derivTanh.Holds .complex := by
   field_simp
   linear_combination this
 
+theorem derivArctanh_real : derivArctanh.Holds .real := by
+  deriv_intro derivArctanh Interp.real
+  have ht := hF.self_of_nhds
+  have hpos : 0 < 1 - t ^ 2 := by nlinarith [ht.1, ht.2]
+  refine ⟨hpos.ne', ?_⟩
+  have h1 : 0 < 1 + t := by linarith [ht.1]
+  have h2 : 0 < 1 - t := by linarith [ht.2]
+  -- `artanh v = 1/2 * log ((1 + v) / (1 - v))` near `t`.
+  have heq : (fun v => 1 / 2 * Real.log ((1 + v) / (1 - v))) =ᶠ[𝓝 t] Real.artanh := by
+    filter_upwards [hF] with v hv
+    exact (Real.artanh_eq_half_log ⟨hv.1.le, hv.2.le⟩).symm
+  have hg : HasDerivAt (fun v : ℝ => (1 + v) / (1 - v)) (2 / (1 - t) ^ 2) t := by
+    have h0 := ((hasDerivAt_id' t).const_add 1).div ((hasDerivAt_id' t).const_sub 1) h2.ne'
+    have hfun : ((fun x : ℝ => 1 + x) / fun x => 1 - x) = fun v => (1 + v) / (1 - v) := by
+      funext v; rfl
+    rw [hfun] at h0
+    exact h0.congr_deriv (by ring)
+  have hlog := (hg.log (div_pos h1 h2).ne').const_mul (1 / 2 : ℝ)
+  refine (hlog.congr_of_eventuallyEq heq.symm).congr_deriv ?_
+  field_simp
+  ring
+
 /-- `1/f` has derivative `-f'/f²`. -/
 private theorem hasDerivAt_one_div {f : ℝ → ℝ} {f' t : ℝ} (h : HasDerivAt f f' t) (hf : f t ≠ 0) :
     HasDerivAt (fun v => 1 / f v) (-f' / f t ^ 2) t := by
@@ -677,8 +699,8 @@ def catalog : List CEntry := [
     proofs := [(.real, ``derivCosh_real), (.complex, ``derivCosh_complex)] },
   { rule := derivTanh, ruleDecl := ``derivTanh,
     proofs := [(.real, ``derivTanh_real), (.complex, ``derivTanh_complex)] },
-  { rule := derivArctanh, ruleDecl := ``derivArctanh, proofs := [], unproved := [.real],
-    findings := ["real: not proved; Mathlib has no derivative lemma for Real.artanh at this revision."] },
+  { rule := derivArctanh, ruleDecl := ``derivArctanh, proofs := [(.real, ``derivArctanh_real)],
+    findings := ["real: Mathlib has no derivative lemma for Real.artanh at this revision; the proof derives it from artanh x = 1/2 log((1 + x)/(1 - x)) on (-1, 1)."] },
   { rule := derivArcsin, ruleDecl := ``derivArcsin, proofs := [(.real, ``derivArcsin_real)] },
   { rule := derivArccos, ruleDecl := ``derivArccos, proofs := [(.real, ``derivArccos_real)] },
   { rule := derivCot, ruleDecl := ``derivCot,

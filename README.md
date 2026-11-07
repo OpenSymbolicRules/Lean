@@ -18,7 +18,7 @@ Status: **pilot** (`1.0.0-alpha.1` format).  Two rule sets are migrated:
 | Trigonometry | 13 | 13 / 13 | 13 / 12 | 0 |
 | Algebra | 20 | 20 / 20 | 18 / 18 | 0 |
 | Logic (domain 𝔹) | 35 | 35 / 35 in 𝔹 | — | 4 (FreeQ conditions) |
-| Calculus | 26 | 25 / 25 | 14 / 14 | 6 |
+| Calculus | 26 | 26 / 26 | 14 / 14 | 6 |
 
 `tan(arctan z) = z` over ℂ is proved but not certified, because the mapping of
 `transc1#arctan` to `Complex.arctan` is provisional.  `ln(ab) = ln a + ln b`
@@ -29,8 +29,8 @@ Logic rules are stated in the Boolean domain (`logic1` on Lean's `Bool`,
 `quant1` quantifiers over the truth values, encoded as `OMBIND`); 4 rules need
 a "variable not free" condition, which has no OpenMath symbol.  Calculus
 rules state derivatives (`HasDerivAt`) and two-sided limits (`Tendsto`) of
-lambda terms (`OMBIND fns1#lambda`); `artanh` has no derivative lemma in
-Mathlib, and 6 v0.1 rules use `FreeQ` or the invented symbol `osr#Apply`.
+lambda terms (`OMBIND fns1#lambda`); 6 v0.1 rules use `FreeQ` or the
+invented symbol `osr#Apply`.
 Every profile of both rule sets is proved to terminate.  See
 [`docs/audit-m0.md`](docs/audit-m0.md) and the generated reports.
 

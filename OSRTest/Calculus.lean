@@ -45,8 +45,9 @@ private def rules : List CRule :=
   | .oma h [.ombind b ["x"] _] => h == diffSymbol && b == lambdaSymbol
   | _ => false
 
--- An unproved rule is not applied by the reference engine.
-#guard (rewrite rules (.diff "t" (.app1 .arctanh t))).isNone
+-- Every rule is proved over ℝ, so the engine uses all of them.
+#guard rules.length == Calculus.catalog.length
+#guard (rewrite rules (.diff "t" (.app1 .arctanh t))).isSome
 #guard (rewrite rules (.diff "t" (.app1 .arcsin t))).map (·.2) ==
   some (.lam "t" (.app2 .div (.int 1) (.app2 .root (.app2 .sub (.int 1) (.pow t (.int 2))) (.int 2))))
 
