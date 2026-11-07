@@ -227,6 +227,15 @@ semantic independence the statements need.  A rule can also be refuted: the
 v0.1 power rule `diff(λx. x^n) = λx. n x^(n-1)` is false at `n = 0`, `x = 0`
 (`derivPow_counterexample`), and the exporter audits the type `¬ CRule.Holds`.
 
+The three structural v0.1 rules remain outside `CRule`: besides their
+non-OpenMath `osr#Apply`, they omit differentiability premises for their
+operands. A composite can have a derivative while its operands do not.
+The `structuralSum_missingPremise`, `structuralDifference_missingPremise`
+and `structuralProduct_missingPremise` theorems exhibit this in the existing
+real expression fragment; see [Structural derivatives](structural-derivatives.md).
+They justify the migration diagnostics, rather than certify a structural
+rewrite that the format cannot express.
+
 ## Termination
 
 `OSR/Termination.lean` proves termination with monotone interpretations.  A

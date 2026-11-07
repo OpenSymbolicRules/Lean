@@ -7,7 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Report the three unmigrated structural derivative rules as lacking the
+  differentiability assumptions needed by their operands, in addition to
+  using the non-OpenMath `osr#Apply` construct. The v1 format cannot express
+  these premises, so no assumptions were added silently.
+
 ### Added
+- A `just doc` entry point using Documenter and DocumenterLandingPage,
+  including `llms.txt` and `llms-full.txt` under `docs/build/`.
+- Kernel-checked witnesses for the missing differentiability premises of
+  the three structural Calculus rules, with type and axiom regression checks.
+  All witnesses use `sqrt(x^2)` from the existing real expression fragment.
 - OpenMath semantic registry relating `arith1`, `transc1`, `nums1`,
   `relation1` and `setname1` symbols to real and complex Mathlib
   interpretations, with assurance levels, definedness restrictions and CMP

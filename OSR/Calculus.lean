@@ -6,7 +6,8 @@ import OSR.OMObject
 
 Migration of `OpenSymbolicRules/Calculus` at commit
 `eb9eb87aa7ffcd6dd7da055fa6b6d87f35f840da`: 29 of its 32 rules (the other 3
-use the invented `osr#Apply`).  v0.1 `FreeQ` becomes an independence
+lack differentiability premises and use the invented `osr#Apply`).
+v0.1 `FreeQ` becomes an independence
 constraint (`CRule.independent`); the v0.1 power rule is refuted
 (`derivPow_counterexample`).
 
@@ -310,7 +311,45 @@ def derivPow : CRule where
 def notMigrated : List (String × String) :=
   ([1, 2, 3].map fun n =>
     (s!"calculus:2-derivatives/2.3-structural-derivatives:{n}",
-      "uses osr#Apply, which is not an OpenMath symbol"))
+      "requires differentiability assumptions for the operands; the v0.1 rule has no such conditions, and its osr#Apply application is outside OSR v1"))
+
+/-! ## Missing premises of the structural v0.1 rules
+
+These are witnesses of a defined derivative of the composite with undefined
+operand derivatives, not refutations of a `CRule.Holds` statement: the
+structural rules cannot yet be represented by `CRule`. The witnesses use
+`sqrt(x^2)`, which belongs to the existing real OpenMath fragment.
+-/
+
+private theorem sqrt_sq_not_differentiableAt_zero :
+    ¬ DifferentiableAt ℝ (fun x : ℝ => Real.sqrt (x ^ 2)) 0 := by
+  simpa only [Real.sqrt_sq_eq_abs] using not_differentiableAt_abs_zero
+
+/-- A sum can be differentiable while neither operand is differentiable. -/
+theorem structuralSum_missingPremise :
+    HasDerivAt (fun x : ℝ => Real.sqrt (x ^ 2) + -Real.sqrt (x ^ 2)) 0 0 ∧
+      ¬ DifferentiableAt ℝ (fun x : ℝ => Real.sqrt (x ^ 2)) 0 ∧
+      ¬ DifferentiableAt ℝ (fun x : ℝ => -Real.sqrt (x ^ 2)) 0 := by
+  refine ⟨?_, sqrt_sq_not_differentiableAt_zero, ?_⟩
+  · simpa only [add_neg_cancel] using hasDerivAt_const (0 : ℝ) (0 : ℝ)
+  · intro h
+    exact sqrt_sq_not_differentiableAt_zero (by simpa using h.neg)
+
+/-- A difference can be differentiable while its operands are not. -/
+theorem structuralDifference_missingPremise :
+    HasDerivAt (fun x : ℝ => Real.sqrt (x ^ 2) - Real.sqrt (x ^ 2)) 0 0 ∧
+      ¬ DifferentiableAt ℝ (fun x : ℝ => Real.sqrt (x ^ 2)) 0 := by
+  refine ⟨?_, sqrt_sq_not_differentiableAt_zero⟩
+  simpa only [sub_self] using hasDerivAt_const (0 : ℝ) (0 : ℝ)
+
+/-- A product can be differentiable while its operands are not. -/
+theorem structuralProduct_missingPremise :
+    HasDerivAt (fun x : ℝ => Real.sqrt (x ^ 2) * Real.sqrt (x ^ 2)) 0 0 ∧
+      ¬ DifferentiableAt ℝ (fun x : ℝ => Real.sqrt (x ^ 2)) 0 := by
+  refine ⟨?_, sqrt_sq_not_differentiableAt_zero⟩
+  simp only [Real.sqrt_sq_eq_abs, abs_mul_abs_self]
+  simpa only [pow_two, Nat.reduceSub, pow_one, mul_zero] using
+    hasDerivAt_pow 2 (0 : ℝ)
 
 /-! ## Proofs -/
 

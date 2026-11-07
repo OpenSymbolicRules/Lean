@@ -13,6 +13,35 @@ private def t : Expr := .var "t"
 -- Every v0.1 rule is migrated or reported.
 #guard Calculus.catalog.length + Calculus.notMigrated.length == 32
 #guard Calculus.notMigrated.length == 3
+#guard Calculus.notMigrated.all fun (_, reason) =>
+  reason == "requires differentiability assumptions for the operands; the v0.1 rule has no such conditions, and its osr#Apply application is outside OSR v1"
+
+-- A composite can have a derivative even though its operands have none.
+-- sqrt(x^2) is expressible in the existing real OpenMath fragment.
+example :
+    HasDerivAt (fun x : ℝ => Real.sqrt (x ^ 2) + -Real.sqrt (x ^ 2)) 0 0 ∧
+      ¬ DifferentiableAt ℝ (fun x : ℝ => Real.sqrt (x ^ 2)) 0 ∧
+      ¬ DifferentiableAt ℝ (fun x : ℝ => -Real.sqrt (x ^ 2)) 0 :=
+  structuralSum_missingPremise
+
+example :
+    HasDerivAt (fun x : ℝ => Real.sqrt (x ^ 2) - Real.sqrt (x ^ 2)) 0 0 ∧
+      ¬ DifferentiableAt ℝ (fun x : ℝ => Real.sqrt (x ^ 2)) 0 :=
+  structuralDifference_missingPremise
+
+example :
+    HasDerivAt (fun x : ℝ => Real.sqrt (x ^ 2) * Real.sqrt (x ^ 2)) 0 0 ∧
+      ¬ DifferentiableAt ℝ (fun x : ℝ => Real.sqrt (x ^ 2)) 0 :=
+  structuralProduct_missingPremise
+
+-- The diagnostic proofs use the same axiom policy as certified rules.
+run_meta do
+  for thm in [``structuralSum_missingPremise,
+      ``structuralDifference_missingPremise, ``structuralProduct_missingPremise] do
+    let forbidden := (← Lean.collectAxioms thm).toList.filter fun ax =>
+      ax ∉ [``propext, ``Classical.choice, ``Quot.sound]
+    unless forbidden.isEmpty do
+      throwError "structural diagnostic {thm} depends on {forbidden}"
 
 -- Identifiers are unique and every rule is well formed.
 #guard (Calculus.catalog.map (·.rule.id)).eraseDups.length == Calculus.catalog.length

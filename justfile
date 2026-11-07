@@ -14,6 +14,10 @@ build:
 test:
 	lake build OSRTest
 
+# Build the documentation and LLM text exports under docs/build/.
+doc:
+	julia --project=docs -e 'using Pkg; Pkg.instantiate(); include("docs/make.jl")'
+
 # Replay each compiled module in the kernel with leanchecker.  Modules are
 # replayed one at a time: each replay loads Mathlib (about 3 GB of memory).
 check:

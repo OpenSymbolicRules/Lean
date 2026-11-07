@@ -11,7 +11,7 @@ OpenMath CDs ──► semantic registry ──► Lean rules + proofs ──►
                      OpenSymbolicRules.jl, other CAS ◄── OSR v1 JSON (audited export)
 ```
 
-Status: **pilot** (`1.0.0-alpha.1` format).  Two rule sets are migrated:
+Status: **pilot** (`1.0.0-alpha.1` format).  Four rule sets are migrated:
 
 | Rule set | Rules | ℝ proved / certified | ℂ proved / certified | Not migrated |
 |---|---|---|---|---|
@@ -30,9 +30,10 @@ Logic rules are stated in the Boolean domain (`logic1` on Lean's `Bool`,
 `FreeQ` becomes a matching constraint (`independent`), checked syntactically.  Calculus
 rules state derivatives (`HasDerivAt`) and two-sided limits (`Tendsto`) of
 lambda terms (`OMBIND fns1#lambda`).  The v0.1 power rule is refuted in Lean
-(false at `n = 0`, `x = 0`); 3 v0.1 rules use the invented symbol
-`osr#Apply`.
-Every profile of both rule sets is proved to terminate.  See
+(false at `n = 0`, `x = 0`); 3 structural v0.1 rules lack differentiability
+premises and use the invented symbol `osr#Apply`. The missing premises have
+[Lean witnesses](docs/structural-derivatives.md).
+Every profile is proved to terminate.  See
 [`docs/audit-m0.md`](docs/audit-m0.md) and the generated reports.
 
 ## Example
@@ -74,6 +75,7 @@ Requires [elan](https://github.com/leanprover/elan) and
 just setup        # fetch Mathlib (pinned) and its build cache
 just build        # compile registry, rules and proofs
 just test         # #guard tests and examples
+just doc          # HTML documentation and LLM text exports in docs/build/
 just check        # replay modules with leanchecker
 just export       # audit rule and termination proofs, write generated/
                   #   <set>.osr.json, <set>.report.{json,md}, registry.json,
