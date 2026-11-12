@@ -11,7 +11,7 @@ OpenMath CDs ──► semantic registry ──► Lean rules + proofs ──►
                      OpenSymbolicRules.jl, other CAS ◄── OSR v1 JSON (audited export)
 ```
 
-Status: **pilot** (`1.0.0-alpha.1` format).  Four rule sets are migrated:
+Status: **pilot** (`1.0.0-alpha.1` format).  Five rule sets are migrated:
 
 | Rule set | Rules | ℝ proved / certified | ℂ proved / certified | Not migrated |
 |---|---|---|---|---|
@@ -19,6 +19,7 @@ Status: **pilot** (`1.0.0-alpha.1` format).  Four rule sets are migrated:
 | Algebra | 20 | 20 / 20 | 18 / 18 | 0 |
 | Logic (domain 𝔹) | 39 | 39 / 39 in 𝔹 | — | 0 |
 | Calculus | 29 | 28 / 28 (+1 counterexample) | 16 / 16 | 3 |
+| Integration (RUBI, first 9) | 6 | 2 / 2 (+4 counterexamples) | 1 / 1 (+3 counterexamples) | 3 |
 
 `tan(arctan z) = z` over ℂ is proved but not certified, because the mapping of
 `transc1#arctan` to `Complex.arctan` is provisional.  `ln(ab) = ln a + ln b`
@@ -33,6 +34,10 @@ lambda terms (`OMBIND fns1#lambda`).  The v0.1 power rule is refuted in Lean
 (false at `n = 0`, `x = 0`); 3 structural v0.1 rules lack differentiability
 premises and use the invented symbol `osr#Apply`. The missing premises have
 [Lean witnesses](docs/structural-derivatives.md).
+Integration rules state antiderivatives (`calculus1#int`, `HasDerivAt` on a
+neighbourhood where the integrand is defined); the first nine RUBI rules of a
+syntactic inventory give two proofs and four counterexamples, see
+[Integration](docs/integration.md).
 Every profile is proved to terminate.  See
 [`docs/audit-m0.md`](docs/audit-m0.md) and the generated reports.
 
@@ -80,7 +85,7 @@ just check        # replay modules with leanchecker
 just export       # audit rule and termination proofs, write generated/
                   #   <set>.osr.json, <set>.report.{json,md}, registry.json,
                   #   conformance/<set>.cases.json for set in trigonometry,
-                  #   algebra, logic, calculus
+                  #   algebra, logic, calculus, integration
 just determinism  # export twice, require identical bytes
 just validate     # validate against schemas/ruleset.schema.json
 ```

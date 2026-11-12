@@ -16,6 +16,7 @@ hero:
 
 - [Architecture](architecture.md)
 - [Audit m0](audit-m0.md)
+- [Integration](integration.md)
 - [Migration proposal](migration-proposal.md)
 - [Structural derivatives](structural-derivatives.md)
 - [Trust model](trust-model.md)

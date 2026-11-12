@@ -74,7 +74,9 @@ OSR/Algebra.lean       Algebra rules (all 20), same structure
 OSR/LogicOps.lean      Boolean interpretations of the logic1 connectives, CMPs
 OSR/LogicCore.lean     quantified Boolean formulas, rewriter, soundness, termination
 OSR/Logic.lean         Logic rules (all 39), profiles and their weights
-OSR/Calculus.lean      derivative and limit rules (29), their proofs and rewriter
+OSR/Calculus.lean      derivative, limit and antiderivative statements, the
+                       Calculus rules (29), their proofs and rewriter
+OSR/Integration.lean   RUBI antiderivative rules (6), proofs and counterexamples
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
                        generation of rule set, reports and conformance cases
@@ -235,6 +237,13 @@ and `structuralProduct_missingPremise` theorems exhibit this in the existing
 real expression fragment; see [Structural derivatives](structural-derivatives.md).
 They justify the migration diagnostics, rather than certify a structural
 rewrite that the format cannot express.
+
+A third shape, `int(λx. F) ⟶ λx. G` (`calculus1#int`), states antiderivatives:
+`AntiderivHolds` says that wherever `F` is defined on a neighbourhood of `t`,
+`G` is defined on a neighbourhood of `t` and `v ↦ G[x := v]` has derivative
+`F[x := t]` at `t`.  `antideriv_instance` is its instantiation theorem.  The
+Calculus set has no rule of this shape; the RUBI rules are in
+`OSR/Integration.lean`, see [Integration](integration.md).
 
 ## Termination
 

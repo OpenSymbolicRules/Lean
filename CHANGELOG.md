@@ -14,6 +14,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Antiderivative rules `int(λx. F) ⟶ λx. G` (`calculus1#int`, now in the
+  registry): `AntiderivHolds` requires the result to be defined on a
+  neighbourhood wherever the integrand is, with `HasDerivAt`; instantiation
+  (`antideriv_instance`) and engine soundness cover the new shape.
+- First RUBI migration (`OSR/Integration.lean`, exported as
+  `integration.osr.json` with its reports and conformance cases): of the nine
+  `FreeQ`-only rules with registered heads, `∫ a = a x` is proved over ℝ and ℂ,
+  `∫ log(c xⁿ)` over ℝ, four rules are refuted by Lean counterexamples, and
+  three are reported as not migrated.  The other rule sets export unchanged.
 - A `just doc` entry point using Documenter and DocumenterLandingPage,
   including `llms.txt` and `llms-full.txt` under `docs/build/`.
 - Kernel-checked witnesses for the missing differentiability premises of

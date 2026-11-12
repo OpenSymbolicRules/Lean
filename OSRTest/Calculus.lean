@@ -66,6 +66,7 @@ private def rules : List CRule :=
   let input := match r.shape with
     | .deriv => CTerm.diff r.x r.body
     | .limit => CTerm.limit r.point r.x r.body
+    | .antideriv => CTerm.integral r.x r.body
   match rewrite rules input with
   | some (_, out) => (rewrite rules out).isNone
   | none => false

@@ -731,13 +731,15 @@ def calcSeeds : List (String × Calculus.CTerm) :=
     let r := e.rule
     (s!"pattern.{r.id}", match r.shape with
       | .deriv => Calculus.CTerm.diff r.x r.body
-      | .limit => Calculus.CTerm.limit r.point r.x r.body)) ++
+      | .limit => Calculus.CTerm.limit r.point r.x r.body
+      | .antideriv => Calculus.CTerm.integral r.x r.body)) ++
   (Calculus.catalog.map fun e =>
     let r := e.rule
     let σ : Subst := [(r.x, .var "t")]
     (s!"renamed.{r.id}", match r.shape with
       | .deriv => Calculus.CTerm.diff "t" (r.body.subst σ)
-      | .limit => Calculus.CTerm.limit r.point "t" (r.body.subst σ))) ++
+      | .limit => Calculus.CTerm.limit r.point "t" (r.body.subst σ)
+      | .antideriv => Calculus.CTerm.integral "t" (r.body.subst σ))) ++
   [("independent.constant_body", .diff "t" (.app1 .sin (.var "u"))),
    ("independent.limit_of_constant", .limit (.int 1) "t" (.app1 .sin (.var "u"))),
    ("independent.body_mentions_bound", .diff "t" (.app2 .mul tvar (.var "u"))),
@@ -746,10 +748,64 @@ def calcSeeds : List (String × Calculus.CTerm) :=
    ("nomatch.square", .diff "t" (.pow tvar (.int 2))),
    ("normal.lambda", .lam "t" (.app1 .cos tvar))]
 
+/-- Inputs of the Integration set: every rule pattern, the patterns with
+another bound variable, and inputs no rule matches. -/
+def intSeeds : List (String × Calculus.CTerm) :=
+  (Integration.catalog.map fun e => (s!"pattern.{e.rule.id}", .integral e.rule.x e.rule.body)) ++
+  (Integration.catalog.map fun e =>
+    (s!"renamed.{e.rule.id}", .integral "t" (e.rule.body.subst [(e.rule.x, .var "t")]))) ++
+  [("independent.body_mentions_bound", .integral "t" tvar),
+   ("independent.constant_of_other_variable", .integral "t" (.app1 .sin (.var "u"))),
+   ("nomatch.derivative", .diff "t" (.var "u")),
+   ("normal.lambda", .lam "t" (.app2 .mul (.var "u") tvar))]
+
+/-- A rule set of calculus rules (`OSR.Calculus.CRule`). -/
+structure CalcSet where
+  /-- File and identifier prefix. -/
+  name : String
+  title : String
+  catalog : List Calculus.CEntry
+  notMigrated : List (String × String)
+  seeds : List (String × Calculus.CTerm)
+  /-- Report paragraph stating what the rules mean. -/
+  statement : String
+  /-- Report paragraph on the strategy, before the seed count. -/
+  strategy : String
+
 /-- The rules the reference engine applies: those proved over ℝ (the domain of
 the conformance cases), in priority order. -/
-def calcRules : List Calculus.CRule :=
-  (Calculus.catalog.filter fun e => (e.proofs.lookup .real).isSome).map (·.rule)
+def CalcSet.rules (cs : CalcSet) : List Calculus.CRule :=
+  (cs.catalog.filter fun e => (e.proofs.lookup .real).isSome).map (·.rule)
+
+def calculusSet : CalcSet where
+  name := "calculus"
+  title := "Calculus"
+  catalog := Calculus.catalog
+  notMigrated := Calculus.notMigrated
+  seeds := calcSeeds
+  statement := "A derivative rule `diff(λx. F) ⟶ λx. G` states that wherever `F` is defined
+near `t`, `v ↦ F[x := v]` has derivative `G[x := t]` at `t` (`HasDerivAt`). A
+limit rule `limit(a, both_sides, λx. F) ⟶ L` states `Tendsto` along `𝓝[≠] a`."
+  strategy := "Rules apply at the root of a `diff` or `limit` term (their bodies are field
+expressions, to which no calculus rule applies); the result of a rule is a
+lambda or a value, so normalization takes at most one step
+(`OSR.Calculus.rewrite_result`)."
+
+def integrationSet : CalcSet where
+  name := "integration"
+  title := "Integration"
+  catalog := Integration.catalog
+  notMigrated := Integration.notMigrated
+  seeds := intSeeds
+  statement := "An antiderivative rule `int(λx. F) ⟶ λx. G` (`calculus1#int`) states that
+wherever `F` is defined near `t`, `G` is defined near `t` and `v ↦ G[x := v]`
+has derivative `F[x := t]` at `t` (`HasDerivAt`). The rules are the nine RUBI
+4.16.1 rules of `OpenSymbolicRules/Integration` whose only conditions are
+`FreeQ` and whose heads, the outer `Int` removed, are in the registry; the
+other 6,248 rules are not yet considered."
+  strategy := "Rules apply at the root of an `int` term (their bodies are field expressions,
+to which no calculus rule applies); the result of a rule is a lambda, so
+normalization takes at most one step (`OSR.Calculus.rewrite_result`)."
 
 def calcRuleJson (b : BuildInfo) (e : Calculus.CEntry) (vs : List Verification) : Json :=
   let r := e.rule
@@ -774,17 +830,17 @@ def calcRuleJson (b : BuildInfo) (e : Calculus.CEntry) (vs : List Verification) 
       [("independent", Json.arr (r.independent.map fun c =>
         Json.mkObj [("variable", jstr c), ("of", jstr r.x)]).toArray)]))
 
-unsafe def exportCalculus (outDir : String) (build : BuildInfo) : MetaM Nat := do
-  let ids := Calculus.catalog.map (·.rule.id)
+unsafe def exportCalcSet (outDir : String) (build : BuildInfo) (cs : CalcSet) : MetaM Nat := do
+  let ids := cs.catalog.map (·.rule.id)
   unless ids.eraseDups.length == ids.length do
-    throwError "duplicate rule identifiers in the Calculus catalogue"
+    throwError "duplicate rule identifiers in the {cs.title} catalogue"
   let mut audited := []
-  for e in Calculus.catalog do
+  for e in cs.catalog do
     audited := audited ++ [(e, ← auditCalcEntry e)]
   let syms := ((audited.map (·.1.rule.symbols)).flatten.eraseDups).filterMap Registry.lookup
   let doc := Json.mkObj [
     ("osr_format", jstr formatVersion),
-    ("ruleset", jstr "calculus"),
+    ("ruleset", jstr cs.name),
     ("expression_encoding", Json.mkObj [
       ("standard", jstr "OpenMath 2.0 JSON encoding (2019 revision, section 3.3)"),
       ("cdbase", jstr OMSymbol.cdbase)]),
@@ -796,7 +852,7 @@ unsafe def exportCalculus (outDir : String) (build : BuildInfo) : MetaM Nat := d
     ("symbols", Json.arr (syms.map symbolJson).toArray),
     ("profiles", Json.mkObj [("default", Json.mkObj [("rules", jstrs ids)])]),
     ("rules", Json.arr (audited.map fun (e, vs) => calcRuleJson build e vs).toArray)]
-  IO.FS.writeFile (outDir ++ "/calculus.osr.json") (doc.pretty ++ "\n")
+  IO.FS.writeFile (outDir ++ s!"/{cs.name}.osr.json") (doc.pretty ++ "\n")
   let count (d : Domain) (p : Verification → Bool) :=
     (audited.filter fun (_, vs) => vs.any fun v => v.domain == d && p v).length
   let dom (d : Domain) := Json.mkObj [
@@ -806,29 +862,29 @@ unsafe def exportCalculus (outDir : String) (build : BuildInfo) : MetaM Nat := d
     ("counterexample", toJson (count d (·.status == .counterexample))),
     ("unsupported", toJson (count d (·.status == .unsupported))),
     ("blocked_by_mapping_assurance", toJson (count d fun v => v.status == .proved && !v.certified))]
-  let runs := calcSeeds.map fun (name, t) => (name, t, Calculus.rewrite calcRules t)
+  let runs := cs.seeds.map fun (name, t) => (name, t, Calculus.rewrite cs.rules t)
   let report := Json.mkObj [
     ("osr_format", jstr formatVersion),
-    ("ruleset", jstr "calculus"),
+    ("ruleset", jstr cs.name),
     ("build", Json.mkObj [("lean_toolchain", jstr build.leanToolchain),
       ("mathlib_revision", jstr build.mathlibRevision),
       ("source_digest", jstr s!"sha256:{build.sourceDigest}")]),
     ("metrics", Json.mkObj [
       ("rules_migrated", toJson audited.length),
       ("rules_exported", toJson audited.length),
-      ("rules_not_migrated", toJson Calculus.notMigrated.length),
+      ("rules_not_migrated", toJson cs.notMigrated.length),
       ("rules_with_findings", toJson (audited.filter (!·.1.findings.isEmpty)).length),
       ("real", dom .real), ("complex", dom .complex),
       ("julia_execution", jstr "not measured by the exporter; see OpenSymbolicRules.jl test/test_osr_v1.jl")]),
-    ("not_migrated", Json.arr (Calculus.notMigrated.map fun (id, why) =>
+    ("not_migrated", Json.arr (cs.notMigrated.map fun (id, why) =>
       Json.mkObj [("legacy_id", jstr id), ("reason", jstr why)]).toArray),
     ("strategy", Json.mkObj [
       ("engine", jstr "OSR.Calculus.rewrite (root rewriting; proved sound: OSR.Calculus.apply?_sound)"),
       ("termination", Json.mkObj [("status", jstr "proved"),
         ("theorem", jstr "OSR.Calculus.rewrite_result"),
         ("statement", jstr "no rule applies to the result of a rule: normalization takes at most one step")]),
-      ("seeds", toJson calcSeeds.length)])]
-  IO.FS.writeFile (outDir ++ "/calculus.report.json") (report.pretty ++ "\n")
+      ("seeds", toJson cs.seeds.length)])]
+  IO.FS.writeFile (outDir ++ s!"/{cs.name}.report.json") (report.pretty ++ "\n")
   let cell (vs : List Verification) (d : Domain) : String :=
     match vs.find? (·.domain == d) with
     | some v => if v.status == .proved then
@@ -837,10 +893,10 @@ unsafe def exportCalculus (outDir : String) (build : BuildInfo) : MetaM Nat := d
     | none => "—"
   let rows := audited.map fun (e, vs) =>
     s!"| `{e.rule.id}` | `{e.rule.legacyId.getD "—"}` | {cell vs .real} | {cell vs .complex} |"
-  let nm := String.intercalate "\n" (Calculus.notMigrated.map fun (id, why) => s!"| `{id}` | {why} |")
+  let nm := String.intercalate "\n" (cs.notMigrated.map fun (id, why) => s!"| `{id}` | {why} |")
   let findings := audited.filter (!·.1.findings.isEmpty) |>.map fun (e, _) =>
     s!"### `{e.rule.id}`\n\n" ++ String.intercalate "\n" (e.findings.map ("- " ++ ·))
-  let md := s!"# Calculus verification report
+  let md := s!"# {cs.title} verification report
 
 Generated by `scripts/Export.lean`. Do not edit by hand.
 
@@ -849,9 +905,7 @@ Generated by `scripts/Export.lean`. Do not edit by hand.
 - Source digest: `sha256:{build.sourceDigest}`
 - Accepted axioms: `propext`, `Classical.choice`, `Quot.sound`
 
-A derivative rule `diff(λx. F) ⟶ λx. G` states that wherever `F` is defined
-near `t`, `v ↦ F[x := v]` has derivative `G[x := t]` at `t` (`HasDerivAt`). A
-limit rule `limit(a, both_sides, λx. F) ⟶ L` states `Tendsto` along `𝓝[≠] a`.
+{cs.statement}
 
 ## Metrics
 
@@ -862,7 +916,7 @@ limit rule `limit(a, both_sides, λx. F) ⟶ L` states `Tendsto` along `𝓝[≠
 | Certified | {count .real (·.certified)} | {count .complex (·.certified)} |
 | Unproved | {count .real (·.status == .unproved)} | {count .complex (·.status == .unproved)} |
 | Counterexamples | {count .real (·.status == .counterexample)} | {count .complex (·.status == .counterexample)} |
-| Rules not migrated | {Calculus.notMigrated.length} | {Calculus.notMigrated.length} |
+| Rules not migrated | {cs.notMigrated.length} | {cs.notMigrated.length} |
 
 ## Rules
 
@@ -882,17 +936,14 @@ limit rule `limit(a, both_sides, λx. F) ⟶ L` states `Tendsto` along `𝓝[≠
 
 ## Strategy
 
-Rules apply at the root of a `diff` or `limit` term (their bodies are field
-expressions, to which no calculus rule applies); the result of a rule is a
-lambda or a value, so normalization takes at most one step
-(`OSR.Calculus.rewrite_result`). The {calcSeeds.length} seeds below are the
+{cs.strategy} The {cs.seeds.length} seeds below are the
 conformance cases.
 "
-  IO.FS.writeFile (outDir ++ "/calculus.report.md") md
+  IO.FS.writeFile (outDir ++ s!"/{cs.name}.report.md") md
   let cases := Json.mkObj [
     ("osr_format", jstr formatVersion),
-    ("suite", jstr "calculus.rewrite"),
-    ("ruleset", jstr "calculus.osr.json"),
+    ("suite", jstr s!"{cs.name}.rewrite"),
+    ("ruleset", jstr s!"{cs.name}.osr.json"),
     ("source_digest", jstr s!"sha256:{build.sourceDigest}"),
     ("semantics", Json.mkObj [
       ("domain", jstr "real"),
@@ -909,7 +960,7 @@ conformance cases.
         ("expected", ((res.map (·.2)).getD t).toOM.toJson),
         ("trace", Json.arr ((res.map fun (id, _) => #[jstr id]).getD #[])),
         ("normal", toJson true)]).toArray)]
-  IO.FS.writeFile (outDir ++ "/conformance/calculus.cases.json") (cases.pretty ++ "\n")
+  IO.FS.writeFile (outDir ++ s!"/conformance/{cs.name}.cases.json") (cases.pretty ++ "\n")
   return audited.length
 
 unsafe def runExport : MetaM Unit := do
@@ -930,7 +981,8 @@ unsafe def runExport : MetaM Unit := do
     logInfo m!"exported {n} {rs.name} rules to {outDir}"
   let n ← exportLogic outDir build
   logInfo m!"exported {n} logic rules to {outDir}"
-  let n ← exportCalculus outDir build
-  logInfo m!"exported {n} calculus rules to {outDir}"
+  for cs in [calculusSet, integrationSet] do
+    let n ← exportCalcSet outDir build cs
+    logInfo m!"exported {n} {cs.name} rules to {outDir}"
 
 #eval runExport

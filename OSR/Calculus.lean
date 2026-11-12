@@ -11,27 +11,33 @@ v0.1 `FreeQ` becomes an independence
 constraint (`CRule.independent`); the v0.1 power rule is refuted
 (`derivPow_counterexample`).
 
-A calculus rule has one of two shapes, with `F`, `G`, `L` field expressions:
+A calculus rule has one of three shapes, with `F`, `G`, `L` field expressions:
 
 * `diff(λx. F) ⟶ λx. G` (`calculus1#diff`, `fns1#lambda`): wherever `F` is
   defined on a neighbourhood of `t`, the function `v ↦ F[x := v]` has
   derivative `G[x := t]` at `t` (`HasDerivAt`), and `G` is defined there;
 * `limit(a, both_sides, λx. F) ⟶ L` (`limit1#limit`, `limit1#both_sides`):
   `F[x := v]` tends to `L` as `v` tends to `a` with `v ≠ a` (`Tendsto` along
-  `𝓝[≠] a`), and `L` is defined.
+  `𝓝[≠] a`), and `L` is defined;
+* `int(λx. F) ⟶ λx. G` (`calculus1#int`, `fns1#lambda`): wherever `F` is
+  defined on a neighbourhood of `t`, so is `G`, and `v ↦ G[x := v]` has
+  derivative `F[x := t]` at `t`: `G` is an antiderivative of `F` on the
+  interior of the domain of `F`.  The Calculus catalogue has no rule of this
+  shape; the migrated RUBI rules are in `OSR.Integration`.
 
 `x` is the only variable of `F` and `G`, so instantiating a rule only renames
-the bound variable (`deriv_instance`, `limit_instance`).
+the bound variable (`deriv_instance`, `limit_instance`, `antideriv_instance`).
 -/
 
 namespace OSR.Calculus
 
 open OSR Filter Topology
 
-/-- The two shapes of a calculus rule. -/
+/-- The shapes of a calculus rule. -/
 inductive Shape where
   | deriv
   | limit
+  | antideriv
   deriving DecidableEq, Repr, Inhabited, BEq
 
 /-- A calculus rule. -/
@@ -59,6 +65,7 @@ def diffSymbol : OMSymbol := ⟨"calculus1", "diff"⟩
 def lambdaSymbol : OMSymbol := ⟨"fns1", "lambda"⟩
 def limitSymbol : OMSymbol := ⟨"limit1", "limit"⟩
 def bothSidesSymbol : OMSymbol := ⟨"limit1", "both_sides"⟩
+def intSymbol : OMSymbol := ⟨"calculus1", "int"⟩
 
 /-- `λx. e` as an OpenMath object. -/
 def lamOM (x : String) (e : Expr) : OMObj := .ombind lambdaSymbol [x] e.toOM
@@ -68,17 +75,20 @@ def CRule.patternOM (r : CRule) : OMObj :=
   match r.shape with
   | .deriv => .oma diffSymbol [lamOM r.x r.body]
   | .limit => .oma limitSymbol [r.point.toOM, .oms bothSidesSymbol, lamOM r.x r.body]
+  | .antideriv => .oma intSymbol [lamOM r.x r.body]
 
 /-- The replacement as an OpenMath object. -/
 def CRule.replacementOM (r : CRule) : OMObj :=
   match r.shape with
   | .deriv => lamOM r.x r.result
   | .limit => r.result.toOM
+  | .antideriv => lamOM r.x r.result
 
 def CRule.symbols (r : CRule) : List OMSymbol :=
   let shape := match r.shape with
     | .deriv => [diffSymbol, lambdaSymbol]
     | .limit => [limitSymbol, bothSidesSymbol, lambdaSymbol]
+    | .antideriv => [intSymbol, lambdaSymbol]
   (shape ++ r.point.symbols.filter (fun _ => r.shape == .limit) ++ r.body.symbols ++
     r.result.symbols).eraseDups
 
@@ -112,6 +122,24 @@ def LimitHolds (I : Interp 𝕜) (x : String) (a F L : Expr) : Prop :=
       Tendsto (fun v => eval I (Function.update env x v) F) (𝓝[≠] (eval I env a))
         (𝓝 (eval I env L))
 
+/-- `int(λx. F) = λx. G` in the interpretation `I`: wherever `F` is defined on
+a neighbourhood of `t`, `G` is defined on a neighbourhood of `t` and has
+derivative `F[x := t]` there.  Requiring `G` on a neighbourhood, not only at
+`t`, keeps Lean's totalized values out of the derivative. -/
+def AntiderivHolds (I : Interp 𝕜) (x : String) (F G : Expr) : Prop :=
+  ∀ (env : String → 𝕜) (t : 𝕜),
+    (∀ᶠ v in 𝓝 t, Defined I (Function.update env x v) F) →
+      (∀ᶠ v in 𝓝 t, Defined I (Function.update env x v) G) ∧
+        HasDerivAt (fun v => eval I (Function.update env x v) G)
+          (eval I (Function.update env x t) F) t
+
+/-- A point near which the integrand is defined, at which the candidate
+antiderivative is not, refutes an antiderivative statement. -/
+theorem not_antiderivHolds {I : Interp 𝕜} {x : String} {F G : Expr} (env : String → 𝕜)
+    (t : 𝕜) (hF : ∀ᶠ v in 𝓝 t, Defined I (Function.update env x v) F)
+    (hG : ¬ Defined I (Function.update env x t) G) : ¬ AntiderivHolds I x F G :=
+  fun h => hG (h env t hF).1.self_of_nhds
+
 end Statements
 
 /-- The certified statement of a calculus rule in a domain. -/
@@ -119,9 +147,11 @@ def CRule.Holds (r : CRule) : Domain → Prop
   | .real => match r.shape with
     | .deriv => DerivHolds Interp.real r.x r.body r.result
     | .limit => LimitHolds Interp.real r.x r.point r.body r.result
+    | .antideriv => AntiderivHolds Interp.real r.x r.body r.result
   | .complex => match r.shape with
     | .deriv => DerivHolds Interp.complex r.x r.body r.result
     | .limit => LimitHolds Interp.complex r.x r.point r.body r.result
+    | .antideriv => AntiderivHolds Interp.complex r.x r.body r.result
   | .boolean => False
 
 /-! ## Rules -/
@@ -847,6 +877,8 @@ inductive CTerm where
   | diff (y : String) (e : Expr)
   /-- `limit(a, both_sides, λy. e)` -/
   | limit (a : Expr) (y : String) (e : Expr)
+  /-- `int(λy. e)` -/
+  | integral (y : String) (e : Expr)
   /-- `λy. e` -/
   | lam (y : String) (e : Expr)
   /-- A value. -/
@@ -857,6 +889,7 @@ inductive CTerm where
 def CTerm.toOM : CTerm → OMObj
   | .diff y e => .oma diffSymbol [lamOM y e]
   | .limit a y e => .oma limitSymbol [a.toOM, .oms bothSidesSymbol, lamOM y e]
+  | .integral y e => .oma intSymbol [lamOM y e]
   | .lam y e => lamOM y e
   | .val e => e.toOM
 
@@ -881,6 +914,12 @@ def CRule.apply? (r : CRule) : CTerm → Option CTerm
         match matchAux r.point a σ with
         | some σ' => if r.indepOk σ' y then some (.val (r.result.subst σ')) else none
         | none => none
+      | none => none
+    else none
+  | .integral y e =>
+    if r.shape = .antideriv then
+      match matchAux r.body e [(r.x, .var y)] with
+      | some σ => if r.indepOk σ y then some (.lam y (r.result.subst σ)) else none
       | none => none
     else none
   | _ => none
@@ -914,6 +953,15 @@ theorem apply?_result {r : CRule} {t t' : CTerm} (h : r.apply? t = some t') (q :
         · split at h
           · simp only [Option.some.injEq] at h; subst h; rfl
           · cases h
+        · cases h
+      · cases h
+    · cases h
+  | integral y e =>
+    simp only [CRule.apply?] at h
+    split at h
+    · split at h
+      · split at h
+        · simp only [Option.some.injEq] at h; subst h; rfl
         · cases h
       · cases h
     · cases h
@@ -1127,11 +1175,48 @@ theorem limit_instance {𝕜 : Type} [NontriviallyNormedField 𝕜] (I : Interp 
     rw [hfun]
     exact hT
 
-/-- What a rewrite step means: the derivative or limit statement for the
-input and the result. -/
+/-- **Instantiation soundness for antiderivatives.** -/
+theorem antideriv_instance {𝕜 : Type} [NontriviallyNormedField 𝕜] (I : Interp 𝕜) (r : CRule)
+    (hw : r.wellFormed = true) (hr : AntiderivHolds I r.x r.body r.result) {y : String}
+    {e : Expr} {σ : Subst} (hm : matchAux r.body e [(r.x, .var y)] = some σ)
+    (hi : r.indepOk σ y = true) :
+    AntiderivHolds I y e (r.result.subst σ) := by
+  obtain ⟨hb, hres⟩ := indep_vars hw hi
+  have hσ := matched_find hm
+  have he : r.body.subst σ = e := (matchAux_spec r.body e _ σ hm).2 σ (Subst.Extends.refl σ)
+  have hrv : ∀ n ∈ r.result.varList, n ≠ r.x → n ∈ r.body.varList := by
+    simp only [CRule.wellFormed, Bool.and_eq_true, List.all_eq_true, decide_eq_true_eq] at hw
+    intro n hn hnx; exact (hw.1.1.2 n hn).resolve_left hnx
+  intro env t hF
+  have hF' : ∀ᶠ v in 𝓝 t, Defined I (Function.update (σ.env I env) r.x v) r.body := by
+    filter_upwards [hF] with v hv
+    rw [← he] at hv
+    exact ((eval_rename I hσ hb env v).2.1 hv).1
+  have himg : ∀ n ∈ r.body.varList, n ≠ r.x → Defined I env (σ.apply n) := by
+    have ht := hF.self_of_nhds
+    rw [← he] at ht
+    exact ((eval_rename I hσ hb env t).2.1 ht).2
+  obtain ⟨hG, hD⟩ := hr (σ.env I env) t hF'
+  refine ⟨?_, ?_⟩
+  · filter_upwards [hG] with v hv
+    exact (eval_rename I hσ hres env v).2.2 ⟨hv, fun n hn hnx => himg n (hrv n hn hnx) hnx⟩
+  · have hval : eval I (Function.update env y t) e =
+        eval I (Function.update (σ.env I env) r.x t) r.body := by
+      rw [← he]
+      exact (eval_rename I hσ hb env t).1
+    have hfun : (fun v => eval I (Function.update env y v) (r.result.subst σ)) =
+        fun v => eval I (Function.update (σ.env I env) r.x v) r.result := by
+      funext v
+      exact (eval_rename I hσ hres env v).1
+    rw [hval, hfun]
+    exact hD
+
+/-- What a rewrite step means: the derivative, limit or antiderivative
+statement for the input and the result. -/
 def Correct {𝕜 : Type} [NontriviallyNormedField 𝕜] (I : Interp 𝕜) : CTerm → CTerm → Prop
   | .diff y e, .lam y' g => y = y' ∧ DerivHolds I y e g
   | .limit a y e, .val L => LimitHolds I y a e L
+  | .integral y e, .lam y' g => y = y' ∧ AntiderivHolds I y e g
   | _, _ => False
 
 /-- The statement of a rule in an interpretation. -/
@@ -1139,6 +1224,7 @@ def CRule.HoldsIn {𝕜 : Type} [NontriviallyNormedField 𝕜] (r : CRule) (I : 
   match r.shape with
   | .deriv => DerivHolds I r.x r.body r.result
   | .limit => LimitHolds I r.x r.point r.body r.result
+  | .antideriv => AntiderivHolds I r.x r.body r.result
 
 /-- **Engine soundness.**  A step with a well-formed rule that holds in `I`
 is correct in `I`. -/
@@ -1176,6 +1262,21 @@ theorem apply?_sound {𝕜 : Type} [NontriviallyNormedField 𝕜] (I : Interp �
             simp only [CRule.HoldsIn, hs] at hr
             exact limit_instance I r hw hr hm hp hi
           · cases h
+        · cases h
+      · cases h
+    · cases h
+  | integral y e =>
+    simp only [CRule.apply?] at h
+    split at h
+    · rename_i hs
+      split at h
+      · rename_i σ hm
+        split at h
+        · rename_i hi
+          simp only [Option.some.injEq] at h
+          subst h
+          simp only [CRule.HoldsIn, hs] at hr
+          exact ⟨rfl, antideriv_instance I r hw hr hm hi⟩
         · cases h
       · cases h
     · cases h

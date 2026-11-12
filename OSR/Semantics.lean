@@ -361,6 +361,12 @@ def entries : List SymbolEntry := [
       { domain := d, leanConst := ``deriv, assurance := .reviewed,
         definedness := "where the function is differentiable",
         justification := "Ordinary derivative of a unary function; rules state HasDerivAt, which implies deriv f t = f'(t). The CMPs (sum and product rules) hold for differentiable functions (deriv_add, deriv_mul)." } },
+  { symbol := ⟨"calculus1", "int"⟩, arity := 1,
+    fragment := "applied to a lambda term; a rule states that its result is defined near every point near which the integrand is defined, with derivative the integrand there (HasDerivAt)",
+    interpretations := [Domain.real, Domain.complex].map fun d =>
+      { domain := d, leanConst := ``HasDerivAt, assurance := .reviewed,
+        definedness := "on the open set where the integrand is defined, up to a locally constant function",
+        justification := "Indefinite integral of a unary function, read as an antiderivative: int(λx. F) = λx. G states HasDerivAt (λv. G[x := v]) F[x := t] t, which is the CMP diff(λy. int(λz. f(z))(y)) = f on the interior of the domain of the integrand. An antiderivative is unique only up to a locally constant function; the CD does not fix the constant." } },
   { symbol := ⟨"fns1", "lambda"⟩, arity := 0,
     fragment := "binder (OMBIND) with one bound variable",
     interpretations := [Domain.real, Domain.complex].map fun d =>
