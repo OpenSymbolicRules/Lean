@@ -152,6 +152,22 @@ does not bind:
 | `integration.power_ratio_split` | 1.1.3.5 #10 | counterexample at `d = 0` | counterexample |
 | `integration.log_power_binomial` | 3.4 #1 | counterexample at `p = 0` (residual `xⁿ/0`) | counterexample |
 
+### Third recursive batch
+
+| Rule | v0.1 rule | ℝ | ℂ |
+|---|---|---|---|
+| `integration.partial_fractions_linear_quadratic` | 1.2.1.2 #79, `1/((d + e x)(a + c x²))` | proved | proved |
+| `integration.partial_fractions_linear_trinomial` | 1.2.1.2 #78, `1/((d + e x)(a + b x + c x²))` | proved | proved |
+| `integration.partial_fractions_power_weighted` | 1.1.3.4 #63, `(e x)ᵐ/((a + b xⁿ)(c + d xⁿ))` | proved | proved |
+| `integration.sin_cos_double_angle` | 4.7.9 #68, `sin u cos u = sin(2u)/2` | proved | proved |
+| `integration.partial_fractions_general` | 1.1.3.5 #2 | counterexample at `b c = a d` | counterexample |
+| `integration.linear_factor_over_linear` | 1.1.1.4 #17 | counterexample at `b = 0` | counterexample |
+| `integration.sin_trinomial_square`, `integration.cos_trinomial_square` | 4.1.13 #3, #4 | counterexample at `c = 0` (residual `sin/cos(…/(4c))`) | counterexample |
+| `integration.binomial_ratio_negative_power` | 1.1.3.3 #14, `n < 0` | counterexample at `a = 0` | counterexample |
+| `integration.power_log_log` | 3.5 #3 | counterexample (residual `1/log 1`) | counterexample |
+| `integration.linear_times_two_powers` | 1.1.1.3 #8 | counterexample at `d = 0` | counterexample |
+| `integration.power_log_binomial` | 3.4 #7 | counterexample (residual `…/0`) | counterexample |
+
 Every refutation follows the same pattern: RUBI's conditions leave a
 coefficient free to vanish, and the result divides by it.  In Mathematica,
 an earlier rule of the load order catches the degenerate case first; an OSR
@@ -167,7 +183,7 @@ pattern does not bind: 630 of them use the constants `E`, `ImaginaryI` or
 - Conditions do not limit the inventory: 2,155 rules have only expressible
   conditions, but almost all of them have another `Int` in their result or
   unregistered heads (`Subst`, `Simp`, `Rt`, …).
-- The other recursive rules: 250 more are linear in their residual
+- The other recursive rules: 238 more are linear in their residual
   integrals, many with square roots (outside the complex fragment) or
   rational exponents (outside the fragment).
 - A rewriter that continues inside residual integrals would let engines apply

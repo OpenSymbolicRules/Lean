@@ -76,8 +76,8 @@ OSR/LogicCore.lean     quantified Boolean formulas, rewriter, soundness, termina
 OSR/Logic.lean         Logic rules (all 39), profiles and their weights
 OSR/Calculus.lean      derivative, limit and antiderivative statements, the
                        Calculus rules (29), their proofs and rewriter
-OSR/IntegrationRec.lean RUBI rules with residual integrals (22), proofs, counterexamples
-OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (35)
+OSR/IntegrationRec.lean RUBI rules with residual integrals (34), proofs, counterexamples
+OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (47)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
                        generation of rule set, reports and conformance cases

@@ -23,6 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `FreeQ`-only rules with registered heads, `∫ a = a x` is proved over ℝ and ℂ,
   `∫ log(c xⁿ)` over ℝ, four rules are refuted by Lean counterexamples, and
   three are reported as not migrated.  The other rule sets export unchanged.
+- Twelve more recursive RUBI rules: three partial fraction decompositions and
+  `sin u cos u = sin(2u)/2` proved over ℝ and ℂ, eight rules refuted.
 - Eleven more recursive RUBI rules: partial fractions of
   `1/((a + b xⁿ)(c + d xⁿ))` (n = 1 and general) and two linearity splits are
   proved over ℝ and ℂ; seven rules are refuted where a coefficient they divide

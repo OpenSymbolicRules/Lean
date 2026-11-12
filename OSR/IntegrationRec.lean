@@ -387,6 +387,216 @@ def logPowBinom : CRule where
   description := "Integration by parts of log(c (d + e x^n)^p)"
   provenance := migrated s!"{logBin}:1" "3 Logarithms/3.4 u (a+b log(c (d+e x^m)^n))^p.m#1"
 
+/-! ### Third batch -/
+
+private def quadM : String := "1 Algebraic functions/1.2 Trinomial products/1.2.1 Quadratic/1.2.1.2 (d+e x)^m (a+b x+c x^2)^p.m"
+private def binW : String := "rubi:1 Algebraic functions/1.1 Binomial products/1.1.3 General/1.1.3.4 (e x)^m (a+b x^n)^p (c+d x^n)^q"
+private def active : String := "rubi:4 Trig functions/4.7 Miscellaneous/4.7.9 Active trig functions"
+private def lin3 : String := "rubi:1 Algebraic functions/1.1 Binomial products/1.1.1 Linear/1.1.1.3 (a+b x)^m (c+d x)^n (e+f x)^p"
+private def lin4 : String := "rubi:1 Algebraic functions/1.1 Binomial products/1.1.1 Linear/1.1.1.4 (a+b x)^m (c+d x)^n (e+f x)^p (g+h x)^q"
+
+/-- `d + e x`. -/
+private abbrev linDE : Expr := add (v "d") (mul (v "e") x)
+/-- `c d^2 + a e^2`. -/
+private abbrev detQ : Expr := add (mul (v "c") (sq (v "d"))) (mul (v "a") (sq (v "e")))
+
+/-- `Int[1/((d + e x) (a + c x^2)), x] := e^2/(c d^2 + a e^2) Int[1/(d + e x), x]
++ 1/(c d^2 + a e^2) Int[(c d - c e x)/(a + c x^2), x]` for `c d^2 + a e^2 ≠ 0`. -/
+def pfLinQuad : CRule where
+  id := "integration.partial_fractions_linear_quadratic"; legacyId := some s!"{quad}:79"
+  shape := .antiderivRec; x := "x"
+  body := mul (.int 1) (inv (mul linDE quadA))
+  result := add (mul (mul (sq (v "e")) (inv detQ)) (v "I1")) (mul (mul (.int 1) (inv detQ)) (v "I2"))
+  integrals := [("I1", mul (.int 1) (inv linDE)),
+    ("I2", mul (add (mul (v "c") (v "d")) (mul (mul (mul (.int (-1)) (v "c")) (v "e")) x)) (inv quadA))]
+  independent := ["a", "c", "d", "e"]; conditions := [.ne detQ (.int 0)]; priority := 360
+  description := "Partial fractions of 1/((d + e x) (a + c x^2))"
+  provenance := migrated s!"{quad}:79" s!"{quadM}#79"
+
+/-- `c d^2 - b d e + a e^2`. -/
+private abbrev detT : Expr :=
+  add (add (mul (v "c") (sq (v "d"))) (mul (mul (mul (.int (-1)) (v "b")) (v "d")) (v "e")))
+    (mul (v "a") (sq (v "e")))
+
+/-- `Int[1/((d + e x) (a + b x + c x^2)), x]`, the partial fractions with
+`c d^2 - b d e + a e^2` (and RUBI's two other conditions). -/
+def pfLinTrinom : CRule where
+  id := "integration.partial_fractions_linear_trinomial"; legacyId := some s!"{quad}:78"
+  shape := .antiderivRec; x := "x"
+  body := mul (.int 1) (inv (mul linDE trinom))
+  result := add (mul (mul (sq (v "e")) (inv detT)) (v "I1")) (mul (mul (.int 1) (inv detT)) (v "I2"))
+  integrals := [("I1", mul (.int 1) (inv linDE)),
+    ("I2", mul (add (add (mul (v "c") (v "d")) (mul (mul (.int (-1)) (v "b")) (v "e")))
+      (mul (mul (mul (.int (-1)) (v "c")) (v "e")) x)) (inv trinom))]
+  independent := ["a", "b", "c", "d", "e"]
+  conditions := [.ne (add (sq (v "b")) (mul (mul (mul (.int (-1)) (.int 4)) (v "a")) (v "c"))) (.int 0),
+    .ne detT (.int 0), .ne detCD (.int 0)]
+  priority := 370
+  description := "Partial fractions of 1/((d + e x) (a + b x + c x^2))"
+  provenance := migrated s!"{quad}:78" s!"{quadM}#78"
+
+/-- `(e x)^m`. -/
+private abbrev exm : Expr := .pow (mul (v "e") x) (v "m")
+
+/-- `Int[(e x)^m/((a + b x^n) (c + d x^n)), x]`, the partial fractions of
+`pfPower` with the factor `(e x)^m`. -/
+def pfPowerWeighted : CRule where
+  id := "integration.partial_fractions_power_weighted"; legacyId := some s!"{binW}:63"
+  shape := .antiderivRec; x := "x"
+  body := mul exm (inv (mul binA binB))
+  result := add (mul (mul (v "b") (inv detBC)) (v "I1"))
+    (mul (mul (mul (.int (-1)) (v "d")) (inv detBC)) (v "I2"))
+  integrals := [("I1", mul exm (inv binA)), ("I2", mul exm (inv binB))]
+  independent := ["a", "b", "c", "d", "e", "n", "m"]; conditions := [.ne detBC (.int 0)]
+  priority := 380
+  description := "Partial fractions of (e x)^m/((a + b x^n) (c + d x^n))"
+  provenance := migrated s!"{binW}:63" "1 Algebraic functions/1.1 Binomial products/1.1.3 General/1.1.3.4 (e x)^m (a+b x^n)^p (c+d x^n)^q.m#63"
+
+/-- `c + d x`. -/
+private abbrev linCD : Expr := add (v "c") (mul (v "d") x)
+
+/-- `Int[(e + f x)^m (a + b Sin[c + d x] Cos[c + d x])^n, x] :=
+Int[(e + f x)^m (a + b Sin[2 c + 2 d x]/2)^n, x]`. -/
+def sinCosDouble : CRule where
+  id := "integration.sin_cos_double_angle"; legacyId := some s!"{active}:68"
+  shape := .antiderivRec; x := "x"
+  body := mul (.pow (add (v "e") (mul (v "f") x)) (v "m"))
+    (.pow (add (v "a") (mul (mul (v "b") (sin linCD)) (cos linCD))) (v "n"))
+  result := v "I1"
+  integrals := [("I1", mul (.pow (add (v "e") (mul (v "f") x)) (v "m"))
+    (.pow (add (v "a") (mul (mul (v "b")
+      (sin (add (mul (.int 2) (v "c")) (mul (mul (.int 2) (v "d")) x)))) (inv (.int 2)))) (v "n")))]
+  independent := ["a", "b", "c", "d", "e", "f", "m", "n"]; priority := 390
+  description := "sin u cos u = sin(2 u)/2 under the integral"
+  provenance := migrated s!"{active}:68" "4 Trig functions/4.7 Miscellaneous/4.7.9 Active trig functions.m#68"
+
+/-- `Int[(e + f x^n)/((a + b x^n) (c + d x^n)), x] := (b e - a f)/(b c - a d)
+Int[1/(a + b x^n), x] - (d e - c f)/(b c - a d) Int[1/(c + d x^n), x]`. -/
+def pfGeneral : CRule where
+  id := "integration.partial_fractions_general"; legacyId := some s!"{binTriple}:2"
+  shape := .antiderivRec; x := "x"
+  body := mul (add (v "e") (mul (v "f") (.pow x (v "n")))) (inv (mul binA binB))
+  result := add
+    (mul (mul (add (mul (v "b") (v "e")) (mul (mul (.int (-1)) (v "a")) (v "f"))) (inv detBC)) (v "I1"))
+    (mul (mul (mul (.int (-1)) (add (mul (v "d") (v "e")) (mul (mul (.int (-1)) (v "c")) (v "f"))))
+      (inv detBC)) (v "I2"))
+  integrals := [("I1", mul (.int 1) (inv binA)), ("I2", mul (.int 1) (inv binB))]
+  independent := ["a", "b", "c", "d", "e", "f", "n"]; priority := 400
+  description := "Partial fractions of (e + f x^n)/((a + b x^n) (c + d x^n))"
+  provenance := migrated s!"{binTriple}:2" "1 Algebraic functions/1.1 Binomial products/1.1.3 General/1.1.3.5 (a+b x^n)^p (c+d x^n)^q (e+f x^n)^r.m#2"
+
+/-- `(c + d x)^n (e + f x)^p`. -/
+private abbrev twoPow : Expr :=
+  mul (.pow linCD (v "n")) (.pow (add (v "e") (mul (v "f") x)) (v "p"))
+
+/-- `Int[(c + d x)^n (e + f x)^p (g + h x)/(a + b x), x] := h/b Int[…, x]
++ (b g - a h)/b Int[…/(a + b x), x]`. -/
+def linOverLin : CRule where
+  id := "integration.linear_factor_over_linear"; legacyId := some s!"{lin4}:17"
+  shape := .antiderivRec; x := "x"
+  body := mul (mul twoPow (add (v "g") (mul (v "h") x))) (inv (add (v "a") (mul (v "b") x)))
+  result := add (mul (mul (v "h") (inv (v "b"))) (v "I1"))
+    (mul (mul (add (mul (v "b") (v "g")) (mul (mul (.int (-1)) (v "a")) (v "h"))) (inv (v "b"))) (v "I2"))
+  integrals := [("I1", twoPow), ("I2", mul twoPow (inv (add (v "a") (mul (v "b") x))))]
+  independent := ["a", "b", "c", "d", "e", "f", "g", "h", "n", "p"]; priority := 410
+  description := "Split (g + h x)/(a + b x) under the integral"
+  provenance := migrated s!"{lin4}:17" "1 Algebraic functions/1.1 Binomial products/1.1.1 Linear/1.1.1.4 (a+b x)^m (c+d x)^n (e+f x)^p (g+h x)^q.m#17"
+
+/-- `b^2 - 4 a c`, `(b^2 - 4 a c)/(4 c)`, `(b + 2 c x)^2/(4 c)`. -/
+private abbrev discr : Expr := add (sq (v "b")) (mul (mul (mul (.int (-1)) (.int 4)) (v "a")) (v "c"))
+private abbrev discrOver : Expr := mul discr (inv (mul (.int 4) (v "c")))
+private abbrev squareOver : Expr :=
+  mul (sq (add (v "b") (mul (mul (.int 2) (v "c")) x))) (inv (mul (.int 4) (v "c")))
+
+/-- `Int[Sin[a + b x + c x^2], x] := Cos[(b^2 - 4 a c)/(4 c)] Int[Sin[(b + 2 c x)^2/(4 c)], x]
+- Sin[(b^2 - 4 a c)/(4 c)] Int[Cos[(b + 2 c x)^2/(4 c)], x]` (completing the square). -/
+def sinTrinomSq : CRule where
+  id := "integration.sin_trinomial_square"; legacyId := some s!"{sineQuad}:3"
+  shape := .antiderivRec; x := "x"
+  body := sin trinom
+  result := add (mul (cos discrOver) (v "I1")) (mul (neg (sin discrOver)) (v "I2"))
+  integrals := [("I1", sin squareOver), ("I2", cos squareOver)]
+  independent := ["a", "b", "c"]; conditions := [.ne discr (.int 0)]; priority := 420
+  description := "Complete the square in sin(a + b x + c x^2)"
+  provenance := migrated s!"{sineQuad}:3" "4 Trig functions/4.1 Sine/4.1.13 (d+e x)^m sin(a+b x+c x^2)^n.m#3"
+
+/-- `Int[Cos[a + b x + c x^2], x]`, completing the square. -/
+def cosTrinomSq : CRule where
+  id := "integration.cos_trinomial_square"; legacyId := some s!"{sineQuad}:4"
+  shape := .antiderivRec; x := "x"
+  body := cos trinom
+  result := add (mul (cos discrOver) (v "I1")) (mul (sin discrOver) (v "I2"))
+  integrals := [("I1", cos squareOver), ("I2", sin squareOver)]
+  independent := ["a", "b", "c"]; conditions := [.ne discr (.int 0)]; priority := 430
+  description := "Complete the square in cos(a + b x + c x^2)"
+  provenance := migrated s!"{sineQuad}:4" "4 Trig functions/4.1 Sine/4.1.13 (d+e x)^m sin(a+b x+c x^2)^n.m#4"
+
+/-- `Int[(c + d x^n)/(a + b x^n), x] := c x/a - (b c - a d)/a Int[1/(b + a x^(-n)), x]`
+for `b c - a d ≠ 0`, `n < 0`. -/
+def binomRatio : CRule where
+  id := "integration.binomial_ratio_negative_power"; legacyId := some s!"{binPair}:14"
+  shape := .antiderivRec; x := "x"
+  body := mul binB (inv binA)
+  result := add (mul (mul (v "c") x) (inv (v "a")))
+    (mul (mul (mul (.int (-1)) detBC) (inv (v "a"))) (v "I1"))
+  integrals := [("I1", mul (.int 1) (inv (add (v "b") (mul (v "a") (.pow x (mul (.int (-1)) (v "n")))))))]
+  independent := ["a", "b", "c", "d", "n"]
+  conditions := [.ne detBC (.int 0), .gt (.int 0) (v "n")]; priority := 440
+  description := "Antiderivative of (c + d x^n)/(a + b x^n) for n < 0"
+  provenance := migrated s!"{binPair}:14" "1 Algebraic functions/1.1 Binomial products/1.1.3 General/1.1.3.3 (a+b x^n)^p (c+d x^n)^q.m#14"
+
+/-- `Int[(e x)^m (a + b Log[c Log[d x^n]^p]), x]`, by parts, for `m ≠ -1`. -/
+def logLogWeighted : CRule where
+  id := "integration.power_log_log"; legacyId := some s!"{logMisc}:3"
+  shape := .antiderivRec; x := "x"
+  body := mul exm (add (v "a") (mul (v "b") logLog))
+  result := add (mul (mul (.pow (mul (v "e") x) (add (v "m") (.int 1))) (add (v "a") (mul (v "b") logLog)))
+      (inv (mul (v "e") (add (v "m") (.int 1)))))
+    (mul (mul (mul (mul (mul (.int (-1)) (v "b")) (v "n")) (v "p")) (inv (add (v "m") (.int 1)))) (v "I1"))
+  integrals := [("I1", mul exm (inv logDxn))]
+  independent := ["a", "b", "c", "d", "e", "m", "n", "p"]; conditions := [.ne (v "m") (.int (-1))]
+  priority := 450
+  description := "Integration by parts of (e x)^m (a + b log(c log(d x^n)^p))"
+  provenance := migrated s!"{logMisc}:3" "3 Logarithms/3.5 Miscellaneous logarithms.m#3"
+
+/-- `n + p + 2`. -/
+private abbrev np2 : Expr := add (add (v "n") (v "p")) (.int 2)
+
+/-- `Int[(a + b x) (c + d x)^n (e + f x)^p, x]` for `n + p + 2 ≠ 0`. -/
+def linTwoPow : CRule where
+  id := "integration.linear_times_two_powers"; legacyId := some s!"{lin3}:8"
+  shape := .antiderivRec; x := "x"
+  body := mul (mul (add (v "a") (mul (v "b") x)) (.pow linCD (v "n"))) (.pow (add (v "e") (mul (v "f") x)) (v "p"))
+  result := add
+    (mul (mul (mul (v "b") (.pow linCD (add (v "n") (.int 1)))) (.pow (add (v "e") (mul (v "f") x)) (add (v "p") (.int 1))))
+      (inv (mul (mul (v "d") (v "f")) np2)))
+    (mul (mul (add (mul (mul (mul (v "a") (v "d")) (v "f")) np2)
+        (mul (mul (.int (-1)) (v "b")) (add (mul (mul (v "d") (v "e")) (add (v "n") (.int 1)))
+          (mul (mul (v "c") (v "f")) (add (v "p") (.int 1))))))
+      (inv (mul (mul (v "d") (v "f")) np2))) (v "I1"))
+  integrals := [("I1", twoPow)]
+  independent := ["a", "b", "c", "d", "e", "f", "n", "p"]; conditions := [.ne np2 (.int 0)]
+  priority := 460
+  description := "Antiderivative of (a + b x) (c + d x)^n (e + f x)^p"
+  provenance := migrated s!"{lin3}:8" "1 Algebraic functions/1.1 Binomial products/1.1.1 Linear/1.1.1.3 (a+b x)^m (c+d x)^n (e+f x)^p.m#8"
+
+/-- `Int[(f x)^m (a + b Log[c (d + e x^n)^p]), x]`, by parts, for `m ≠ -1`. -/
+def logBinWeighted : CRule where
+  id := "integration.power_log_binomial"; legacyId := some s!"{logBin}:7"
+  shape := .antiderivRec; x := "x"
+  body := mul (.pow (mul (v "f") x) (v "m")) (add (v "a") (mul (v "b") logBinExpr))
+  result := add
+    (mul (mul (.pow (mul (v "f") x) (add (v "m") (.int 1))) (add (v "a") (mul (v "b") logBinExpr)))
+      (inv (mul (v "f") (add (v "m") (.int 1)))))
+    (mul (mul (mul (mul (mul (mul (.int (-1)) (v "b")) (v "e")) (v "n")) (v "p"))
+      (inv (mul (v "f") (add (v "m") (.int 1))))) (v "I1"))
+  integrals := [("I1", mul (mul (.pow x (add (v "n") (mul (.int (-1)) (.int 1))))
+    (.pow (mul (v "f") x) (add (v "m") (.int 1)))) (inv (add (v "d") (mul (v "e") (.pow x (v "n"))))))]
+  independent := ["a", "b", "c", "d", "e", "f", "m", "n", "p"]; conditions := [.ne (v "m") (.int (-1))]
+  priority := 470
+  description := "Integration by parts of (f x)^m (a + b log(c (d + e x^n)^p))"
+  provenance := migrated s!"{logBin}:7" "3 Logarithms/3.4 u (a+b log(c (d+e x^m)^n))^p.m#7"
+
 /-! ## Proofs -/
 
 section Proofs
@@ -980,6 +1190,346 @@ theorem logPowBinom_counterexample_real : ¬ logPowBinom.Holds .real :=
 
 theorem logPowBinom_counterexample_complex : ¬ logPowBinom.Holds .complex :=
   logPowBinom_not Interp.complex (show (1 : ℂ) ≠ 0 from one_ne_zero)
+
+
+theorem pfLinQuad_holds (I : Interp 𝕜) :
+    AntiderivRecHolds I "x" pfLinQuad.conditions pfLinQuad.body pfLinQuad.result
+      pfLinQuad.integrals := by
+  intro env hc t hF
+  have hK := hc (.ne detQ (.int 0)) (by simp [pfLinQuad])
+  simp [Cond.Holds, Defined, eval, toInt?_two] at hK
+  refine ⟨fun i hi => ?_, fun Φ hΦ => ⟨?_, ?_⟩⟩
+  · simp only [pfLinQuad, List.mem_cons, List.not_mem_nil, or_false] at hi
+    rcases hi with rfl | rfl <;>
+    · filter_upwards [hF] with w hw
+      simp [pfLinQuad, Defined, eval, toInt?_neg_one, toInt?_two] at hw ⊢
+      tauto
+  · exact Eventually.of_forall fun _ => by
+      simp [pfLinQuad, Defined, eval, recEnv, toInt?_neg_one, toInt?_two, hK]
+  · simp only [pfLinQuad, List.mem_cons, List.not_mem_nil, or_false, forall_eq_or_imp,
+      forall_eq] at hΦ
+    obtain ⟨h1, h2⟩ := hΦ
+    have ht := hF.self_of_nhds
+    simp [pfLinQuad, Defined, eval, toInt?_neg_one, toInt?_two] at ht
+    obtain ⟨hA, hB⟩ := ht
+    have hfun : (fun w => eval I (recEnv env (pfLinQuad.integrals.map (·.1)) Φ "x" w)
+        pfLinQuad.result) = fun w => env "e" ^ 2 * (env "c" * env "d" ^ 2 + env "a" * env "e" ^ 2)⁻¹ * Φ "I1" w + 1 * (env "c" * env "d" ^ 2 + env "a" * env "e" ^ 2)⁻¹ * Φ "I2" w := by
+      funext w
+      simp [pfLinQuad, eval, recEnv, toInt?_neg_one, toInt?_two]
+    rw [hfun]
+    refine ((h1.const_mul _).add (h2.const_mul _)).congr_deriv ?_
+    simp [pfLinQuad, eval, toInt?_neg_one, toInt?_two]
+    field_simp
+    rw [div_eq_one_iff_eq (fun h => hK (by linear_combination h))]
+    ring
+
+theorem pfLinQuad_real : pfLinQuad.Holds .real := pfLinQuad_holds Interp.real
+
+theorem pfLinQuad_complex : pfLinQuad.Holds .complex := pfLinQuad_holds Interp.complex
+
+theorem pfLinTrinom_holds (I : Interp 𝕜) :
+    AntiderivRecHolds I "x" pfLinTrinom.conditions pfLinTrinom.body pfLinTrinom.result
+      pfLinTrinom.integrals := by
+  intro env hc t hF
+  have hK := hc (.ne detT (.int 0)) (by simp [pfLinTrinom])
+  simp [Cond.Holds, Defined, eval, toInt?_two] at hK
+  refine ⟨fun i hi => ?_, fun Φ hΦ => ⟨?_, ?_⟩⟩
+  · simp only [pfLinTrinom, List.mem_cons, List.not_mem_nil, or_false] at hi
+    rcases hi with rfl | rfl <;>
+    · filter_upwards [hF] with w hw
+      simp [pfLinTrinom, Defined, eval, toInt?_neg_one, toInt?_two] at hw ⊢
+      tauto
+  · exact Eventually.of_forall fun _ => by
+      simp [pfLinTrinom, Defined, eval, recEnv, toInt?_neg_one, toInt?_two, hK]
+  · simp only [pfLinTrinom, List.mem_cons, List.not_mem_nil, or_false, forall_eq_or_imp,
+      forall_eq] at hΦ
+    obtain ⟨h1, h2⟩ := hΦ
+    have ht := hF.self_of_nhds
+    simp [pfLinTrinom, Defined, eval, toInt?_neg_one, toInt?_two] at ht
+    obtain ⟨hA, hB⟩ := ht
+    have hfun : (fun w => eval I (recEnv env (pfLinTrinom.integrals.map (·.1)) Φ "x" w)
+        pfLinTrinom.result) = fun w => env "e" ^ 2 * (env "c" * env "d" ^ 2 + -1 * env "b" * env "d" * env "e" + env "a" * env "e" ^ 2)⁻¹ * Φ "I1" w + 1 * (env "c" * env "d" ^ 2 + -1 * env "b" * env "d" * env "e" + env "a" * env "e" ^ 2)⁻¹ * Φ "I2" w := by
+      funext w
+      simp [pfLinTrinom, eval, recEnv, toInt?_neg_one, toInt?_two]
+    rw [hfun]
+    refine ((h1.const_mul _).add (h2.const_mul _)).congr_deriv ?_
+    simp [pfLinTrinom, eval, toInt?_neg_one, toInt?_two]
+    field_simp
+    rw [div_eq_one_iff_eq (fun h => hK (by linear_combination h))]
+    ring
+
+theorem pfLinTrinom_real : pfLinTrinom.Holds .real := pfLinTrinom_holds Interp.real
+
+theorem pfLinTrinom_complex : pfLinTrinom.Holds .complex := pfLinTrinom_holds Interp.complex
+
+theorem pfPowerWeighted_holds (I : Interp 𝕜) :
+    AntiderivRecHolds I "x" pfPowerWeighted.conditions pfPowerWeighted.body
+      pfPowerWeighted.result pfPowerWeighted.integrals := by
+  intro env hc t hF
+  have hK := hc (.ne detBC (.int 0)) (by simp [pfPowerWeighted])
+  simp [Cond.Holds, Defined, eval] at hK
+  rcases hm : I.toInt? (env "m") with _ | m
+  · exfalso
+    have h := hF.self_of_nhds
+    simp [pfPowerWeighted, Defined, eval, hm] at h
+  rcases hn : I.toInt? (env "n") with _ | n
+  · exfalso
+    have h := hF.self_of_nhds
+    simp [pfPowerWeighted, Defined, eval, hn] at h
+  refine ⟨fun i hi => ?_, fun Φ hΦ => ⟨?_, ?_⟩⟩
+  · simp only [pfPowerWeighted, List.mem_cons, List.not_mem_nil, or_false] at hi
+    rcases hi with rfl | rfl <;>
+    · filter_upwards [hF] with w hw
+      simp [pfPowerWeighted, Defined, eval, toInt?_neg_one, hm, hn] at hw ⊢
+      tauto
+  · exact Eventually.of_forall fun _ => by
+      simp [pfPowerWeighted, Defined, eval, recEnv, toInt?_neg_one, hK]
+  · simp only [pfPowerWeighted, List.mem_cons, List.not_mem_nil, or_false, forall_eq_or_imp,
+      forall_eq] at hΦ
+    obtain ⟨h1, h2⟩ := hΦ
+    have ht := hF.self_of_nhds
+    simp [pfPowerWeighted, Defined, eval, toInt?_neg_one, hm, hn] at ht
+    have hA : ¬ env "a" + env "b" * t ^ n = 0 := by tauto
+    have hB : ¬ env "c" + env "d" * t ^ n = 0 := by tauto
+    have hfun : (fun w => eval I (recEnv env (pfPowerWeighted.integrals.map (·.1)) Φ "x" w)
+        pfPowerWeighted.result) = fun w =>
+          env "b" * (env "b" * env "c" + -1 * env "a" * env "d")⁻¹ * Φ "I1" w +
+            -1 * env "d" * (env "b" * env "c" + -1 * env "a" * env "d")⁻¹ * Φ "I2" w := by
+      funext w
+      simp [pfPowerWeighted, eval, recEnv, toInt?_neg_one]
+    rw [hfun]
+    refine ((h1.const_mul _).add (h2.const_mul _)).congr_deriv ?_
+    simp [pfPowerWeighted, eval, toInt?_neg_one, hm, hn]
+    field_simp
+    ring
+
+theorem pfPowerWeighted_real : pfPowerWeighted.Holds .real := pfPowerWeighted_holds Interp.real
+
+theorem pfPowerWeighted_complex : pfPowerWeighted.Holds .complex := pfPowerWeighted_holds Interp.complex
+
+/-- `sin u cos u = sin(2 u)/2` proves `sinCosDouble`. -/
+theorem sinCosDouble_holds (I : Interp 𝕜) (h2 : (2 : 𝕜) ≠ 0)
+    (hS : ∀ b c d w : 𝕜, b * I.sin (2 * c + 2 * d * w) * 2⁻¹ =
+      b * I.sin (c + d * w) * I.cos (c + d * w)) :
+    AntiderivRecHolds I "x" sinCosDouble.conditions sinCosDouble.body sinCosDouble.result
+      sinCosDouble.integrals := by
+  intro env _ t hF
+  refine ⟨fun i hi => ?_, fun Φ hΦ => ⟨?_, ?_⟩⟩
+  · simp only [sinCosDouble, List.mem_cons, List.not_mem_nil, or_false] at hi
+    subst hi
+    filter_upwards [hF] with w hw
+    simp [sinCosDouble, Defined, eval, toInt?_neg_one, hS, h2] at hw ⊢
+    exact hw
+  · exact Eventually.of_forall fun _ => by simp [sinCosDouble, Defined]
+  · simp only [sinCosDouble, List.mem_cons, List.not_mem_nil, or_false, forall_eq] at hΦ
+    have hfun : (fun w => eval I (recEnv env (sinCosDouble.integrals.map (·.1)) Φ "x" w)
+        sinCosDouble.result) = Φ "I1" := by
+      funext w
+      simp [sinCosDouble, eval, recEnv]
+    rw [hfun]
+    refine hΦ.congr_deriv ?_
+    simp [sinCosDouble, eval, toInt?_neg_one, hS]
+
+theorem sinCosDouble_real : sinCosDouble.Holds .real := by
+  refine sinCosDouble_holds Interp.real two_ne_zero fun b c d w => ?_
+  simp only [Interp.real]
+  rw [show 2 * c + 2 * d * w = 2 * (c + d * w) by ring, Real.sin_two_mul]
+  ring
+
+theorem sinCosDouble_complex : sinCosDouble.Holds .complex := by
+  refine sinCosDouble_holds Interp.complex two_ne_zero fun b c d w => ?_
+  simp only [Interp.complex]
+  rw [show 2 * c + 2 * d * w = 2 * (c + d * w) by ring, Complex.sin_two_mul]
+  ring
+
+/-- A linear antiderivative `w ↦ w * C` for refutations with two residual
+integrals. -/
+private theorem two_linear (C1 C2 t : 𝕜) :
+    HasDerivAt ((fun h w => if h = "I1" then w * C1 else w * C2) "I1") C1 t ∧
+      HasDerivAt ((fun h w => if h = "I1" then w * C1 else w * C2) "I2") C2 t := by
+  exact ⟨by simpa using hasDerivAt_mul_const C1, by simpa using hasDerivAt_mul_const C2⟩
+
+/-- **Counterexample** to `pfGeneral`: at `a = c = 1` and the other
+metavariables `0` the integrand is defined everywhere, but `b c - a d = 0`. -/
+theorem pfGeneral_not (I : Interp 𝕜) :
+    ¬ AntiderivRecHolds I "x" pfGeneral.conditions pfGeneral.body pfGeneral.result
+      pfGeneral.integrals := by
+  refine not_antiderivRecHolds_result (fun s => if s = "a" ∨ s = "c" then 1 else 0) 0
+    (by simp [pfGeneral]) (Eventually.of_forall fun _ => ?_)
+    (fun h w => if h = "I1" then w * eval I (Function.update
+        (fun s => if s = "a" ∨ s = "c" then 1 else 0) "x" 0) (mul (.int 1) (inv binA))
+      else w * eval I (Function.update (fun s => if s = "a" ∨ s = "c" then 1 else 0) "x" 0)
+        (mul (.int 1) (inv binB))) ?_ ?_
+  · simp [pfGeneral, Defined, eval, toInt?_zero, toInt?_neg_one]
+  · simp only [pfGeneral, List.mem_cons, List.not_mem_nil, or_false, forall_eq_or_imp,
+      forall_eq]
+    exact two_linear _ _ _
+  · intro h
+    simp only [pfGeneral, Defined, eval, Interp.toInt?_cast] at h
+    simp [recEnv] at h
+
+theorem pfGeneral_counterexample_real : ¬ pfGeneral.Holds .real := pfGeneral_not Interp.real
+
+theorem pfGeneral_counterexample_complex : ¬ pfGeneral.Holds .complex :=
+  pfGeneral_not Interp.complex
+
+/-- **Counterexample** to `linOverLin`: at `a = 1` and the other
+metavariables `0` the integrand is defined everywhere, but `b^(-1)` is not. -/
+theorem linOverLin_not (I : Interp 𝕜) :
+    ¬ AntiderivRecHolds I "x" linOverLin.conditions linOverLin.body linOverLin.result
+      linOverLin.integrals := by
+  refine not_antiderivRecHolds_result (fun s => if s = "a" then 1 else 0) 0
+    (by simp [linOverLin]) (Eventually.of_forall fun _ => ?_)
+    (fun h w => if h = "I1" then w * eval I (Function.update
+        (fun s => if s = "a" then 1 else 0) "x" 0) twoPow
+      else w * eval I (Function.update (fun s => if s = "a" then 1 else 0) "x" 0)
+        (mul twoPow (inv (add (v "a") (mul (v "b") x))))) ?_ ?_
+  · simp [linOverLin, Defined, eval, toInt?_zero, toInt?_neg_one]
+  · simp only [linOverLin, List.mem_cons, List.not_mem_nil, or_false, forall_eq_or_imp,
+      forall_eq]
+    exact two_linear _ _ _
+  · intro h
+    simp only [linOverLin, Defined, eval, Interp.toInt?_cast] at h
+    simp [recEnv] at h
+
+theorem linOverLin_counterexample_real : ¬ linOverLin.Holds .real := linOverLin_not Interp.real
+
+theorem linOverLin_counterexample_complex : ¬ linOverLin.Holds .complex :=
+  linOverLin_not Interp.complex
+
+/-- **Counterexample** to `sinTrinomSq`: at `b = 1` and `a = c = 0`,
+`b^2 - 4 a c = 1 ≠ 0` and the integrand is defined everywhere, but the
+residual integrand `sin((b + 2 c x)^2/(4 c))` is not. -/
+theorem sinTrinomSq_not (I : Interp 𝕜) :
+    ¬ AntiderivRecHolds I "x" sinTrinomSq.conditions sinTrinomSq.body sinTrinomSq.result
+      sinTrinomSq.integrals := by
+  refine not_antiderivRecHolds_integrand (fun s => if s = "b" then 1 else 0) 0
+    (by simp [sinTrinomSq, Cond.Holds, Defined, eval, toInt?_two])
+    (Eventually.of_forall fun _ => by simp [sinTrinomSq, Defined, eval, toInt?_two]) ?_
+  refine ⟨_, List.mem_cons_self .., ?_⟩
+  intro h
+  simp only [Defined, eval, Interp.toInt?_cast] at h
+  simp at h
+
+theorem sinTrinomSq_counterexample_real : ¬ sinTrinomSq.Holds .real :=
+  sinTrinomSq_not Interp.real
+
+theorem sinTrinomSq_counterexample_complex : ¬ sinTrinomSq.Holds .complex :=
+  sinTrinomSq_not Interp.complex
+
+/-- **Counterexample** to `cosTrinomSq`, as for `sinTrinomSq`. -/
+theorem cosTrinomSq_not (I : Interp 𝕜) :
+    ¬ AntiderivRecHolds I "x" cosTrinomSq.conditions cosTrinomSq.body cosTrinomSq.result
+      cosTrinomSq.integrals := by
+  refine not_antiderivRecHolds_integrand (fun s => if s = "b" then 1 else 0) 0
+    (by simp [cosTrinomSq, Cond.Holds, Defined, eval, toInt?_two])
+    (Eventually.of_forall fun _ => by simp [cosTrinomSq, Defined, eval, toInt?_two]) ?_
+  refine ⟨_, List.mem_cons_self .., ?_⟩
+  intro h
+  simp only [Defined, eval, Interp.toInt?_cast] at h
+  simp at h
+
+theorem cosTrinomSq_counterexample_real : ¬ cosTrinomSq.Holds .real :=
+  cosTrinomSq_not Interp.real
+
+theorem cosTrinomSq_counterexample_complex : ¬ cosTrinomSq.Holds .complex :=
+  cosTrinomSq_not Interp.complex
+
+private theorem toInt?_one' (I : Interp 𝕜) : I.toInt? (1 : 𝕜) = some 1 :=
+  (I.toInt?_eq _ _).2 (by simp)
+
+/-- **Counterexample** to `binomRatio`, for an interpretation in which
+`-1 < 0`: at `b = c = 1`, `n = -1` and `a = d = 0` the conditions hold and the
+integrand is defined near `1`, but `a^(-1)` is not. -/
+theorem binomRatio_not (I : Interp 𝕜) (hlt : I.lt (-1) 0) :
+    ¬ AntiderivRecHolds I "x" binomRatio.conditions binomRatio.body binomRatio.result
+      binomRatio.integrals := by
+  refine not_antiderivRecHolds_result
+    (fun s => if s = "b" ∨ s = "c" then 1 else if s = "n" then -1 else 0) 1
+    (by simp [binomRatio, Cond.Holds, Defined, eval, hlt]) ?_
+    (fun _ w => w * eval I (Function.update
+      (fun s => if s = "b" ∨ s = "c" then 1 else if s = "n" then -1 else 0) "x" 1)
+      (binomRatio.integrals.head!.2)) ?_ ?_
+  · filter_upwards [eventually_ne_nhds (one_ne_zero (α := 𝕜))] with w hw
+    simp [binomRatio, Defined, eval, toInt?_neg_one, hw]
+  · simp only [binomRatio, List.mem_cons, List.not_mem_nil, or_false, forall_eq]
+    exact hasDerivAt_mul_const _
+  · intro h
+    simp only [binomRatio, Defined, eval, Interp.toInt?_cast] at h
+    simp [recEnv] at h
+
+theorem binomRatio_counterexample_real : ¬ binomRatio.Holds .real :=
+  binomRatio_not Interp.real (show (-1 : ℝ) < 0 by norm_num)
+
+theorem binomRatio_counterexample_complex : ¬ binomRatio.Holds .complex :=
+  binomRatio_not Interp.complex (by simp [Interp.complex])
+
+/-- **Counterexample** to `logLogWeighted`, for an interpretation with `ln`
+defined at `1` and `ln 1 = 0`: at `c = d = 1` and the other metavariables `0`
+the integrand is defined everywhere, but the residual integrand
+`(e x)^m/log(d x^n)` is not. -/
+theorem logLogWeighted_not (I : Interp 𝕜) (h1 : I.lnDefined 1) (h0 : I.ln 1 = 0) :
+    ¬ AntiderivRecHolds I "x" logLogWeighted.conditions logLogWeighted.body
+      logLogWeighted.result logLogWeighted.integrals := by
+  refine not_antiderivRecHolds_integrand (fun s => if s = "c" ∨ s = "d" then 1 else 0) 1
+    (by simp [logLogWeighted, Cond.Holds, Defined, eval])
+    (Eventually.of_forall fun _ => ?_) ?_
+  · simp [logLogWeighted, Defined, eval, toInt?_zero, h1]
+  · simp only [logLogWeighted, List.mem_cons, List.not_mem_nil, or_false, exists_eq_left]
+    intro h
+    simp only [Defined, eval, Interp.toInt?_cast] at h
+    simp [toInt?_zero, h0] at h
+
+theorem logLogWeighted_counterexample_real : ¬ logLogWeighted.Holds .real :=
+  logLogWeighted_not Interp.real (show (0 : ℝ) < 1 from one_pos) Real.log_one
+
+theorem logLogWeighted_counterexample_complex : ¬ logLogWeighted.Holds .complex :=
+  logLogWeighted_not Interp.complex (show (1 : ℂ) ≠ 0 from one_ne_zero) Complex.log_one
+
+/-- **Counterexample** to `linTwoPow`, in an interpretation where `2 ≠ 0`: at
+`c = 1` and the other metavariables `0`, `n + p + 2 = 2 ≠ 0` and the integrand
+is defined everywhere, but `(d f (n + p + 2))^(-1)` is not. -/
+theorem linTwoPow_not (I : Interp 𝕜) (h2 : (2 : 𝕜) ≠ 0) :
+    ¬ AntiderivRecHolds I "x" linTwoPow.conditions linTwoPow.body linTwoPow.result
+      linTwoPow.integrals := by
+  refine not_antiderivRecHolds_result (fun s => if s = "c" then 1 else 0) 0
+    (by simp [linTwoPow, Cond.Holds, Defined, eval, h2]) (Eventually.of_forall fun _ => ?_)
+    (fun _ w => w * eval I (Function.update (fun s => if s = "c" then 1 else 0) "x" 0) twoPow)
+    ?_ ?_
+  · simp [linTwoPow, Defined, eval, toInt?_zero]
+  · simp only [linTwoPow, List.mem_cons, List.not_mem_nil, or_false, forall_eq]
+    exact hasDerivAt_mul_const _
+  · intro h
+    simp only [linTwoPow, Defined, eval, Interp.toInt?_cast] at h
+    simp [recEnv] at h
+
+theorem linTwoPow_counterexample_real : ¬ linTwoPow.Holds .real :=
+  linTwoPow_not Interp.real two_ne_zero
+
+theorem linTwoPow_counterexample_complex : ¬ linTwoPow.Holds .complex :=
+  linTwoPow_not Interp.complex two_ne_zero
+
+/-- **Counterexample** to `logBinWeighted`, for an interpretation with `ln`
+defined at `1`: at `c = 1` and the other metavariables `0` the integrand
+`log 1` is defined everywhere, but the residual integrand
+`x^(n-1) (f x)^(m+1)/(d + e x^n)` is not. -/
+theorem logBinWeighted_not (I : Interp 𝕜) (h1 : I.lnDefined 1) :
+    ¬ AntiderivRecHolds I "x" logBinWeighted.conditions logBinWeighted.body
+      logBinWeighted.result logBinWeighted.integrals := by
+  refine not_antiderivRecHolds_integrand (fun s => if s = "c" then 1 else 0) 1
+    (by simp [logBinWeighted, Cond.Holds, Defined, eval])
+    (Eventually.of_forall fun _ => ?_) ?_
+  · simp [logBinWeighted, Defined, eval, toInt?_zero, h1]
+  · simp only [logBinWeighted, List.mem_cons, List.not_mem_nil, or_false, exists_eq_left]
+    intro h
+    simp only [Defined, eval, Interp.toInt?_cast] at h
+    simp [toInt?_zero] at h
+
+theorem logBinWeighted_counterexample_real : ¬ logBinWeighted.Holds .real :=
+  logBinWeighted_not Interp.real (show (0 : ℝ) < 1 from one_pos)
+
+theorem logBinWeighted_counterexample_complex : ¬ logBinWeighted.Holds .complex :=
+  logBinWeighted_not Interp.complex (show (1 : ℂ) ≠ 0 from one_ne_zero)
 
 end Proofs
 

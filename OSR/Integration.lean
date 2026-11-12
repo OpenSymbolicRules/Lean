@@ -883,7 +883,74 @@ def catalog : List CEntry := [
       (.complex, ``logPowBinom_counterexample_complex)],
     findings := [
       "counterexample: at c = 1 and d = e = n = p = 0 the integrand log 1 is defined everywhere, but the residual integrand x^n/(d + e x^n) is not; its coefficient -e n p vanishes there (Lean theorems logPowBinom_counterexample_real and logPowBinom_counterexample_complex). The rule needs d + e x^n ≠ 0 wherever the integrand is defined, which p ≠ 0 ensures, which this migration does not add.",
-      recFinding, optionalFinding "c., e. and p."] }
+      recFinding, optionalFinding "c., e. and p."] },
+  { rule := pfLinQuad, ruleDecl := ``pfLinQuad,
+    proofs := [(.real, ``pfLinQuad_real), (.complex, ``pfLinQuad_complex)],
+    findings := [neqFinding "NeQ[c d^2 + a e^2, 0]", recFinding, optionalFinding "e. and c."] },
+  { rule := pfLinTrinom, ruleDecl := ``pfLinTrinom,
+    proofs := [(.real, ``pfLinTrinom_real), (.complex, ``pfLinTrinom_complex)],
+    findings := [neqFinding "NeQ[b^2 - 4 a c, 0], NeQ[c d^2 - b d e + a e^2, 0] and NeQ[2 c d - b e, 0]", recFinding, optionalFinding "d., e., a., b. and c."] },
+  { rule := pfPowerWeighted, ruleDecl := ``pfPowerWeighted,
+    proofs := [(.real, ``pfPowerWeighted_real), (.complex, ``pfPowerWeighted_complex)],
+    findings := [neqFinding "NeQ[b c - a d, 0]", integerFinding "m and n", recFinding, optionalFinding "e., m., b. and d."] },
+  { rule := sinCosDouble, ruleDecl := ``sinCosDouble,
+    proofs := [(.real, ``sinCosDouble_real), (.complex, ``sinCosDouble_complex)],
+    findings := [integerFinding "m and n", recFinding, optionalFinding "e., f., m., b., c., d. and n."] },
+  { rule := pfGeneral, ruleDecl := ``pfGeneral, proofs := [],
+    counterexamples := [(.real, ``pfGeneral_counterexample_real),
+      (.complex, ``pfGeneral_counterexample_complex)],
+    findings := [
+      "counterexample: at a = c = 1 and the other metavariables 0 the integrand is defined everywhere, but b c - a d = 0 and (b c - a d)^(-1) is not defined (Lean theorems pfGeneral_counterexample_real and pfGeneral_counterexample_complex). The rule needs b c - a d ≠ 0, which this migration does not add.",
+      recFinding, optionalFinding "b. and d."] },
+  { rule := linOverLin, ruleDecl := ``linOverLin, proofs := [],
+    counterexamples := [(.real, ``linOverLin_counterexample_real),
+      (.complex, ``linOverLin_counterexample_complex)],
+    findings := [
+      "counterexample: at a = 1 and the other metavariables 0 the integrand is defined everywhere, but b^(-1) is not (Lean theorems linOverLin_counterexample_real and linOverLin_counterexample_complex). The rule needs b ≠ 0, which this migration does not add.",
+      recFinding, optionalFinding "c., d., e., f., g., h., a. and b."] },
+  { rule := sinTrinomSq, ruleDecl := ``sinTrinomSq, proofs := [],
+    counterexamples := [(.real, ``sinTrinomSq_counterexample_real),
+      (.complex, ``sinTrinomSq_counterexample_complex)],
+    findings := [
+      "counterexample: at b = 1 and a = c = 0 the condition b^2 - 4 a c ≠ 0 holds and the integrand is defined everywhere, but the residual integrand sin((b + 2 c x)^2/(4 c)) is not (Lean theorems sinTrinomSq_counterexample_real and sinTrinomSq_counterexample_complex). The rule needs c ≠ 0, which this migration does not add.",
+      neqFinding "NeQ[b^2 - 4 a c, 0]",
+      recFinding, optionalFinding "a., b. and c."] },
+  { rule := cosTrinomSq, ruleDecl := ``cosTrinomSq, proofs := [],
+    counterexamples := [(.real, ``cosTrinomSq_counterexample_real),
+      (.complex, ``cosTrinomSq_counterexample_complex)],
+    findings := [
+      "counterexample: at b = 1 and a = c = 0 the condition b^2 - 4 a c ≠ 0 holds and the integrand is defined everywhere, but the residual integrand cos((b + 2 c x)^2/(4 c)) is not (Lean theorems cosTrinomSq_counterexample_real and cosTrinomSq_counterexample_complex). The rule needs c ≠ 0, which this migration does not add.",
+      neqFinding "NeQ[b^2 - 4 a c, 0]",
+      recFinding, optionalFinding "a., b. and c."] },
+  { rule := binomRatio, ruleDecl := ``binomRatio, proofs := [],
+    counterexamples := [(.real, ``binomRatio_counterexample_real),
+      (.complex, ``binomRatio_counterexample_complex)],
+    findings := [
+      "counterexample: at b = c = 1, n = -1 and a = d = 0 the conditions b c - a d ≠ 0 and n < 0 hold and the integrand is defined near x = 1, but a^(-1) is not (Lean theorems binomRatio_counterexample_real and binomRatio_counterexample_complex). The rule needs a ≠ 0, which this migration does not add.",
+      neqFinding "NeQ[b c - a d, 0]",
+      "conditions: RUBI's LtQ[n, 0] becomes 0 > n (relation1#gt).",
+      recFinding, optionalFinding "d. and b."] },
+  { rule := logLogWeighted, ruleDecl := ``logLogWeighted, proofs := [],
+    counterexamples := [(.real, ``logLogWeighted_counterexample_real),
+      (.complex, ``logLogWeighted_counterexample_complex)],
+    findings := [
+      "counterexample: at c = d = 1 and the other metavariables 0 the condition m ≠ -1 holds and the integrand is defined everywhere, but the residual integrand (e x)^m/log(d x^n) is not, and neither is (e (m + 1))^(-1) (Lean theorems logLogWeighted_counterexample_real and logLogWeighted_counterexample_complex). The rule needs e ≠ 0 and log(d x^n) ≠ 0 wherever the integrand is defined, which this migration does not add.",
+      neqFinding "NeQ[m, -1]",
+      recFinding, optionalFinding "e., m., a., b., c., d., n. and p."] },
+  { rule := linTwoPow, ruleDecl := ``linTwoPow, proofs := [],
+    counterexamples := [(.real, ``linTwoPow_counterexample_real),
+      (.complex, ``linTwoPow_counterexample_complex)],
+    findings := [
+      "counterexample: at c = 1 and the other metavariables 0 the condition n + p + 2 ≠ 0 holds and the integrand is defined everywhere, but (d f (n + p + 2))^(-1) is not (Lean theorems linTwoPow_counterexample_real and linTwoPow_counterexample_complex). The rule needs d ≠ 0 and f ≠ 0, which this migration does not add.",
+      neqFinding "NeQ[n + p + 2, 0]",
+      recFinding, optionalFinding "a., b., c., d., n., e., f. and p."] },
+  { rule := logBinWeighted, ruleDecl := ``logBinWeighted, proofs := [],
+    counterexamples := [(.real, ``logBinWeighted_counterexample_real),
+      (.complex, ``logBinWeighted_counterexample_complex)],
+    findings := [
+      "counterexample: at c = 1 and the other metavariables 0 the condition m ≠ -1 holds and the integrand log 1 is defined everywhere, but the residual integrand x^(n-1) (f x)^(m+1)/(d + e x^n) is not, and neither is (f (m + 1))^(-1) (Lean theorems logBinWeighted_counterexample_real and logBinWeighted_counterexample_complex). The rule needs f ≠ 0 and d + e x^n ≠ 0 wherever the integrand is defined, which this migration does not add.",
+      neqFinding "NeQ[m, -1]",
+      recFinding, optionalFinding "f., m., a., b., c., e. and p."] }
 ]
 
 /-- Every catalogue rule is well formed: recursive rules by `recOk`, the
@@ -894,6 +961,7 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
   simp only [catalog, List.mem_cons, List.mem_nil_iff, or_false] at he
   rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl <;> decide
 
 end OSR.Integration
