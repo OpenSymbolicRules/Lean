@@ -168,6 +168,21 @@ does not bind:
 | `integration.linear_times_two_powers` | 1.1.1.3 #8 | counterexample at `d = 0` | counterexample |
 | `integration.power_log_binomial` | 3.4 #7 | counterexample (residual `…/0`) | counterexample |
 
+### Fourth recursive batch
+
+`OSR/IntegrationRec2.lean` holds 25 more rules, transcribed by a tool from
+the converted v0.1 rules and checked by the Integration repository's
+`scripts/v1_faithfulness.py` (which also checks every earlier rule).  One is
+proved over ℝ and ℂ (`integration.split_log_linear_factor`, 3.3 #44, a
+linearity split); 24 are refuted.  22 refutations share one template: the
+conditions leave a coefficient free to vanish that the result divides by
+(`b`, `d`, `g`, `h`, `m`, `q`, `c`, `d n`, `b² d² (m+n+2)(m+n+3)`), or, at
+`n = 0`, a residual integrand divides by `d + e x`.  Two hold over ℂ only
+in RUBI's reading of `Log` and are refuted over ℝ, where `log x` or
+`log(d + e x)` is undefined at a point near which the integrand is defined
+(3.3 #4, 3.1.3 #3).  Seven rules with integrands `F^(…)`, whose exponent
+depends on `x`, are not migrated.
+
 Every refutation follows the same pattern: RUBI's conditions leave a
 coefficient free to vanish, and the result divides by it.  In Mathematica,
 an earlier rule of the load order catches the degenerate case first; an OSR
@@ -183,7 +198,7 @@ pattern does not bind: 630 of them use the constants `E`, `ImaginaryI` or
 - Conditions do not limit the inventory: 2,155 rules have only expressible
   conditions, but almost all of them have another `Int` in their result or
   unregistered heads (`Subst`, `Simp`, `Rt`, …).
-- The other recursive rules: 238 more are linear in their residual
+- The other recursive rules: 213 more are linear in their residual
   integrals, many with square roots (outside the complex fragment) or
   rational exponents (outside the fragment).
 - A rewriter that continues inside residual integrals would let engines apply

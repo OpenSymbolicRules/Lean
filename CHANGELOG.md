@@ -23,6 +23,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `FreeQ`-only rules with registered heads, `∫ a = a x` is proved over ℝ and ℂ,
   `∫ log(c xⁿ)` over ℝ, four rules are refuted by Lean counterexamples, and
   three are reported as not migrated.  The other rule sets export unchanged.
+- A fourth batch of 25 recursive RUBI rules (`OSR/IntegrationRec2.lean`),
+  transcribed by a tool and checked against the v0.1 rules by the
+  Integration repository's `v1_faithfulness.py`: one proved over ℝ and ℂ,
+  22 refuted by a zero coefficient or a residual division by zero, two
+  refuted over ℝ (`log` at a negative point); seven `F^(…)` rules reported as
+  not migrated.  `integration.log_linear_power` records why `p` is declared
+  independent of `x`.
 - Twelve more recursive RUBI rules: three partial fraction decompositions and
   `sin u cos u = sin(2u)/2` proved over ℝ and ℂ, eight rules refuted.
 - Eleven more recursive RUBI rules: partial fractions of

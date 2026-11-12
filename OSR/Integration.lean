@@ -1,5 +1,5 @@
 import OSR.Calculus
-import OSR.IntegrationRec
+import OSR.IntegrationRec2
 
 /-!
 # Integration (RUBI)
@@ -32,7 +32,7 @@ fragment, and are reported in `notMigrated`.
 
 namespace OSR.Integration
 
-open OSR OSR.Calculus OSR.IntegrationRec Filter Topology
+open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -246,7 +246,21 @@ def notMigrated : List (String × String) := [
   ("rubi:4 Trig functions/4.7 Miscellaneous/4.7.7 F^(c (a+b x)) trig(d+e x)^n:1",
     "the integrand F^(c (a + b x)) sin(d + e x) is a power with a non-constant exponent; the fragment interprets arith1#power for integer exponents only"),
   ("rubi:4 Trig functions/4.7 Miscellaneous/4.7.7 F^(c (a+b x)) trig(d+e x)^n:2",
-    "the integrand F^(c (a + b x)) cos(d + e x) is a power with a non-constant exponent; the fragment interprets arith1#power for integer exponents only")]
+    "the integrand F^(c (a + b x)) cos(d + e x) is a power with a non-constant exponent; the fragment interprets arith1#power for integer exponents only"),
+  ("rubi:2 Exponentials/2.2 (c+d x)^m (F^(g (e+f x)))^n (a+b (F^(g (e+f x)))^n)^p:2",
+    "the integrand contains F^(…), a power with a non-constant exponent; the fragment interprets arith1#power for integer exponents only"),
+  ("rubi:2 Exponentials/2.3 Miscellaneous exponentials:25",
+    "the integrand contains F^(…), a power with a non-constant exponent; the fragment interprets arith1#power for integer exponents only"),
+  ("rubi:2 Exponentials/2.3 Miscellaneous exponentials:34",
+    "the integrand contains F^(…), a power with a non-constant exponent; the fragment interprets arith1#power for integer exponents only"),
+  ("rubi:2 Exponentials/2.3 Miscellaneous exponentials:43",
+    "the integrand contains F^(…), a power with a non-constant exponent; the fragment interprets arith1#power for integer exponents only"),
+  ("rubi:2 Exponentials/2.3 Miscellaneous exponentials:59",
+    "the integrand contains F^(…), a power with a non-constant exponent; the fragment interprets arith1#power for integer exponents only"),
+  ("rubi:2 Exponentials/2.3 Miscellaneous exponentials:60",
+    "the integrand contains F^(…), a power with a non-constant exponent; the fragment interprets arith1#power for integer exponents only"),
+  ("rubi:2 Exponentials/2.3 Miscellaneous exponentials:73",
+    "the integrand contains F^(…), a power with a non-constant exponent; the fragment interprets arith1#power for integer exponents only")]
 
 /-! ## Proofs -/
 
@@ -702,6 +716,9 @@ private def neqFinding (cond : String) : String :=
 private def integerFinding (m : String) : String :=
   s!"exponent: the fragment interprets arith1#power for integer exponents only, so the statement covers the integer values of {m}; for other values the integrand is undefined."
 
+private def condFinding (cs : String) : String :=
+  s!"conditions: RUBI's {cs} become OSR v1 conditions (relation1#neq, relation1#gt, set1#in with setname1#Z), read semantically on defined values."
+
 private def recFinding : String :=
   "residual integrals: the result contains Int[…], exported as int(λx. H)(x) (the calculus1#int FMP form); the statement holds for every choice of antiderivatives of the residual integrands. The reference rewriter does not apply this rule."
 
@@ -807,6 +824,7 @@ def catalog : List CEntry := [
     proofs := [(.real, ``logLinPow_real)], unproved := [.complex],
     findings := [
       "conditions: RUBI's GtQ[p, 0] becomes p > 0 (relation1#gt) and IntegerQ[2 p] becomes 2 p ∈ ℤ (set1#in, setname1#Z); the fragment interprets arith1#power for integer exponents only, so the statement covers the integer values of p.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's GtQ[p, 0] only holds for a numeric p, so the v1 rule declares p independent of x, as the statement requires.",
       lnComplexFinding, recFinding, optionalFinding "a., b., c., n. and p."] },
   { rule := sinXLog, ruleDecl := ``sinXLog, proofs := [],
     counterexamples := [(.real, ``sinXLog_counterexample_real),
@@ -950,7 +968,152 @@ def catalog : List CEntry := [
     findings := [
       "counterexample: at c = 1 and the other metavariables 0 the condition m ≠ -1 holds and the integrand log 1 is defined everywhere, but the residual integrand x^(n-1) (f x)^(m+1)/(d + e x^n) is not, and neither is (f (m + 1))^(-1) (Lean theorems logBinWeighted_counterexample_real and logBinWeighted_counterexample_complex). The rule needs f ≠ 0 and d + e x^n ≠ 0 wherever the integrand is defined, which this migration does not add.",
       neqFinding "NeQ[m, -1]",
-      recFinding, optionalFinding "f., m., a., b., c., e. and p."] }
+      recFinding, optionalFinding "f., m., a., b., c., e. and p."] },
+  { rule := binomPowLin, ruleDecl := ``binomPowLin, proofs := [],
+    counterexamples := [(.real, ``binomPowLin_counterexample_real),
+      (.complex, ``binomPowLin_counterexample_complex)],
+    findings := [
+      "counterexample: at a = d = e = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but (b e (m + n (p + 1) + 1))^(-1) is not (Lean theorems binomPowLin_counterexample_real and binomPowLin_counterexample_complex). The rule needs needs b ≠ 0 and e ≠ 0, which this migration does not add.",
+      recFinding, condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; NeQ[Add[m, Multiply[n, Add[p, 1]], 1], 0]", optionalFinding "e., m., b., p. and d."] },
+  { rule := logPowOverSq, ruleDecl := ``logPowOverSq, proofs := [],
+    counterexamples := [(.real, ``logPowOverSq_counterexample_real),
+      (.complex, ``logPowOverSq_counterexample_complex)],
+    findings := [
+      "counterexample: at c = e = p = 1 and the other metavariables 0 the condition p > 0 holds and the integrand is defined near x = 1, but (d (d + e x))^(-1) is not (Lean theorems logPowOverSq_counterexample_real and logPowOverSq_counterexample_complex). The rule needs d ≠ 0, which this migration does not add.",
+      recFinding, condFinding "GtQ[p, 0]", optionalFinding "a., b., c., n., p. and e."] },
+  { rule := powLogRatio, ruleDecl := ``powLogRatio, proofs := [],
+    counterexamples := [(.real, ``powLogRatio_counterexample_real),
+      (.complex, ``powLogRatio_counterexample_complex)],
+    findings := [
+      "counterexample: at b = c = e = f = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but (g (m + 1))^(-1) is not (Lean theorems powLogRatio_counterexample_real and powLogRatio_counterexample_complex). The rule needs g ≠ 0, which this migration does not add.",
+      recFinding, condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; NeQ[m, -1]; NeQ[m, -2]", optionalFinding "f., g., m., A., B., e., a., b., c., d. and n."] },
+  { rule := powLogProduct, ruleDecl := ``powLogProduct, proofs := [],
+    counterexamples := [(.real, ``powLogProduct_counterexample_real),
+      (.complex, ``powLogProduct_counterexample_complex)],
+    findings := [
+      "counterexample: at b = c = e = f = g = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but (h (m + 1))^(-1) is not (Lean theorems powLogProduct_counterexample_real and powLogProduct_counterexample_complex). The rule needs h ≠ 0, which this migration does not add.",
+      recFinding, condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; NeQ[m, -1]", optionalFinding "g., h., m., e., f., a., b., p., c., d., q. and r."] },
+  { rule := powLogProductPow, ruleDecl := ``powLogProductPow, proofs := [],
+    counterexamples := [(.real, ``powLogProductPow_counterexample_real),
+      (.complex, ``powLogProductPow_counterexample_complex)],
+    findings := [
+      "counterexample: at b = c = e = f = g = s = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but (h (m + 1))^(-1) is not (Lean theorems powLogProductPow_counterexample_real and powLogProductPow_counterexample_complex). The rule needs h ≠ 0, which this migration does not add.",
+      recFinding, condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; IGtQ[s, 0]; NeQ[m, -1]", optionalFinding "g., h., m., e., f., a., b., p., c., d., q. and r."] },
+  { rule := linPowLogLin, ruleDecl := ``linPowLogLin, proofs := [],
+    counterexamples := [(.real, ``linPowLogLin_counterexample_real),
+      (.complex, ``linPowLogLin_counterexample_complex)],
+    findings := [
+      "counterexample: at c = e = f = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but (g (q + 1))^(-1) is not (Lean theorems linPowLogLin_counterexample_real and linPowLogLin_counterexample_complex). The rule needs g ≠ 0, which this migration does not add.",
+      recFinding, condFinding "NeQ[Add[Multiply[e, f], Multiply[-1, d, g]], 0]; NeQ[q, -1]", optionalFinding "f., g., q., a., b., c., e. and n."] },
+  { rule := powLogLogLin, ruleDecl := ``powLogLogLin, proofs := [],
+    counterexamples := [(.real, ``powLogLogLin_counterexample_real),
+      (.complex, ``powLogLogLin_counterexample_complex)],
+    findings := [
+      "counterexample: at c = f = 1 and the other metavariables 0 the condition q ≠ -1 holds and the integrand is defined everywhere, but (g (q + 1))^(-1) is not (Lean theorems powLogLogLin_counterexample_real and powLogLogLin_counterexample_complex). The rule needs g ≠ 0, which this migration does not add.",
+      recFinding, condFinding "NeQ[q, -1]", optionalFinding "g., q., f., m., a., b., c., e. and n."] },
+  { rule := logLogLinOverX, ruleDecl := ``logLogLinOverX, proofs := [],
+    counterexamples := [(.real, ``logLogLinOverX_counterexample_real),
+      (.complex, ``logLogLinOverX_counterexample_complex)],
+    findings := [
+      "counterexample: at c = f = 1 and the other metavariables 0 the integrand is defined near x = 1, but (2 m)^(-1) is not (Lean theorems logLogLinOverX_counterexample_real and logLogLinOverX_counterexample_complex). The rule needs m ≠ 0, which this migration does not add.",
+      recFinding, optionalFinding "f., m., a., b., c., e. and n."] },
+  { rule := logPowLogBinOverX, ruleDecl := ``logPowLogBinOverX, proofs := [],
+    counterexamples := [(.real, ``logPowLogBinOverX_counterexample_real),
+      (.complex, ``logPowLogBinOverX_counterexample_complex)],
+    findings := [
+      "counterexample: at c = f = 1 and the other metavariables 0 the condition m ≠ -1 holds and the integrand is defined near x = 1, but (q (m + 1))^(-1) is not (Lean theorems logPowLogBinOverX_counterexample_real and logPowLogBinOverX_counterexample_complex). The rule needs q ≠ 0, which this migration does not add.",
+      recFinding, condFinding "NeQ[m, -1]", optionalFinding "f., q., m., a., b., c., e. and p."] },
+  { rule := powTwoLogLin, ruleDecl := ``powTwoLogLin, proofs := [],
+    counterexamples := [(.real, ``powTwoLogLin_counterexample_real),
+      (.complex, ``powTwoLogLin_counterexample_complex)],
+    findings := [
+      "counterexample: at c = e = 1 and the other metavariables 0 the integrand is defined everywhere, but the residual integrand, which divides by d + e x, is not defined at x = 0 (Lean theorems powTwoLogLin_counterexample_real and powTwoLogLin_counterexample_complex). The rule needs d + e x ≠ 0 wherever the integrand is defined, which n ≠ 0 ensures, which this migration does not add.",
+      recFinding, condFinding "NeQ[m, -1]", optionalFinding "m., a., b., c., e., n., f. and g."] },
+  { rule := twoLogLin, ruleDecl := ``twoLogLin, proofs := [],
+    counterexamples := [(.real, ``twoLogLin_counterexample_real),
+      (.complex, ``twoLogLin_counterexample_complex)],
+    findings := [
+      "counterexample: at c = e = 1 and the other metavariables 0 the integrand is defined everywhere, but the residual integrand, which divides by d + e x, is not defined at x = 0 (Lean theorems twoLogLin_counterexample_real and twoLogLin_counterexample_complex). The rule needs d + e x ≠ 0 wherever the integrand is defined, which n ≠ 0 ensures, which this migration does not add.",
+      recFinding, optionalFinding "a., b., c., e., n., f. and g."] },
+  { rule := twoLogLinOverX, ruleDecl := ``twoLogLinOverX, proofs := [],
+    counterexamples := [(.real, ``twoLogLinOverX_counterexample_real),
+      (.complex, ``twoLogLinOverX_counterexample_complex)],
+    findings := [
+      "counterexample: at c = e = 1, d = -1 and the other metavariables 0 the integrand is defined near x = 1, but the residual integrand, which divides by d + e x, is not defined at x = 1 (Lean theorems twoLogLinOverX_counterexample_real and twoLogLinOverX_counterexample_complex). The rule needs d + e x ≠ 0 wherever the integrand is defined, which n ≠ 0 ensures, which this migration does not add.",
+      recFinding, optionalFinding "a., b., c., e., n., f. and g."] },
+  { rule := logMonoLogLin, ruleDecl := ``logMonoLogLin, proofs := [],
+    counterexamples := [(.real, ``logMonoLogLin_counterexample_real),
+      (.complex, ``logMonoLogLin_counterexample_complex)],
+    findings := [
+      "counterexample: at c = e = f = 1, d = -1 and the other metavariables 0 the integrand is defined everywhere, but the residual integrand x/(d + e x) is not defined at x = 1 (Lean theorems logMonoLogLin_counterexample_real and logMonoLogLin_counterexample_complex). The rule needs d + e x ≠ 0 wherever the integrand is defined, which n ≠ 0 ensures, which this migration does not add.",
+      recFinding, optionalFinding "f., m., a., b., c., e. and n."] },
+  { rule := logProductPow, ruleDecl := ``logProductPow, proofs := [],
+    counterexamples := [(.real, ``logProductPow_counterexample_real),
+      (.complex, ``logProductPow_counterexample_complex)],
+    findings := [
+      "counterexample: at a = d = e = f = p = s = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but b^(-1) is not (Lean theorems logProductPow_counterexample_real and logProductPow_counterexample_complex). The rule needs b ≠ 0, which this migration does not add.",
+      recFinding, condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; NeQ[Add[p, q], 0]; IGtQ[s, 0]; LtQ[s, 4]", optionalFinding "e., f., a., b., p., c., d., q., r. and s."] },
+  { rule := logProductOverLin, ruleDecl := ``logProductOverLin, proofs := [],
+    counterexamples := [(.real, ``logProductOverLin_counterexample_real),
+      (.complex, ``logProductOverLin_counterexample_complex)],
+    findings := [
+      "counterexample: at b = c = e = f = g = 1 and the other metavariables 0 the condition holds and the integrand is defined everywhere, but h^(-1) is not (Lean theorems logProductOverLin_counterexample_real and logProductOverLin_counterexample_complex). The rule needs h ≠ 0, which this migration does not add.",
+      recFinding, condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]", optionalFinding "e., f., a., b., p., c., d., q., r., g. and h."] },
+  { rule := logSqProductOverLin, ruleDecl := ``logSqProductOverLin, proofs := [],
+    counterexamples := [(.real, ``logSqProductOverLin_counterexample_real),
+      (.complex, ``logSqProductOverLin_counterexample_complex)],
+    findings := [
+      "counterexample: at b = c = e = f = g = 1 and the other metavariables 0 the condition holds and the integrand is defined everywhere, but h^(-1) is not (Lean theorems logSqProductOverLin_counterexample_real and logSqProductOverLin_counterexample_complex). The rule needs h ≠ 0, which this migration does not add.",
+      recFinding, condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]", optionalFinding "e., f., a., b., p., c., d., q., r., g. and h."] },
+  { rule := logRatioOverLin, ruleDecl := ``logRatioOverLin, proofs := [],
+    counterexamples := [(.real, ``logRatioOverLin_counterexample_real),
+      (.complex, ``logRatioOverLin_counterexample_complex)],
+    findings := [
+      "counterexample: at b = c = e = f = 1 and the other metavariables 0 the condition holds and the integrand is defined everywhere, but g^(-1) is not (Lean theorems logRatioOverLin_counterexample_real and logRatioOverLin_counterexample_complex). The rule needs g ≠ 0, which this migration does not add.",
+      recFinding, condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]", optionalFinding "A., B., e., a., b., c., d., n., f. and g."] },
+  { rule := logLinOverLin, ruleDecl := ``logLinOverLin, proofs := [],
+    counterexamples := [(.real, ``logLinOverLin_counterexample_real),
+      (.complex, ``logLinOverLin_counterexample_complex)],
+    findings := [
+      "counterexample: at c = e = f = 1 and the other metavariables 0 the condition holds and the integrand is defined everywhere, but g^(-1) is not (Lean theorems logLinOverLin_counterexample_real and logLinOverLin_counterexample_complex). The rule needs g ≠ 0, which this migration does not add.",
+      recFinding, condFinding "NeQ[Add[Multiply[e, f], Multiply[-1, d, g]], 0]", optionalFinding "a., b., c., e., n., f. and g."] },
+  { rule := logLinPowOverLin, ruleDecl := ``logLinPowOverLin, proofs := [],
+    counterexamples := [(.real, ``logLinPowOverLin_counterexample_real),
+      (.complex, ``logLinPowOverLin_counterexample_complex)],
+    findings := [
+      "counterexample: at c = e = f = 1, p = 2 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but g^(-1) is not (Lean theorems logLinPowOverLin_counterexample_real and logLinPowOverLin_counterexample_complex). The rule needs g ≠ 0, which this migration does not add.",
+      recFinding, condFinding "NeQ[Add[Multiply[e, f], Multiply[-1, d, g]], 0]; IGtQ[p, 1]", optionalFinding "a., b., c., e., n., f. and g."] },
+  { rule := powTanSq, ruleDecl := ``powTanSq, proofs := [],
+    counterexamples := [(.real, ``powTanSq_counterexample_real),
+      (.complex, ``powTanSq_counterexample_complex)],
+    findings := [
+      "counterexample: at every metavariable 0 the integrand is defined everywhere, but (d n)^(-1) is not (Lean theorems powTanSq_counterexample_real and powTanSq_counterexample_complex). The rule needs d ≠ 0 and n ≠ 0, which this migration does not add.",
+      recFinding, optionalFinding "m., c. and d."] },
+  { rule := linTanTrinom, ruleDecl := ``linTanTrinom, proofs := [],
+    counterexamples := [(.real, ``linTanTrinom_counterexample_real),
+      (.complex, ``linTanTrinom_counterexample_complex)],
+    findings := [
+      "counterexample: at b = e = 1 and the other metavariables 0 the condition 2 c d - b e ≠ 0 holds and the integrand is defined near x = 0, but (2 c)^(-1) is not (Lean theorems linTanTrinom_counterexample_real and linTanTrinom_counterexample_complex). The rule needs c ≠ 0, which this migration does not add.",
+      recFinding, condFinding "NeQ[Add[Multiply[2, c, d], Multiply[-1, b, e]], 0]", optionalFinding "d., e., a., b. and c."] },
+  { rule := linFour, ruleDecl := ``linFour, proofs := [],
+    counterexamples := [(.real, ``linFour_counterexample_real),
+      (.complex, ``linFour_counterexample_complex)],
+    findings := [
+      "counterexample: at every metavariable 0 the conditions m + n + 2 ≠ 0 and m + n + 3 ≠ 0 hold and the integrand is defined everywhere, but (b^2 d^2 (m + n + 2) (m + n + 3))^(-1) is not (Lean theorems linFour_counterexample_real and linFour_counterexample_complex). The rule needs b ≠ 0 and d ≠ 0, which this migration does not add.",
+      recFinding, condFinding "NeQ[Add[m, n, 2], 0]; NeQ[Add[m, n, 3], 0]", optionalFinding "a., b., m., c., d., n., f., g. and h."] },
+  { rule := splitLogLog, ruleDecl := ``splitLogLog,
+    proofs := [(.real, ``splitLogLog_real), (.complex, ``splitLogLog_complex)],
+    findings := [recFinding, condFinding "NeQ[Add[Multiply[e, i], Multiply[-1, d, j]], 0]", optionalFinding "a., b., c., e., n., g., h., i., j. and m."] },
+  { rule := logLinOverX, ruleDecl := ``logLinOverX, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``logLinOverX_counterexample_real)],
+    findings := [
+      "counterexample: at c = d = 1 and the other metavariables 0 the condition c d > 0 holds and the integrand is defined near x = -1, but log x is not defined at -1 (Lean theorem logLinOverX_counterexample_real); RUBI reads Log as the complex logarithm.",
+      lnComplexFinding, recFinding, condFinding "GtQ[Multiply[c, d], 0]", optionalFinding "a., b., c. and e."] },
+  { rule := logOverLin, ruleDecl := ``logOverLin, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``logOverLin_counterexample_real)],
+    findings := [
+      "counterexample: at c = d = 1, e = -1 and the other metavariables 0 the condition -c d/e > 0 holds and the integrand is defined near x = 2, but log(d + e x) = log(-1) is not (Lean theorem logOverLin_counterexample_real); RUBI reads Log as the complex logarithm.",
+      lnComplexFinding, recFinding, condFinding "GtQ[Multiply[-1, c, d, Power[e, -1]], 0]", optionalFinding "a., b., c. and e."] }
 ]
 
 /-- Every catalogue rule is well formed: recursive rules by `recOk`, the
@@ -959,9 +1122,10 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
     (if e.rule.shape == .antiderivRec then e.rule.recOk else e.rule.wellFormed) = true := by
   intro e he
   simp only [catalog, List.mem_cons, List.mem_nil_iff, or_false] at he
-  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl <;> decide
+  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+    | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+    | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 end OSR.Integration
