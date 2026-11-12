@@ -23,6 +23,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `FreeQ`-only rules with registered heads, `∫ a = a x` is proved over ℝ and ℂ,
   `∫ log(c xⁿ)` over ℝ, four rules are refuted by Lean counterexamples, and
   three are reported as not migrated.  The other rule sets export unchanged.
+- 45 more recursive RUBI rules refuted (`OSR/IntegrationRec3.lean`): their
+  counterexamples were proposed by a numerical search under the fragment's
+  real definedness semantics and are Lean theorems per domain.  Exponents
+  constrained only by numeric RUBI predicates are declared independent of
+  `x` with an `independence:` finding.  Integration: 118 rules, 22 proved
+  over ℝ, 18 over ℂ (17 certified), 95 refuted over ℝ, 91 over ℂ.
+- The reduction of `(d + e x)^m/(a + c x²)` for `m < -1` (RUBI 1.2.1.2 #83)
+  is proved over ℝ and ℂ.
 - A fourth batch of 25 recursive RUBI rules (`OSR/IntegrationRec2.lean`),
   transcribed by a tool and checked against the v0.1 rules by the
   Integration repository's `v1_faithfulness.py`: one proved over ℝ and ℂ,

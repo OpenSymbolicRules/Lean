@@ -15,5 +15,6 @@ import OSR.Logic
 import OSR.Calculus
 import OSR.IntegrationRec
 import OSR.IntegrationRec2
+import OSR.IntegrationRec3
 import OSR.Integration
 import OSR.Export

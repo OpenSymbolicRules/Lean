@@ -19,7 +19,7 @@ Status: **pilot** (`1.0.0-alpha.1` format).  Five rule sets are migrated:
 | Algebra | 20 | 20 / 20 | 18 / 18 | 0 |
 | Logic (domain 𝔹) | 39 | 39 / 39 in 𝔹 | — | 0 |
 | Calculus | 29 | 28 / 28 (+1 counterexample) | 16 / 16 | 3 |
-| Integration (RUBI, first 86) | 72 | 21 / 21 (+51 counterexamples) | 17 / 17 (+48 counterexamples) | 14 |
+| Integration (RUBI, first 132) | 118 | 22 / 22 (+95 counterexamples) | 18 / 17 (+91 counterexamples) | 14 |
 
 `tan(arctan z) = z` over ℂ is proved but not certified, because the mapping of
 `transc1#arctan` to `Complex.arctan` is provisional.  `ln(ab) = ln a + ln b`
@@ -37,7 +37,7 @@ premises and use the invented symbol `osr#Apply`. The missing premises have
 Integration rules state antiderivatives (`calculus1#int`, `HasDerivAt` on a
 neighbourhood where the integrand is defined, under `NeQ` conditions); the
 first twenty RUBI rules of a syntactic inventory and 66 rules with residual
-integrals (`int(λx. H)(x)`) give 21 proofs and 51 counterexamples, see
+integrals (`int(λx. H)(x)`) give 22 proofs and 95 counterexamples, see
 [Integration](docs/integration.md).
 Every profile is proved to terminate.  See
 [`docs/audit-m0.md`](docs/audit-m0.md) and the generated reports.

@@ -180,8 +180,30 @@ conditions leave a coefficient free to vanish that the result divides by
 `n = 0`, a residual integrand divides by `d + e x`.  Two hold over ℂ only
 in RUBI's reading of `Log` and are refuted over ℝ, where `log x` or
 `log(d + e x)` is undefined at a point near which the integrand is defined
-(3.3 #4, 3.1.3 #3).  Seven rules with integrands `F^(…)`, whose exponent
+(3.3 #4, 3.1.3 #3).  The reduction of `(d + e x)^m/(a + c x²)` for `m < -1`
+(1.2.1.2 #83, `integration.linear_power_over_quadratic`) is proved over ℝ
+and ℂ.  Seven rules with integrands `F^(…)`, whose exponent
 depends on `x`, are not migrated.
+
+### Refutations found by a numerical search
+
+Many RUBI exponents (`m`, `n`, `p`, …) are not listed in `FreeQ` but are
+constrained by numeric predicates (`IntegerQ`, `IGtQ`, `GtQ`, …) that only
+hold for numbers.  Declaring them independent of `x`, with an
+`independence:` finding, brings 127 more rules into scope.  A numerical
+search (development tool `handoff/refute_search.py`, not part of the
+certified chain) evaluates the integrand, the result and the residual
+integrands under the real definedness semantics of the fragment, for small
+integer assignments satisfying the conditions, and proposes a counterexample
+for 47 of them.  Each proposal is then generated as a Lean theorem per
+domain; `OSR/IntegrationRec3.lean` keeps the 45 rules for which at least one
+of them is proved (42 over both ℝ and ℂ, 3 over one domain only, the other
+recorded as unproved).  The other 82 rules are not yet considered: some may
+be true, and need proofs.
+
+`integration.linear_power_over_quadratic` is proved over ℂ but not
+certified there: its condition `m < -1` uses `relation1#gt`, whose complex
+reading is not an OpenMath mapping (registry).
 
 Every refutation follows the same pattern: RUBI's conditions leave a
 coefficient free to vanish, and the result divides by it.  In Mathematica,

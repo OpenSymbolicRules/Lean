@@ -376,6 +376,20 @@ def logOverLin : CRule where
   description := "Antiderivative of (a + b log(c x))/(d + e x)"
   provenance := migrated "rubi:3 Logarithms/3.1.3 (d+e x^r)^q (a+b log(c x^n))^p:3" "3 Logarithms/3.1.3 (d+e x^r)^q (a+b log(c x^n))^p.m#3"
 
+/-- Reduction of (d + e x)^m/(a + c x^2) for m < -1 -/
+def linPowOverQuad : CRule where
+  id := "integration.linear_power_over_quadratic"; legacyId := some "rubi:1 Algebraic functions/1.2 Trinomial products/1.2.1 Quadratic/1.2.1.2 (d+e x)^m (a+b x+c x^2)^p:83"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.var "x"))) (.var "m")) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "c") (.pow (.var "x") (.int 2)))) (.int (-1))))
+  result := (.app2 .add (.app2 .mul (.app2 .mul (.var "e") (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.var "x"))) (.app2 .add (.var "m") (.int 1)))) (.pow (.app2 .mul (.app2 .add (.var "m") (.int 1)) (.app2 .add (.app2 .mul (.var "c") (.pow (.var "d") (.int 2))) (.app2 .mul (.var "a") (.pow (.var "e") (.int 2))))) (.int (-1)))) (.app2 .mul (.app2 .mul (.var "c") (.pow (.app2 .add (.app2 .mul (.var "c") (.pow (.var "d") (.int 2))) (.app2 .mul (.var "a") (.pow (.var "e") (.int 2)))) (.int (-1)))) (.var "I1")))
+  integrals := [("I1", (.app2 .mul (.app2 .mul (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.var "x"))) (.app2 .add (.var "m") (.int 1))) (.app2 .add (.var "d") (.app2 .mul (.app2 .mul (.int (-1)) (.var "e")) (.var "x")))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "c") (.pow (.var "x") (.int 2)))) (.int (-1)))))]
+  independent := ["a", "c", "d", "e", "m"]
+  conditions := [.ne (.app2 .add (.app2 .mul (.var "c") (.pow (.var "d") (.int 2))) (.app2 .mul (.var "a") (.pow (.var "e") (.int 2)))) (.int 0),
+    .gt (.int (-1)) (.var "m")]
+  priority := 710
+  description := "Reduction of (d + e x)^m/(a + c x^2) for m < -1"
+  provenance := migrated "rubi:1 Algebraic functions/1.2 Trinomial products/1.2.1 Quadratic/1.2.1.2 (d+e x)^m (a+b x+c x^2)^p:83" "1 Algebraic functions/1.2 Trinomial products/1.2.1 Quadratic/1.2.1.2 (d+e x)^m (a+b x+c x^2)^p.m#83"
+
 /-! ## Proofs -/
 
 section Proofs
@@ -796,6 +810,85 @@ theorem splitLogLog_holds (I : Interp 𝕜) :
 theorem splitLogLog_real : splitLogLog.Holds .real := splitLogLog_holds Interp.real
 
 theorem splitLogLog_complex : splitLogLog.Holds .complex := splitLogLog_holds Interp.complex
+
+/-- `∫ (d + e x)^m/(a + c x^2)` reduces for `m < -1`, in any interpretation
+where `<` implies `≠`. -/
+theorem linPowOverQuad_holds (I : Interp 𝕜) (hne : ∀ a b : 𝕜, I.lt a b → a ≠ b) :
+    AntiderivRecHolds I "x" linPowOverQuad.conditions linPowOverQuad.body
+      linPowOverQuad.result linPowOverQuad.integrals := by
+  intro env hc t hF
+  have hK := hc (linPowOverQuad.conditions.head!) (by simp [linPowOverQuad])
+  simp [linPowOverQuad, Cond.Holds, Defined, eval, toInt?_two] at hK
+  have hlt := hc ((linPowOverQuad.conditions.drop 1).head!) (by simp [linPowOverQuad])
+  simp [linPowOverQuad, Cond.Holds, Defined, eval] at hlt
+  have hm1 : env "m" ≠ -1 := hne _ _ hlt
+  rcases hk : I.toInt? (env "m") with _ | k
+  · exfalso
+    have h := hF.self_of_nhds
+    simp [linPowOverQuad, Defined, eval, hk] at h
+  have hmk : env "m" = (k : 𝕜) := (I.toInt?_eq _ _).1 hk
+  have hk1 : I.toInt? (env "m" + 1) = some (k + 1) :=
+    (I.toInt?_eq _ _).2 (by rw [hmk]; push_cast; ring)
+  have hm10 : env "m" + 1 ≠ 0 := fun h => hm1 (by linear_combination h)
+  have hD : ∀ w, Defined I (Function.update env "x" w) linPowOverQuad.body ↔
+      (k < 0 → env "d" + env "e" * w ≠ 0) ∧ env "a" + env "c" * w ^ 2 ≠ 0 := by
+    intro w
+    simp [linPowOverQuad, Defined, eval, hk, toInt?_two, toInt?_neg_one]
+  refine ⟨fun i hi => ?_, fun Φ hΦ => ⟨?_, ?_⟩⟩
+  · simp only [linPowOverQuad, List.mem_cons, List.not_mem_nil, or_false] at hi
+    subst hi
+    filter_upwards [hF] with w hw
+    obtain ⟨h1, h2⟩ := (hD w).1 hw
+    simp [Defined, eval, hk1, toInt?_two, toInt?_neg_one, h2]
+    intro h; exact h1 (by omega)
+  · filter_upwards [hF] with w hw
+    obtain ⟨h1, h2⟩ := (hD w).1 hw
+    simp [linPowOverQuad, Defined, eval, recEnv, hk1, toInt?_two, toInt?_neg_one, hm10, hK]
+    intro h; exact h1 (by omega)
+  · simp only [linPowOverQuad, List.mem_cons, List.not_mem_nil, or_false, forall_eq] at hΦ
+    obtain ⟨h1, h2⟩ := (hD t).1 hF.self_of_nhds
+    have hne' : env "d" + env "e" * t ≠ 0 ∨ 0 ≤ k + 1 := by
+      by_cases h : k < 0
+      · exact Or.inl (h1 h)
+      · exact Or.inr (by omega)
+    have hP := (hasDerivAt_zpow (k + 1) _ hne').comp t
+      (((hasDerivAt_id' t).const_mul (env "e")).const_add (env "d"))
+    have hfun : (fun w => eval I (recEnv env (linPowOverQuad.integrals.map (·.1)) Φ "x" w)
+        linPowOverQuad.result) = fun w =>
+          env "e" * ((fun y => y ^ (k + 1)) ∘ fun w => env "d" + env "e" * w) w *
+            ((env "m" + 1) * (env "c" * env "d" ^ 2 + env "a" * env "e" ^ 2))⁻¹ +
+          env "c" * (env "c" * env "d" ^ 2 + env "a" * env "e" ^ 2)⁻¹ * Φ "I1" w := by
+      funext w
+      simp [linPowOverQuad, eval, recEnv, hk1, toInt?_two, toInt?_neg_one]
+    rw [hfun]
+    refine (((hP.const_mul (env "e")).mul_const _).add (hΦ.const_mul _)).congr_deriv ?_
+    have hpow : (env "d" + env "e" * t) ^ (k + 1) =
+        (env "d" + env "e" * t) ^ k * (env "d" + env "e" * t) := by
+      rcases eq_or_ne (env "d" + env "e" * t) 0 with h0 | h0
+      · have hk0 : 0 ≤ k := by
+          by_contra h; exact h1 (by omega) h0
+        obtain ⟨n, rfl⟩ := Int.eq_ofNat_of_zero_le hk0
+        rw [show ((n : ℤ) + 1) = ((n + 1 : ℕ) : ℤ) by push_cast; ring, zpow_natCast,
+          zpow_natCast, pow_succ]
+      · exact zpow_add_one₀ h0 _
+    simp [linPowOverQuad, eval, hk, hk1, toInt?_two, toInt?_neg_one]
+    rw [hmk] at hm10 ⊢
+    rw [hpow]
+    have hK' : env "d" ^ 2 * env "c" + env "e" ^ 2 * env "a" ≠ 0 :=
+      fun h => hK (by linear_combination h)
+    have hQ' : t ^ 2 * env "c" + env "a" ≠ 0 := fun h => h2 (by linear_combination h)
+    field_simp
+    have hQi := mul_inv_cancel₀ hQ'
+    linear_combination (-(env "e" ^ 2 * (env "d" + env "e" * t) ^ k)) * hQi
+
+theorem linPowOverQuad_real : linPowOverQuad.Holds .real :=
+  linPowOverQuad_holds Interp.real fun _ _ h => ne_of_lt h
+
+theorem linPowOverQuad_complex : linPowOverQuad.Holds .complex :=
+  linPowOverQuad_holds Interp.complex fun a b h hab => by
+    simp only [Interp.complex] at h
+    rw [hab] at h
+    exact lt_irrefl _ h.2.2
 
 end Proofs
 
