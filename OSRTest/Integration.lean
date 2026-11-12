@@ -12,11 +12,11 @@ private def t : Expr := .var "t"
 
 -- The twenty rules of the syntactic inventory (FreeQ or NeQ conditions,
 -- registered heads, no Int in the result) are migrated or reported, plus
--- eleven rules with residual integrals.
-#guard Integration.catalog.length + Integration.notMigrated.length == 31
+-- twenty-two rules with residual integrals.
+#guard Integration.catalog.length + Integration.notMigrated.length == 42
 #guard Integration.notMigrated.length == 7
-#guard (Integration.catalog.filter (·.rule.shape == .antiderivRec)).length == 11
-#guard (Integration.catalog.filter (!·.rule.conditions.isEmpty)).length == 9
+#guard (Integration.catalog.filter (·.rule.shape == .antiderivRec)).length == 22
+#guard (Integration.catalog.filter (!·.rule.conditions.isEmpty)).length == 15
 
 -- Identifiers are unique, every rule is well formed and has the antiderivative shape.
 #guard (Integration.catalog.map (·.rule.id)).eraseDups.length == Integration.catalog.length
@@ -63,7 +63,9 @@ private def rules : List CRule :=
   "integration.sin_add_square", "integration.cos_add_square",
   "integration.sin_add_power_over_x", "integration.cos_add_power_over_x",
   "integration.power_sin_square", "integration.power_cos_square",
-  "integration.log_linear_power"]
+  "integration.log_linear_power", "integration.partial_fractions_linear",
+  "integration.partial_fractions_power", "integration.split_linear_factor_binomial",
+  "integration.split_linear_factor_quadratic"]
 
 -- A conditional rule is not applied: int(λt. t^m) stays.
 #guard (rewrite rules (.integral "t" (.pow t (.var "m")))).isNone

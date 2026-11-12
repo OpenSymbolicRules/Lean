@@ -134,12 +134,40 @@ fractional exponents were migrated first:
 | `integration.sin_x_log_times_log`, `integration.cos_x_log_times_log` | 4.7.8 #45, #46 | counterexample at `a = 0` | counterexample |
 | `integration.linear_times_quadratic_power` | 1.2.1.2 #14, `NeQ[p, -1]` | counterexample at `c = 0` | counterexample |
 
+### Second recursive batch
+
+Eleven more, chosen among the rules whose wildcards are all `FreeQ` (so that
+no metavariable may depend on `x`) and whose result names nothing the pattern
+does not bind:
+
+| Rule | v0.1 rule | ℝ | ℂ |
+|---|---|---|---|
+| `integration.partial_fractions_linear` | 1.1.1.2 #3, `1/((a + b x)(c + d x))`, `b c - a d ≠ 0` | proved | proved |
+| `integration.partial_fractions_power` | 1.1.3.3 #19, `1/((a + b xⁿ)(c + d xⁿ))` | proved | proved |
+| `integration.split_linear_factor_binomial` | 1.1.3.5 #11 | proved | proved |
+| `integration.split_linear_factor_quadratic` | 1.2.1.6 #13 | proved | proved |
+| `integration.linear_sin_trinomial`, `integration.linear_cos_trinomial` | 4.1.13 #17, #18 | counterexample at `c = 0` | counterexample |
+| `integration.linear_times_trinomial_power` | 1.2.1.2 #13 | counterexample at `c = 0` | counterexample |
+| `integration.product_over_trinomial`, `integration.product_over_quadratic` | 1.2.1.3 #11, #12 | counterexample at `c = 0` | counterexample |
+| `integration.power_ratio_split` | 1.1.3.5 #10 | counterexample at `d = 0` | counterexample |
+| `integration.log_power_binomial` | 3.4 #1 | counterexample at `p = 0` (residual `xⁿ/0`) | counterexample |
+
+Every refutation follows the same pattern: RUBI's conditions leave a
+coefficient free to vanish, and the result divides by it.  In Mathematica,
+an earlier rule of the load order catches the degenerate case first; an OSR
+v1 rule is stated on its own.
+
+The inventory excludes 739 rules whose result or conditions use a name the
+pattern does not bind: 630 of them use the constants `E`, `ImaginaryI` or
+`Pi`, which the converter left without semantics (Integration,
+`docs/known-issues.md` §4).
+
 ## Next steps
 
 - Conditions do not limit the inventory: 2,155 rules have only expressible
   conditions, but almost all of them have another `Int` in their result or
   unregistered heads (`Subst`, `Simp`, `Rt`, …).
-- The other recursive rules: 261 more are linear in their residual
+- The other recursive rules: 250 more are linear in their residual
   integrals, many with square roots (outside the complex fragment) or
   rational exponents (outside the fragment).
 - A rewriter that continues inside residual integrals would let engines apply

@@ -810,8 +810,8 @@ defined near `t` and that, for every choice of antiderivatives of them, the
 result is an antiderivative of `F`. The rules are the twenty RUBI 4.16.1 rules
 of `OpenSymbolicRules/Integration` with no `Int` in their result, whose
 conditions are `FreeQ` or `NeQ` and whose heads, the outer `Int` removed, are
-in the registry, and eleven rules with residual integrals; the other 6,226
-rules are not yet considered. The reference rewriter applies neither
+in the registry, and twenty-two rules with residual integrals; the other
+6,215 rules are not yet considered. The reference rewriter applies neither
 conditional nor recursive rules."
   strategy := "Rules apply at the root of an `int` term (their bodies are field expressions,
 to which no calculus rule applies); the result of a rule is a lambda, so

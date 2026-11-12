@@ -825,7 +825,65 @@ def catalog : List CEntry := [
       (.complex, ``linearQuadPow_counterexample_complex)],
     findings := [
       "counterexample: at a = 1 and the other metavariables 0 the condition p ≠ -1 holds and the integrand is defined everywhere, but (2 c (p + 1))^(-1) is not (Lean theorems linearQuadPow_counterexample_real and linearQuadPow_counterexample_complex). The rule needs c ≠ 0, which this migration does not add.",
-      neqFinding "NeQ[p, -1]", recFinding, optionalFinding "e., c. and p."] }
+      neqFinding "NeQ[p, -1]", recFinding, optionalFinding "e., c. and p."] },
+  { rule := pfLinear, ruleDecl := ``pfLinear,
+    proofs := [(.real, ``pfLinear_real), (.complex, ``pfLinear_complex)],
+    findings := [neqFinding "NeQ[b c - a d, 0]", recFinding, optionalFinding "a., b., c. and d."] },
+  { rule := pfPower, ruleDecl := ``pfPower,
+    proofs := [(.real, ``pfPower_real), (.complex, ``pfPower_complex)],
+    findings := [neqFinding "NeQ[b c - a d, 0]", integerFinding "n", recFinding, optionalFinding "b. and d."] },
+  { rule := splitBinomial, ruleDecl := ``splitBinomial,
+    proofs := [(.real, ``splitBinomial_real), (.complex, ``splitBinomial_complex)],
+    findings := [integerFinding "n, p and q", recFinding, optionalFinding "b., d., f., p. and q."] },
+  { rule := splitQuadratic, ruleDecl := ``splitQuadratic,
+    proofs := [(.real, ``splitQuadratic_real), (.complex, ``splitQuadratic_complex)],
+    findings := [integerFinding "p and q", recFinding, optionalFinding "c., f. and h."] },
+  { rule := linSinQuad, ruleDecl := ``linSinQuad, proofs := [],
+    counterexamples := [(.real, ``linSinQuad_counterexample_real),
+      (.complex, ``linSinQuad_counterexample_complex)],
+    findings := [
+      "counterexample: at b = e = 1 and the other metavariables 0 the condition 2 c d - b e ≠ 0 holds and the integrand is defined everywhere, but (2 c)^(-1) is not (Lean theorems linSinQuad_counterexample_real and linSinQuad_counterexample_complex). The rule needs c ≠ 0, which this migration does not add.",
+      neqFinding "NeQ[2 c d - b e, 0]",
+      recFinding, optionalFinding "a., b., c., d. and e."] },
+  { rule := linCosQuad, ruleDecl := ``linCosQuad, proofs := [],
+    counterexamples := [(.real, ``linCosQuad_counterexample_real),
+      (.complex, ``linCosQuad_counterexample_complex)],
+    findings := [
+      "counterexample: at b = e = 1 and the other metavariables 0 the condition 2 c d - b e ≠ 0 holds and the integrand is defined everywhere, but (2 c)^(-1) is not (Lean theorems linCosQuad_counterexample_real and linCosQuad_counterexample_complex). The rule needs c ≠ 0, which this migration does not add.",
+      neqFinding "NeQ[2 c d - b e, 0]",
+      recFinding, optionalFinding "a., b., c., d. and e."] },
+  { rule := linTrinomPow, ruleDecl := ``linTrinomPow, proofs := [],
+    counterexamples := [(.real, ``linTrinomPow_counterexample_real),
+      (.complex, ``linTrinomPow_counterexample_complex)],
+    findings := [
+      "counterexample: at b = e = 1 and the other metavariables 0 the conditions 2 c d - b e ≠ 0 and p ≠ -1 hold and the integrand is defined everywhere, but (2 c (p + 1))^(-1) is not (Lean theorems linTrinomPow_counterexample_real and linTrinomPow_counterexample_complex). The rule needs c ≠ 0, which this migration does not add.",
+      neqFinding "NeQ[2 c d - b e, 0] and NeQ[p, -1]",
+      recFinding, optionalFinding "a., b., c., d. and e."] },
+  { rule := prodOverTrinom, ruleDecl := ``prodOverTrinom, proofs := [],
+    counterexamples := [(.real, ``prodOverTrinom_counterexample_real),
+      (.complex, ``prodOverTrinom_counterexample_complex)],
+    findings := [
+      "counterexample: at a = b = 1 and the other metavariables 0 the condition b^2 - 4 a c ≠ 0 holds and the integrand is defined near x = 0, but c^(-1) is not (Lean theorems prodOverTrinom_counterexample_real and prodOverTrinom_counterexample_complex). The rule needs c ≠ 0, which this migration does not add.",
+      neqFinding "NeQ[b^2 - 4 a c, 0]",
+      recFinding, optionalFinding "a., b., c., d., e. and g."] },
+  { rule := prodOverQuad, ruleDecl := ``prodOverQuad, proofs := [],
+    counterexamples := [(.real, ``prodOverQuad_counterexample_real),
+      (.complex, ``prodOverQuad_counterexample_complex)],
+    findings := [
+      "counterexample: at a = 1 and the other metavariables 0 the integrand is defined everywhere, but c^(-1) is not (Lean theorems prodOverQuad_counterexample_real and prodOverQuad_counterexample_complex). The rule needs c ≠ 0, which this migration does not add.",
+      recFinding, optionalFinding "c., d., e. and g."] },
+  { rule := powerRatio, ruleDecl := ``powerRatio, proofs := [],
+    counterexamples := [(.real, ``powerRatio_counterexample_real),
+      (.complex, ``powerRatio_counterexample_complex)],
+    findings := [
+      "counterexample: at c = 1 and the other metavariables 0 the integrand is defined everywhere, but d^(-1) is not (Lean theorems powerRatio_counterexample_real and powerRatio_counterexample_complex). The rule needs d ≠ 0, which this migration does not add.",
+      recFinding, optionalFinding "b., d. and f."] },
+  { rule := logPowBinom, ruleDecl := ``logPowBinom, proofs := [],
+    counterexamples := [(.real, ``logPowBinom_counterexample_real),
+      (.complex, ``logPowBinom_counterexample_complex)],
+    findings := [
+      "counterexample: at c = 1 and d = e = n = p = 0 the integrand log 1 is defined everywhere, but the residual integrand x^n/(d + e x^n) is not; its coefficient -e n p vanishes there (Lean theorems logPowBinom_counterexample_real and logPowBinom_counterexample_complex). The rule needs d + e x^n ≠ 0 wherever the integrand is defined, which p ≠ 0 ensures, which this migration does not add.",
+      recFinding, optionalFinding "c., e. and p."] }
 ]
 
 /-- Every catalogue rule is well formed: recursive rules by `recOk`, the
@@ -835,6 +893,7 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
   intro e he
   simp only [catalog, List.mem_cons, List.mem_nil_iff, or_false] at he
   rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 end OSR.Integration
