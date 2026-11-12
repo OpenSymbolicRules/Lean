@@ -664,6 +664,8 @@ unsafe def auditCalcEntry (e : Calculus.CEntry) : MetaM (List Verification) := d
     throwError "{e.rule.id}: catalogue rule differs from declaration {e.ruleDecl}"
   unless e.rule.wellFormed do
     throwError "{e.rule.id}: ill-formed calculus rule"
+  unless e.rule.conditionsOk do
+    throwError "{e.rule.id}: conditions mention the bound variable or a non-antiderivative rule has conditions"
   for s in e.rule.symbols do
     if (Registry.lookup s).isNone then
       throwError "{e.rule.id}: OpenMath symbol {s.uri} is not in the registry"
@@ -799,10 +801,12 @@ def integrationSet : CalcSet where
   seeds := intSeeds
   statement := "An antiderivative rule `int(λx. F) ⟶ λx. G` (`calculus1#int`) states that
 wherever `F` is defined near `t`, `G` is defined near `t` and `v ↦ G[x := v]`
-has derivative `F[x := t]` at `t` (`HasDerivAt`). The rules are the nine RUBI
-4.16.1 rules of `OpenSymbolicRules/Integration` whose only conditions are
-`FreeQ` and whose heads, the outer `Int` removed, are in the registry; the
-other 6,248 rules are not yet considered."
+has derivative `F[x := t]` at `t` (`HasDerivAt`), for every assignment of the
+metavariables satisfying the rule's conditions. The rules are the twenty RUBI
+4.16.1 rules of `OpenSymbolicRules/Integration` with no `Int` in their result,
+whose conditions are `FreeQ` or `NeQ` and whose heads, the outer `Int`
+removed, are in the registry; the other 6,237 rules are not yet considered.
+The reference rewriter does not apply conditional rules."
   strategy := "Rules apply at the root of an `int` term (their bodies are field expressions,
 to which no calculus rule applies); the result of a rule is a lambda, so
 normalization takes at most one step (`OSR.Calculus.rewrite_result`)."
@@ -816,7 +820,7 @@ def calcRuleJson (b : BuildInfo) (e : Calculus.CEntry) (vs : List Verification) 
       omv).toArray),
     ("pattern", r.patternOM.toJson),
     ("replacement", r.replacementOM.toJson),
-    ("conditions", Json.arr #[]),
+    ("conditions", Json.arr (r.conditions.map condJson).toArray),
     ("orientation", jstr "forward"),
     ("applicability", jstr "defined_pattern"),
     ("profiles", jstrs ["default"]),

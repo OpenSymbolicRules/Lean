@@ -23,6 +23,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `FreeQ`-only rules with registered heads, `∫ a = a x` is proved over ℝ and ℂ,
   `∫ log(c xⁿ)` over ℝ, four rules are refuted by Lean counterexamples, and
   three are reported as not migrated.  The other rule sets export unchanged.
+- Conditional antiderivative rules (`CRule.conditions`,
+  `AntiderivHoldsUnder`): RUBI `NeQ` becomes `relation1#neq`.  Seven more RUBI
+  rules: the power rule `∫ xᵐ` (`m ≠ −1`) is proved over ℝ and ℂ, the
+  `sin`/`cos` of `d (a + b log(c xⁿ))` over ℝ, and four rules are refuted
+  (a zero coefficient in a denominator); four are not migrated.  The
+  reference rewriter does not apply conditional rules.
 - A `just doc` entry point using Documenter and DocumenterLandingPage,
   including `llms.txt` and `llms-full.txt` under `docs/build/`.
 - Kernel-checked witnesses for the missing differentiability premises of

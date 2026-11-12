@@ -59,6 +59,9 @@ structure CRule where
   /-- Metavariables whose match must not mention the bound variable (v0.1
   `FreeQ`, an `independent` matching constraint). -/
   independent : List String := []
+  /-- Conditions on the metavariables (antiderivative rules only).  The
+  reference rewriter does not apply a conditional rule. -/
+  conditions : List Cond := []
   deriving Repr, Inhabited, BEq
 
 def diffSymbol : OMSymbol := ⟨"calculus1", "diff"⟩
@@ -90,7 +93,7 @@ def CRule.symbols (r : CRule) : List OMSymbol :=
     | .limit => [limitSymbol, bothSidesSymbol, lambdaSymbol]
     | .antideriv => [intSymbol, lambdaSymbol]
   (shape ++ r.point.symbols.filter (fun _ => r.shape == .limit) ++ r.body.symbols ++
-    r.result.symbols).eraseDups
+    r.result.symbols ++ (r.conditions.map Cond.symbols).flatten).eraseDups
 
 /-- Well-formedness: the body only mentions the bound variable and
 independent metavariables, the result only variables of the body, and the
@@ -99,6 +102,12 @@ def CRule.wellFormed (r : CRule) : Bool :=
   r.body.varList.all (fun n => n = r.x ∨ n ∈ r.independent) &&
     r.result.varList.all (fun n => n = r.x ∨ n ∈ r.body.varList) &&
     !(r.point.varList.contains r.x) && !(r.independent.contains r.x)
+
+/-- Conditions only constrain independent metavariables, so they never
+mention the bound variable, and only antiderivative rules have conditions. -/
+def CRule.conditionsOk (r : CRule) : Bool :=
+  r.conditions.all (fun c => c.vars.all (· ∈ r.independent)) &&
+    (r.shape == .antideriv || r.conditions.isEmpty)
 
 /-! ## Statements -/
 
@@ -133,12 +142,31 @@ def AntiderivHolds (I : Interp 𝕜) (x : String) (F G : Expr) : Prop :=
         HasDerivAt (fun v => eval I (Function.update env x v) G)
           (eval I (Function.update env x t) F) t
 
+/-- `int(λx. F) = λx. G` under conditions on the metavariables. -/
+def AntiderivHoldsUnder (I : Interp 𝕜) (x : String) (cs : List Cond) (F G : Expr) : Prop :=
+  ∀ env : String → 𝕜, (∀ c ∈ cs, c.Holds I env) → ∀ t : 𝕜,
+    (∀ᶠ v in 𝓝 t, Defined I (Function.update env x v) F) →
+      (∀ᶠ v in 𝓝 t, Defined I (Function.update env x v) G) ∧
+        HasDerivAt (fun v => eval I (Function.update env x v) G)
+          (eval I (Function.update env x t) F) t
+
+theorem antiderivHoldsUnder_nil {I : Interp 𝕜} {x : String} {F G : Expr} :
+    AntiderivHoldsUnder I x [] F G ↔ AntiderivHolds I x F G :=
+  ⟨fun h env t => h env (by simp) t, fun h env _ t => h env t⟩
+
 /-- A point near which the integrand is defined, at which the candidate
 antiderivative is not, refutes an antiderivative statement. -/
 theorem not_antiderivHolds {I : Interp 𝕜} {x : String} {F G : Expr} (env : String → 𝕜)
     (t : 𝕜) (hF : ∀ᶠ v in 𝓝 t, Defined I (Function.update env x v) F)
     (hG : ¬ Defined I (Function.update env x t) G) : ¬ AntiderivHolds I x F G :=
   fun h => hG (h env t hF).1.self_of_nhds
+
+/-- The conditional form of `not_antiderivHolds`. -/
+theorem not_antiderivHoldsUnder {I : Interp 𝕜} {x : String} {cs : List Cond} {F G : Expr}
+    (env : String → 𝕜) (t : 𝕜) (hc : ∀ c ∈ cs, c.Holds I env)
+    (hF : ∀ᶠ v in 𝓝 t, Defined I (Function.update env x v) F)
+    (hG : ¬ Defined I (Function.update env x t) G) : ¬ AntiderivHoldsUnder I x cs F G :=
+  fun h => hG (h env hc t hF).1.self_of_nhds
 
 end Statements
 
@@ -147,11 +175,11 @@ def CRule.Holds (r : CRule) : Domain → Prop
   | .real => match r.shape with
     | .deriv => DerivHolds Interp.real r.x r.body r.result
     | .limit => LimitHolds Interp.real r.x r.point r.body r.result
-    | .antideriv => AntiderivHolds Interp.real r.x r.body r.result
+    | .antideriv => AntiderivHoldsUnder Interp.real r.x r.conditions r.body r.result
   | .complex => match r.shape with
     | .deriv => DerivHolds Interp.complex r.x r.body r.result
     | .limit => LimitHolds Interp.complex r.x r.point r.body r.result
-    | .antideriv => AntiderivHolds Interp.complex r.x r.body r.result
+    | .antideriv => AntiderivHoldsUnder Interp.complex r.x r.conditions r.body r.result
   | .boolean => False
 
 /-! ## Rules -/
@@ -917,7 +945,7 @@ def CRule.apply? (r : CRule) : CTerm → Option CTerm
       | none => none
     else none
   | .integral y e =>
-    if r.shape = .antideriv then
+    if r.shape = .antideriv ∧ r.conditions = [] then
       match matchAux r.body e [(r.x, .var y)] with
       | some σ => if r.indepOk σ y then some (.lam y (r.result.subst σ)) else none
       | none => none
@@ -1224,7 +1252,7 @@ def CRule.HoldsIn {𝕜 : Type} [NontriviallyNormedField 𝕜] (r : CRule) (I : 
   match r.shape with
   | .deriv => DerivHolds I r.x r.body r.result
   | .limit => LimitHolds I r.x r.point r.body r.result
-  | .antideriv => AntiderivHolds I r.x r.body r.result
+  | .antideriv => AntiderivHoldsUnder I r.x r.conditions r.body r.result
 
 /-- **Engine soundness.**  A step with a well-formed rule that holds in `I`
 is correct in `I`. -/
@@ -1275,7 +1303,7 @@ theorem apply?_sound {𝕜 : Type} [NontriviallyNormedField 𝕜] (I : Interp �
         · rename_i hi
           simp only [Option.some.injEq] at h
           subst h
-          simp only [CRule.HoldsIn, hs] at hr
+          simp only [CRule.HoldsIn, hs.1, hs.2, antiderivHoldsUnder_nil] at hr
           exact ⟨rfl, antideriv_instance I r hw hr hm hi⟩
         · cases h
       · cases h
