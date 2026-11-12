@@ -76,7 +76,8 @@ OSR/LogicCore.lean     quantified Boolean formulas, rewriter, soundness, termina
 OSR/Logic.lean         Logic rules (all 39), profiles and their weights
 OSR/Calculus.lean      derivative, limit and antiderivative statements, the
                        Calculus rules (29), their proofs and rewriter
-OSR/Integration.lean   RUBI antiderivative rules (13), proofs and counterexamples
+OSR/IntegrationRec.lean RUBI rules with residual integrals (11), proofs, counterexamples
+OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (24)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
                        generation of rule set, reports and conformance cases
@@ -242,7 +243,10 @@ A third shape, `int(λx. F) ⟶ λx. G` (`calculus1#int`), states antiderivative
 `AntiderivHolds` says that wherever `F` is defined on a neighbourhood of `t`,
 `G` is defined on a neighbourhood of `t` and `v ↦ G[x := v]` has derivative
 `F[x := t]` at `t`; `AntiderivHoldsUnder` adds conditions on the
-metavariables, and the rewriter does not apply a conditional rule.
+metavariables, and the rewriter does not apply a conditional rule.  A fourth
+shape, `antiderivRec`, has residual integrals in its result
+(`AntiderivRecHolds`, exported with `OMObj.omapp` as `int(λx. H)(x)`); the
+rewriter does not apply it either.
 `antideriv_instance` is its instantiation theorem.  The
 Calculus set has no rule of this shape; the RUBI rules are in
 `OSR/Integration.lean`, see [Integration](integration.md).

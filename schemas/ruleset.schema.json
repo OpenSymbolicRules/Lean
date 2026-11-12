@@ -129,8 +129,24 @@
       "required": ["kind", "applicant", "arguments"],
       "properties": {
         "kind": { "const": "OMA" },
-        "applicant": { "$ref": "#/$defs/oms" },
+        "applicant": { "oneOf": [{ "$ref": "#/$defs/oms" }, { "$ref": "#/$defs/integral" }] },
         "arguments": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/expr" } }
+      }
+    },
+    "integral": {
+      "description": "Applicant of a residual integral (V1-E-002b): calculus1#int applied to a lambda",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "applicant", "arguments"],
+      "properties": {
+        "kind": { "const": "OMA" },
+        "applicant": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "cd", "name"],
+          "properties": { "kind": { "const": "OMS" }, "cd": { "const": "calculus1" }, "name": { "const": "int" } }
+        },
+        "arguments": { "type": "array", "minItems": 1, "maxItems": 1, "items": { "$ref": "#/$defs/ombind" } }
       }
     },
     "ombind": {

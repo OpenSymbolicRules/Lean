@@ -38,6 +38,8 @@ inductive Shape where
   | deriv
   | limit
   | antideriv
+  /-- An antiderivative whose result contains residual integrals. -/
+  | antiderivRec
   deriving DecidableEq, Repr, Inhabited, BEq
 
 /-- A calculus rule. -/
@@ -62,6 +64,9 @@ structure CRule where
   /-- Conditions on the metavariables (antiderivative rules only).  The
   reference rewriter does not apply a conditional rule. -/
   conditions : List Cond := []
+  /-- Residual integrals (`antiderivRec` only): a hole variable of the result
+  and the integrand `H`; the hole stands for `int(λx. H)(x)`. -/
+  integrals : List (String × Expr) := []
   deriving Repr, Inhabited, BEq
 
 def diffSymbol : OMSymbol := ⟨"calculus1", "diff"⟩
@@ -78,7 +83,7 @@ def CRule.patternOM (r : CRule) : OMObj :=
   match r.shape with
   | .deriv => .oma diffSymbol [lamOM r.x r.body]
   | .limit => .oma limitSymbol [r.point.toOM, .oms bothSidesSymbol, lamOM r.x r.body]
-  | .antideriv => .oma intSymbol [lamOM r.x r.body]
+  | .antideriv | .antiderivRec => .oma intSymbol [lamOM r.x r.body]
 
 /-- The replacement as an OpenMath object. -/
 def CRule.replacementOM (r : CRule) : OMObj :=
@@ -86,14 +91,17 @@ def CRule.replacementOM (r : CRule) : OMObj :=
   | .deriv => lamOM r.x r.result
   | .limit => r.result.toOM
   | .antideriv => lamOM r.x r.result
+  | .antiderivRec => .ombind lambdaSymbol [r.x] (r.result.toOMWith fun n =>
+      (r.integrals.lookup n).map fun H => .omapp (.oma intSymbol [lamOM r.x H]) [.omv r.x])
 
 def CRule.symbols (r : CRule) : List OMSymbol :=
   let shape := match r.shape with
     | .deriv => [diffSymbol, lambdaSymbol]
     | .limit => [limitSymbol, bothSidesSymbol, lambdaSymbol]
-    | .antideriv => [intSymbol, lambdaSymbol]
+    | .antideriv | .antiderivRec => [intSymbol, lambdaSymbol]
   (shape ++ r.point.symbols.filter (fun _ => r.shape == .limit) ++ r.body.symbols ++
-    r.result.symbols ++ (r.conditions.map Cond.symbols).flatten).eraseDups
+    r.result.symbols ++ (r.conditions.map Cond.symbols).flatten ++
+    (r.integrals.map (·.2.symbols)).flatten).eraseDups
 
 /-- Well-formedness: the body only mentions the bound variable and
 independent metavariables, the result only variables of the body, and the
@@ -107,7 +115,25 @@ def CRule.wellFormed (r : CRule) : Bool :=
 mention the bound variable, and only antiderivative rules have conditions. -/
 def CRule.conditionsOk (r : CRule) : Bool :=
   r.conditions.all (fun c => c.vars.all (· ∈ r.independent)) &&
-    (r.shape == .antideriv || r.conditions.isEmpty)
+    (r.shape == .antideriv || r.shape == .antiderivRec || r.conditions.isEmpty)
+
+/-- The hole variables of the residual integrals. -/
+def CRule.holes (r : CRule) : List String := r.integrals.map (·.1)
+
+/-- Well-formedness of a recursive antiderivative rule: distinct holes that
+are neither the bound variable nor variables of the body; the body as in
+`wellFormed`; the result mentions the bound variable, body variables and
+holes; each integrand mentions the bound variable and independent
+metavariables only.  Other rules have no integrals. -/
+def CRule.recOk (r : CRule) : Bool :=
+  if r.shape == .antiderivRec then
+    !r.holes.isEmpty && r.holes.eraseDups.length == r.holes.length &&
+      r.holes.all (fun h => h != r.x && !r.body.varList.contains h) &&
+      r.body.varList.all (fun n => n = r.x ∨ n ∈ r.independent) &&
+      !(r.independent.contains r.x) &&
+      r.result.varList.all (fun n => n = r.x ∨ n ∈ r.body.varList ∨ n ∈ r.holes) &&
+      r.integrals.all (fun (_, H) => H.varList.all (fun n => n = r.x ∨ n ∈ r.independent))
+  else r.integrals.isEmpty
 
 /-! ## Statements -/
 
@@ -154,6 +180,52 @@ theorem antiderivHoldsUnder_nil {I : Interp 𝕜} {x : String} {F G : Expr} :
     AntiderivHoldsUnder I x [] F G ↔ AntiderivHolds I x F G :=
   ⟨fun h env t => h env (by simp) t, fun h env _ t => h env t⟩
 
+/-- The assignment at `v` for a recursive rule: the bound variable is `v`, each
+hole is the value at `v` of the chosen antiderivative `Φ h`. -/
+def recEnv (env : String → 𝕜) (holes : List String) (Φ : String → 𝕜 → 𝕜) (x : String)
+    (v : 𝕜) : String → 𝕜 :=
+  Function.update (fun n => if n ∈ holes then Φ n v else env n) x v
+
+/-- `int(λx. F) = λx. G[h := int(λx. H_h)(x)]` under conditions: wherever `F` is
+defined near `t`, every residual integrand `H_h` is defined near `t`, and for
+**every** choice of functions `Φ h` with derivative `H_h` at `t`, `G` with the
+holes read as `Φ h` is defined near `t` and has derivative `F` at `t`.  So
+whatever antiderivatives a consumer later finds for the residual integrals,
+the result is an antiderivative of `F`. -/
+def AntiderivRecHolds (I : Interp 𝕜) (x : String) (cs : List Cond) (F G : Expr)
+    (ints : List (String × Expr)) : Prop :=
+  ∀ env : String → 𝕜, (∀ c ∈ cs, c.Holds I env) → ∀ t : 𝕜,
+    (∀ᶠ v in 𝓝 t, Defined I (Function.update env x v) F) →
+      (∀ i ∈ ints, ∀ᶠ v in 𝓝 t, Defined I (Function.update env x v) i.2) ∧
+      ∀ Φ : String → 𝕜 → 𝕜,
+        (∀ i ∈ ints, HasDerivAt (Φ i.1) (eval I (Function.update env x t) i.2) t) →
+          (∀ᶠ v in 𝓝 t, Defined I (recEnv env (ints.map (·.1)) Φ x v) G) ∧
+            HasDerivAt (fun v => eval I (recEnv env (ints.map (·.1)) Φ x v) G)
+              (eval I (Function.update env x t) F) t
+
+/-- A recursive rule is refuted by a point near which the integrand is
+defined while a residual integrand is not. -/
+theorem not_antiderivRecHolds_integrand {I : Interp 𝕜} {x : String} {cs : List Cond}
+    {F G : Expr} {ints : List (String × Expr)} (env : String → 𝕜) (t : 𝕜)
+    (hc : ∀ c ∈ cs, c.Holds I env) (hF : ∀ᶠ v in 𝓝 t, Defined I (Function.update env x v) F)
+    (hH : ∃ i ∈ ints, ¬ Defined I (Function.update env x t) i.2) :
+    ¬ AntiderivRecHolds I x cs F G ints := by
+  intro h
+  obtain ⟨i, hi, hn⟩ := hH
+  exact hn ((h env hc t hF).1 i hi).self_of_nhds
+
+/-- A recursive rule is refuted by a point near which the integrand is
+defined and a choice of antiderivatives at that point for which the result is
+undefined there. -/
+theorem not_antiderivRecHolds_result {I : Interp 𝕜} {x : String} {cs : List Cond}
+    {F G : Expr} {ints : List (String × Expr)} (env : String → 𝕜) (t : 𝕜)
+    (hc : ∀ c ∈ cs, c.Holds I env) (hF : ∀ᶠ v in 𝓝 t, Defined I (Function.update env x v) F)
+    (Φ : String → 𝕜 → 𝕜)
+    (hΦ : ∀ i ∈ ints, HasDerivAt (Φ i.1) (eval I (Function.update env x t) i.2) t)
+    (hG : ¬ Defined I (recEnv env (ints.map (·.1)) Φ x t) G) :
+    ¬ AntiderivRecHolds I x cs F G ints :=
+  fun h => hG ((h env hc t hF).2 Φ hΦ).1.self_of_nhds
+
 /-- A point near which the integrand is defined, at which the candidate
 antiderivative is not, refutes an antiderivative statement. -/
 theorem not_antiderivHolds {I : Interp 𝕜} {x : String} {F G : Expr} (env : String → 𝕜)
@@ -176,10 +248,14 @@ def CRule.Holds (r : CRule) : Domain → Prop
     | .deriv => DerivHolds Interp.real r.x r.body r.result
     | .limit => LimitHolds Interp.real r.x r.point r.body r.result
     | .antideriv => AntiderivHoldsUnder Interp.real r.x r.conditions r.body r.result
+    | .antiderivRec =>
+      AntiderivRecHolds Interp.real r.x r.conditions r.body r.result r.integrals
   | .complex => match r.shape with
     | .deriv => DerivHolds Interp.complex r.x r.body r.result
     | .limit => LimitHolds Interp.complex r.x r.point r.body r.result
     | .antideriv => AntiderivHoldsUnder Interp.complex r.x r.conditions r.body r.result
+    | .antiderivRec =>
+      AntiderivRecHolds Interp.complex r.x r.conditions r.body r.result r.integrals
   | .boolean => False
 
 /-! ## Rules -/
@@ -1253,6 +1329,7 @@ def CRule.HoldsIn {𝕜 : Type} [NontriviallyNormedField 𝕜] (r : CRule) (I : 
   | .deriv => DerivHolds I r.x r.body r.result
   | .limit => LimitHolds I r.x r.point r.body r.result
   | .antideriv => AntiderivHoldsUnder I r.x r.conditions r.body r.result
+  | .antiderivRec => AntiderivRecHolds I r.x r.conditions r.body r.result r.integrals
 
 /-- **Engine soundness.**  A step with a well-formed rule that holds in `I`
 is correct in `I`. -/

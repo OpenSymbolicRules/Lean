@@ -39,6 +39,28 @@ match needs a decision procedure.  `not_antiderivHoldsUnder` refutes a rule
 from one assignment satisfying its conditions and one point at which the
 integrand is defined nearby and the result is not.
 
+## Residual integrals
+
+Most RUBI rules have another `Int` in their result.  Such a rule becomes a
+recursive antiderivative rule (`Shape.antiderivRec`, `OSR/IntegrationRec.lean`):
+each residual integral `Int[H, x]` of the result is a hole variable `I1`, `I2`,
+…, exported as `int(λx. H)(x)`, the form of the `calculus1#int` FMP
+(Specification V1-E-002b).  Its statement, `AntiderivRecHolds`, reads:
+
+> wherever `F` is defined near `t` (and the conditions hold), every residual
+> integrand `H` is defined near `t`, and for **every** choice of functions
+> with derivative `H(t)` at `t` in place of the residual integrals, the
+> result is defined near `t` and has derivative `F(t)` at `t`.
+
+So whatever antiderivatives a consumer later finds for the residual
+integrals, the result is an antiderivative of `F`.  Requiring the residual
+integrands to be defined keeps a rule from producing a meaningless integral,
+even with a zero coefficient.  `not_antiderivRecHolds_integrand` and
+`not_antiderivRecHolds_result` refute a recursive rule; the second uses
+linear functions `w ↦ w · H(t)` as the chosen antiderivatives.  Neither the
+reference rewriter nor OpenSymbolicRules.jl applies a recursive rule
+(V1-R-005c): rewriting does not continue inside residual integrals yet.
+
 ## Encoding
 
 The converted v0.1 terms are kept without simplification:
@@ -96,13 +118,33 @@ literal `b = 0` before matching; OSR v1 matching is syntactic.  In the same
 way, RUBI reads `Log` as the complex logarithm, so `∫ 1/x = log x` has no real
 reading on the negative axis.
 
+### First recursive rules
+
+Among the 272 recursive rules with registered heads, expressible conditions
+and a result linear in its residual integrals, eleven without square roots or
+fractional exponents were migrated first:
+
+| Rule | v0.1 rule | ℝ | ℂ |
+|---|---|---|---|
+| `integration.sin_add_square`, `integration.cos_add_square` | 4.1.12 #3, #4, `sin/cos(c + d (e + f x)²)` | proved | proved |
+| `integration.sin_add_power_over_x`, `integration.cos_add_power_over_x` | 4.1.12 #25, #26, `sin/cos(c + d xⁿ)/x` | proved | proved |
+| `integration.power_sin_square`, `integration.power_cos_square` | 4.1.12 #39, #40, `xᵐ sin²/cos²(a + b xⁿ/2)` | proved | proved |
+| `integration.log_linear_power` | 3.1.1 #2, `(a + b log(c xⁿ))ᵖ`, `p > 0`, `2p ∈ ℤ` | proved | unproved (branch cut) |
+| `integration.log_power_log` | 3.5 #1, `log(c log(d xⁿ)ᵖ)` | counterexample at `p = 0` (residual `1/log 1`) | counterexample |
+| `integration.sin_x_log_times_log`, `integration.cos_x_log_times_log` | 4.7.8 #45, #46 | counterexample at `a = 0` | counterexample |
+| `integration.linear_times_quadratic_power` | 1.2.1.2 #14, `NeQ[p, -1]` | counterexample at `c = 0` | counterexample |
+
 ## Next steps
 
 - Conditions do not limit the inventory: 2,155 rules have only expressible
   conditions, but almost all of them have another `Int` in their result or
   unregistered heads (`Subst`, `Simp`, `Rt`, …).
-- The rules whose result contains another `Int` (5,459) need a rewriter that
-  rewrites inside results and a linearity statement.
+- The other recursive rules: 261 more are linear in their residual
+  integrals, many with square roots (outside the complex fragment) or
+  rational exponents (outside the fragment).
+- A rewriter that continues inside residual integrals would let engines apply
+  recursive rules: `AntiderivRecHolds` composes, since any antiderivative
+  found for a residual integral may be substituted.
 - An engine applying conditional rules needs a decision procedure for the
   conditions on the matched terms.
 - Conditioned variants of the refuted rules (`c ≠ 0`, `b ≠ 0 ∧ n ≠ 0`) would

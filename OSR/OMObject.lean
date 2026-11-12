@@ -35,6 +35,10 @@ inductive OMObj where
   | oma (head : OMSymbol) (args : List OMObj)
   /-- A binding `OMBIND(binder, [OMV ...], body)`. -/
   | ombind (binder : OMSymbol) (vars : List String) (body : OMObj)
+  /-- An application of an object, `OMA(f, args)` with a non-symbol applicant.
+  The v1 fragment uses it only for a residual integral `int(λx. H)(x)`, the
+  form of the `calculus1#int` FMP. -/
+  | omapp (f : OMObj) (args : List OMObj)
   deriving Repr, Inhabited
 
 namespace OMObj
@@ -50,6 +54,8 @@ def toJson : OMObj → Json
       ("variables", Json.arr (vs.map fun v => Json.mkObj
         [("kind", Json.str "OMV"), ("name", Json.str v)]).toArray),
       ("object", body.toJson)]
+  | .omapp f args => Json.mkObj [("kind", Json.str "OMA"), ("applicant", f.toJson),
+      ("arguments", Json.arr (args.attach.map fun ⟨a, _⟩ => a.toJson).toArray)]
 
 /-- Symbols occurring in an object (heads and constants). -/
 def symbolsWithArity : OMObj → List (OMSymbol × Nat)
@@ -57,6 +63,7 @@ def symbolsWithArity : OMObj → List (OMSymbol × Nat)
   | .oms s => [(s, 0)]
   | .oma h args => (h, args.length) :: (args.attach.flatMap fun ⟨a, _⟩ => a.symbolsWithArity)
   | .ombind b _ body => (b, 0) :: body.symbolsWithArity
+  | .omapp f args => f.symbolsWithArity ++ (args.attach.flatMap fun ⟨a, _⟩ => a.symbolsWithArity)
 
 end OMObj
 
@@ -70,6 +77,19 @@ def toOM : Expr → OMObj
   | .app1 op a => .oma op.symbol [a.toOM]
   | .app2 op a b => .oma op.symbol [a.toOM, b.toOM]
   | .pow a b => .oma powerSymbol [a.toOM, b.toOM]
+
+/-- The OpenMath object of an expression in which some variables are holes
+filled with objects (the residual integrals of a recursive rule). -/
+def toOMWith (hole : String → Option OMObj) : Expr → OMObj
+  | .var n => (hole n).getD (.omv n)
+  | .int z => .omi z
+  | .const c => .oms c.symbol
+  | .app1 op a => .oma op.symbol [a.toOMWith hole]
+  | .app2 op a b => .oma op.symbol [a.toOMWith hole, b.toOMWith hole]
+  | .pow a b => .oma powerSymbol [a.toOMWith hole, b.toOMWith hole]
+
+theorem toOMWith_none (e : Expr) : e.toOMWith (fun _ => none) = e.toOM := by
+  induction e <;> simp_all [toOMWith, toOM]
 
 theorem toOMJson_eq_toJson_toOM : ∀ e : Expr, e.toOMJson = e.toOM.toJson
   | .var n => by simp [toOMJson, toOM, OMObj.toJson]
@@ -152,6 +172,7 @@ def decode : OMObj → Option Expr
       return .app2 o (← decode a) (← decode b)
   | .oma _ _ => none
   | .ombind _ _ _ => none
+  | .omapp _ _ => none
 
 /-- **Faithfulness of the exporter.**  Decoding the exported object by symbol
 identity recovers the expression. -/

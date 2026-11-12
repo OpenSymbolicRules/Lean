@@ -662,8 +662,10 @@ unsafe def auditCalcEntry (e : Calculus.CEntry) : MetaM (List Verification) := d
   let r ← evalCRule e.ruleDecl
   unless r == e.rule do
     throwError "{e.rule.id}: catalogue rule differs from declaration {e.ruleDecl}"
-  unless e.rule.wellFormed do
+  unless e.rule.shape == .antiderivRec || e.rule.wellFormed do
     throwError "{e.rule.id}: ill-formed calculus rule"
+  unless e.rule.recOk do
+    throwError "{e.rule.id}: ill-formed residual integrals"
   unless e.rule.conditionsOk do
     throwError "{e.rule.id}: conditions mention the bound variable or a non-antiderivative rule has conditions"
   for s in e.rule.symbols do
@@ -734,14 +736,14 @@ def calcSeeds : List (String × Calculus.CTerm) :=
     (s!"pattern.{r.id}", match r.shape with
       | .deriv => Calculus.CTerm.diff r.x r.body
       | .limit => Calculus.CTerm.limit r.point r.x r.body
-      | .antideriv => Calculus.CTerm.integral r.x r.body)) ++
+      | .antideriv | .antiderivRec => Calculus.CTerm.integral r.x r.body)) ++
   (Calculus.catalog.map fun e =>
     let r := e.rule
     let σ : Subst := [(r.x, .var "t")]
     (s!"renamed.{r.id}", match r.shape with
       | .deriv => Calculus.CTerm.diff "t" (r.body.subst σ)
       | .limit => Calculus.CTerm.limit r.point "t" (r.body.subst σ)
-      | .antideriv => Calculus.CTerm.integral "t" (r.body.subst σ))) ++
+      | .antideriv | .antiderivRec => Calculus.CTerm.integral "t" (r.body.subst σ))) ++
   [("independent.constant_body", .diff "t" (.app1 .sin (.var "u"))),
    ("independent.limit_of_constant", .limit (.int 1) "t" (.app1 .sin (.var "u"))),
    ("independent.body_mentions_bound", .diff "t" (.app2 .mul tvar (.var "u"))),
@@ -802,11 +804,15 @@ def integrationSet : CalcSet where
   statement := "An antiderivative rule `int(λx. F) ⟶ λx. G` (`calculus1#int`) states that
 wherever `F` is defined near `t`, `G` is defined near `t` and `v ↦ G[x := v]`
 has derivative `F[x := t]` at `t` (`HasDerivAt`), for every assignment of the
-metavariables satisfying the rule's conditions. The rules are the twenty RUBI
-4.16.1 rules of `OpenSymbolicRules/Integration` with no `Int` in their result,
-whose conditions are `FreeQ` or `NeQ` and whose heads, the outer `Int`
-removed, are in the registry; the other 6,237 rules are not yet considered.
-The reference rewriter does not apply conditional rules."
+metavariables satisfying the rule's conditions. A recursive rule
+`int(λx. F) ⟶ λx. G[int(λx. H)(x)]` states that the residual integrands are
+defined near `t` and that, for every choice of antiderivatives of them, the
+result is an antiderivative of `F`. The rules are the twenty RUBI 4.16.1 rules
+of `OpenSymbolicRules/Integration` with no `Int` in their result, whose
+conditions are `FreeQ` or `NeQ` and whose heads, the outer `Int` removed, are
+in the registry, and eleven rules with residual integrals; the other 6,226
+rules are not yet considered. The reference rewriter applies neither
+conditional nor recursive rules."
   strategy := "Rules apply at the root of an `int` term (their bodies are field expressions,
 to which no calculus rule applies); the result of a rule is a lambda, so
 normalization takes at most one step (`OSR.Calculus.rewrite_result`)."
@@ -816,7 +822,8 @@ def calcRuleJson (b : BuildInfo) (e : Calculus.CEntry) (vs : List Verification) 
   Json.mkObj ([
     ("id", jstr r.id),
     ("description", jstr r.description),
-    ("variables", Json.arr ((r.x :: (r.body.vars ++ r.point.vars ++ r.result.vars)).eraseDups.map
+    ("variables", Json.arr ((r.x :: (r.body.vars ++ r.point.vars ++
+      r.result.vars.filter (· ∉ r.holes) ++ (r.integrals.map (·.2.vars)).flatten)).eraseDups.map
       omv).toArray),
     ("pattern", r.patternOM.toJson),
     ("replacement", r.replacementOM.toJson),

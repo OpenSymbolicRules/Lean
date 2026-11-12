@@ -1,4 +1,5 @@
 import OSR.Calculus
+import OSR.IntegrationRec
 
 /-!
 # Integration (RUBI)
@@ -31,7 +32,7 @@ fragment, and are reported in `notMigrated`.
 
 namespace OSR.Integration
 
-open OSR OSR.Calculus Filter Topology
+open OSR OSR.Calculus OSR.IntegrationRec Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -701,6 +702,9 @@ private def neqFinding (cond : String) : String :=
 private def integerFinding (m : String) : String :=
   s!"exponent: the fragment interprets arith1#power for integer exponents only, so the statement covers the integer values of {m}; for other values the integrand is undefined."
 
+private def recFinding : String :=
+  "residual integrals: the result contains Int[…], exported as int(λx. H)(x) (the calculus1#int FMP form); the statement holds for every choice of antiderivatives of the residual integrands. The reference rewriter does not apply this rule."
+
 /-- The Integration catalogue, in v0.1 file order. -/
 def catalog : List CEntry := [
   { rule := reciprocal, ruleDecl := ``reciprocal, proofs := [], unproved := [.complex],
@@ -774,13 +778,63 @@ def catalog : List CEntry := [
     findings := [
       "counterexample: at c = 1 and the other metavariables 0 the condition b^2 d^2 n^2 + (m + 1)^2 ≠ 0 holds and the integrand is defined everywhere, but the denominator b^2 d^2 e n^2 + e (m + 1)^2 is 0 (Lean theorems powCosLog_counterexample_real and powCosLog_counterexample_complex). The rule needs e ≠ 0, which this migration does not add.",
       neqFinding "NeQ[b^2 d^2 n^2 + (m + 1)^2, 0]",
-      optionalFinding "a., b., c., d., e., m. and n."] }
+      optionalFinding "a., b., c., d., e., m. and n."] },
+  { rule := sinAddSq, ruleDecl := ``sinAddSq,
+    proofs := [(.real, ``sinAddSq_real), (.complex, ``sinAddSq_complex)],
+    findings := [recFinding, optionalFinding "d., e. and f."] },
+  { rule := cosAddSq, ruleDecl := ``cosAddSq,
+    proofs := [(.real, ``cosAddSq_real), (.complex, ``cosAddSq_complex)],
+    findings := [recFinding, optionalFinding "d., e. and f."] },
+  { rule := sinAddPowOverX, ruleDecl := ``sinAddPowOverX,
+    proofs := [(.real, ``sinAddPowOverX_real), (.complex, ``sinAddPowOverX_complex)],
+    findings := [recFinding, integerFinding "n", optionalFinding "d." false] },
+  { rule := cosAddPowOverX, ruleDecl := ``cosAddPowOverX,
+    proofs := [(.real, ``cosAddPowOverX_real), (.complex, ``cosAddPowOverX_complex)],
+    findings := [recFinding, integerFinding "n", optionalFinding "d." false] },
+  { rule := powSinSq, ruleDecl := ``powSinSq,
+    proofs := [(.real, ``powSinSq_real), (.complex, ``powSinSq_complex)],
+    findings := [recFinding, integerFinding "m and n", optionalFinding "m., a. and b."] },
+  { rule := powCosSq, ruleDecl := ``powCosSq,
+    proofs := [(.real, ``powCosSq_real), (.complex, ``powCosSq_complex)],
+    findings := [recFinding, integerFinding "m and n", optionalFinding "m., a. and b."] },
+  { rule := logPowLog, ruleDecl := ``logPowLog, proofs := [],
+    counterexamples := [(.real, ``logPowLog_counterexample_real),
+      (.complex, ``logPowLog_counterexample_complex)],
+    findings := [
+      "counterexample: at c = d = 1 and n = p = 0 the integrand log(c log(d x^n)^p) = log 1 is defined everywhere, but the residual integrand 1/log(d x^n) = 1/log 1 is not (Lean theorems logPowLog_counterexample_real and logPowLog_counterexample_complex). Its coefficient -n p vanishes there, but the residual integral is still undefined. The rule needs log(d x^n) ≠ 0 wherever the integrand is defined, which p ≠ 0 ensures; this migration does not add it.",
+      recFinding, optionalFinding "c., d., n. and p."] },
+  { rule := logLinPow, ruleDecl := ``logLinPow,
+    proofs := [(.real, ``logLinPow_real)], unproved := [.complex],
+    findings := [
+      "conditions: RUBI's GtQ[p, 0] becomes p > 0 (relation1#gt) and IntegerQ[2 p] becomes 2 p ∈ ℤ (set1#in, setname1#Z); the fragment interprets arith1#power for integer exponents only, so the statement covers the integer values of p.",
+      lnComplexFinding, recFinding, optionalFinding "a., b., c., n. and p."] },
+  { rule := sinXLog, ruleDecl := ``sinXLog, proofs := [],
+    counterexamples := [(.real, ``sinXLog_counterexample_real),
+      (.complex, ``sinXLog_counterexample_complex)],
+    findings := [
+      "counterexample: at a = 0 and b = 1 the integrand is defined near x = 1, but a^(-1) is not (Lean theorems sinXLog_counterexample_real and sinXLog_counterexample_complex). The rule needs a ≠ 0, which this migration does not add.",
+      recFinding, optionalFinding "a. and b."] },
+  { rule := cosXLog, ruleDecl := ``cosXLog, proofs := [],
+    counterexamples := [(.real, ``cosXLog_counterexample_real),
+      (.complex, ``cosXLog_counterexample_complex)],
+    findings := [
+      "counterexample: at a = 0 and b = 1 the integrand is defined near x = 1, but a^(-1) is not (Lean theorems cosXLog_counterexample_real and cosXLog_counterexample_complex). The rule needs a ≠ 0, which this migration does not add.",
+      recFinding, optionalFinding "a. and b."] },
+  { rule := linearQuadPow, ruleDecl := ``linearQuadPow, proofs := [],
+    counterexamples := [(.real, ``linearQuadPow_counterexample_real),
+      (.complex, ``linearQuadPow_counterexample_complex)],
+    findings := [
+      "counterexample: at a = 1 and the other metavariables 0 the condition p ≠ -1 holds and the integrand is defined everywhere, but (2 c (p + 1))^(-1) is not (Lean theorems linearQuadPow_counterexample_real and linearQuadPow_counterexample_complex). The rule needs c ≠ 0, which this migration does not add.",
+      neqFinding "NeQ[p, -1]", recFinding, optionalFinding "e., c. and p."] }
 ]
 
-/-- Every catalogue rule is well formed. -/
-theorem catalog_wellFormed : ∀ e ∈ catalog, e.rule.wellFormed = true := by
+/-- Every catalogue rule is well formed: recursive rules by `recOk`, the
+others by `wellFormed`. -/
+theorem catalog_wellFormed : ∀ e ∈ catalog,
+    (if e.rule.shape == .antiderivRec then e.rule.recOk else e.rule.wellFormed) = true := by
   intro e he
   simp only [catalog, List.mem_cons, List.mem_nil_iff, or_false] at he
-  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 end OSR.Integration
