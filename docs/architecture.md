@@ -74,6 +74,7 @@ OSR/Algebra.lean       Algebra rules (all 20), same structure
 OSR/LogicOps.lean      Boolean interpretations of the logic1 connectives, CMPs
 OSR/LogicCore.lean     quantified Boolean formulas, rewriter, soundness, termination
 OSR/Logic.lean         Logic rules (all 39), profiles and their weights
+OSR/Decide.lean        exact decision of closed conditions (rational arithmetic), soundness
 OSR/Calculus.lean      derivative, limit and antiderivative statements, the
                        Calculus rules (29), their proofs and rewriter
 OSR/IntegrationRec.lean RUBI rules with residual integrals (34), proofs, counterexamples
@@ -245,7 +246,10 @@ A third shape, `int(λx. F) ⟶ λx. G` (`calculus1#int`), states antiderivative
 `AntiderivHolds` says that wherever `F` is defined on a neighbourhood of `t`,
 `G` is defined on a neighbourhood of `t` and `v ↦ G[x := v]` has derivative
 `F[x := t]` at `t`; `AntiderivHoldsUnder` adds conditions on the
-metavariables, and the rewriter does not apply a conditional rule.  A fourth
+metavariables; the rewriter applies a conditional rule only when its
+substituted conditions are closed and decided true by exact rational
+arithmetic (`OSR/Decide.lean`, `CRule.conditionsDecided`; `apply?_sound`
+then requires characteristic zero and the rational order).  A fourth
 shape, `antiderivRec`, has residual integrals in its result
 (`AntiderivRecHolds`, exported with `OMObj.omapp` as `int(λx. H)(x)`); the
 rewriter does not apply it either.

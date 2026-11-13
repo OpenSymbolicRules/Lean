@@ -33,9 +33,13 @@ interior of the domain of the integrand.  Two consequences:
 The reference rewriter applies the rule at the root of an `int` term, renaming
 the bound variable to the input's.  `antideriv_instance` proves the renamed
 instance from the rule's statement, and `apply?_sound` covers the three
-calculus shapes.  Like the Algebra and Julia engines, the rewriter does not
-apply a conditional rule: deciding a condition such as `m ≠ -1` on a symbolic
-match needs a decision procedure.  `not_antiderivHoldsUnder` refutes a rule
+calculus shapes.  A conditional rule is applied only when every condition,
+with the match substituted, is closed rational arithmetic decided `true`
+(`OSR/Decide.lean`: `Expr.ratEval?`, `Cond.decide?`, proved sound by
+`Cond.decide?_sound`; `antideriv_instance_under`).  So `int(λt. t^3)` is
+rewritten by the power rule (`3 ≠ -1`), while `int(λt. t^(-1))` (decided
+false) and `int(λt. t^m)` (undecided) are left alone.  OpenSymbolicRules.jl
+does the same (`decide_condition`), and the Conformance suite checks both.  `not_antiderivHoldsUnder` refutes a rule
 from one assignment satisfying its conditions and one point at which the
 integrand is defined nearby and the result is not.
 

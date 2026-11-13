@@ -1,4 +1,5 @@
 import OSR.Catalog
+import OSR.Decide
 import OSR.OMObject
 
 /-!
@@ -1002,6 +1003,12 @@ variable to `y`. -/
 def CRule.indepOk (r : CRule) (σ : Subst) (y : String) : Bool :=
   r.independent.all fun c => y ∉ (σ.apply c).varList
 
+/-- The conditions of a rule, substituted by a match, are closed and decided
+true by exact rational arithmetic (`Cond.decide?`).  Vacuous for a rule
+without conditions. -/
+def CRule.conditionsDecided (r : CRule) (σ : Subst) : Bool :=
+  r.conditions.all fun c => (c.subst σ).decide? == some true
+
 /-- Apply a rule at the root: the input's bound variable replaces the rule's,
 the limit point is matched, and the independence constraints are checked. -/
 def CRule.apply? (r : CRule) : CTerm → Option CTerm
@@ -1021,9 +1028,11 @@ def CRule.apply? (r : CRule) : CTerm → Option CTerm
       | none => none
     else none
   | .integral y e =>
-    if r.shape = .antideriv ∧ r.conditions = [] then
+    if r.shape = .antideriv then
       match matchAux r.body e [(r.x, .var y)] with
-      | some σ => if r.indepOk σ y then some (.lam y (r.result.subst σ)) else none
+      | some σ =>
+        if r.indepOk σ y && r.conditionsDecided σ then some (.lam y (r.result.subst σ))
+        else none
       | none => none
     else none
   | _ => none
@@ -1315,6 +1324,45 @@ theorem antideriv_instance {𝕜 : Type} [NontriviallyNormedField 𝕜] (I : Int
     rw [hval, hfun]
     exact hD
 
+/-- **Instantiation soundness for conditional antiderivatives.**  The
+conditions hold under the assignment induced by the match. -/
+theorem antideriv_instance_under {𝕜 : Type} [NontriviallyNormedField 𝕜] (I : Interp 𝕜) (r : CRule)
+    (hw : r.wellFormed = true) (hr : AntiderivHoldsUnder I r.x r.conditions r.body r.result)
+    {y : String}
+    {e : Expr} {σ : Subst} (hm : matchAux r.body e [(r.x, .var y)] = some σ)
+    (hi : r.indepOk σ y = true)
+    (hdec : ∀ env : String → 𝕜, ∀ c ∈ r.conditions, c.Holds I (σ.env I env)) :
+    AntiderivHolds I y e (r.result.subst σ) := by
+  obtain ⟨hb, hres⟩ := indep_vars hw hi
+  have hσ := matched_find hm
+  have he : r.body.subst σ = e := (matchAux_spec r.body e _ σ hm).2 σ (Subst.Extends.refl σ)
+  have hrv : ∀ n ∈ r.result.varList, n ≠ r.x → n ∈ r.body.varList := by
+    simp only [CRule.wellFormed, Bool.and_eq_true, List.all_eq_true, decide_eq_true_eq] at hw
+    intro n hn hnx; exact (hw.1.1.2 n hn).resolve_left hnx
+  intro env t hF
+  have hF' : ∀ᶠ v in 𝓝 t, Defined I (Function.update (σ.env I env) r.x v) r.body := by
+    filter_upwards [hF] with v hv
+    rw [← he] at hv
+    exact ((eval_rename I hσ hb env v).2.1 hv).1
+  have himg : ∀ n ∈ r.body.varList, n ≠ r.x → Defined I env (σ.apply n) := by
+    have ht := hF.self_of_nhds
+    rw [← he] at ht
+    exact ((eval_rename I hσ hb env t).2.1 ht).2
+  obtain ⟨hG, hD⟩ := hr (σ.env I env) (hdec env) t hF'
+  refine ⟨?_, ?_⟩
+  · filter_upwards [hG] with v hv
+    exact (eval_rename I hσ hres env v).2.2 ⟨hv, fun n hn hnx => himg n (hrv n hn hnx) hnx⟩
+  · have hval : eval I (Function.update env y t) e =
+        eval I (Function.update (σ.env I env) r.x t) r.body := by
+      rw [← he]
+      exact (eval_rename I hσ hb env t).1
+    have hfun : (fun v => eval I (Function.update env y v) (r.result.subst σ)) =
+        fun v => eval I (Function.update (σ.env I env) r.x v) r.result := by
+      funext v
+      exact (eval_rename I hσ hres env v).1
+    rw [hval, hfun]
+    exact hD
+
 /-- What a rewrite step means: the derivative, limit or antiderivative
 statement for the input and the result. -/
 def Correct {𝕜 : Type} [NontriviallyNormedField 𝕜] (I : Interp 𝕜) : CTerm → CTerm → Prop
@@ -1332,8 +1380,12 @@ def CRule.HoldsIn {𝕜 : Type} [NontriviallyNormedField 𝕜] (r : CRule) (I : 
   | .antiderivRec => AntiderivRecHolds I r.x r.conditions r.body r.result r.integrals
 
 /-- **Engine soundness.**  A step with a well-formed rule that holds in `I`
-is correct in `I`. -/
-theorem apply?_sound {𝕜 : Type} [NontriviallyNormedField 𝕜] (I : Interp 𝕜) {r : CRule}
+is correct in `I`.  A conditional antiderivative rule is applied only when its
+substituted conditions are decided true (`CRule.conditionsDecided`), which
+implies them in an interpretation of characteristic zero ordering rational
+values as ℚ does (`Cond.decide?_sound`). -/
+theorem apply?_sound {𝕜 : Type} [NontriviallyNormedField 𝕜] [CharZero 𝕜] (I : Interp 𝕜)
+    (hlt : ∀ q r : ℚ, I.lt (q : 𝕜) (r : 𝕜) ↔ q < r) {r : CRule}
     (hw : r.wellFormed = true) (hr : r.HoldsIn I) {t t' : CTerm} (h : r.apply? t = some t') :
     Correct I t t' := by
   cases t with
@@ -1380,8 +1432,12 @@ theorem apply?_sound {𝕜 : Type} [NontriviallyNormedField 𝕜] (I : Interp �
         · rename_i hi
           simp only [Option.some.injEq] at h
           subst h
-          simp only [CRule.HoldsIn, hs.1, hs.2, antiderivHoldsUnder_nil] at hr
-          exact ⟨rfl, antideriv_instance I r hw hr hm hi⟩
+          simp only [CRule.HoldsIn, hs] at hr
+          simp only [Bool.and_eq_true] at hi
+          refine ⟨rfl, antideriv_instance_under I r hw hr hm hi.1 fun env c hc => ?_⟩
+          have hd := hi.2
+          simp only [CRule.conditionsDecided, List.all_eq_true, beq_iff_eq] at hd
+          exact Cond.holds_subst I env σ c (Cond.decide?_sound I hlt env _ (hd c hc))
         · cases h
       · cases h
     · cases h

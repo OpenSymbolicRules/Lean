@@ -12,6 +12,7 @@ import OSR.Algebra
 import OSR.LogicOps
 import OSR.LogicCore
 import OSR.Logic
+import OSR.Decide
 import OSR.Calculus
 import OSR.IntegrationRec
 import OSR.IntegrationRec2

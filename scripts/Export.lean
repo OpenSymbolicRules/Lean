@@ -761,7 +761,14 @@ def intSeeds : List (String × Calculus.CTerm) :=
   [("independent.body_mentions_bound", .integral "t" tvar),
    ("independent.constant_of_other_variable", .integral "t" (.app1 .sin (.var "u"))),
    ("nomatch.derivative", .diff "t" (.var "u")),
-   ("normal.lambda", .lam "t" (.app2 .mul (.var "u") tvar))]
+   ("normal.lambda", .lam "t" (.app2 .mul (.var "u") tvar)),
+   ("decided.power_cubic", .integral "t" (.pow tvar (.int 3))),
+   ("decided.power_minus_two", .integral "t" (.pow tvar (.int (-2)))),
+   ("decided.power_minus_one", .integral "t" (.pow tvar (.int (-1)))),
+   ("decided.sin_log_literal", .integral "t" (.app1 .sin (.app2 .mul (.int 1)
+     (.app2 .add (.int 0) (.app2 .mul (.int 1) (.app1 .ln (.app2 .mul (.int 1)
+       (.pow tvar (.int 1))))))))),
+   ("undecided.power_symbolic", .integral "t" (.pow tvar (.var "m")))]
 
 /-- A rule set of calculus rules (`OSR.Calculus.CRule`). -/
 structure CalcSet where
@@ -811,8 +818,10 @@ result is an antiderivative of `F`. The rules are the twenty RUBI 4.16.1 rules
 of `OpenSymbolicRules/Integration` with no `Int` in their result, whose
 conditions are `FreeQ` or `NeQ` and whose heads, the outer `Int` removed, are
 in the registry, and 117 rules with residual integrals (110 migrated); the other
-6,120 rules are not yet considered. The reference rewriter applies neither
-conditional nor recursive rules."
+6,120 rules are not yet considered. The reference rewriter applies a
+conditional rule only when its substituted conditions are closed and decided
+true by exact rational arithmetic (`OSR.Cond.decide?`), and does not apply
+recursive rules."
   strategy := "Rules apply at the root of an `int` term (their bodies are field expressions,
 to which no calculus rule applies); the result of a rule is a lambda, so
 normalization takes at most one step (`OSR.Calculus.rewrite_result`)."
@@ -961,6 +970,7 @@ conformance cases.
       ("rules", jstr "the rules of the profile certified over the reals, in priority order"),
       ("strategy", jstr "outermost-leftmost: at each step, try the root (rules in order), then the arguments left to right; one rewrite per step"),
       ("matching", jstr "syntactic; a pattern's bound variable matches the input's bound variable; integers compare by value"),
+      ("conditions", jstr "a conditional rule applies only when each of its conditions, with the match substituted, is closed (integers, +, -, *, /, unary minus, integer powers) and decided true by exact rational arithmetic; otherwise it is left alone"),
       ("fuel", toJson fuel),
       ("reference", jstr "OSR.Calculus.rewrite in OpenSymbolicRules/Lean (OSR/Calculus.lean)")]),
     ("cases", Json.arr (runs.map fun (name, t, res) =>

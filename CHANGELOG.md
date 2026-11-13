@@ -14,6 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Exact decision of closed conditions (`OSR/Decide.lean`: `Expr.ratEval?`,
+  `Cond.decide?`, soundness `Cond.decide?_sound`).  The calculus rewriter
+  applies a conditional rule when its substituted conditions are decided
+  true (`CRule.conditionsDecided`, `antideriv_instance_under`); engine
+  soundness covers it.  New Integration conformance seeds exercise the
+  power rule at literal exponents.
 - Five further RUBI 4.16.1 rules refuted over both ℝ and ℂ: 1.2.2.4 #57
   and #58, 2.1 #10, and 4.1.12 #45 and #46. Their conditions permit zero
   coefficients in result denominators. The catalogue has 123 rules, with

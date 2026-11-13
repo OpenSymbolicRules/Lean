@@ -91,8 +91,15 @@ private def rules : List CRule :=
   "integration.partial_fractions_power_weighted", "integration.sin_cos_double_angle",
   "integration.split_log_linear_factor", "integration.linear_power_over_quadratic"]
 
--- A conditional rule is not applied: int(λt. t^m) stays.
+-- A conditional rule applies only when its conditions are decided: int(λt. t^m)
+-- stays (m ≠ -1 is undecided), int(λt. t^(-1)) stays (decided false),
+-- int(λt. t^3) rewrites with the power rule (3 ≠ -1 decided true).
 #guard (rewrite rules (.integral "t" (.pow t (.var "m")))).isNone
+#guard (rewrite rules (.integral "t" (.pow t (.int (-1))))).isNone
+#guard (rewrite rules (.integral "t" (.pow t (.int 3)))).map (·.2) ==
+  some (.lam "t" (.app2 .mul (.pow t (.app2 .add (.int 3) (.int 1)))
+    (.pow (.app2 .add (.int 3) (.int 1)) (.int (-1)))))
+#guard (rewrite rules (.integral "t" (.pow t (.int 3)))).map (·.1) == some "integration.power"
 
 -- int(λt. u) ⟶ λt. u t: the input's bound variable is kept.
 #guard (rewrite rules (.integral "t" (.var "u"))).map (·.2) ==
