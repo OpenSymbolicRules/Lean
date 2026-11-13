@@ -13,10 +13,10 @@ private def t : Expr := .var "t"
 -- The twenty rules of the syntactic inventory (FreeQ or NeQ conditions,
 -- registered heads, no Int in the result) are migrated or reported, plus
 -- 110 rules with residual integrals and seven unmigrated ones.
-#guard Integration.catalog.length + Integration.notMigrated.length == 137
+#guard Integration.catalog.length + Integration.notMigrated.length == 170
 #guard Integration.notMigrated.length == 14
-#guard (Integration.catalog.filter (·.rule.shape == .antiderivRec)).length == 110
-#guard (Integration.catalog.filter (!·.rule.conditions.isEmpty)).length == 95
+#guard (Integration.catalog.filter (·.rule.shape == .antiderivRec)).length == 143
+#guard (Integration.catalog.filter (!·.rule.conditions.isEmpty)).length == 128
 
 -- RUBI 4.16.1: the new degenerate-coefficient cases are refuted in both
 -- domains, with no proof or unresolved domain accidentally attached.
@@ -89,7 +89,10 @@ private def rules : List CRule :=
   "integration.partial_fractions_linear_quadratic",
   "integration.partial_fractions_linear_trinomial",
   "integration.partial_fractions_power_weighted", "integration.sin_cos_double_angle",
-  "integration.split_log_linear_factor", "integration.linear_power_over_quadratic"]
+  "integration.split_log_linear_factor", "integration.linear_power_over_quadratic",
+  "integration.binomial_negative_power", "integration.binomial_power_sin",
+  "integration.binomial_power_cos", "integration.monomial_binomial_power_sin",
+  "integration.monomial_binomial_power_cos"]
 
 -- A conditional rule applies only when its conditions are decided: int(λt. t^m)
 -- stays (m ≠ -1 is undecided), int(λt. t^(-1)) stays (decided false),

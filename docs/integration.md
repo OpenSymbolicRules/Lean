@@ -228,9 +228,42 @@ refutation theorems, and `OSRTest/Integration.lean` checks that all five
 catalogue entries remain refuted in both domains. The toolchain is Lean
 4.35.0 with Mathlib `56a005855ea17e0b0958f73ec801ae140b0a1679`.
 
-Integration now exports 123 rules: 22 proved and 100 refuted over ℝ
+That batch brought Integration to 123 rules: 22 proved and 100 refuted over ℝ
 (one unproved), 18 proved and 96 refuted over ℂ (nine unproved). Of the
 complex proofs, 17 are certified. Fourteen other rules remain explicitly
+reported as not migrated.
+
+### Proof backlog: first proofs and refutations
+
+The numerical classification (development tool, as above) left 50 candidates
+behaving as true identities where defined, and 22 it could not sample. A
+second, stricter pass (guards analysed exactly instead of sampled) settles
+33 of them.
+
+`OSR/IntegrationRec4.lean` proves five rules over ℝ and ℂ. They rewrite a
+binomial with a negative integer exponent `n` as
+`(a + b xⁿ)ᵖ = x^(n p) (b + a x^(-n))ᵖ` (`binom_core`, valid for `x ≠ 0`):
+
+| RUBI 4.16.1 rule | Rule |
+|---|---|
+| 1.1.3.1 #5 | `integration.binomial_negative_power` |
+| 4.1.11 #7, #8 | `integration.binomial_power_sin`, `integration.binomial_power_cos` |
+| 4.1.11 #19, #20 | `integration.monomial_binomial_power_sin`, `integration.monomial_binomial_power_cos` |
+
+`OSR/IntegrationRec5.lean` refutes 28 rules over both ℝ and ℂ: 1.1.1.3 #14,
+1.1.1.4 #3, 1.1.3.5 #24 and #26, 1.2.1.2 #12, 1.2.1.3 #15 and #16,
+1.2.2.2 #17, 1.2.2.4 #55, #56 and #59–#62, 2.3 #24, 3.1.2 #6, 3.1.3 #7
+and #10, 3.1.4 #12, #13 and #18, 3.1.5 #8, #9 and #17, 4.1.11 #3 and #4,
+4.1.13 #21 and #22. Each witness, recorded in the rule's finding, satisfies
+the conditions, has an integrand defined near `x = 1`, and makes the result
+undefined at `x = 1`. Ten further proposals could not be proved in either
+domain and are left out.
+
+Integration now exports 156 rules: 27 proved and 128 refuted over ℝ (one
+unproved), 23 proved and 124 refuted over ℂ (nine unproved). Of the
+complex proofs, 17 are certified: like
+`integration.linear_power_over_quadratic`, the five new rules state `n < 0`
+with `relation1#gt`, whose complex reading is not an OpenMath mapping. Fourteen other rules remain explicitly
 reported as not migrated.
 
 These further refutations expose coefficients that the converted rule's

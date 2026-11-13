@@ -14,6 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Five recursive RUBI 4.16.1 rules proved over ℝ and ℂ
+  (`OSR/IntegrationRec4.lean`): 1.1.3.1 #5 and 4.1.11 #7, #8, #19 and #20
+  rewrite a binomial with a negative integer exponent (`binom_core`).
+  28 further rules refuted over both domains (`OSR/IntegrationRec5.lean`)
+  by witnesses from a stricter numerical search. The catalogue has 156
+  rules: 27 proved and 128 refuted over ℝ, 23 proved (17 certified)
+  and 124 refuted over ℂ.
 - Exact decision of closed conditions (`OSR/Decide.lean`: `Expr.ratEval?`,
   `Cond.decide?`, soundness `Cond.decide?_sound`).  The calculus rewriter
   applies a conditional rule when its substituted conditions are decided
