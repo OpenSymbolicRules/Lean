@@ -14,6 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Five further RUBI 4.16.1 rules refuted over both ℝ and ℂ: 1.2.2.4 #57
+  and #58, 2.1 #10, and 4.1.12 #45 and #46. Their conditions permit zero
+  coefficients in result denominators. The catalogue has 123 rules, with
+  22 proved and 100 refuted over ℝ, 18 proved (17 certified) and 96 refuted
+  over ℂ. Regression checks keep all five refuted in both domains.
 - Antiderivative rules `int(λx. F) ⟶ λx. G` (`calculus1#int`, now in the
   registry): `AntiderivHolds` requires the result to be defined on a
   neighbourhood wherever the integrand is, with `HasDerivAt`; instantiation

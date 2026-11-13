@@ -198,17 +198,41 @@ integer assignments satisfying the conditions, and proposes a counterexample
 for 47 of them.  Each proposal is then generated as a Lean theorem per
 domain; `OSR/IntegrationRec3.lean` keeps the 45 rules for which at least one
 of them is proved (42 over both ℝ and ℂ, 3 over one domain only, the other
-recorded as unproved).  The other 82 rules are not yet considered: some may
-be true, and need proofs.
+recorded as unproved). The initial pass left 82 rules to investigate:
+some may be true, and need proofs.
 
 `integration.linear_power_over_quadratic` is proved over ℂ but not
 certified there: its condition `m < -1` uses `relation1#gt`, whose complex
 reading is not an OpenMath mapping (registry).
 
-Every refutation follows the same pattern: RUBI's conditions leave a
-coefficient free to vanish, and the result divides by it.  In Mathematica,
-an earlier rule of the load order catches the degenerate case first; an OSR
-v1 rule is stated on its own.
+### Further degenerate-coefficient cases
+
+Five further rules are refuted over both ℝ and ℂ in
+`OSR/IntegrationRec3.lean`. Each witness satisfies the original conditions
+and has an integrand defined near `x = 1`, while the result is undefined
+there. All omitted metavariables are zero:
+
+| RUBI 4.16.1 rule | Nonzero metavariables |
+|---|---|
+| 1.2.2.4 #57 | `a = c = f = p = 1`, `b = e = m = -1` |
+| 1.2.2.4 #58 | `c = f = p = 1`, `a = e = m = -1` |
+| 2.1 #10 | `F = c = e = m = 1`, `b = d = g = p = -1` |
+| 4.1.12 #45, #46 | `a = n = 1`, `m = p = 2` |
+
+No condition is strengthened. The type and axiom audit checks the ten
+refutation theorems, and `OSRTest/Integration.lean` checks that all five
+catalogue entries remain refuted in both domains. The toolchain is Lean
+4.35.0 with Mathlib `56a005855ea17e0b0958f73ec801ae140b0a1679`.
+
+Integration now exports 123 rules: 22 proved and 100 refuted over ℝ
+(one unproved), 18 proved and 96 refuted over ℂ (nine unproved). Of the
+complex proofs, 17 are certified. Fourteen other rules remain explicitly
+reported as not migrated.
+
+These further refutations expose coefficients that the converted rule's
+conditions allow to vanish, although the result divides by them. RUBI may
+handle degenerate cases through evaluation or rule ordering; an OSR v1 rule
+is stated on its own.
 
 The inventory excludes 739 rules whose result or conditions use a name the
 pattern does not bind: 630 of them use the constants `E`, `ImaginaryI` or
@@ -220,8 +244,8 @@ pattern does not bind: 630 of them use the constants `E`, `ImaginaryI` or
 - Conditions do not limit the inventory: 2,155 rules have only expressible
   conditions, but almost all of them have another `Int` in their result or
   unregistered heads (`Subst`, `Simp`, `Rt`, …).
-- The other recursive rules: 213 more are linear in their residual
-  integrals, many with square roots (outside the complex fragment) or
+- Further recursive rules are linear in their residual integrals, many
+  with square roots (outside the complex fragment) or
   rational exponents (outside the fragment).
 - A rewriter that continues inside residual integrals would let engines apply
   recursive rules: `AntiderivRecHolds` composes, since any antiderivative

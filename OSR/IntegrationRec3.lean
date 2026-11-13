@@ -726,6 +726,90 @@ def rubi479r30 : CRule where
   description := "RUBI 4.7.9 #30"
   provenance := migrated "rubi:4 Trig functions/4.7 Miscellaneous/4.7.9 Active trig functions:30" "4 Trig functions/4.7 Miscellaneous/4.7.9 Active trig functions.m#30"
 
+/-- RUBI 1.2.2.4 #57 -/
+def rubi1224r57 : CRule where
+  id := "integration.rubi_1_2_2_4_r57"; legacyId := some "rubi:1 Algebraic functions/1.2 Trinomial products/1.2.2 Quartic/1.2.2.4 (f x)^m (d+e x^2)^q (a+b x^2+c x^4)^p:57"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.var "m")) (.pow (.app2 .add (.app2 .add (.var "a") (.app2 .mul (.var "b") (.pow (.var "x") (.int 2)))) (.app2 .mul (.var "c") (.pow (.var "x") (.int 4)))) (.var "p"))) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.int (-1))))
+  result := (.app2 .add (.app2 .mul (.app2 .mul (.int 1) (.pow (.app2 .mul (.var "d") (.var "e")) (.int (-1)))) (.var "I1")) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.app2 .add (.app2 .add (.app2 .mul (.var "c") (.pow (.var "d") (.int 2))) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.var "b")) (.var "d")) (.var "e"))) (.app2 .mul (.var "a") (.pow (.var "e") (.int 2))))) (.pow (.app2 .mul (.app2 .mul (.var "d") (.var "e")) (.pow (.var "f") (.int 2))) (.int (-1)))) (.var "I2")))
+  integrals := [("I1", (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.var "m")) (.app2 .add (.app2 .mul (.var "a") (.var "e")) (.app2 .mul (.app2 .mul (.var "c") (.var "d")) (.pow (.var "x") (.int 2))))) (.pow (.app2 .add (.app2 .add (.var "a") (.app2 .mul (.var "b") (.pow (.var "x") (.int 2)))) (.app2 .mul (.var "c") (.pow (.var "x") (.int 4)))) (.app2 .add (.var "p") (.app2 .mul (.int (-1)) (.int 1)))))),
+    ("I2", (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.app2 .add (.var "m") (.int 2))) (.pow (.app2 .add (.app2 .add (.var "a") (.app2 .mul (.var "b") (.pow (.var "x") (.int 2)))) (.app2 .mul (.var "c") (.pow (.var "x") (.int 4)))) (.app2 .add (.var "p") (.app2 .mul (.int (-1)) (.int 1))))) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.int (-1)))))]
+  independent := ["a", "b", "c", "d", "e", "f", "m", "p"]
+  conditions := [.ne (.app2 .add (.pow (.var "b") (.int 2)) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.int 4)) (.var "a")) (.var "c"))) (.int 0),
+    .gt (.var "p") (.int 0),
+    .gt (.int 0) (.var "m")]
+  priority := 1320
+  description := "RUBI 1.2.2.4 #57"
+  provenance := migrated "rubi:1 Algebraic functions/1.2 Trinomial products/1.2.2 Quartic/1.2.2.4 (f x)^m (d+e x^2)^q (a+b x^2+c x^4)^p:57" "1 Algebraic functions/1.2 Trinomial products/1.2.2 Quartic/1.2.2.4 (f x)^m (d+e x^2)^q (a+b x^2+c x^4)^p.m#57"
+
+/-- RUBI 1.2.2.4 #58 -/
+def rubi1224r58 : CRule where
+  id := "integration.rubi_1_2_2_4_r58"; legacyId := some "rubi:1 Algebraic functions/1.2 Trinomial products/1.2.2 Quartic/1.2.2.4 (f x)^m (d+e x^2)^q (a+b x^2+c x^4)^p:58"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.var "m")) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "c") (.pow (.var "x") (.int 4)))) (.var "p"))) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.int (-1))))
+  result := (.app2 .add (.app2 .mul (.app2 .mul (.int 1) (.pow (.app2 .mul (.var "d") (.var "e")) (.int (-1)))) (.var "I1")) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.app2 .add (.app2 .mul (.var "c") (.pow (.var "d") (.int 2))) (.app2 .mul (.var "a") (.pow (.var "e") (.int 2))))) (.pow (.app2 .mul (.app2 .mul (.var "d") (.var "e")) (.pow (.var "f") (.int 2))) (.int (-1)))) (.var "I2")))
+  integrals := [("I1", (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.var "m")) (.app2 .add (.app2 .mul (.var "a") (.var "e")) (.app2 .mul (.app2 .mul (.var "c") (.var "d")) (.pow (.var "x") (.int 2))))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "c") (.pow (.var "x") (.int 4)))) (.app2 .add (.var "p") (.app2 .mul (.int (-1)) (.int 1)))))),
+    ("I2", (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.app2 .add (.var "m") (.int 2))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "c") (.pow (.var "x") (.int 4)))) (.app2 .add (.var "p") (.app2 .mul (.int (-1)) (.int 1))))) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.int (-1)))))]
+  independent := ["a", "c", "d", "e", "f", "m", "p"]
+  conditions := [.gt (.var "p") (.int 0),
+    .gt (.int 0) (.var "m")]
+  priority := 1330
+  description := "RUBI 1.2.2.4 #58"
+  provenance := migrated "rubi:1 Algebraic functions/1.2 Trinomial products/1.2.2 Quartic/1.2.2.4 (f x)^m (d+e x^2)^q (a+b x^2+c x^4)^p:58" "1 Algebraic functions/1.2 Trinomial products/1.2.2 Quartic/1.2.2.4 (f x)^m (d+e x^2)^q (a+b x^2+c x^4)^p.m#58"
+
+/-- RUBI 2.1 #10 -/
+def rubi21r10 : CRule where
+  id := "integration.rubi_2_1_r10"; legacyId := some "rubi:2 Exponentials/2.1 (c+d x)^m (a+b (F^(g (e+f x)))^n)^p:10"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.pow (.app2 .add (.var "c") (.app2 .mul (.var "d") (.var "x"))) (.var "m")) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.pow (.pow (.var "F") (.app2 .mul (.var "g") (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x"))))) (.var "n")))) (.var "p")))
+  result := (.app2 .add (.app2 .mul (.app2 .mul (.int 1) (.pow (.var "a") (.int (-1)))) (.var "I1")) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.var "b")) (.pow (.var "a") (.int (-1)))) (.var "I2")))
+  integrals := [("I1", (.app2 .mul (.pow (.app2 .add (.var "c") (.app2 .mul (.var "d") (.var "x"))) (.var "m")) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.pow (.pow (.var "F") (.app2 .mul (.var "g") (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x"))))) (.var "n")))) (.app2 .add (.var "p") (.int 1))))),
+    ("I2", (.app2 .mul (.app2 .mul (.pow (.app2 .add (.var "c") (.app2 .mul (.var "d") (.var "x"))) (.var "m")) (.pow (.pow (.var "F") (.app2 .mul (.var "g") (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x"))))) (.var "n"))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.pow (.pow (.var "F") (.app2 .mul (.var "g") (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x"))))) (.var "n")))) (.var "p"))))]
+  independent := ["F", "a", "b", "c", "d", "e", "f", "g", "n", "m", "p"]
+  conditions := [.int (.var "p"),
+    .gt (.int 0) (.var "p"),
+    .int (.var "m"),
+    .gt (.var "m") (.int 0)]
+  priority := 1340
+  description := "RUBI 2.1 #10"
+  provenance := migrated "rubi:2 Exponentials/2.1 (c+d x)^m (a+b (F^(g (e+f x)))^n)^p:10" "2 Exponentials/2.1 (c+d x)^m (a+b (F^(g (e+f x)))^n)^p.m#10"
+
+/-- RUBI 4.1.12 #45 -/
+def rubi4112r45 : CRule where
+  id := "integration.rubi_4_1_12_r45"; legacyId := some "rubi:4 Trig functions/4.1 Sine/4.1.12 (e x)^m (a+b sin(c+d x^n))^p:45"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.pow (.var "x") (.var "m")) (.pow (.app1 .sin (.app2 .add (.var "a") (.app2 .mul (.var "b") (.pow (.var "x") (.var "n"))))) (.var "p")))
+  result := (.app2 .add (.app2 .add (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.int (-1)) (.var "n"))) (.int 1)) (.pow (.var "x") (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.app2 .mul (.int (-1)) (.int 2)) (.var "n"))) (.int 1)))) (.pow (.app1 .sin (.app2 .add (.var "a") (.app2 .mul (.var "b") (.pow (.var "x") (.var "n"))))) (.var "p"))) (.pow (.app2 .mul (.app2 .mul (.pow (.var "b") (.int 2)) (.pow (.var "n") (.int 2))) (.pow (.var "p") (.int 2))) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.pow (.var "x") (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.int (-1)) (.var "n"))) (.int 1)))) (.app1 .cos (.app2 .add (.var "a") (.app2 .mul (.var "b") (.pow (.var "x") (.var "n")))))) (.pow (.app1 .sin (.app2 .add (.var "a") (.app2 .mul (.var "b") (.pow (.var "x") (.var "n"))))) (.app2 .add (.var "p") (.app2 .mul (.int (-1)) (.int 1))))) (.pow (.app2 .mul (.app2 .mul (.var "b") (.var "n")) (.var "p")) (.int (-1))))) (.app2 .mul (.app2 .mul (.app2 .add (.var "p") (.app2 .mul (.int (-1)) (.int 1))) (.pow (.var "p") (.int (-1)))) (.var "I1"))) (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.int (-1)) (.var "n"))) (.int 1))) (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.app2 .mul (.int (-1)) (.int 2)) (.var "n"))) (.int 1))) (.pow (.app2 .mul (.app2 .mul (.pow (.var "b") (.int 2)) (.pow (.var "n") (.int 2))) (.pow (.var "p") (.int 2))) (.int (-1)))) (.var "I2")))
+  integrals := [("I1", (.app2 .mul (.pow (.var "x") (.var "m")) (.pow (.app1 .sin (.app2 .add (.var "a") (.app2 .mul (.var "b") (.pow (.var "x") (.var "n"))))) (.app2 .add (.var "p") (.app2 .mul (.int (-1)) (.int 2)))))),
+    ("I2", (.app2 .mul (.pow (.var "x") (.app2 .add (.var "m") (.app2 .mul (.app2 .mul (.int (-1)) (.int 2)) (.var "n")))) (.pow (.app1 .sin (.app2 .add (.var "a") (.app2 .mul (.var "b") (.pow (.var "x") (.var "n"))))) (.var "p"))))]
+  independent := ["a", "b", "m", "n", "p"]
+  conditions := [.gt (.var "p") (.int 1),
+    .int (.var "n"),
+    .gt (.var "n") (.int 0),
+    .int (.var "m"),
+    .gt (.var "m") (.app2 .add (.app2 .mul (.int 2) (.var "n")) (.app2 .mul (.int (-1)) (.int 1)))]
+  priority := 1360
+  description := "RUBI 4.1.12 #45"
+  provenance := migrated "rubi:4 Trig functions/4.1 Sine/4.1.12 (e x)^m (a+b sin(c+d x^n))^p:45" "4 Trig functions/4.1 Sine/4.1.12 (e x)^m (a+b sin(c+d x^n))^p.m#45"
+
+/-- RUBI 4.1.12 #46 -/
+def rubi4112r46 : CRule where
+  id := "integration.rubi_4_1_12_r46"; legacyId := some "rubi:4 Trig functions/4.1 Sine/4.1.12 (e x)^m (a+b sin(c+d x^n))^p:46"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.pow (.var "x") (.var "m")) (.pow (.app1 .cos (.app2 .add (.var "a") (.app2 .mul (.var "b") (.pow (.var "x") (.var "n"))))) (.var "p")))
+  result := (.app2 .add (.app2 .add (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.int (-1)) (.var "n"))) (.int 1)) (.pow (.var "x") (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.app2 .mul (.int (-1)) (.int 2)) (.var "n"))) (.int 1)))) (.pow (.app1 .cos (.app2 .add (.var "a") (.app2 .mul (.var "b") (.pow (.var "x") (.var "n"))))) (.var "p"))) (.pow (.app2 .mul (.app2 .mul (.pow (.var "b") (.int 2)) (.pow (.var "n") (.int 2))) (.pow (.var "p") (.int 2))) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.var "x") (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.int (-1)) (.var "n"))) (.int 1))) (.app1 .sin (.app2 .add (.var "a") (.app2 .mul (.var "b") (.pow (.var "x") (.var "n")))))) (.pow (.app1 .cos (.app2 .add (.var "a") (.app2 .mul (.var "b") (.pow (.var "x") (.var "n"))))) (.app2 .add (.var "p") (.app2 .mul (.int (-1)) (.int 1))))) (.pow (.app2 .mul (.app2 .mul (.var "b") (.var "n")) (.var "p")) (.int (-1))))) (.app2 .mul (.app2 .mul (.app2 .add (.var "p") (.app2 .mul (.int (-1)) (.int 1))) (.pow (.var "p") (.int (-1)))) (.var "I1"))) (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.int (-1)) (.var "n"))) (.int 1))) (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.app2 .mul (.int (-1)) (.int 2)) (.var "n"))) (.int 1))) (.pow (.app2 .mul (.app2 .mul (.pow (.var "b") (.int 2)) (.pow (.var "n") (.int 2))) (.pow (.var "p") (.int 2))) (.int (-1)))) (.var "I2")))
+  integrals := [("I1", (.app2 .mul (.pow (.var "x") (.var "m")) (.pow (.app1 .cos (.app2 .add (.var "a") (.app2 .mul (.var "b") (.pow (.var "x") (.var "n"))))) (.app2 .add (.var "p") (.app2 .mul (.int (-1)) (.int 2)))))),
+    ("I2", (.app2 .mul (.pow (.var "x") (.app2 .add (.var "m") (.app2 .mul (.app2 .mul (.int (-1)) (.int 2)) (.var "n")))) (.pow (.app1 .cos (.app2 .add (.var "a") (.app2 .mul (.var "b") (.pow (.var "x") (.var "n"))))) (.var "p"))))]
+  independent := ["a", "b", "m", "n", "p"]
+  conditions := [.gt (.var "p") (.int 1),
+    .int (.var "n"),
+    .gt (.var "n") (.int 0),
+    .int (.var "m"),
+    .gt (.var "m") (.app2 .add (.app2 .mul (.int 2) (.var "n")) (.app2 .mul (.int (-1)) (.int 1)))]
+  priority := 1370
+  description := "RUBI 4.1.12 #46"
+  provenance := migrated "rubi:4 Trig functions/4.1 Sine/4.1.12 (e x)^m (a+b sin(c+d x^n))^p:46" "4 Trig functions/4.1 Sine/4.1.12 (e x)^m (a+b sin(c+d x^n))^p.m#46"
+
 /-! ## Refutations -/
 
 section
@@ -1627,5 +1711,115 @@ theorem rubi479r30_counterexample_complex : ¬ rubi479r30.Holds .complex := by
     all_goals (simp [List.lookup]; exact hasDerivAt_mul_const _)
   · intro h
     simp [rubi479r30, Defined, eval, Interp.complex, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3, recEnv] at h <;> norm_num at h
+
+theorem rubi1224r57_counterexample_real : ¬ rubi1224r57.Holds .real := by
+  show ¬ AntiderivRecHolds Interp.real "x" rubi1224r57.conditions rubi1224r57.body rubi1224r57.result rubi1224r57.integrals
+  refine not_antiderivRecHolds_result (fun s => if s = "b" ∨ s = "e" ∨ s = "m" then -1 else if s = "a" ∨ s = "c" ∨ s = "f" ∨ s = "p" then 1 else 0) (1 : ℝ) (by simp [rubi1224r57, Cond.Holds, Defined, eval, Interp.real, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3] <;> first | positivity | norm_num)
+    (by filter_upwards [eventually_ne_nhds (show (1 : ℝ) ≠ 0 by norm_num)] with w hw; simp [rubi1224r57, Defined, eval, Interp.real, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3, hw] <;> first | positivity | norm_num)
+    (fun h w => w * (((rubi1224r57.integrals.lookup h).map (eval Interp.real (Function.update (fun s => if s = "b" ∨ s = "e" ∨ s = "m" then -1 else if s = "a" ∨ s = "c" ∨ s = "f" ∨ s = "p" then 1 else 0) "x" (1 : ℝ)))).getD 0)) ?_ ?_
+  · simp only [rubi1224r57, List.mem_cons, List.not_mem_nil, or_false, forall_eq_or_imp, forall_eq]
+    and_intros
+    all_goals (simp [List.lookup]; exact hasDerivAt_mul_const _)
+  · intro h
+    simp [rubi1224r57, Defined, eval, Interp.real, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3, recEnv] at h <;> norm_num at h
+
+theorem rubi1224r57_counterexample_complex : ¬ rubi1224r57.Holds .complex := by
+  show ¬ AntiderivRecHolds Interp.complex "x" rubi1224r57.conditions rubi1224r57.body rubi1224r57.result rubi1224r57.integrals
+  refine not_antiderivRecHolds_result (fun s => if s = "b" ∨ s = "e" ∨ s = "m" then -1 else if s = "a" ∨ s = "c" ∨ s = "f" ∨ s = "p" then 1 else 0) (1 : ℂ) (by simp [rubi1224r57, Cond.Holds, Defined, eval, Interp.complex, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3] <;> first | positivity | norm_num)
+    (by filter_upwards [eventually_ne_nhds (show (1 : ℂ) ≠ 0 by norm_num)] with w hw; simp [rubi1224r57, Defined, eval, Interp.complex, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3, hw] <;> first | positivity | norm_num)
+    (fun h w => w * (((rubi1224r57.integrals.lookup h).map (eval Interp.complex (Function.update (fun s => if s = "b" ∨ s = "e" ∨ s = "m" then -1 else if s = "a" ∨ s = "c" ∨ s = "f" ∨ s = "p" then 1 else 0) "x" (1 : ℂ)))).getD 0)) ?_ ?_
+  · simp only [rubi1224r57, List.mem_cons, List.not_mem_nil, or_false, forall_eq_or_imp, forall_eq]
+    and_intros
+    all_goals (simp [List.lookup]; exact hasDerivAt_mul_const _)
+  · intro h
+    simp [rubi1224r57, Defined, eval, Interp.complex, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3, recEnv] at h <;> norm_num at h
+
+theorem rubi1224r58_counterexample_real : ¬ rubi1224r58.Holds .real := by
+  show ¬ AntiderivRecHolds Interp.real "x" rubi1224r58.conditions rubi1224r58.body rubi1224r58.result rubi1224r58.integrals
+  refine not_antiderivRecHolds_result (fun s => if s = "a" ∨ s = "e" ∨ s = "m" then -1 else if s = "c" ∨ s = "f" ∨ s = "p" then 1 else 0) (1 : ℝ) (by simp [rubi1224r58, Cond.Holds, Defined, eval, Interp.real, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3] <;> first | positivity | norm_num)
+    (by filter_upwards [eventually_ne_nhds (show (1 : ℝ) ≠ 0 by norm_num)] with w hw; simp [rubi1224r58, Defined, eval, Interp.real, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3, hw] <;> first | positivity | norm_num)
+    (fun h w => w * (((rubi1224r58.integrals.lookup h).map (eval Interp.real (Function.update (fun s => if s = "a" ∨ s = "e" ∨ s = "m" then -1 else if s = "c" ∨ s = "f" ∨ s = "p" then 1 else 0) "x" (1 : ℝ)))).getD 0)) ?_ ?_
+  · simp only [rubi1224r58, List.mem_cons, List.not_mem_nil, or_false, forall_eq_or_imp, forall_eq]
+    and_intros
+    all_goals (simp [List.lookup]; exact hasDerivAt_mul_const _)
+  · intro h
+    simp [rubi1224r58, Defined, eval, Interp.real, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3, recEnv] at h <;> norm_num at h
+
+theorem rubi1224r58_counterexample_complex : ¬ rubi1224r58.Holds .complex := by
+  show ¬ AntiderivRecHolds Interp.complex "x" rubi1224r58.conditions rubi1224r58.body rubi1224r58.result rubi1224r58.integrals
+  refine not_antiderivRecHolds_result (fun s => if s = "a" ∨ s = "e" ∨ s = "m" then -1 else if s = "c" ∨ s = "f" ∨ s = "p" then 1 else 0) (1 : ℂ) (by simp [rubi1224r58, Cond.Holds, Defined, eval, Interp.complex, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3] <;> first | positivity | norm_num)
+    (by filter_upwards [eventually_ne_nhds (show (1 : ℂ) ≠ 0 by norm_num)] with w hw; simp [rubi1224r58, Defined, eval, Interp.complex, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3, hw] <;> first | positivity | norm_num)
+    (fun h w => w * (((rubi1224r58.integrals.lookup h).map (eval Interp.complex (Function.update (fun s => if s = "a" ∨ s = "e" ∨ s = "m" then -1 else if s = "c" ∨ s = "f" ∨ s = "p" then 1 else 0) "x" (1 : ℂ)))).getD 0)) ?_ ?_
+  · simp only [rubi1224r58, List.mem_cons, List.not_mem_nil, or_false, forall_eq_or_imp, forall_eq]
+    and_intros
+    all_goals (simp [List.lookup]; exact hasDerivAt_mul_const _)
+  · intro h
+    simp [rubi1224r58, Defined, eval, Interp.complex, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3, recEnv] at h <;> norm_num at h
+
+theorem rubi21r10_counterexample_real : ¬ rubi21r10.Holds .real := by
+  show ¬ AntiderivRecHolds Interp.real "x" rubi21r10.conditions rubi21r10.body rubi21r10.result rubi21r10.integrals
+  refine not_antiderivRecHolds_result (fun s => if s = "b" ∨ s = "d" ∨ s = "g" ∨ s = "p" then -1 else if s = "F" ∨ s = "c" ∨ s = "e" ∨ s = "m" then 1 else 0) (1 : ℝ) (by simp [rubi21r10, Cond.Holds, Defined, eval, Interp.real, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3] <;> first | positivity | norm_num)
+    (Eventually.of_forall fun w => by simp [rubi21r10, Defined, eval, Interp.real, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3] <;> first | positivity | norm_num)
+    (fun h w => w * (((rubi21r10.integrals.lookup h).map (eval Interp.real (Function.update (fun s => if s = "b" ∨ s = "d" ∨ s = "g" ∨ s = "p" then -1 else if s = "F" ∨ s = "c" ∨ s = "e" ∨ s = "m" then 1 else 0) "x" (1 : ℝ)))).getD 0)) ?_ ?_
+  · simp only [rubi21r10, List.mem_cons, List.not_mem_nil, or_false, forall_eq_or_imp, forall_eq]
+    and_intros
+    all_goals (simp [List.lookup]; exact hasDerivAt_mul_const _)
+  · intro h
+    simp [rubi21r10, Defined, eval, Interp.real, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3, recEnv] at h <;> norm_num at h
+
+theorem rubi21r10_counterexample_complex : ¬ rubi21r10.Holds .complex := by
+  show ¬ AntiderivRecHolds Interp.complex "x" rubi21r10.conditions rubi21r10.body rubi21r10.result rubi21r10.integrals
+  refine not_antiderivRecHolds_result (fun s => if s = "b" ∨ s = "d" ∨ s = "g" ∨ s = "p" then -1 else if s = "F" ∨ s = "c" ∨ s = "e" ∨ s = "m" then 1 else 0) (1 : ℂ) (by simp [rubi21r10, Cond.Holds, Defined, eval, Interp.complex, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3] <;> first | positivity | norm_num)
+    (Eventually.of_forall fun w => by simp [rubi21r10, Defined, eval, Interp.complex, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3] <;> first | positivity | norm_num)
+    (fun h w => w * (((rubi21r10.integrals.lookup h).map (eval Interp.complex (Function.update (fun s => if s = "b" ∨ s = "d" ∨ s = "g" ∨ s = "p" then -1 else if s = "F" ∨ s = "c" ∨ s = "e" ∨ s = "m" then 1 else 0) "x" (1 : ℂ)))).getD 0)) ?_ ?_
+  · simp only [rubi21r10, List.mem_cons, List.not_mem_nil, or_false, forall_eq_or_imp, forall_eq]
+    and_intros
+    all_goals (simp [List.lookup]; exact hasDerivAt_mul_const _)
+  · intro h
+    simp [rubi21r10, Defined, eval, Interp.complex, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3, recEnv] at h <;> norm_num at h
+
+theorem rubi4112r45_counterexample_real : ¬ rubi4112r45.Holds .real := by
+  show ¬ AntiderivRecHolds Interp.real "x" rubi4112r45.conditions rubi4112r45.body rubi4112r45.result rubi4112r45.integrals
+  refine not_antiderivRecHolds_result (fun s => if s = "a" ∨ s = "n" then 1 else if s = "m" ∨ s = "p" then 2 else 0) (1 : ℝ) (by simp [rubi4112r45, Cond.Holds, Defined, eval, Interp.real, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3] <;> first | positivity | norm_num)
+    (Eventually.of_forall fun w => by simp [rubi4112r45, Defined, eval, Interp.real, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3] <;> first | positivity | norm_num)
+    (fun h w => w * (((rubi4112r45.integrals.lookup h).map (eval Interp.real (Function.update (fun s => if s = "a" ∨ s = "n" then 1 else if s = "m" ∨ s = "p" then 2 else 0) "x" (1 : ℝ)))).getD 0)) ?_ ?_
+  · simp only [rubi4112r45, List.mem_cons, List.not_mem_nil, or_false, forall_eq_or_imp, forall_eq]
+    and_intros
+    all_goals (simp [List.lookup]; exact hasDerivAt_mul_const _)
+  · intro h
+    simp [rubi4112r45, Defined, eval, Interp.real, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3, recEnv] at h <;> norm_num at h
+
+theorem rubi4112r45_counterexample_complex : ¬ rubi4112r45.Holds .complex := by
+  show ¬ AntiderivRecHolds Interp.complex "x" rubi4112r45.conditions rubi4112r45.body rubi4112r45.result rubi4112r45.integrals
+  refine not_antiderivRecHolds_result (fun s => if s = "a" ∨ s = "n" then 1 else if s = "m" ∨ s = "p" then 2 else 0) (1 : ℂ) (by simp [rubi4112r45, Cond.Holds, Defined, eval, Interp.complex, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3] <;> first | positivity | norm_num)
+    (Eventually.of_forall fun w => by simp [rubi4112r45, Defined, eval, Interp.complex, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3] <;> first | positivity | norm_num)
+    (fun h w => w * (((rubi4112r45.integrals.lookup h).map (eval Interp.complex (Function.update (fun s => if s = "a" ∨ s = "n" then 1 else if s = "m" ∨ s = "p" then 2 else 0) "x" (1 : ℂ)))).getD 0)) ?_ ?_
+  · simp only [rubi4112r45, List.mem_cons, List.not_mem_nil, or_false, forall_eq_or_imp, forall_eq]
+    and_intros
+    all_goals (simp [List.lookup]; exact hasDerivAt_mul_const _)
+  · intro h
+    simp [rubi4112r45, Defined, eval, Interp.complex, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3, recEnv] at h <;> norm_num at h
+
+theorem rubi4112r46_counterexample_real : ¬ rubi4112r46.Holds .real := by
+  show ¬ AntiderivRecHolds Interp.real "x" rubi4112r46.conditions rubi4112r46.body rubi4112r46.result rubi4112r46.integrals
+  refine not_antiderivRecHolds_result (fun s => if s = "a" ∨ s = "n" then 1 else if s = "m" ∨ s = "p" then 2 else 0) (1 : ℝ) (by simp [rubi4112r46, Cond.Holds, Defined, eval, Interp.real, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3] <;> first | positivity | norm_num)
+    (Eventually.of_forall fun w => by simp [rubi4112r46, Defined, eval, Interp.real, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3] <;> first | positivity | norm_num)
+    (fun h w => w * (((rubi4112r46.integrals.lookup h).map (eval Interp.real (Function.update (fun s => if s = "a" ∨ s = "n" then 1 else if s = "m" ∨ s = "p" then 2 else 0) "x" (1 : ℝ)))).getD 0)) ?_ ?_
+  · simp only [rubi4112r46, List.mem_cons, List.not_mem_nil, or_false, forall_eq_or_imp, forall_eq]
+    and_intros
+    all_goals (simp [List.lookup]; exact hasDerivAt_mul_const _)
+  · intro h
+    simp [rubi4112r46, Defined, eval, Interp.real, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3, recEnv] at h <;> norm_num at h
+
+theorem rubi4112r46_counterexample_complex : ¬ rubi4112r46.Holds .complex := by
+  show ¬ AntiderivRecHolds Interp.complex "x" rubi4112r46.conditions rubi4112r46.body rubi4112r46.result rubi4112r46.integrals
+  refine not_antiderivRecHolds_result (fun s => if s = "a" ∨ s = "n" then 1 else if s = "m" ∨ s = "p" then 2 else 0) (1 : ℂ) (by simp [rubi4112r46, Cond.Holds, Defined, eval, Interp.complex, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3] <;> first | positivity | norm_num)
+    (Eventually.of_forall fun w => by simp [rubi4112r46, Defined, eval, Interp.complex, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3] <;> first | positivity | norm_num)
+    (fun h w => w * (((rubi4112r46.integrals.lookup h).map (eval Interp.complex (Function.update (fun s => if s = "a" ∨ s = "n" then 1 else if s = "m" ∨ s = "p" then 2 else 0) "x" (1 : ℂ)))).getD 0)) ?_ ?_
+  · simp only [rubi4112r46, List.mem_cons, List.not_mem_nil, or_false, forall_eq_or_imp, forall_eq]
+    and_intros
+    all_goals (simp [List.lookup]; exact hasDerivAt_mul_const _)
+  · intro h
+    simp [rubi4112r46, Defined, eval, Interp.complex, iv0, iv1, iv2, iv3, iv4, ivm1, ivm2, ivm3, recEnv] at h <;> norm_num at h
 
 end OSR.IntegrationRec3

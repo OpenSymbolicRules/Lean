@@ -12,14 +12,32 @@ private def t : Expr := .var "t"
 
 -- The twenty rules of the syntactic inventory (FreeQ or NeQ conditions,
 -- registered heads, no Int in the result) are migrated or reported, plus
--- 105 rules with residual integrals and seven unmigrated ones.
-#guard Integration.catalog.length + Integration.notMigrated.length == 132
+-- 110 rules with residual integrals and seven unmigrated ones.
+#guard Integration.catalog.length + Integration.notMigrated.length == 137
 #guard Integration.notMigrated.length == 14
-#guard (Integration.catalog.filter (·.rule.shape == .antiderivRec)).length == 105
-#guard (Integration.catalog.filter (!·.rule.conditions.isEmpty)).length == 90
+#guard (Integration.catalog.filter (·.rule.shape == .antiderivRec)).length == 110
+#guard (Integration.catalog.filter (!·.rule.conditions.isEmpty)).length == 95
+
+-- RUBI 4.16.1: the new degenerate-coefficient cases are refuted in both
+-- domains, with no proof or unresolved domain accidentally attached.
+private def degenerateCoefficientIds : List String := [
+  "integration.rubi_1_2_2_4_r57", "integration.rubi_1_2_2_4_r58",
+  "integration.rubi_2_1_r10", "integration.rubi_4_1_12_r45",
+  "integration.rubi_4_1_12_r46"]
+
+#guard degenerateCoefficientIds.all fun id =>
+  match Integration.catalog.find? (·.rule.id == id) with
+  | none => false
+  | some e => e.proofs.isEmpty && e.unproved.isEmpty &&
+      [Domain.real, Domain.complex].all fun d =>
+        (e.counterexamples.lookup d).isSome
 
 -- Identifiers are unique, every rule is well formed and has the antiderivative shape.
 #guard (Integration.catalog.map (·.rule.id)).eraseDups.length == Integration.catalog.length
+#guard Integration.catalog.all fun e =>
+  match e.rule.legacyId with
+  | none => false
+  | some id => Integration.notMigrated.all fun entry => entry.1 != id
 #guard Integration.catalog.all fun e =>
   if e.rule.shape == .antiderivRec then e.rule.recOk else e.rule.wellFormed
 #guard Integration.catalog.all (·.rule.recOk)

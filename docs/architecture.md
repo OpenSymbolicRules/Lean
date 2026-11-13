@@ -78,8 +78,8 @@ OSR/Calculus.lean      derivative, limit and antiderivative statements, the
                        Calculus rules (29), their proofs and rewriter
 OSR/IntegrationRec.lean RUBI rules with residual integrals (34), proofs, counterexamples
 OSR/IntegrationRec2.lean fourth batch (26), transcribed by a tool, checked against v0.1
-OSR/IntegrationRec3.lean refutations proposed by a numerical search (45), per domain
-OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (118)
+OSR/IntegrationRec3.lean refutations proposed by a numerical search (50), per domain
+OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (123)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
                        generation of rule set, reports and conformance cases
