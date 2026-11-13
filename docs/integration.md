@@ -287,10 +287,28 @@ result is undefined at `x = 1`):
 | 3.1.4 #17, 3.1.5 #16 | `b = c = e = p = 1`, `q = -3` |
 | 3.3 #12 | `b = c = e = f = g = q = 2`, `p = -3` |
 
-Integration now exports 165 rules: 27 proved and 137 refuted over ℝ (one
-unproved), 23 proved and 133 refuted over ℂ (nine unproved). Of the complex
-proofs, 17 are certified. Fourteen other rules remain explicitly reported as
-not migrated. Of the 39 backlog rules, 30 are neither proved nor refuted.
+That pass brought Integration to 165 rules: 27 proved and 137 refuted over ℝ
+(one unproved), 23 proved and 133 refuted over ℂ (nine unproved).
+
+### Backlog proofs
+
+`OSR/IntegrationRec7.lean` proves four more backlog rules over ℝ and ℂ, in
+every interpretation with the needed trigonometric derivatives or
+identities:
+
+| RUBI 4.16.1 rule | Rule | Argument |
+|---|---|---|
+| 3.1.5 #15 | `integration.split_power_linear_log_over_x` | `(d + e x)^q = (d + e x)^(q-1) (d + e x)` for an integer `q ≥ 1` |
+| 4.1.12 #35, #36 | `integration.power_sin_power_by_parts`, `integration.power_cos_power_by_parts` | integration by parts, for `m < -1` and `n > 0` |
+| 4.7.9 #71 | `integration.power_over_trig_squares` | `2 (a + b cos² u + c sin² u) = 2a + b + c + (b - c) cos 2u` |
+
+Their conditions use `relation1#gt`, so the complex proofs are not
+certified.
+
+Integration now exports 169 rules: 31 proved and 137 refuted over ℝ (one
+unproved), 27 proved and 133 refuted over ℂ (nine unproved). Of the complex
+proofs, 17 are certified. Fourteen other rules remain explicitly reported
+as not migrated. Of the 39 backlog rules, 26 are neither proved nor refuted.
 
 These further refutations expose coefficients that the converted rule's
 conditions allow to vanish, although the result divides by them. RUBI may

@@ -1,5 +1,5 @@
 import OSR.Calculus
-import OSR.IntegrationRec6
+import OSR.IntegrationRec7
 
 /-!
 # Integration (RUBI)
@@ -35,7 +35,8 @@ Rules outside the fragment are reported in `notMigrated`; see
 namespace OSR.Integration
 
 open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
-  OSR.IntegrationRec4 OSR.IntegrationRec5 OSR.IntegrationRec6 Filter Topology
+  OSR.IntegrationRec4 OSR.IntegrationRec5 OSR.IntegrationRec6
+  OSR.IntegrationRec7 Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -1845,9 +1846,30 @@ def catalog : List CEntry := [
       "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
       recFinding,
       condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; NeQ[Add[Multiply[d, g], Multiply[-1, c, h]], 0]; ILtQ[m, -1]",
-      optionalFinding "g., h., e., f., a., b., c. and d."] }
+      optionalFinding "g., h., e., f., a., b., c. and d."] },
+  { rule := powLinLogOverX, ruleDecl := ``powLinLogOverX,
+    proofs := [(.real, ``powLinLogOverX_real), (.complex, ``powLinLogOverX_complex)],
+    findings := [
+      "independence: p and q are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding, condFinding "IGtQ[p, 0]; GtQ[q, 0]; IntegerQ[Multiply[2, q]]", optionalFinding "e., q., a., b., c., n. and p."] },
+  { rule := powSinPowBack, ruleDecl := ``powSinPowBack,
+    proofs := [(.real, ``powSinPowBack_real), (.complex, ``powSinPowBack_complex)],
+    findings := [
+      "independence: m and n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding, condFinding "IGtQ[n, 0]; LtQ[m, -1]", optionalFinding "e., c. and d."] },
+  { rule := powCosPowBack, ruleDecl := ``powCosPowBack,
+    proofs := [(.real, ``powCosPowBack_real), (.complex, ``powCosPowBack_complex)],
+    findings := [
+      "independence: m and n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding, condFinding "IGtQ[n, 0]; LtQ[m, -1]", optionalFinding "e., c. and d."] },
+  { rule := powOverTrigSq, ruleDecl := ``powOverTrigSq,
+    proofs := [(.real, ``powOverTrigSq_real), (.complex, ``powOverTrigSq_complex)],
+    findings := [
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding, condFinding "IGtQ[m, 0]; NeQ[Add[a, b], 0]; NeQ[Add[a, c], 0]", optionalFinding "f., g., m., a., b., d., e. and c."] }
 ]
 
+set_option maxRecDepth 4096 in
 /-- Every catalogue rule is well formed: recursive rules by `recOk`, the
 others by `wellFormed`. -/
 theorem catalog_wellFormed : ∀ e ∈ catalog,
@@ -1865,6 +1887,6 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
     | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
-    | rfl | rfl | rfl | rfl | rfl <;> decide
+    | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 end OSR.Integration

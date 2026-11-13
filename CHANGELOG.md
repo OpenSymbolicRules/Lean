@@ -14,6 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Four backlog RUBI 4.16.1 rules proved over ℝ and ℂ
+  (`OSR/IntegrationRec7.lean`): 3.1.5 #15 (linear split), 4.1.12 #35 and
+  #36 (integration by parts) and 4.7.9 #71 (double angle). The catalogue
+  has 169 rules: 31 proved and 137 refuted over ℝ, 27 proved (17
+  certified) and 133 refuted over ℂ. `catalog_wellFormed` raises
+  `maxRecDepth` for the longer catalogue.
 - Nine further RUBI 4.16.1 rules refuted over ℝ and ℂ
   (`OSR/IntegrationRec6.lean`): 1.2.2.1 #5, 2.3 #23, #26 and #35, 3.1.1 #3,
   3.1.4 #9 and #17, 3.1.5 #16 and 3.3 #12, by witnesses from a wider
