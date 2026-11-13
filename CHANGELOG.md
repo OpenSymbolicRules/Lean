@@ -14,6 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Nine further RUBI 4.16.1 rules refuted over ℝ and ℂ
+  (`OSR/IntegrationRec6.lean`): 1.2.2.1 #5, 2.3 #23, #26 and #35, 3.1.1 #3,
+  3.1.4 #9 and #17, 3.1.5 #16 and 3.3 #12, by witnesses from a wider
+  search grid. The catalogue has 165 rules: 27 proved and 137 refuted over
+  ℝ, 23 proved (17 certified) and 133 refuted over ℂ.
 - Five recursive RUBI 4.16.1 rules proved over ℝ and ℂ
   (`OSR/IntegrationRec4.lean`): 1.1.3.1 #5 and 4.1.11 #7, #8, #19 and #20
   rewrite a binomial with a negative integer exponent (`binom_core`).

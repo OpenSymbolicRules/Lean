@@ -259,12 +259,38 @@ the conditions, has an integrand defined near `x = 1`, and makes the result
 undefined at `x = 1`. Ten further proposals could not be proved in either
 domain and are left out.
 
-Integration now exports 156 rules: 27 proved and 128 refuted over ℝ (one
+That round brought Integration to 156 rules: 27 proved and 128 refuted over ℝ (one
 unproved), 23 proved and 124 refuted over ℂ (nine unproved). Of the
 complex proofs, 17 are certified: like
 `integration.linear_power_over_quadratic`, the five new rules state `n < 0`
 with `relation1#gt`, whose complex reading is not an OpenMath mapping. Fourteen other rules remain explicitly
 reported as not migrated.
+
+### Wider search grid
+
+The first search filled the metavariables uniformly with `1`, `-1` or `2`,
+and so missed witnesses needing an exponent `≤ -2` next to a vanishing
+coefficient. The second pass also varies one metavariable over `-3…3` and
+requires the integrand to be defined at several points near `t`, not only
+at `t`. It found the following in the backlog, each refuted over ℝ and ℂ in
+`OSR/IntegrationRec6.lean` (the omitted metavariables are zero, and the
+result is undefined at `x = 1`):
+
+| RUBI 4.16.1 rule | Nonzero metavariables |
+|---|---|
+| 1.2.2.1 #5 | `b = 1`, `p = -3` |
+| 2.3 #23 | `a = c = d = e = 1`, `m = -3` (`F = 0`, so `log F` is undefined) |
+| 2.3 #26 | `a = b = c = f = 1`, `m = -3` (`F = 0`) |
+| 2.3 #35 | `F = a = b = d = e = g = 1`, `m = -3` |
+| 3.1.1 #3 | `b = c = 2`, `p = -3` (`n = 0`) |
+| 3.1.4 #9 | `b = c = e = p = r = 1`, `m = -3` |
+| 3.1.4 #17, 3.1.5 #16 | `b = c = e = p = 1`, `q = -3` |
+| 3.3 #12 | `b = c = e = f = g = q = 2`, `p = -3` |
+
+Integration now exports 165 rules: 27 proved and 137 refuted over ℝ (one
+unproved), 23 proved and 133 refuted over ℂ (nine unproved). Of the complex
+proofs, 17 are certified. Fourteen other rules remain explicitly reported as
+not migrated. Of the 39 backlog rules, 30 are neither proved nor refuted.
 
 These further refutations expose coefficients that the converted rule's
 conditions allow to vanish, although the result divides by them. RUBI may
