@@ -14,6 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Two logarithmic RUBI 4.16.1 rules proved over ℝ by integration by parts
+  (`OSR/IntegrationRec7.lean`, `hasDerivAt_log_monomial`): 3.1.3 #8 and
+  3.1.5 #24; unproved over ℂ (branch cut). The catalogue has 171 rules: 33
+  proved and 137 refuted over ℝ, 27 proved (17 certified) and 133 refuted
+  over ℂ.
 - Four backlog RUBI 4.16.1 rules proved over ℝ and ℂ
   (`OSR/IntegrationRec7.lean`): 3.1.5 #15 (linear split), 4.1.12 #35 and
   #36 (integration by parts) and 4.7.9 #71 (double angle). The catalogue

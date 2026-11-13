@@ -1866,7 +1866,19 @@ def catalog : List CEntry := [
     proofs := [(.real, ``powOverTrigSq_real), (.complex, ``powOverTrigSq_complex)],
     findings := [
       "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
-      recFinding, condFinding "IGtQ[m, 0]; NeQ[Add[a, b], 0]; NeQ[Add[a, c], 0]", optionalFinding "f., g., m., a., b., d., e. and c."] }
+      recFinding, condFinding "IGtQ[m, 0]; NeQ[Add[a, b], 0]; NeQ[Add[a, c], 0]", optionalFinding "f., g., m., a., b., d., e. and c."] },
+  { rule := logPowLogPow, ruleDecl := ``logPowLogPow,
+    proofs := [(.real, ``logPowLogPow_real)], unproved := [.complex],
+    findings := [
+      "independence: p and q are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding, condFinding "IGtQ[p, 0]; IGtQ[q, 0]",
+      optionalFinding "a., b., c., n., p., d., e., f., r. and q.", lnComplexFinding] },
+  { rule := quadPowLog, ruleDecl := ``quadPowLog,
+    proofs := [(.real, ``quadPowLog_real)], unproved := [.complex],
+    findings := [
+      "independence: q is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding, condFinding "GtQ[q, 0]",
+      optionalFinding "e., q., a., b., c. and n.", lnComplexFinding] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -1887,6 +1899,6 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
     | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
-    | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 end OSR.Integration

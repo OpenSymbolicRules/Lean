@@ -292,7 +292,7 @@ That pass brought Integration to 165 rules: 27 proved and 137 refuted over ℝ
 
 ### Backlog proofs
 
-`OSR/IntegrationRec7.lean` proves four more backlog rules over ℝ and ℂ, in
+`OSR/IntegrationRec7.lean` proves four backlog rules over ℝ and ℂ, in
 every interpretation with the needed trigonometric derivatives or
 identities:
 
@@ -305,10 +305,23 @@ identities:
 Their conditions use `relation1#gt`, so the complex proofs are not
 certified.
 
-Integration now exports 169 rules: 31 proved and 137 refuted over ℝ (one
-unproved), 27 proved and 133 refuted over ℂ (nine unproved). Of the complex
-proofs, 17 are certified. Fourteen other rules remain explicitly reported
-as not migrated. Of the 39 backlog rules, 26 are neither proved nor refuted.
+Two logarithmic rules are proved over ℝ only, by integration by parts
+(`hasDerivAt_log_monomial`: `d/dx log(c xⁿ) = n/x` wherever `c xⁿ > 0`,
+including `x = 0`, where this forces `n = 0`):
+
+| RUBI 4.16.1 rule | Rule |
+|---|---|
+| 3.1.3 #8 | `integration.quadratic_power_log_by_parts` |
+| 3.1.5 #24 | `integration.power_log_times_power_log` |
+
+Over ℂ they stay unproved: `ln` is defined for `z ≠ 0`, but the principal
+logarithm is not differentiable across the negative real axis.
+
+Integration now exports 171 rules: 33 proved and 137 refuted over ℝ (one
+unproved), 27 proved and 133 refuted over ℂ (eleven unproved). Of the
+complex proofs, 17 are certified. Fourteen other rules remain explicitly
+reported as not migrated. Of the 39 backlog rules, 24 are neither proved
+nor refuted.
 
 These further refutations expose coefficients that the converted rule's
 conditions allow to vanish, although the result divides by them. RUBI may
