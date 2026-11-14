@@ -13,17 +13,18 @@ private def t : Expr := .var "t"
 -- The twenty rules of the syntactic inventory (FreeQ or NeQ conditions,
 -- registered heads, no Int in the result) are migrated or reported, plus
 -- 110 rules with residual integrals and seven unmigrated ones.
-#guard Integration.catalog.length + Integration.notMigrated.length == 190
+#guard Integration.catalog.length + Integration.notMigrated.length == 192
 #guard Integration.notMigrated.length == 14
-#guard (Integration.catalog.filter (·.rule.shape == .antiderivRec)).length == 163
-#guard (Integration.catalog.filter (!·.rule.conditions.isEmpty)).length == 148
+#guard (Integration.catalog.filter (·.rule.shape == .antiderivRec)).length == 165
+#guard (Integration.catalog.filter (!·.rule.conditions.isEmpty)).length == 150
 
 -- RUBI 4.16.1: the new degenerate-coefficient cases are refuted in both
 -- domains, with no proof or unresolved domain accidentally attached.
 private def degenerateCoefficientIds : List String := [
   "integration.rubi_1_2_2_4_r57", "integration.rubi_1_2_2_4_r58",
   "integration.rubi_2_1_r10", "integration.rubi_4_1_12_r45",
-  "integration.rubi_4_1_12_r46"]
+  "integration.rubi_4_1_12_r46", "integration.rubi_4_1_12_r53",
+  "integration.rubi_4_1_12_r54"]
 
 #guard degenerateCoefficientIds.all fun id =>
   match Integration.catalog.find? (·.rule.id == id) with

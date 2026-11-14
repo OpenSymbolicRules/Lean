@@ -332,10 +332,19 @@ statement is vacuous there). The derivative identity holds modulo
 SymPy 1.14.0 (development aid) and are checked by Lean. Their complex
 proofs are not certified: `p > 1` uses `relation1#gt`.
 
-Integration now exports 176 rules: 38 proved and 137 refuted over ℝ (one
-unproved), 30 proved and 133 refuted over ℂ (thirteen unproved). Of the
+`OSR/IntegrationRec9.lean` refutes 4.1.12 #53 and #54, the reverse
+reductions for `p < -1`, over ℝ and ℂ. Their results divide by
+`b n (p + 1)`, and the conditions allow `b = 0`: at `a = 1` (`a = 0` for
+#54), `b = 0`, `m = 2`, `n = 1` and `p = -3` the integrand `x² sin(1)⁻³`
+(`x² cos(0)⁻³`) is defined everywhere, while the result is undefined at
+`x = 1`. The search grid of `handoff/refute_search.py` did not reach this
+assignment; it was found by reading the result and checked with the same
+evaluator before the Lean proofs.
+
+Integration now exports 178 rules: 38 proved and 139 refuted over ℝ (one
+unproved), 30 proved and 135 refuted over ℂ (thirteen unproved). Of the
 complex proofs, 17 are certified. Fourteen other rules remain explicitly
-reported as not migrated. Of the 39 backlog rules, 19 are neither proved
+reported as not migrated. Of the 39 backlog rules, 17 are neither proved
 nor refuted.
 
 These further refutations expose coefficients that the converted rule's
