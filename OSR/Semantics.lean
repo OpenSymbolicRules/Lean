@@ -538,6 +538,10 @@ def entries : List SymbolEntry := [
     interpretations := [Domain.real, Domain.complex].map fun d =>
       { domain := d, leanConst := ``Ne, assurance := .reviewed, definedness := "both operands defined",
         justification := "Propositional inequality; OSR conditions additionally require both operands to be defined." } },
+  { symbol := ⟨"relation1", "eq"⟩, arity := 2,
+    interpretations := [Domain.real, Domain.complex].map fun d =>
+      { domain := d, leanConst := ``Eq, assurance := .reviewed, definedness := "both operands defined",
+        justification := "Propositional equality; OSR conditions additionally require both operands to be defined." } },
   { symbol := ⟨"set1", "in"⟩, arity := 2,
     fragment := "conditions only, as `x ∈ setname1#Z`",
     interpretations := [Domain.real, Domain.complex].map fun d =>

@@ -14,6 +14,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- 108 RUBI 4.16.1 rules with `EqQ` conditions migrated and refuted
+  (`OSR/IntegrationRec13.lean`, `OSR/IntegrationRec14.lean`): all over ℝ,
+  102 also over ℂ, by Lean counterexamples proposed by the numerical search.
+  The catalogue has 291 rules: 41 proved and 249 refuted over ℝ, 33 proved
+  (17 certified) and 238 refuted over ℂ.
+- `relation1#eq` conditions (`OSR.Cond.eq`: both operands defined and equal),
+  with the registry entry, OpenMath export, exact decision (`Cond.decide?`,
+  soundness `Cond.decide?_sound`) and substitution, so RUBI `EqQ` conditions
+  can be stated (Specification V1-R-005).
 - RUBI 4.16.1 1.2.2.1 #4 (quartic power reduction, `p ≥ 1`) proved over ℝ
   and ℂ (`OSR/IntegrationRec12.lean`). The catalogue has 183 rules: 41
   proved and 141 refuted over ℝ, 33 proved (17 certified) and 136 refuted

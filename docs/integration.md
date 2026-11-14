@@ -81,6 +81,8 @@ The converted v0.1 terms are kept without simplification:
   semantically: both sides are defined and their values differ.  Mathematica
   tests instead that `a - b` is not possibly zero; conditions only mention
   independent metavariables (`CRule.conditionsOk`).
+- `EqQ[a, b]` becomes the condition `a = b` (`relation1#eq`), read the same
+  way: both sides are defined and their values are equal.
 
 ## Scope and results
 
@@ -378,12 +380,28 @@ from `(x Qᵖ)' + 2 p (2 a + b x²) Qᵖ⁻¹ = (4 p + 1) Qᵖ` with
 `Q = a + b x² + c x⁴`; all powers are natural, so `Q` may vanish. The complex
 proof is not certified (`p > 0` uses `relation1#gt`).
 
-Integration now exports 183 rules: 41 proved and 141 refuted over ℝ (one
-unproved), 33 proved and 136 refuted over ℂ (fourteen unproved). Of the
+### Rules with `EqQ` conditions
+
+`EqQ` was the only condition without a fragment counterpart in 296 rules
+whose heads are registered. With `relation1#eq` (`Cond.eq`: both operands
+defined and equal) they can be stated. 187 of them only have metavariables
+that are `FreeQ` or numerically constrained, and 156 of those transcribe (31
+use `Sqrt` or `Simplify`). The numerical search proposes a counterexample for
+113; `OSR/IntegrationRec13.lean` and `OSR/IntegrationRec14.lean` prove 108 of
+them over ℝ (38 without residual integrals, 70 with) and 102 also over ℂ. Six
+real witnesses do not carry over to ℂ (mostly logarithms of negative
+arguments, which the complex logarithm defines), and five proposals were not
+proved in either domain; those are left out, as are the 43 rules without a
+proposal.
+
+Integration now exports 291 rules: 41 proved and 249 refuted over ℝ (one
+unproved), 33 proved and 238 refuted over ℂ (twenty unproved). Of the
 complex proofs, 17 are certified. Fourteen other rules remain explicitly
 reported as not migrated. Of the 39 backlog rules, 12 are neither proved
 nor refuted: the six `p + 1/2 ∈ ℤ` rules, 2.3 #44 and #45, and the four
-4.7.7 rules discussed above.
+4.7.7 rules discussed above. The `EqQ` rules refuted here expose the same
+pattern as the earlier batches: results dividing by coefficients that the
+conditions allow to vanish.
 
 These further refutations expose coefficients that the converted rule's
 conditions allow to vanish, although the result divides by them. RUBI may

@@ -25,6 +25,11 @@ open OSR
 #guard (Cond.ne (.int 3) (.int (-1))).decide? == some true
 #guard (Cond.ne (.int (-1)) (.int (-1))).decide? == some false
 #guard (Cond.gt (.int 1) (.int 0)).decide? == some true
+#guard (Cond.eq (.app2 .mul (.int 2) (.int 3)) (.int 6)).decide? == some true
+#guard (Cond.eq (.int 1) (.int 2)).decide? == some false
+#guard (Cond.eq (.var "a") (.int 0)).decide? == none
+#guard ((Cond.eq (.var "a") (.int 0)).subst [("a", .int 0)]).decide? == some true
+#guard (Cond.eq (.var "a") (.int 0)).symbols == [⟨"relation1", "eq"⟩]
 #guard (Cond.gt (.int 0) (.var "n")).decide? == none
 #guard (Cond.int (.app2 .div (.int 4) (.int 2))).decide? == some true
 #guard (Cond.int (.app2 .div (.int 1) (.int 2))).decide? == some false

@@ -120,6 +120,7 @@ values, `none` otherwise. -/
 def Cond.decide? : Cond → Option Bool
   | .ne a b => do return decide ((← a.ratEval?) ≠ (← b.ratEval?))
   | .gt a b => do return decide ((← b.ratEval?) < (← a.ratEval?))
+  | .eq a b => do return decide ((← a.ratEval?) = (← b.ratEval?))
   | .int a => do return decide ((← a.ratEval?).den = 1)
 
 /-- **Soundness of the decision.**  A condition decided `true` holds, in every
@@ -144,6 +145,14 @@ theorem Cond.decide?_sound {α : Type} [Field α] [CharZero α] (I : Interp α)
     obtain ⟨hda, hva⟩ := Expr.ratEval?_sound I env a q hq
     refine ⟨hda, hdb, ?_⟩
     rw [hva, hvb]; exact (hlt r q).2 hlt'
+  | .eq a b, h => by
+    simp only [Cond.decide?, Option.bind_eq_bind, Option.bind_eq_some_iff, Option.pure_def,
+      Option.some.injEq, decide_eq_true_eq] at h
+    obtain ⟨q, hq, r, hr, heq⟩ := h
+    obtain ⟨hda, hva⟩ := Expr.ratEval?_sound I env a q hq
+    obtain ⟨hdb, hvb⟩ := Expr.ratEval?_sound I env b r hr
+    refine ⟨hda, hdb, ?_⟩
+    rw [hva, hvb, heq]
   | .int a, h => by
     simp only [Cond.decide?, Option.bind_eq_bind, Option.bind_eq_some_iff, Option.pure_def,
       Option.some.injEq, decide_eq_true_eq] at h
@@ -165,6 +174,7 @@ theorem Interp.complex_lt_rat : ∀ q r : ℚ, Interp.complex.lt (q : ℂ) (r : 
 def Cond.subst (σ : Subst) : Cond → Cond
   | .ne a b => .ne (a.subst σ) (b.subst σ)
   | .gt a b => .gt (a.subst σ) (b.subst σ)
+  | .eq a b => .eq (a.subst σ) (b.subst σ)
   | .int a => .int (a.subst σ)
 
 /-- A substituted condition that holds gives the condition under the
@@ -175,6 +185,9 @@ theorem Cond.holds_subst {α : Type} [Field α] (I : Interp α) (env : String �
     refine ⟨((defined_subst I env σ a).1 ha).1, ((defined_subst I env σ b).1 hb).1, ?_⟩
     rwa [eval_subst, eval_subst] at hv
   | .gt a b, ⟨ha, hb, hv⟩ => by
+    refine ⟨((defined_subst I env σ a).1 ha).1, ((defined_subst I env σ b).1 hb).1, ?_⟩
+    rwa [eval_subst, eval_subst] at hv
+  | .eq a b, ⟨ha, hb, hv⟩ => by
     refine ⟨((defined_subst I env σ a).1 ha).1, ((defined_subst I env σ b).1 hb).1, ?_⟩
     rwa [eval_subst, eval_subst] at hv
   | .int a, ⟨ha, n, hn⟩ => by
