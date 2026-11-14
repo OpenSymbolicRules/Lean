@@ -85,7 +85,8 @@ OSR/IntegrationRec5.lean further searched refutations (28), per domain
 OSR/IntegrationRec6.lean refutations from a wider search grid (9), per domain
 OSR/IntegrationRec7.lean backlog proofs (9): linear split, by parts, double angle;
                        four logarithmic rules over ℝ only
-OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (174)
+OSR/IntegrationRec8.lean x^m sin^p / cos^p (a + b x^n) by parts twice (2)
+OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (176)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
                        generation of rule set, reports and conformance cases

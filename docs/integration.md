@@ -322,10 +322,20 @@ by the same theorem.
 Over ℂ they stay unproved: `ln` is defined for `z ≠ 0`, but the principal
 logarithm is not differentiable across the negative real axis.
 
-Integration now exports 174 rules: 36 proved and 137 refuted over ℝ (one
-unproved), 28 proved and 133 refuted over ℂ (thirteen unproved). Of the
+`OSR/IntegrationRec8.lean` proves 4.1.12 #47 and #48
+(`integration.power_sin_power_reduction`, `integration.power_cos_power_reduction`)
+over ℝ and ℂ: `∫ x^m sinᵖ(a + b xⁿ)` and its cosine analogue, integrated by
+parts twice, for integers `p ≥ 2`, `n > 0`, `m < -2n + 1` and
+`m + n + 1 ≠ 0` (a non-integer `p` leaves the integrand undefined, so the
+statement is vacuous there). The derivative identity holds modulo
+`sin² + cos² = 1`; the `linear_combination` coefficients were computed with
+SymPy 1.14.0 (development aid) and are checked by Lean. Their complex
+proofs are not certified: `p > 1` uses `relation1#gt`.
+
+Integration now exports 176 rules: 38 proved and 137 refuted over ℝ (one
+unproved), 30 proved and 133 refuted over ℂ (thirteen unproved). Of the
 complex proofs, 17 are certified. Fourteen other rules remain explicitly
-reported as not migrated. Of the 39 backlog rules, 21 are neither proved
+reported as not migrated. Of the 39 backlog rules, 19 are neither proved
 nor refuted.
 
 These further refutations expose coefficients that the converted rule's

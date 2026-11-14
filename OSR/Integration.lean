@@ -1,5 +1,5 @@
 import OSR.Calculus
-import OSR.IntegrationRec7
+import OSR.IntegrationRec8
 
 /-!
 # Integration (RUBI)
@@ -36,7 +36,7 @@ namespace OSR.Integration
 
 open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec4 OSR.IntegrationRec5 OSR.IntegrationRec6
-  OSR.IntegrationRec7 Filter Topology
+  OSR.IntegrationRec7 OSR.IntegrationRec8 Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -1893,7 +1893,17 @@ def catalog : List CEntry := [
     proofs := [(.real, ``cosPowLog_real)], unproved := [.complex],
     findings := [
       "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
-      recFinding, condFinding "IGtQ[p, 1]; NeQ[Add[Multiply[Power[b, 2], Power[d, 2], Power[n, 2], Power[p, 2]], 1], 0]", optionalFinding "d., a., b., c. and n.", lnComplexFinding] }
+      recFinding, condFinding "IGtQ[p, 1]; NeQ[Add[Multiply[Power[b, 2], Power[d, 2], Power[n, 2], Power[p, 2]], 1], 0]", optionalFinding "d., a., b., c. and n.", lnComplexFinding] },
+  { rule := powSinPowReduce, ruleDecl := ``powSinPowReduce,
+    proofs := [(.real, ``powSinPowReduce_real), (.complex, ``powSinPowReduce_complex)],
+    findings := [
+      "independence: m, n and p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding, condFinding "GtQ[p, 1]; IGtQ[n, 0]; ILtQ[m, Add[Multiply[-2, n], 1]]; NeQ[Add[m, n, 1], 0]", optionalFinding "m., a. and b."] },
+  { rule := powCosPowReduce, ruleDecl := ``powCosPowReduce,
+    proofs := [(.real, ``powCosPowReduce_real), (.complex, ``powCosPowReduce_complex)],
+    findings := [
+      "independence: m, n and p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding, condFinding "GtQ[p, 1]; IGtQ[n, 0]; ILtQ[m, Add[Multiply[-2, n], 1]]; NeQ[Add[m, n, 1], 0]", optionalFinding "m., a. and b."] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -1914,6 +1924,7 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
     | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
-    | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl <;> decide
 
 end OSR.Integration

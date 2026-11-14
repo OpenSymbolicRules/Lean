@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- RUBI 4.16.1 4.1.12 #47 and #48 proved over ℝ and ℂ
+  (`OSR/IntegrationRec8.lean`): `∫ x^m sinᵖ(a + b xⁿ)` and its cosine
+  analogue, by parts twice. The catalogue has 176 rules: 38 proved and 137
+  refuted over ℝ, 30 proved (17 certified) and 133 refuted over ℂ.
 - RUBI 4.16.1 4.7.8 #3 and #4 (`sin`/`cos` powers of `d (a + b log(c xⁿ))`)
   proved over ℝ, and 3.1.4 #16 (the same rule as 3.1.5 #15) over ℝ and ℂ.
   The catalogue has 174 rules: 36 proved and 137 refuted over ℝ, 28 proved
