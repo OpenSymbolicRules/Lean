@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- RUBI 4.16.1 1.2.2.2 #19 refuted over ℝ (division by `c` at `c = 0`) and
+  3.1.4 #11 over ℝ and ℂ (division by `f` at `f = 0`), in
+  `OSR/IntegrationRec11.lean`. The catalogue has 182 rules: 40 proved and
+  141 refuted over ℝ, 32 proved (17 certified) and 136 refuted over ℂ.
 - RUBI 4.16.1 1.2.1.1 #7 and 1.2.1.2 #11 (quadratic power reductions for
   `p < -1`) proved over ℝ and ℂ (`OSR/IntegrationRec10.lean`). The catalogue
   has 180 rules: 40 proved and 139 refuted over ℝ, 32 proved (17 certified)

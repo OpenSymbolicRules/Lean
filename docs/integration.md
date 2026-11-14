@@ -355,10 +355,27 @@ the fragment, so their integrands are never defined and their statements
 hold vacuously; they are left unproved rather than counted as proofs that no
 engine could ever use.
 
-Integration now exports 180 rules: 40 proved and 139 refuted over ℝ (one
-unproved), 32 proved and 135 refuted over ℂ (thirteen unproved). Of the
+`OSR/IntegrationRec11.lean` refutes two more rules whose results divide by
+a coefficient the conditions allow to vanish. 1.2.2.2 #19 divides by `c`;
+at `a = b = d = 1`, `c = 0` and `m = 4` the integrand `x⁴/(1 + x²)` is
+defined on ℝ but the result is not. Over ℂ the same integrand is undefined
+at `x = ±i`, so this refutation is real only. 3.1.4 #11 divides by
+`d f (q + 1)`; at `f = 0`, `a = c = d = m = p = 1` and `q = -4` the integrand
+`(0 x)¹ (1)⁻⁴ (1 + 0)¹` is defined everywhere and the result is not, in both
+domains.
+
+RUBI 2.3 #44 and #45 and 4.7.7 #3, #4, #7 and #8 contain `F^(polynomial)`.
+In the fragment, a power is defined only for an integer exponent, so the
+integrand is defined near a point only if the exponent is constant there.
+For 2.3 #44 and #45 the conditions exclude that case, so the statements are
+vacuous. For 4.7.7, `F < 0` makes `log F` undefined over ℝ in both the
+condition and the result, so the conditions fail and the case is no
+counterexample. These rules remain unproved.
+
+Integration now exports 182 rules: 40 proved and 141 refuted over ℝ (one
+unproved), 32 proved and 136 refuted over ℂ (fourteen unproved). Of the
 complex proofs, 17 are certified. Fourteen other rules remain explicitly
-reported as not migrated. Of the 39 backlog rules, 15 are neither proved
+reported as not migrated. Of the 39 backlog rules, 13 are neither proved
 nor refuted.
 
 These further refutations expose coefficients that the converted rule's
