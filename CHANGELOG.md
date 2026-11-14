@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- RUBI 4.16.1 4.7.8 #3 and #4 (`sin`/`cos` powers of `d (a + b log(c xⁿ))`)
+  proved over ℝ, and 3.1.4 #16 (the same rule as 3.1.5 #15) over ℝ and ℂ.
+  The catalogue has 174 rules: 36 proved and 137 refuted over ℝ, 28 proved
+  (17 certified) and 133 refuted over ℂ.
 - Two logarithmic RUBI 4.16.1 rules proved over ℝ by integration by parts
   (`OSR/IntegrationRec7.lean`, `hasDerivAt_log_monomial`): 3.1.3 #8 and
   3.1.5 #24; unproved over ℂ (branch cut). The catalogue has 171 rules: 33

@@ -305,7 +305,7 @@ identities:
 Their conditions use `relation1#gt`, so the complex proofs are not
 certified.
 
-Two logarithmic rules are proved over ℝ only, by integration by parts
+Four logarithmic rules are proved over ℝ only, by integration by parts
 (`hasDerivAt_log_monomial`: `d/dx log(c xⁿ) = n/x` wherever `c xⁿ > 0`,
 including `x = 0`, where this forces `n = 0`):
 
@@ -313,14 +313,19 @@ including `x = 0`, where this forces `n = 0`):
 |---|---|
 | 3.1.3 #8 | `integration.quadratic_power_log_by_parts` |
 | 3.1.5 #24 | `integration.power_log_times_power_log` |
+| 4.7.8 #3, #4 | `integration.sin_power_log_reduction`, `integration.cos_power_log_reduction` |
+
+RUBI 3.1.4 #16 states the same rule as 3.1.5 #15
+(`integration.split_power_linear_log_over_x_monomial`), proved over ℝ and ℂ
+by the same theorem.
 
 Over ℂ they stay unproved: `ln` is defined for `z ≠ 0`, but the principal
 logarithm is not differentiable across the negative real axis.
 
-Integration now exports 171 rules: 33 proved and 137 refuted over ℝ (one
-unproved), 27 proved and 133 refuted over ℂ (eleven unproved). Of the
+Integration now exports 174 rules: 36 proved and 137 refuted over ℝ (one
+unproved), 28 proved and 133 refuted over ℂ (thirteen unproved). Of the
 complex proofs, 17 are certified. Fourteen other rules remain explicitly
-reported as not migrated. Of the 39 backlog rules, 24 are neither proved
+reported as not migrated. Of the 39 backlog rules, 21 are neither proved
 nor refuted.
 
 These further refutations expose coefficients that the converted rule's

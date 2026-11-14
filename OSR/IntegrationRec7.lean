@@ -123,6 +123,53 @@ def quadPowLog : CRule where
   description := "Integrate (d + e x^2)^q (a + b log(c x^n)) by parts"
   provenance := migrated "rubi:3 Logarithms/3.1.3 (d+e x^r)^q (a+b log(c x^n))^p:8" "3 Logarithms/3.1.3 (d+e x^r)^q (a+b log(c x^n))^p.m#8"
 
+/-- Split (d + e x)^q (a + b log(c x^n))^p / x (RUBI 3.1.4) -/
+def powLinLogOverX2 : CRule where
+  id := "integration.split_power_linear_log_over_x_monomial"; legacyId := some "rubi:3 Logarithms/3.1.4 (f x)^m (d+e x^r)^q (a+b log(c x^n))^p:16"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.app2 .mul (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.var "x"))) (.var "q")) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .ln (.app2 .mul (.var "c") (.pow (.var "x") (.var "n")))))) (.var "p"))) (.pow (.var "x") (.int (-1))))
+  result := (.app2 .add (.app2 .mul (.var "d") (.var "I1")) (.app2 .mul (.var "e") (.var "I2")))
+  integrals := [("I1", (.app2 .mul (.app2 .mul (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.var "x"))) (.app2 .add (.var "q") (.app2 .mul (.int (-1)) (.int 1)))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .ln (.app2 .mul (.var "c") (.pow (.var "x") (.var "n")))))) (.var "p"))) (.pow (.var "x") (.int (-1))))),
+    ("I2", (.app2 .mul (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.var "x"))) (.app2 .add (.var "q") (.app2 .mul (.int (-1)) (.int 1)))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .ln (.app2 .mul (.var "c") (.pow (.var "x") (.var "n")))))) (.var "p"))))]
+  independent := ["a", "b", "c", "d", "e", "n", "p", "q"]
+  conditions := [.int (.var "p"),
+    .gt (.var "p") (.int 0),
+    .gt (.var "q") (.int 0),
+    .int (.app2 .mul (.int 2) (.var "q"))]
+  priority := 2460
+  description := "Split (d + e x)^q (a + b log(c x^n))^p / x (RUBI 3.1.4)"
+  provenance := migrated "rubi:3 Logarithms/3.1.4 (f x)^m (d+e x^r)^q (a+b log(c x^n))^p:16" "3 Logarithms/3.1.4 (f x)^m (d+e x^r)^q (a+b log(c x^n))^p.m#16"
+
+/-- Reduce sin(d (a + b log(c x^n)))^p -/
+def sinPowLog : CRule where
+  id := "integration.sin_power_log_reduction"; legacyId := some "rubi:4 Trig functions/4.7 Miscellaneous/4.7.8 u trig(a+b log(c x^n))^p:3"
+  shape := .antiderivRec; x := "x"
+  body := (.pow (.app1 .sin (.app2 .mul (.var "d") (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .ln (.app2 .mul (.var "c") (.pow (.var "x") (.var "n")))))))) (.var "p"))
+  result := (.app2 .add (.app2 .add (.app2 .mul (.app2 .mul (.var "x") (.pow (.app1 .sin (.app2 .mul (.var "d") (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .ln (.app2 .mul (.var "c") (.pow (.var "x") (.var "n")))))))) (.var "p"))) (.pow (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.var "b") (.int 2)) (.pow (.var "d") (.int 2))) (.pow (.var "n") (.int 2))) (.pow (.var "p") (.int 2))) (.int 1)) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.var "b")) (.var "d")) (.var "n")) (.var "p")) (.var "x")) (.app1 .cos (.app2 .mul (.var "d") (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .ln (.app2 .mul (.var "c") (.pow (.var "x") (.var "n"))))))))) (.pow (.app1 .sin (.app2 .mul (.var "d") (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .ln (.app2 .mul (.var "c") (.pow (.var "x") (.var "n")))))))) (.app2 .add (.var "p") (.app2 .mul (.int (-1)) (.int 1))))) (.pow (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.var "b") (.int 2)) (.pow (.var "d") (.int 2))) (.pow (.var "n") (.int 2))) (.pow (.var "p") (.int 2))) (.int 1)) (.int (-1))))) (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.var "b") (.int 2)) (.pow (.var "d") (.int 2))) (.pow (.var "n") (.int 2))) (.var "p")) (.app2 .add (.var "p") (.app2 .mul (.int (-1)) (.int 1)))) (.pow (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.var "b") (.int 2)) (.pow (.var "d") (.int 2))) (.pow (.var "n") (.int 2))) (.pow (.var "p") (.int 2))) (.int 1)) (.int (-1)))) (.var "I1")))
+  integrals := [("I1", (.pow (.app1 .sin (.app2 .mul (.var "d") (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .ln (.app2 .mul (.var "c") (.pow (.var "x") (.var "n")))))))) (.app2 .add (.var "p") (.app2 .mul (.int (-1)) (.int 2)))))]
+  independent := ["a", "b", "c", "d", "n", "p"]
+  conditions := [.int (.var "p"),
+    .gt (.var "p") (.int 1),
+    .ne (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.var "b") (.int 2)) (.pow (.var "d") (.int 2))) (.pow (.var "n") (.int 2))) (.pow (.var "p") (.int 2))) (.int 1)) (.int 0)]
+  priority := 2470
+  description := "Reduce sin(d (a + b log(c x^n)))^p"
+  provenance := migrated "rubi:4 Trig functions/4.7 Miscellaneous/4.7.8 u trig(a+b log(c x^n))^p:3" "4 Trig functions/4.7 Miscellaneous/4.7.8 u trig(a+b log(c x^n))^p.m#3"
+
+/-- Reduce cos(d (a + b log(c x^n)))^p -/
+def cosPowLog : CRule where
+  id := "integration.cos_power_log_reduction"; legacyId := some "rubi:4 Trig functions/4.7 Miscellaneous/4.7.8 u trig(a+b log(c x^n))^p:4"
+  shape := .antiderivRec; x := "x"
+  body := (.pow (.app1 .cos (.app2 .mul (.var "d") (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .ln (.app2 .mul (.var "c") (.pow (.var "x") (.var "n")))))))) (.var "p"))
+  result := (.app2 .add (.app2 .add (.app2 .mul (.app2 .mul (.var "x") (.pow (.app1 .cos (.app2 .mul (.var "d") (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .ln (.app2 .mul (.var "c") (.pow (.var "x") (.var "n")))))))) (.var "p"))) (.pow (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.var "b") (.int 2)) (.pow (.var "d") (.int 2))) (.pow (.var "n") (.int 2))) (.pow (.var "p") (.int 2))) (.int 1)) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.var "b") (.var "d")) (.var "n")) (.var "p")) (.var "x")) (.pow (.app1 .cos (.app2 .mul (.var "d") (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .ln (.app2 .mul (.var "c") (.pow (.var "x") (.var "n")))))))) (.app2 .add (.var "p") (.app2 .mul (.int (-1)) (.int 1))))) (.app1 .sin (.app2 .mul (.var "d") (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .ln (.app2 .mul (.var "c") (.pow (.var "x") (.var "n"))))))))) (.pow (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.var "b") (.int 2)) (.pow (.var "d") (.int 2))) (.pow (.var "n") (.int 2))) (.pow (.var "p") (.int 2))) (.int 1)) (.int (-1))))) (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.var "b") (.int 2)) (.pow (.var "d") (.int 2))) (.pow (.var "n") (.int 2))) (.var "p")) (.app2 .add (.var "p") (.app2 .mul (.int (-1)) (.int 1)))) (.pow (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.var "b") (.int 2)) (.pow (.var "d") (.int 2))) (.pow (.var "n") (.int 2))) (.pow (.var "p") (.int 2))) (.int 1)) (.int (-1)))) (.var "I1")))
+  integrals := [("I1", (.pow (.app1 .cos (.app2 .mul (.var "d") (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .ln (.app2 .mul (.var "c") (.pow (.var "x") (.var "n")))))))) (.app2 .add (.var "p") (.app2 .mul (.int (-1)) (.int 2)))))]
+  independent := ["a", "b", "c", "d", "n", "p"]
+  conditions := [.int (.var "p"),
+    .gt (.var "p") (.int 1),
+    .ne (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.var "b") (.int 2)) (.pow (.var "d") (.int 2))) (.pow (.var "n") (.int 2))) (.pow (.var "p") (.int 2))) (.int 1)) (.int 0)]
+  priority := 2480
+  description := "Reduce cos(d (a + b log(c x^n)))^p"
+  provenance := migrated "rubi:4 Trig functions/4.7 Miscellaneous/4.7.8 u trig(a+b log(c x^n))^p:4" "4 Trig functions/4.7 Miscellaneous/4.7.8 u trig(a+b log(c x^n))^p.m#4"
+
 /-! ## Proofs -/
 
 section Proofs
@@ -379,6 +426,11 @@ theorem powCosPowBack_real : powCosPowBack.Holds .real :=
 theorem powCosPowBack_complex : powCosPowBack.Holds .complex :=
   powCosPowBack_holds Interp.complex Interp.complex_lt_rat Complex.hasDerivAt_cos
 
+/-- RUBI 3.1.4 #16 is the same statement as 3.1.5 #15. -/
+theorem powLinLogOverX2_real : powLinLogOverX2.Holds .real := powLinLogOverX_real
+
+theorem powLinLogOverX2_complex : powLinLogOverX2.Holds .complex := powLinLogOverX_complex
+
 /-- `2 (a + b cos² u + c sin² u) = 2a + b + c + (b - c) cos 2u`. -/
 theorem powOverTrigSq_holds [CharZero 𝕜] (I : Interp 𝕜)
     (hpy : ∀ u : 𝕜, I.sin u ^ 2 + I.cos u ^ 2 = 1)
@@ -607,6 +659,180 @@ theorem quadPowLog_real : quadPowLog.Holds .real := by
       push_cast at hI ⊢
       linear_combination (-((env "d" + env "e" * t ^ 2) ^ (j + 1) * B)) * hI +
         (-(env "b" * (env "d" + env "e" * t ^ 2) ^ (j + 1) * J)) * e1
+
+/-- `∫ sin(d (a + b log(c xⁿ)))^p` reduces to `p - 2`, for an integer `p ≥ 2`, over ℝ. -/
+theorem sinPowLog_real : sinPowLog.Holds .real := by
+  show AntiderivRecHolds Interp.real "x" sinPowLog.conditions sinPowLog.body
+    sinPowLog.result sinPowLog.integrals
+  intro env hc t hF
+  have hgp := hc (.gt (.var "p") (.int 1)) (by simp [sinPowLog])
+  have hK := hc (.ne (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.var "b") (.int 2))
+    (.pow (.var "d") (.int 2))) (.pow (.var "n") (.int 2))) (.pow (.var "p") (.int 2))) (.int 1))
+    (.int 0)) (by simp [sinPowLog])
+  have h2 : intValue? (2 : ℝ) = some 2 := (intValue?_eq _ _).2 (by norm_num)
+  have hm1 : intValue? (-1 : ℝ) = some (-1) := (intValue?_eq _ _).2 (by norm_num)
+  simp only [Cond.Holds, Defined, eval, Interp.real, true_and] at hgp
+  simp [Cond.Holds, Defined, eval, Interp.real, h2] at hK
+  rcases hkp : intValue? (env "p") with _ | p
+  · exfalso
+    have h := hF.self_of_nhds
+    simp [sinPowLog, Defined, eval, Interp.real, hkp] at h
+  rcases hkn : intValue? (env "n") with _ | n
+  · exfalso
+    have h := hF.self_of_nhds
+    simp [sinPowLog, Defined, eval, Interp.real, hkn] at h
+  have hp : 1 < p := by rw [iv_val hkp] at hgp; exact_mod_cast hgp
+  have hp1 : intValue? (env "p" + -1) = some (p - 1) :=
+    (intValue?_eq _ _).2 (by rw [iv_val hkp]; push_cast; ring)
+  have hp2 : intValue? (env "p" + -2) = some (p - 2) :=
+    (intValue?_eq _ _).2 (by rw [iv_val hkp]; push_cast; ring)
+  have hpn : ¬ p < 0 := by omega
+  have hp1n : ¬ p - 1 < 0 := by omega
+  have hp2n : ¬ p - 2 < 0 := by omega
+  have hD : ∀ w, Defined Interp.real (Function.update env "x" w) sinPowLog.body →
+      (n < 0 → w ≠ 0) ∧ 0 < env "c" * w ^ n := by
+    intro w h
+    simp [sinPowLog, Defined, eval, Interp.real, hkn, hkp, hpn] at h
+    exact h
+  refine ⟨fun i hi => ?_, fun Φ hΦ => ⟨?_, ?_⟩⟩
+  · simp only [sinPowLog, List.mem_cons, List.not_mem_nil, or_false] at hi
+    subst hi
+    filter_upwards [hF] with w hw
+    obtain ⟨h1, h1'⟩ := hD w hw
+    simp [Defined, eval, Interp.real, hkn, hp2, hp2n]
+    exact ⟨h1, h1'⟩
+  · filter_upwards [hF] with w hw
+    obtain ⟨h1, h1'⟩ := hD w hw
+    simp [sinPowLog, Defined, eval, Interp.real, recEnv, hkn, hkp, hpn, hp1, hp1n, h2, hm1, hK]
+    try exact ⟨h1, h1'⟩
+  · simp only [sinPowLog, List.mem_cons, List.not_mem_nil, or_false, forall_eq] at hΦ
+    obtain ⟨-, hc0⟩ := hD t hF.self_of_nhds
+    set U : ℝ → ℝ := fun w => env "d" * (env "a" + env "b" * Real.log (env "c" * w ^ n)) with hUdef
+    have hU : HasDerivAt U (env "d" * (env "b" * ((n : ℝ) / t))) t :=
+      (((hasDerivAt_log_monomial _ t n hc0).const_mul _).const_add _).const_mul _
+    have hS : HasDerivAt (fun w => Real.sin (U w)) (Real.cos (U t) * (env "d" * (env "b" * ((n : ℝ) / t)))) t :=
+      (Real.hasDerivAt_sin _).comp t hU
+    have hC : HasDerivAt (fun w => Real.cos (U w)) (-Real.sin (U t) * (env "d" * (env "b" * ((n : ℝ) / t)))) t :=
+      (Real.hasDerivAt_cos _).comp t hU
+    have hSp := (hasDerivAt_zpow p (Real.sin (U t)) (Or.inr (by omega))).comp t hS
+    have hSp1 := (hasDerivAt_zpow (p - 1) (Real.sin (U t)) (Or.inr (by omega))).comp t hS
+    set K := env "b" ^ 2 * env "d" ^ 2 * env "n" ^ 2 * env "p" ^ 2 + 1 with hKdef
+    have key := ((((hasDerivAt_id t).mul hSp).mul_const K⁻¹).add
+      (((((hasDerivAt_id t).const_mul (-1 * env "b" * env "d" * env "n" * env "p")).mul hC).mul
+        hSp1).mul_const K⁻¹)).add
+      (hΦ.const_mul (env "b" ^ 2 * env "d" ^ 2 * env "n" ^ 2 * env "p" * (env "p" + -1) * K⁻¹))
+    convert key using 1
+    · funext w
+      simp [sinPowLog, eval, recEnv, Interp.real, hkn, hkp, hp1, h2, hm1, hUdef, hKdef]
+    · simp [sinPowLog, eval, Interp.real, hkn, hkp, hp2, h2, hm1, hUdef, hKdef]
+      have e1 := mul_div_of_log_monomial _ t n hc0
+      have hKne : env "b" ^ 2 * env "d" ^ 2 * env "n" ^ 2 * env "p" ^ 2 + 1 ≠ 0 := hK
+      have hI := mul_inv_cancel₀ hKne
+      rw [iv_val hkn, iv_val hkp] at hI ⊢
+      generalize ((env "b" ^ 2 * env "d" ^ 2 * (n : ℝ) ^ 2 * (p : ℝ) ^ 2 + 1)⁻¹) = J at hI ⊢
+      have hpy := Real.sin_sq_add_cos_sq (env "d" * (env "a" + env "b" * Real.log (env "c" * t ^ n)))
+      generalize Real.sin (env "d" * (env "a" + env "b" * Real.log (env "c" * t ^ n))) = S at hpy ⊢
+      generalize Real.cos (env "d" * (env "a" + env "b" * Real.log (env "c" * t ^ n))) = C at hpy ⊢
+      obtain ⟨j, rfl⟩ : ∃ j : ℕ, p = (j : ℤ) + 2 := ⟨(p - 2).toNat, by omega⟩
+      rw [show ((j : ℤ) + 2) = ((j + 2 : ℕ) : ℤ) by push_cast; ring,
+        show ((j + 2 : ℕ) : ℤ) - 1 = ((j + 1 : ℕ) : ℤ) by push_cast; ring,
+        show ((j + 1 : ℕ) : ℤ) - 1 = (j : ℤ) by push_cast; ring,
+        show ((j + 2 : ℕ) : ℤ) - 2 = (j : ℤ) by push_cast; ring] at *
+      simp only [zpow_natCast] at *
+      push_cast at *
+      set X := env "d" * env "b"
+      set q : ℝ := (j : ℝ) + 2
+      linear_combination (-(S ^ (j + 2))) * hI +
+        (-J * (q * X * S ^ (j + 1) * C + X ^ 2 * n * q * S ^ (j + 2) -
+          X ^ 2 * n * q * (q - 1) * C ^ 2 * S ^ j)) * e1 +
+        (J * X ^ 2 * n ^ 2 * q * (q - 1) * S ^ j) * hpy
+
+/-- `∫ cos(d (a + b log(c xⁿ)))^p` reduces to `p - 2`, for an integer `p ≥ 2`, over ℝ. -/
+theorem cosPowLog_real : cosPowLog.Holds .real := by
+  show AntiderivRecHolds Interp.real "x" cosPowLog.conditions cosPowLog.body
+    cosPowLog.result cosPowLog.integrals
+  intro env hc t hF
+  have hgp := hc (.gt (.var "p") (.int 1)) (by simp [cosPowLog])
+  have hK := hc (.ne (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.var "b") (.int 2))
+    (.pow (.var "d") (.int 2))) (.pow (.var "n") (.int 2))) (.pow (.var "p") (.int 2))) (.int 1))
+    (.int 0)) (by simp [cosPowLog])
+  have h2 : intValue? (2 : ℝ) = some 2 := (intValue?_eq _ _).2 (by norm_num)
+  have hm1 : intValue? (-1 : ℝ) = some (-1) := (intValue?_eq _ _).2 (by norm_num)
+  simp only [Cond.Holds, Defined, eval, Interp.real, true_and] at hgp
+  simp [Cond.Holds, Defined, eval, Interp.real, h2] at hK
+  rcases hkp : intValue? (env "p") with _ | p
+  · exfalso
+    have h := hF.self_of_nhds
+    simp [cosPowLog, Defined, eval, Interp.real, hkp] at h
+  rcases hkn : intValue? (env "n") with _ | n
+  · exfalso
+    have h := hF.self_of_nhds
+    simp [cosPowLog, Defined, eval, Interp.real, hkn] at h
+  have hp : 1 < p := by rw [iv_val hkp] at hgp; exact_mod_cast hgp
+  have hp1 : intValue? (env "p" + -1) = some (p - 1) :=
+    (intValue?_eq _ _).2 (by rw [iv_val hkp]; push_cast; ring)
+  have hp2 : intValue? (env "p" + -2) = some (p - 2) :=
+    (intValue?_eq _ _).2 (by rw [iv_val hkp]; push_cast; ring)
+  have hpn : ¬ p < 0 := by omega
+  have hp1n : ¬ p - 1 < 0 := by omega
+  have hp2n : ¬ p - 2 < 0 := by omega
+  have hD : ∀ w, Defined Interp.real (Function.update env "x" w) cosPowLog.body →
+      (n < 0 → w ≠ 0) ∧ 0 < env "c" * w ^ n := by
+    intro w h
+    simp [cosPowLog, Defined, eval, Interp.real, hkn, hkp, hpn] at h
+    exact h
+  refine ⟨fun i hi => ?_, fun Φ hΦ => ⟨?_, ?_⟩⟩
+  · simp only [cosPowLog, List.mem_cons, List.not_mem_nil, or_false] at hi
+    subst hi
+    filter_upwards [hF] with w hw
+    obtain ⟨h1, h1'⟩ := hD w hw
+    simp [Defined, eval, Interp.real, hkn, hp2, hp2n]
+    exact ⟨h1, h1'⟩
+  · filter_upwards [hF] with w hw
+    obtain ⟨h1, h1'⟩ := hD w hw
+    simp [cosPowLog, Defined, eval, Interp.real, recEnv, hkn, hkp, hpn, hp1, hp1n, h2, hm1, hK]
+    try exact ⟨h1, h1'⟩
+  · simp only [cosPowLog, List.mem_cons, List.not_mem_nil, or_false, forall_eq] at hΦ
+    obtain ⟨-, hc0⟩ := hD t hF.self_of_nhds
+    set U : ℝ → ℝ := fun w => env "d" * (env "a" + env "b" * Real.log (env "c" * w ^ n)) with hUdef
+    have hU : HasDerivAt U (env "d" * (env "b" * ((n : ℝ) / t))) t :=
+      (((hasDerivAt_log_monomial _ t n hc0).const_mul _).const_add _).const_mul _
+    have hS : HasDerivAt (fun w => Real.sin (U w)) (Real.cos (U t) * (env "d" * (env "b" * ((n : ℝ) / t)))) t :=
+      (Real.hasDerivAt_sin _).comp t hU
+    have hC : HasDerivAt (fun w => Real.cos (U w)) (-Real.sin (U t) * (env "d" * (env "b" * ((n : ℝ) / t)))) t :=
+      (Real.hasDerivAt_cos _).comp t hU
+    have hSp := (hasDerivAt_zpow p (Real.cos (U t)) (Or.inr (by omega))).comp t hC
+    have hSp1 := (hasDerivAt_zpow (p - 1) (Real.cos (U t)) (Or.inr (by omega))).comp t hC
+    set K := env "b" ^ 2 * env "d" ^ 2 * env "n" ^ 2 * env "p" ^ 2 + 1 with hKdef
+    have key := ((((hasDerivAt_id t).mul hSp).mul_const K⁻¹).add
+      (((((hasDerivAt_id t).const_mul (env "b" * env "d" * env "n" * env "p")).mul hSp1).mul
+        hS).mul_const K⁻¹)).add
+      (hΦ.const_mul (env "b" ^ 2 * env "d" ^ 2 * env "n" ^ 2 * env "p" * (env "p" + -1) * K⁻¹))
+    convert key using 1
+    · funext w
+      simp [cosPowLog, eval, recEnv, Interp.real, hkn, hkp, hp1, h2, hm1, hUdef, hKdef]
+    · simp [cosPowLog, eval, Interp.real, hkn, hkp, hp2, h2, hm1, hUdef, hKdef]
+      have e1 := mul_div_of_log_monomial _ t n hc0
+      have hKne : env "b" ^ 2 * env "d" ^ 2 * env "n" ^ 2 * env "p" ^ 2 + 1 ≠ 0 := hK
+      have hI := mul_inv_cancel₀ hKne
+      rw [iv_val hkn, iv_val hkp] at hI ⊢
+      generalize ((env "b" ^ 2 * env "d" ^ 2 * (n : ℝ) ^ 2 * (p : ℝ) ^ 2 + 1)⁻¹) = J at hI ⊢
+      have hpy := Real.sin_sq_add_cos_sq (env "d" * (env "a" + env "b" * Real.log (env "c" * t ^ n)))
+      generalize Real.sin (env "d" * (env "a" + env "b" * Real.log (env "c" * t ^ n))) = S at hpy ⊢
+      generalize Real.cos (env "d" * (env "a" + env "b" * Real.log (env "c" * t ^ n))) = C at hpy ⊢
+      obtain ⟨j, rfl⟩ : ∃ j : ℕ, p = (j : ℤ) + 2 := ⟨(p - 2).toNat, by omega⟩
+      rw [show ((j : ℤ) + 2) = ((j + 2 : ℕ) : ℤ) by push_cast; ring,
+        show ((j + 2 : ℕ) : ℤ) - 1 = ((j + 1 : ℕ) : ℤ) by push_cast; ring,
+        show ((j + 1 : ℕ) : ℤ) - 1 = (j : ℤ) by push_cast; ring,
+        show ((j + 2 : ℕ) : ℤ) - 2 = (j : ℤ) by push_cast; ring] at *
+      simp only [zpow_natCast] at *
+      push_cast at *
+      set X := env "d" * env "b"
+      set q : ℝ := (j : ℝ) + 2
+      linear_combination (-(C ^ (j + 2))) * hI +
+        (-J * (-(q * X * C ^ (j + 1) * S) + X ^ 2 * n * q * C ^ (j + 2) -
+          X ^ 2 * n * q * (q - 1) * S ^ 2 * C ^ j)) * e1 +
+        (J * X ^ 2 * n ^ 2 * q * (q - 1) * C ^ j) * hpy
 
 end Real
 

@@ -1878,7 +1878,22 @@ def catalog : List CEntry := [
     findings := [
       "independence: q is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
       recFinding, condFinding "GtQ[q, 0]",
-      optionalFinding "e., q., a., b., c. and n.", lnComplexFinding] }
+      optionalFinding "e., q., a., b., c. and n.", lnComplexFinding] },
+  { rule := powLinLogOverX2, ruleDecl := ``powLinLogOverX2,
+    proofs := [(.real, ``powLinLogOverX2_real), (.complex, ``powLinLogOverX2_complex)],
+    findings := [
+      "independence: p and q are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding, condFinding "IGtQ[p, 0]; GtQ[q, 0]; IntegerQ[Multiply[2, q]]", optionalFinding "e., q., a., b., c., n. and p."] },
+  { rule := sinPowLog, ruleDecl := ``sinPowLog,
+    proofs := [(.real, ``sinPowLog_real)], unproved := [.complex],
+    findings := [
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding, condFinding "IGtQ[p, 1]; NeQ[Add[Multiply[Power[b, 2], Power[d, 2], Power[n, 2], Power[p, 2]], 1], 0]", optionalFinding "d., a., b., c. and n.", lnComplexFinding] },
+  { rule := cosPowLog, ruleDecl := ``cosPowLog,
+    proofs := [(.real, ``cosPowLog_real)], unproved := [.complex],
+    findings := [
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding, condFinding "IGtQ[p, 1]; NeQ[Add[Multiply[Power[b, 2], Power[d, 2], Power[n, 2], Power[p, 2]], 1], 0]", optionalFinding "d., a., b., c. and n.", lnComplexFinding] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -1899,6 +1914,6 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
     | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
-    | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 end OSR.Integration
