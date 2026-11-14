@@ -372,11 +372,18 @@ vacuous. For 4.7.7, `F < 0` makes `log F` undefined over ℝ in both the
 condition and the result, so the conditions fail and the case is no
 counterexample. These rules remain unproved.
 
-Integration now exports 182 rules: 40 proved and 141 refuted over ℝ (one
-unproved), 32 proved and 136 refuted over ℂ (fourteen unproved). Of the
+`OSR/IntegrationRec12.lean` proves the quartic reduction 1.2.2.1 #4
+(`integration.quartic_power_reduction`) over ℝ and ℂ for integers `p ≥ 1`,
+from `(x Qᵖ)' + 2 p (2 a + b x²) Qᵖ⁻¹ = (4 p + 1) Qᵖ` with
+`Q = a + b x² + c x⁴`; all powers are natural, so `Q` may vanish. The complex
+proof is not certified (`p > 0` uses `relation1#gt`).
+
+Integration now exports 183 rules: 41 proved and 141 refuted over ℝ (one
+unproved), 33 proved and 136 refuted over ℂ (fourteen unproved). Of the
 complex proofs, 17 are certified. Fourteen other rules remain explicitly
-reported as not migrated. Of the 39 backlog rules, 13 are neither proved
-nor refuted.
+reported as not migrated. Of the 39 backlog rules, 12 are neither proved
+nor refuted: the six `p + 1/2 ∈ ℤ` rules, 2.3 #44 and #45, and the four
+4.7.7 rules discussed above.
 
 These further refutations expose coefficients that the converted rule's
 conditions allow to vanish, although the result divides by them. RUBI may

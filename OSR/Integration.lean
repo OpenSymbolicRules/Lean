@@ -1,5 +1,5 @@
 import OSR.Calculus
-import OSR.IntegrationRec11
+import OSR.IntegrationRec12
 
 /-!
 # Integration (RUBI)
@@ -37,7 +37,7 @@ namespace OSR.Integration
 open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec4 OSR.IntegrationRec5 OSR.IntegrationRec6
   OSR.IntegrationRec7 OSR.IntegrationRec8 OSR.IntegrationRec9
-  OSR.IntegrationRec10 OSR.IntegrationRec11 Filter Topology
+  OSR.IntegrationRec10 OSR.IntegrationRec11 OSR.IntegrationRec12 Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -1947,7 +1947,12 @@ def catalog : List CEntry := [
       "independence: m, p, q are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       recFinding,
       condFinding "ILtQ[Add[m, q, 2], 0]; IGtQ[p, 0]; LtQ[q, -1]; GtQ[m, 0]",
-      optionalFinding "f., m., e., a., b., c., n. and p."] }
+      optionalFinding "f., m., e., a., b., c., n. and p."] },
+  { rule := quartPowReduce, ruleDecl := ``quartPowReduce,
+    proofs := [(.real, ``quartPowReduce_real), (.complex, ``quartPowReduce_complex)],
+    findings := [
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding, condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; GtQ[p, 0]; IntegerQ[Multiply[2, p]]", optionalFinding "b. and c."] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -1969,6 +1974,6 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
     | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
     | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 end OSR.Integration
