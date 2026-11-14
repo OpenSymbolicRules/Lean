@@ -341,10 +341,24 @@ reductions for `p < -1`, over ℝ and ℂ. Their results divide by
 assignment; it was found by reading the result and checked with the same
 evaluator before the Lean proofs.
 
-Integration now exports 178 rules: 38 proved and 139 refuted over ℝ (one
-unproved), 30 proved and 135 refuted over ℂ (thirteen unproved). Of the
+`OSR/IntegrationRec10.lean` proves the quadratic reductions 1.2.1.1 #7
+(`integration.quadratic_power_reduction`) and 1.2.1.2 #11
+(`integration.linear_quadratic_power_reduction`) over ℝ and ℂ, for integers
+`p < -1`: with `Q = a + b x + c x²` and `D = b² - 4 a c ≠ 0`, they rest on
+`(b + 2 c x)² - 4 c Q = D` and, with `L = b d - 2 a e + (2 c d - b e) x`,
+`L Q' - 2 (2 c d - b e) Q = D (d + e x)`. Their complex proofs are not
+certified (`p < -1` uses `relation1#gt`).
+
+Six other backlog rules (1.2.2.3 #32, #33, #37 and #38; 1.2.2.8 #5 and
+#6) require `p + 1/2` to be an integer. Only integer powers are defined in
+the fragment, so their integrands are never defined and their statements
+hold vacuously; they are left unproved rather than counted as proofs that no
+engine could ever use.
+
+Integration now exports 180 rules: 40 proved and 139 refuted over ℝ (one
+unproved), 32 proved and 135 refuted over ℂ (thirteen unproved). Of the
 complex proofs, 17 are certified. Fourteen other rules remain explicitly
-reported as not migrated. Of the 39 backlog rules, 17 are neither proved
+reported as not migrated. Of the 39 backlog rules, 15 are neither proved
 nor refuted.
 
 These further refutations expose coefficients that the converted rule's

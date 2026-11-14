@@ -1,5 +1,5 @@
 import OSR.Calculus
-import OSR.IntegrationRec9
+import OSR.IntegrationRec10
 
 /-!
 # Integration (RUBI)
@@ -36,7 +36,8 @@ namespace OSR.Integration
 
 open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec4 OSR.IntegrationRec5 OSR.IntegrationRec6
-  OSR.IntegrationRec7 OSR.IntegrationRec8 OSR.IntegrationRec9 Filter Topology
+  OSR.IntegrationRec7 OSR.IntegrationRec8 OSR.IntegrationRec9
+  OSR.IntegrationRec10 Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -1919,7 +1920,17 @@ def catalog : List CEntry := [
       "independence: m, n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       recFinding,
       condFinding "LtQ[p, -1]; NeQ[p, -2]; IGtQ[n, 0]; IGtQ[m, Add[Multiply[2, n], Multiply[-1, 1]]]",
-      optionalFinding "m., a. and b."] }
+      optionalFinding "m., a. and b."] },
+  { rule := quadPowReduce, ruleDecl := ``quadPowReduce,
+    proofs := [(.real, ``quadPowReduce_real), (.complex, ``quadPowReduce_complex)],
+    findings := [
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding, condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; LtQ[p, -1]; NeQ[p, Multiply[-3, Power[2, -1]]]; IntegerQ[Multiply[4, p]]", optionalFinding "a., b. and c."] },
+  { rule := linQuadPowReduce, ruleDecl := ``linQuadPowReduce,
+    proofs := [(.real, ``linQuadPowReduce_real), (.complex, ``linQuadPowReduce_complex)],
+    findings := [
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding, condFinding "NeQ[Add[Multiply[2, c, d], Multiply[-1, b, e]], 0]; NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; LtQ[p, -1]; NeQ[p, Multiply[-3, Power[2, -1]]]", optionalFinding "d., e., a., b. and c."] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -1941,6 +1952,6 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
     | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
     | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 end OSR.Integration
