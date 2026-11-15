@@ -431,9 +431,23 @@ integrand's denominator `sin x - x cos x` equals `π` at `x = π`, hence stays
 nonzero nearby (continuity), while the residual integrands `1/sin²(x)` and
 `1/(x sin x)` (#82 at `b = m = n = 1`) are undefined at `x = π`.
 
-Integration now exports 305 rules: 50 proved and 254 refuted over ℝ (one
-unproved), 42 proved and 243 refuted over ℂ (twenty unproved). Of the
-complex proofs, 17 are certified. Fourteen other rules remain explicitly
+`OSR/IntegrationRec20.lean` settles five more `EqQ` rules. Four are proved
+over ℝ and ℂ by a trigonometric identity under the integral:
+
+| RUBI 4.16.1 rule | Identity |
+|---|---|
+| 4.7.9 #9, #10 | `cosⁿ u/(a + b sin u) = cosⁿ⁻² u (1/a - sin u/b)` when `a² = b²` (and with `sin`, `cos` exchanged), from `(b - a s)(a + b s) = a b (1 - s²)` |
+| 4.7.7 #26, #27 | `f + f cos u = 2 f cos²(u/2)`, `f - f cos u = 2 f sin²(u/2)` |
+
+Their conditions `n > 1` and `n < 0` use `relation1#gt`, so the complex
+proofs are not certified. 4.7.7 #32 is refuted in both domains at `e = 1`
+and the other metavariables `0`: the integrand `0⁰ sin(x)⁰ (0 + 0 cos x)⁰`
+is defined everywhere, while the residual integrand `0⁰ tan(x/2)⁰` is
+undefined at `x = π`.
+
+Integration now exports 310 rules: 54 proved and 255 refuted over ℝ (one
+unproved), 46 proved and 244 refuted over ℂ (twenty unproved). Of the
+complex proofs, 24 are certified. Fourteen other rules remain explicitly
 reported as not migrated. Of the 39 backlog rules, 12 are neither proved
 nor refuted: the six `p + 1/2 ∈ ℤ` rules, 2.3 #44 and #45, and the four
 4.7.7 rules discussed above. The `EqQ` rules refuted here expose the same

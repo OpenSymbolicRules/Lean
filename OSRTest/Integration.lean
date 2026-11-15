@@ -13,13 +13,13 @@ private def t : Expr := .var "t"
 -- The twenty rules of the syntactic inventory (FreeQ or NeQ conditions,
 -- registered heads, no Int in the result) are migrated or reported, plus
 -- 110 rules with residual integrals and seven unmigrated ones.
-#guard Integration.catalog.length + Integration.notMigrated.length == 319
+#guard Integration.catalog.length + Integration.notMigrated.length == 324
 #guard Integration.notMigrated.length == 14
-#guard (Integration.catalog.filter (·.rule.shape == .antiderivRec)).length == 253
-#guard (Integration.catalog.filter (!·.rule.conditions.isEmpty)).length == 277
+#guard (Integration.catalog.filter (·.rule.shape == .antiderivRec)).length == 258
+#guard (Integration.catalog.filter (!·.rule.conditions.isEmpty)).length == 282
 -- RUBI rules with EqQ conditions are stated with relation1#eq (Cond.eq).
 #guard (Integration.catalog.filter fun e =>
-  e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 122
+  e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 127
 
 -- RUBI 4.16.1: the new degenerate-coefficient cases are refuted in both
 -- domains, with no proof or unresolved domain accidentally attached.
@@ -108,7 +108,9 @@ private def rules : List CRule :=
   "integration.linear_linear_power", "integration.monomial_binomial_power_by_parts",
   "integration.linear_linear_reciprocal", "integration.linear_linear_monomial_power", "integration.power_inverse_linear_log",
   "integration.power_inverse_linear_log_u", "integration.power_inverse_linear_log_linear",
-  "integration.polynomial_binomial_split", "integration.polynomial_binomial_binomial_split"]
+  "integration.polynomial_binomial_split", "integration.polynomial_binomial_binomial_split",
+  "integration.cos_power_over_sin_binomial", "integration.sin_power_over_cos_binomial",
+  "integration.exp_one_plus_cos_power", "integration.exp_one_minus_cos_power"]
 
 -- A conditional rule applies only when its conditions are decided: int(λt. t^m)
 -- stays (m ≠ -1 is undecided), int(λt. t^(-1)) stays (decided false),

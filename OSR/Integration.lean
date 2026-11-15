@@ -1,5 +1,5 @@
 import OSR.Calculus
-import OSR.IntegrationRec19
+import OSR.IntegrationRec20
 
 /-!
 # Integration (RUBI)
@@ -39,7 +39,8 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec7 OSR.IntegrationRec8 OSR.IntegrationRec9
   OSR.IntegrationRec10 OSR.IntegrationRec11 OSR.IntegrationRec12
   OSR.IntegrationRec13 OSR.IntegrationRec14 OSR.IntegrationRec15 OSR.IntegrationRec16
-  OSR.IntegrationRec17 OSR.IntegrationRec18 OSR.IntegrationRec19 Filter Topology
+  OSR.IntegrationRec17 OSR.IntegrationRec18 OSR.IntegrationRec19
+  OSR.IntegrationRec20 Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -2839,7 +2840,38 @@ def catalog : List CEntry := [
       "counterexample: at a = b = c = m = n = 1, d = -1 the conditions hold and the integrand x sin x/(sin x - x cos x)² is defined near x = π, but the residual integrand 1/(x sin x) is not defined at x = π (Lean theorems rubi479r82_counterexample_real and rubi479r82_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
       recFinding,
       condFinding "EqQ[Add[Multiply[a, c], d], 0]; EqQ[m, Add[2, Multiply[-1, n]]]",
-      optionalFinding "b., a., c. and d."] }
+      optionalFinding "b., a., c. and d."] },
+  { rule := cosPowOverSin, ruleDecl := ``cosPowOverSin,
+    proofs := [(.real, ``cosPowOverSin_real), (.complex, ``cosPowOverSin_complex)],
+    findings := [
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[n, 1]; EqQ[Add[Power[a, 2], Multiply[-1, Power[b, 2]]], 0]", optionalFinding "e., f., m., c., d. and b."] },
+  { rule := sinPowOverCos, ruleDecl := ``sinPowOverCos,
+    proofs := [(.real, ``sinPowOverCos_real), (.complex, ``sinPowOverCos_complex)],
+    findings := [
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[n, 1]; EqQ[Add[Power[a, 2], Multiply[-1, Power[b, 2]]], 0]", optionalFinding "e., f., m., c., d. and b."] },
+  { rule := expOnePlusCos, ruleDecl := ``expOnePlusCos,
+    proofs := [(.real, ``expOnePlusCos_real), (.complex, ``expOnePlusCos_complex)],
+    findings := [
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[f, Multiply[-1, g]], 0]; ILtQ[n, 0]", optionalFinding "c., a., b., g., d., e. and n."] },
+  { rule := expOneMinusCos, ruleDecl := ``expOneMinusCos,
+    proofs := [(.real, ``expOneMinusCos_real), (.complex, ``expOneMinusCos_complex)],
+    findings := [
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[f, g], 0]; ILtQ[n, 0]", optionalFinding "c., a., b., g., d., e. and n."] },
+  { rule := rubi477r32, ruleDecl := ``rubi477r32, proofs := [],
+    counterexamples := [(.real, ``rubi477r32_counterexample_real), (.complex, ``rubi477r32_counterexample_complex)],
+    findings := [
+      "counterexample: at e = 1 and the other metavariables 0 the conditions hold and the integrand 0⁰ sin(x)⁰ (0 + 0 cos x)⁰ is defined everywhere, but the residual integrand 0⁰ tan(x/2)⁰ is not defined at x = π (Lean theorems rubi477r32_counterexample_real and rubi477r32_counterexample_complex).",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[f, Multiply[-1, g]], 0]; IntegersQ[m, n]; EqQ[Add[m, n], 0]", optionalFinding "c., a., b., d., e., m., g. and n."] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -2869,6 +2901,7 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
     | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
     | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+    | rfl | rfl | rfl | rfl | rfl <;> decide
 
 end OSR.Integration
