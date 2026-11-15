@@ -1,5 +1,5 @@
 import OSR.Calculus
-import OSR.IntegrationRec20
+import OSR.IntegrationRec21
 
 /-!
 # Integration (RUBI)
@@ -40,7 +40,7 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec10 OSR.IntegrationRec11 OSR.IntegrationRec12
   OSR.IntegrationRec13 OSR.IntegrationRec14 OSR.IntegrationRec15 OSR.IntegrationRec16
   OSR.IntegrationRec17 OSR.IntegrationRec18 OSR.IntegrationRec19
-  OSR.IntegrationRec20 Filter Topology
+  OSR.IntegrationRec20 OSR.IntegrationRec21 Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -2871,7 +2871,32 @@ def catalog : List CEntry := [
       "counterexample: at e = 1 and the other metavariables 0 the conditions hold and the integrand 0⁰ sin(x)⁰ (0 + 0 cos x)⁰ is defined everywhere, but the residual integrand 0⁰ tan(x/2)⁰ is not defined at x = π (Lean theorems rubi477r32_counterexample_real and rubi477r32_counterexample_complex).",
       "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       recFinding,
-      condFinding "EqQ[Add[f, Multiply[-1, g]], 0]; IntegersQ[m, n]; EqQ[Add[m, n], 0]", optionalFinding "c., a., b., d., e., m., g. and n."] }
+      condFinding "EqQ[Add[f, Multiply[-1, g]], 0]; IntegersQ[m, n]; EqQ[Add[m, n], 0]", optionalFinding "c., a., b., d., e., m., g. and n."] },
+  { rule := expLinCosOverSin, ruleDecl := ``expLinCosOverSin,
+    proofs := [(.real, ``expLinCosOverSin_real), (.complex, ``expLinCosOverSin_complex)],
+    findings := [
+      recFinding,
+      condFinding "EqQ[Add[Power[f, 2], Multiply[-1, Power[g, 2]]], 0]; EqQ[Add[Power[h, 2], Multiply[-1, Power[i, 2]]], 0]; EqQ[Add[Multiply[g, h], Multiply[-1, f, i]], 0]", optionalFinding "c., a., b., i., d., e. and g."] },
+  { rule := expLinSinOverCos, ruleDecl := ``expLinSinOverCos,
+    proofs := [(.real, ``expLinSinOverCos_real), (.complex, ``expLinSinOverCos_complex)],
+    findings := [
+      recFinding,
+      condFinding "EqQ[Add[Power[f, 2], Multiply[-1, Power[g, 2]]], 0]; EqQ[Add[Power[h, 2], Multiply[-1, Power[i, 2]]], 0]; EqQ[Add[Multiply[g, h], Multiply[f, i]], 0]", optionalFinding "c., a., b., i., d., e. and g."] },
+  { rule := rubi1212r54, ruleDecl := ``rubi1212r54, proofs := [],
+    counterexamples := [(.real, ``rubi1212r54_counterexample_real), (.complex, ``rubi1212r54_counterexample_complex)],
+    findings := [
+      "counterexample: at a = 1, c = 1, e = 1 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorems rubi1212r54_counterexample_real and rubi1212r54_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      recFinding,
+      condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; EqQ[Add[Multiply[2, c, d], Multiply[-1, b, e]], 0]",
+      optionalFinding "e., a., b. and c."] },
+  { rule := rubi1212r59, ruleDecl := ``rubi1212r59, proofs := [],
+    counterexamples := [(.real, ``rubi1212r59_counterexample_real), (.complex, ``rubi1212r59_counterexample_complex)],
+    findings := [
+      "counterexample: at a = 1, c = 1, e = 1, m = 2, p = -2 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorems rubi1212r59_counterexample_real and rubi1212r59_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: m, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; EqQ[Add[Multiply[2, c, d], Multiply[-1, b, e]], 0]; NeQ[Add[m, Multiply[2, p], 3], 0]; LtQ[p, -1]; GtQ[m, 1]; IntegerQ[Multiply[2, p]]",
+      optionalFinding "e., a., b. and c."] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -2902,6 +2927,6 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
     | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
-    | rfl | rfl | rfl | rfl | rfl <;> decide
+    | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 end OSR.Integration

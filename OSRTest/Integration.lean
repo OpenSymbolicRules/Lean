@@ -13,13 +13,13 @@ private def t : Expr := .var "t"
 -- The twenty rules of the syntactic inventory (FreeQ or NeQ conditions,
 -- registered heads, no Int in the result) are migrated or reported, plus
 -- 110 rules with residual integrals and seven unmigrated ones.
-#guard Integration.catalog.length + Integration.notMigrated.length == 324
+#guard Integration.catalog.length + Integration.notMigrated.length == 328
 #guard Integration.notMigrated.length == 14
-#guard (Integration.catalog.filter (·.rule.shape == .antiderivRec)).length == 258
-#guard (Integration.catalog.filter (!·.rule.conditions.isEmpty)).length == 282
+#guard (Integration.catalog.filter (·.rule.shape == .antiderivRec)).length == 262
+#guard (Integration.catalog.filter (!·.rule.conditions.isEmpty)).length == 286
 -- RUBI rules with EqQ conditions are stated with relation1#eq (Cond.eq).
 #guard (Integration.catalog.filter fun e =>
-  e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 127
+  e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 131
 
 -- RUBI 4.16.1: the new degenerate-coefficient cases are refuted in both
 -- domains, with no proof or unresolved domain accidentally attached.
@@ -110,7 +110,8 @@ private def rules : List CRule :=
   "integration.power_inverse_linear_log_u", "integration.power_inverse_linear_log_linear",
   "integration.polynomial_binomial_split", "integration.polynomial_binomial_binomial_split",
   "integration.cos_power_over_sin_binomial", "integration.sin_power_over_cos_binomial",
-  "integration.exp_one_plus_cos_power", "integration.exp_one_minus_cos_power"]
+  "integration.exp_one_plus_cos_power", "integration.exp_one_minus_cos_power",
+  "integration.exp_linear_cos_over_sin", "integration.exp_linear_sin_over_cos"]
 
 -- A conditional rule applies only when its conditions are decided: int(λt. t^m)
 -- stays (m ≠ -1 is undecided), int(λt. t^(-1)) stays (decided false),

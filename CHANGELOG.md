@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- RUBI 4.16.1 4.7.7 #34 and #35 proved over ℝ and ℂ (linearity of the
+  numerator), and 1.2.1.2 #54 and #59 refuted in both domains at `d = b = 0`
+  (`OSR/IntegrationRec21.lean`). The catalogue has 314 rules: 56 proved and
+  257 refuted over ℝ, 48 proved (26 certified) and 246 refuted over ℂ.
 - RUBI 4.16.1 4.7.9 #9, #10 and 4.7.7 #26, #27 proved over ℝ and ℂ by
   trigonometric identities under the integral, and 4.7.7 #32 refuted in
   both domains at `x = π` (`OSR/IntegrationRec20.lean`). The catalogue has

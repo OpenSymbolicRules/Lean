@@ -445,9 +445,19 @@ and the other metavariables `0`: the integrand `0⁰ sin(x)⁰ (0 + 0 cos x)⁰`
 is defined everywhere, while the residual integrand `0⁰ tan(x/2)⁰` is
 undefined at `x = π`.
 
-Integration now exports 310 rules: 54 proved and 255 refuted over ℝ (one
-unproved), 46 proved and 244 refuted over ℂ (twenty unproved). Of the
-complex proofs, 24 are certified. Fourteen other rules remain explicitly
+`OSR/IntegrationRec21.lean` settles four more. 4.7.7 #34 and #35 split the
+numerator, `h + i cos u = 2 i cos u + (h - i cos u)` (and with `sin`), and
+hold over ℝ and ℂ without their conditions. 1.2.1.2 #54 and #59 are refuted
+in both domains at `a = c = e = 1` (and `m = 2`, `p = -2` for #59), the
+other metavariables `0`: `2 c d = b e` then allows `d = b = 0`, the
+integrand stays defined near `x = 1`, and the result divides by `d` (#54)
+or by `b (p + 1)` (#59). The numerical search cannot meet `EqQ` conditions
+exactly, so these witnesses were chosen by hand.
+
+Integration now exports 314 rules: 56 proved and 257 refuted over ℝ (one
+unproved), 48 proved and 246 refuted over ℂ (twenty unproved). Of the
+complex proofs, 26 are certified (4.7.7 #34 and #35 have only
+`relation1#eq` conditions). Fourteen other rules remain explicitly
 reported as not migrated. Of the 39 backlog rules, 12 are neither proved
 nor refuted: the six `p + 1/2 ∈ ℤ` rules, 2.3 #44 and #45, and the four
 4.7.7 rules discussed above. The `EqQ` rules refuted here expose the same
