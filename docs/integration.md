@@ -412,8 +412,21 @@ parts of `x^m (a + b xⁿ)ᵖ` for an integer `p ≥ 1`, where the condition
 `(m + 1)/n + p = 0` gives `m + 1 ≠ 0`; at `x = 0` the exponents are natural
 (`zpow_add_of`). The complex proof is not certified (`p > 0`).
 
-Integration now exports 296 rules: 43 proved and 252 refuted over ℝ (one
-unproved), 35 proved and 241 refuted over ℂ (twenty unproved). Of the
+`OSR/IntegrationRec18.lean` proves seven rules that rewrite the integrand
+into a residual integral, over ℝ and ℂ:
+
+| RUBI 4.16.1 rule | Identity |
+|---|---|
+| 1.1.1.2 #2 | `(a + b x)(c + d x) = a c + b d x²` when `b c + a d = 0` |
+| 1.1.1.3 #50 | the same, under a common integer power (`mul_zpow`) |
+| 3.1.4 #1, 3.1.5 #2, 3.3 #21 | `x^q (d + e/x)^q = (e + d x)^q` for `x ≠ 0` |
+| 1.1.3.7 #11, #18 | linearity: `(A + B x^m) F = A F + B x^m F` |
+
+Six of the seven complex proofs are certified (24 in all); 1.1.1.3 #50 states
+`a > 0` and `c > 0` with `relation1#gt`.
+
+Integration now exports 303 rules: 50 proved and 252 refuted over ℝ (one
+unproved), 42 proved and 241 refuted over ℂ (twenty unproved). Of the
 complex proofs, 17 are certified. Fourteen other rules remain explicitly
 reported as not migrated. Of the 39 backlog rules, 12 are neither proved
 nor refuted: the six `p + 1/2 ∈ ℤ` rules, 2.3 #44 and #45, and the four

@@ -1,5 +1,5 @@
 import OSR.Calculus
-import OSR.IntegrationRec17
+import OSR.IntegrationRec18
 
 /-!
 # Integration (RUBI)
@@ -39,7 +39,7 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec7 OSR.IntegrationRec8 OSR.IntegrationRec9
   OSR.IntegrationRec10 OSR.IntegrationRec11 OSR.IntegrationRec12
   OSR.IntegrationRec13 OSR.IntegrationRec14 OSR.IntegrationRec15 OSR.IntegrationRec16
-  OSR.IntegrationRec17 Filter Topology
+  OSR.IntegrationRec17 OSR.IntegrationRec18 Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -2788,7 +2788,44 @@ def catalog : List CEntry := [
     proofs := [(.real, ``monoBinomByParts_real), (.complex, ``monoBinomByParts_complex)],
     findings := [
       "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
-      recFinding, condFinding "EqQ[Add[Multiply[Add[m, 1], Power[n, -1]], p], 0]; GtQ[p, 0]", optionalFinding "m. and b."] }
+      recFinding, condFinding "EqQ[Add[Multiply[Add[m, 1], Power[n, -1]], p], 0]; GtQ[p, 0]", optionalFinding "m. and b."] },
+  { rule := linLinRecip, ruleDecl := ``linLinRecip,
+    proofs := [(.real, ``linLinRecip_real), (.complex, ``linLinRecip_complex)],
+    findings := [
+      recFinding,
+      condFinding "EqQ[Add[Multiply[b, c], Multiply[a, d]], 0]", optionalFinding "b. and d."] },
+  { rule := linLinMonoPow, ruleDecl := ``linLinMonoPow,
+    proofs := [(.real, ``linLinMonoPow_real), (.complex, ``linLinMonoPow_complex)],
+    findings := [
+      recFinding,
+      condFinding "EqQ[Add[Multiply[b, c], Multiply[a, d]], 0]; EqQ[n, m]; GtQ[a, 0]; GtQ[c, 0]", optionalFinding "a., b., m., c., d., n., f. and p."] },
+  { rule := powInvLinLog, ruleDecl := ``powInvLinLog,
+    proofs := [(.real, ``powInvLinLog_real), (.complex, ``powInvLinLog_complex)],
+    findings := [
+      "independence: q is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[m, q]; IntegerQ[q]", optionalFinding "m., e., q., a., b., c., n. and p."] },
+  { rule := powInvLinLog2, ruleDecl := ``powInvLinLog2,
+    proofs := [(.real, ``powInvLinLog2_real), (.complex, ``powInvLinLog2_complex)],
+    findings := [
+      "independence: q is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[m, q]; IntegerQ[q]", optionalFinding "m., e., q., a., b., c., n. and p."] },
+  { rule := powInvLinLogLin, ruleDecl := ``powInvLinLogLin,
+    proofs := [(.real, ``powInvLinLogLin_real), (.complex, ``powInvLinLogLin_complex)],
+    findings := [
+      recFinding,
+      condFinding "EqQ[m, q]; IntegerQ[q]", optionalFinding "m., g., q., a., b., c., e., n. and p."] },
+  { rule := polyBinomSplit, ruleDecl := ``polyBinomSplit,
+    proofs := [(.real, ``polyBinomSplit_real), (.complex, ``polyBinomSplit_complex)],
+    findings := [
+      recFinding,
+      condFinding "EqQ[Add[m, Multiply[-1, n], 1], 0]", optionalFinding "B., m., b. and p."] },
+  { rule := polyBinomBinomSplit, ruleDecl := ``polyBinomBinomSplit,
+    proofs := [(.real, ``polyBinomBinomSplit_real), (.complex, ``polyBinomBinomSplit_complex)],
+    findings := [
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; EqQ[Add[m, Multiply[-1, n], 1], 0]", optionalFinding "B., m., a., b., p., d. and q."] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -2818,6 +2855,6 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
     | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
     | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 end OSR.Integration
