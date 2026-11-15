@@ -97,7 +97,8 @@ OSR/IntegrationRec18.lean rewritings into a residual integral (7)
 OSR/IntegrationRec19.lean refutations at x = π (2), per domain
 OSR/IntegrationRec20.lean EqQ trigonometric identities (4 proofs, 1 refutation)
 OSR/IntegrationRec21.lean EqQ linearity proofs (2) and refutations at d = 0 (2)
-OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (314)
+OSR/IntegrationRec22.lean EqQ proofs: a log scaling rule and a closed form (2)
+OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (316)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
                        generation of rule set, reports and conformance cases

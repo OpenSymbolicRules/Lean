@@ -14,6 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- RUBI 4.16.1 3.1.2 #8 (scaling under a logarithm) and 4.7.9 #80 (a closed
+  form, its derivative checked with SymPy-computed `linear_combination`
+  coefficients) proved over ℝ and ℂ (`OSR/IntegrationRec22.lean`). The
+  catalogue has 316 rules: 58 proved and 257 refuted over ℝ, 50 proved
+  (28 certified) and 246 refuted over ℂ.
 - RUBI 4.16.1 4.7.7 #34 and #35 proved over ℝ and ℂ (linearity of the
   numerator), and 1.2.1.2 #54 and #59 refuted in both domains at `d = b = 0`
   (`OSR/IntegrationRec21.lean`). The catalogue has 314 rules: 56 proved and

@@ -454,10 +454,18 @@ integrand stays defined near `x = 1`, and the result divides by `d` (#54)
 or by `b (p + 1)` (#59). The numerical search cannot meet `EqQ` conditions
 exactly, so these witnesses were chosen by hand.
 
-Integration now exports 314 rules: 56 proved and 257 refuted over ℝ (one
-unproved), 48 proved and 246 refuted over ℂ (twenty unproved). Of the
-complex proofs, 26 are certified (4.7.7 #34 and #35 have only
-`relation1#eq` conditions). Fourteen other rules remain explicitly
+`OSR/IntegrationRec22.lean` proves two more over ℝ and ℂ. 3.1.2 #8 writes
+`∫ (d x)^m / log(c xⁿ)` as `(d x)^m / x^m · ∫ x^m / log(c xⁿ)` when
+`m = n - 1`: the factor is `d^m` wherever `x ≠ 0`, and the integrand is never
+defined at `x = 0` (`n ≥ 1` makes `log(c · 0ⁿ) = log 0`). 4.7.9 #80 is a
+closed form, `∫ sin²(a x)/(c sin(a x) + d x cos(a x))² = 1/(d² x) +
+sin(a x)/(a d x (d x cos(a x) + c sin(a x)))` when `a c + d = 0`; its
+derivative is checked in Lean with `linear_combination`, using coefficients
+computed by SymPy 1.14.0 modulo `sin² + cos² = 1` and `a c + d = 0`.
+
+Integration now exports 316 rules: 58 proved and 257 refuted over ℝ (one
+unproved), 50 proved and 246 refuted over ℂ (twenty unproved). Of the
+complex proofs, 28 are certified. Fourteen other rules remain explicitly
 reported as not migrated. Of the 39 backlog rules, 12 are neither proved
 nor refuted: the six `p + 1/2 ∈ ℤ` rules, 2.3 #44 and #45, and the four
 4.7.7 rules discussed above. The `EqQ` rules refuted here expose the same
