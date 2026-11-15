@@ -14,6 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Eight one-domain refutations carried to the other domain
+  (`OSR/IntegrationRec25.lean`): RUBI 4.16.1 3.1.5 #33 over ℝ; 3.4 #9,
+  4.7.6 #2, 1.2.2.2 #19 and 3.5 #14, #17, #22, #23 over ℂ. Integration has
+  no unproved real statement left: 61 proved and 259 refuted over ℝ, 53
+  proved (28 certified), 254 refuted and 13 unproved over ℂ.
 - RUBI 4.16.1 1.1.3.2 #69 (by parts for a product of two binomials) proved
   over ℝ and ℂ (`OSR/IntegrationRec24.lean`). The catalogue has 320 rules:
   61 proved and 258 refuted over ℝ, 53 proved (28 certified) and 247

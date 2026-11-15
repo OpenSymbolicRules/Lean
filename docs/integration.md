@@ -477,8 +477,17 @@ for `x^m (a₁ + b₁ xⁿ)^p (a₂ + b₂ xⁿ)^p` when `a₂ b₁ + a₁ b₂ 
 2 b₁ b₂ xⁿ`. The point `x = 0` is outside the domain: the condition needs
 `n ≠ 0`, and either `n < 0` or `m = -2 n p - 1 < 0`.
 
-Integration now exports 320 rules: 61 proved and 258 refuted over ℝ (one
-unproved), 53 proved and 247 refuted over ℂ (twenty unproved). Of the
+`OSR/IntegrationRec25.lean` carries eight refutations to the domain where
+they were "not established": 3.1.5 #33 to ℝ, and 3.4 #9, 4.7.6 #2,
+1.2.2.2 #19 and 3.5 #14, #17, #22, #23 to ℂ. The witnesses are unchanged;
+over ℂ the integrand is shown defined near `x = 1` by continuity where it
+vanishes elsewhere (`1 + x²` at `±i`), and `log 2 ≠ 0` is
+`Real.log 2 > 0` cast to ℂ. Two others, 3.2.3 #5 and 3.3 #40, stay unproved
+over ℂ: their real witnesses use the logarithm of a negative number, which
+is defined over ℂ.
+
+Integration now exports 320 rules: 61 proved and 259 refuted over ℝ (none
+unproved), 53 proved and 254 refuted over ℂ (thirteen unproved). Of the
 complex proofs, 28 are certified (the recent ones state `relation1#gt`
 conditions). Fourteen other rules remain explicitly
 reported as not migrated. Of the 39 backlog rules, 12 are neither proved
