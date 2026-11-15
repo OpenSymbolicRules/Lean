@@ -1,5 +1,5 @@
 import OSR.Calculus
-import OSR.IntegrationRec22
+import OSR.IntegrationRec23
 
 /-!
 # Integration (RUBI)
@@ -41,7 +41,7 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec13 OSR.IntegrationRec14 OSR.IntegrationRec15 OSR.IntegrationRec16
   OSR.IntegrationRec17 OSR.IntegrationRec18 OSR.IntegrationRec19
   OSR.IntegrationRec20 OSR.IntegrationRec21
-  OSR.IntegrationRec22 Filter Topology
+  OSR.IntegrationRec22 OSR.IntegrationRec23 Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -2906,7 +2906,24 @@ def catalog : List CEntry := [
   { rule := sinSqOverQuotSq, ruleDecl := ``sinSqOverQuotSq,
     proofs := [(.real, ``sinSqOverQuotSq_real), (.complex, ``sinSqOverQuotSq_complex)],
     findings := [
-      condFinding "EqQ[Add[Multiply[a, c], d], 0]", optionalFinding "a., c. and d."] }
+      condFinding "EqQ[Add[Multiply[a, c], d], 0]", optionalFinding "a., c. and d."] },
+  { rule := logQuotSplit, ruleDecl := ``logQuotSplit,
+    proofs := [(.real, ``logQuotSplit_real), (.complex, ``logQuotSplit_complex)],
+    findings := [
+      recFinding,
+      condFinding "EqQ[Add[Multiply[Power[e, 2], f], Multiply[Power[d, 2], g]], 0]; GtQ[Multiply[c, Power[Multiply[2, d], -1]], 0]", optionalFinding "a., b., c., e. and g."] },
+  { rule := rubi1212r103, ruleDecl := ``rubi1212r103, proofs := [],
+    counterexamples := [(.real, ``rubi1212r103_counterexample_real), (.complex, ``rubi1212r103_counterexample_complex)],
+    findings := [
+      "counterexample: at a = 1, b = 1, e = 1, m = -1, p = -1 and the other metavariables 0 the conditions hold and the integrand 1/(x (1 + x)) is defined near x = 1, but the result divides by m + 1 = 0 (Lean theorems rubi1212r103_counterexample_real and rubi1212r103_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      recFinding,
+      condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; NeQ[Add[Multiply[c, Power[d, 2]], Multiply[-1, b, d, e], Multiply[a, Power[e, 2]]], 0]; NeQ[Add[Multiply[2, c, d], Multiply[-1, b, e]], 0]; EqQ[Add[m, Multiply[2, p], 3], 0]",
+      optionalFinding "d., e., a., b. and c."] },
+  { rule := linQuadPowEqReduce, ruleDecl := ``linQuadPowEqReduce,
+    proofs := [(.real, ``linQuadPowEqReduce_real), (.complex, ``linQuadPowEqReduce_complex)],
+    findings := [
+      recFinding,
+      condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; NeQ[Add[Multiply[c, Power[d, 2]], Multiply[-1, b, d, e], Multiply[a, Power[e, 2]]], 0]; NeQ[Add[Multiply[2, c, d], Multiply[-1, b, e]], 0]; EqQ[Add[m, Multiply[2, p], 3], 0]; LtQ[p, -1]", optionalFinding "d., e., a., b. and c."] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -2937,6 +2954,6 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
     | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
-    | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 end OSR.Integration

@@ -14,6 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- RUBI 4.16.1 3.3 #15 (splitting a logarithm of a quotient) and 1.2.1.2 #101
+  (a quadratic reduction when `m + 2 p + 3 = 0`) proved over ℝ and ℂ, and
+  1.2.1.2 #103 refuted in both domains at `m = p = -1`
+  (`OSR/IntegrationRec23.lean`). The catalogue has 319 rules: 60 proved and
+  258 refuted over ℝ, 52 proved (28 certified) and 247 refuted over ℂ.
 - RUBI 4.16.1 3.1.2 #8 (scaling under a logarithm) and 4.7.9 #80 (a closed
   form, its derivative checked with SymPy-computed `linear_combination`
   coefficients) proved over ℝ and ℂ (`OSR/IntegrationRec22.lean`). The

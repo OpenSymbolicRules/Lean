@@ -818,8 +818,8 @@ result is an antiderivative of `F`. The rules are the twenty RUBI 4.16.1 rules
 of `OpenSymbolicRules/Integration` with no `Int` in their result, whose
 conditions are `FreeQ` or `NeQ` and whose heads, the outer `Int` removed, are
 in the registry, 40 further rules without residual integrals whose conditions
-include `EqQ` (`relation1#eq`), and 270 rules with residual integrals (263
-migrated); the other 5,927 rules are not yet considered. The reference rewriter applies a
+include `EqQ` (`relation1#eq`), and 273 rules with residual integrals (266
+migrated); the other 5,924 rules are not yet considered. The reference rewriter applies a
 conditional rule only when its substituted conditions are closed and decided
 true by exact rational arithmetic (`OSR.Cond.decide?`), and does not apply
 recursive rules."

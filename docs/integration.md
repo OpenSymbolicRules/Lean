@@ -463,9 +463,18 @@ sin(a x)/(a d x (d x cos(a x) + c sin(a x)))` when `a c + d = 0`; its
 derivative is checked in Lean with `linear_combination`, using coefficients
 computed by SymPy 1.14.0 modulo `sin² + cos² = 1` and `a c + d = 0`.
 
-Integration now exports 316 rules: 58 proved and 257 refuted over ℝ (one
-unproved), 50 proved and 246 refuted over ℂ (twenty unproved). Of the
-complex proofs, 28 are certified. Fourteen other rules remain explicitly
+`OSR/IntegrationRec23.lean` settles three more `EqQ` rules:
+
+| RUBI 4.16.1 rule | Result |
+|---|---|
+| 3.3 #15 | proved over ℝ and ℂ: `log(c/(d + e x)) = log(c/(2 d)) + log(2 d/(d + e x))` given `c/(2 d) > 0` (`Real.log_mul`; over ℂ the first factor is a positive real, `Complex.log_ofReal_mul`) |
+| 1.2.1.2 #101 | proved over ℝ and ℂ: with `m = -2 p - 3`, the derivative identity reduces to `(b + 2 c x)² - 4 c (a + b x + c x²) = b² - 4 a c` |
+| 1.2.1.2 #103 | refuted over ℝ and ℂ at `m = p = -1`, `a = b = e = 1`: the integrand `1/(x (1 + x))` is defined near `x = 1`, the result divides by `m + 1 = 0` |
+
+Integration now exports 319 rules: 60 proved and 258 refuted over ℝ (one
+unproved), 52 proved and 247 refuted over ℂ (twenty unproved). Of the
+complex proofs, 28 are certified (the two new ones state `relation1#gt`
+conditions). Fourteen other rules remain explicitly
 reported as not migrated. Of the 39 backlog rules, 12 are neither proved
 nor refuted: the six `p + 1/2 ∈ ℤ` rules, 2.3 #44 and #45, and the four
 4.7.7 rules discussed above. The `EqQ` rules refuted here expose the same
