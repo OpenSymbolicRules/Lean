@@ -13,13 +13,13 @@ private def t : Expr := .var "t"
 -- The twenty rules of the syntactic inventory (FreeQ or NeQ conditions,
 -- registered heads, no Int in the result) are migrated or reported, plus
 -- 110 rules with residual integrals and seven unmigrated ones.
-#guard Integration.catalog.length + Integration.notMigrated.length == 309
+#guard Integration.catalog.length + Integration.notMigrated.length == 310
 #guard Integration.notMigrated.length == 14
-#guard (Integration.catalog.filter (·.rule.shape == .antiderivRec)).length == 243
-#guard (Integration.catalog.filter (!·.rule.conditions.isEmpty)).length == 267
+#guard (Integration.catalog.filter (·.rule.shape == .antiderivRec)).length == 244
+#guard (Integration.catalog.filter (!·.rule.conditions.isEmpty)).length == 268
 -- RUBI rules with EqQ conditions are stated with relation1#eq (Cond.eq).
 #guard (Integration.catalog.filter fun e =>
-  e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 112
+  e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 113
 
 -- RUBI 4.16.1: the new degenerate-coefficient cases are refuted in both
 -- domains, with no proof or unresolved domain accidentally attached.
@@ -105,7 +105,7 @@ private def rules : List CRule :=
   "integration.cos_power_log_reduction", "integration.power_sin_power_reduction",
   "integration.power_cos_power_reduction", "integration.quadratic_power_reduction",
   "integration.linear_quadratic_power_reduction", "integration.quartic_power_reduction",
-  "integration.linear_linear_power"]
+  "integration.linear_linear_power", "integration.monomial_binomial_power_by_parts"]
 
 -- A conditional rule applies only when its conditions are decided: int(λt. t^m)
 -- stays (m ≠ -1 is undecided), int(λt. t^(-1)) stays (decided false),

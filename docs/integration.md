@@ -406,8 +406,14 @@ over ℝ and ℂ: when `m + n + 2 = 0`,
 Its conditions use only `relation1#neq` and `relation1#eq`, so the complex
 proof is certified, bringing the certified complex proofs to 18.
 
-Integration now exports 295 rules: 42 proved and 252 refuted over ℝ (one
-unproved), 34 proved and 241 refuted over ℂ (twenty unproved). Of the
+`OSR/IntegrationRec17.lean` proves 1.1.3.2 #68
+(`integration.monomial_binomial_power_by_parts`) over ℝ and ℂ: integration by
+parts of `x^m (a + b xⁿ)ᵖ` for an integer `p ≥ 1`, where the condition
+`(m + 1)/n + p = 0` gives `m + 1 ≠ 0`; at `x = 0` the exponents are natural
+(`zpow_add_of`). The complex proof is not certified (`p > 0`).
+
+Integration now exports 296 rules: 43 proved and 252 refuted over ℝ (one
+unproved), 35 proved and 241 refuted over ℂ (twenty unproved). Of the
 complex proofs, 17 are certified. Fourteen other rules remain explicitly
 reported as not migrated. Of the 39 backlog rules, 12 are neither proved
 nor refuted: the six `p + 1/2 ∈ ℤ` rules, 2.3 #44 and #45, and the four

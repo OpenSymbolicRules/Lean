@@ -92,7 +92,8 @@ OSR/IntegrationRec11.lean refutations at c = 0 and f = 0 (2), per domain
 OSR/IntegrationRec12.lean quartic power reduction (1)
 OSR/IntegrationRec13.lean, OSR/IntegrationRec14.lean rules with EqQ conditions, refuted (108)
 OSR/IntegrationRec15.lean more EqQ refutations (3); OSR/IntegrationRec16.lean an EqQ proof (1)
-OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (295)
+OSR/IntegrationRec17.lean by parts for x^m (a + b x^n)^p (1)
+OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (296)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
                        generation of rule set, reports and conformance cases

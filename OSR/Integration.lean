@@ -1,5 +1,5 @@
 import OSR.Calculus
-import OSR.IntegrationRec16
+import OSR.IntegrationRec17
 
 /-!
 # Integration (RUBI)
@@ -39,7 +39,7 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec7 OSR.IntegrationRec8 OSR.IntegrationRec9
   OSR.IntegrationRec10 OSR.IntegrationRec11 OSR.IntegrationRec12
   OSR.IntegrationRec13 OSR.IntegrationRec14 OSR.IntegrationRec15 OSR.IntegrationRec16
-  Filter Topology
+  OSR.IntegrationRec17 Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -2783,7 +2783,12 @@ def catalog : List CEntry := [
       optionalFinding "m., a., n. and b."] },
   { rule := linLinPow, ruleDecl := ``linLinPow,
     proofs := [(.real, ``linLinPow_real), (.complex, ``linLinPow_complex)],
-    findings := [condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; EqQ[Add[m, n, 2], 0]; NeQ[m, -1]", optionalFinding "a., b., m., c. and d."] }
+    findings := [condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; EqQ[Add[m, n, 2], 0]; NeQ[m, -1]", optionalFinding "a., b., m., c. and d."] },
+  { rule := monoBinomByParts, ruleDecl := ``monoBinomByParts,
+    proofs := [(.real, ``monoBinomByParts_real), (.complex, ``monoBinomByParts_complex)],
+    findings := [
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding, condFinding "EqQ[Add[Multiply[Add[m, 1], Power[n, -1]], p], 0]; GtQ[p, 0]", optionalFinding "m. and b."] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -2813,6 +2818,6 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
     | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
     | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 end OSR.Integration
