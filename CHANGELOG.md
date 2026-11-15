@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- RUBI 4.16.1 4.7.9 #78 and #82 refuted over ℝ and ℂ at `x = π`
+  (`OSR/IntegrationRec19.lean`). The catalogue has 305 rules: 50 proved and
+  254 refuted over ℝ, 42 proved (24 certified) and 243 refuted over ℂ.
 - Seven RUBI 4.16.1 rules that rewrite the integrand into a residual
   integral proved over ℝ and ℂ (`OSR/IntegrationRec18.lean`): 1.1.1.2 #2,
   1.1.1.3 #50, 3.1.4 #1, 3.1.5 #2, 3.3 #21, 1.1.3.7 #11 and #18. The

@@ -1,5 +1,5 @@
 import OSR.Calculus
-import OSR.IntegrationRec18
+import OSR.IntegrationRec19
 
 /-!
 # Integration (RUBI)
@@ -39,7 +39,7 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec7 OSR.IntegrationRec8 OSR.IntegrationRec9
   OSR.IntegrationRec10 OSR.IntegrationRec11 OSR.IntegrationRec12
   OSR.IntegrationRec13 OSR.IntegrationRec14 OSR.IntegrationRec15 OSR.IntegrationRec16
-  OSR.IntegrationRec17 OSR.IntegrationRec18 Filter Topology
+  OSR.IntegrationRec17 OSR.IntegrationRec18 OSR.IntegrationRec19 Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -2825,7 +2825,21 @@ def catalog : List CEntry := [
     proofs := [(.real, ``polyBinomBinomSplit_real), (.complex, ``polyBinomBinomSplit_complex)],
     findings := [
       recFinding,
-      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; EqQ[Add[m, Multiply[-1, n], 1], 0]", optionalFinding "B., m., a., b., p., d. and q."] }
+      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; EqQ[Add[m, Multiply[-1, n], 1], 0]", optionalFinding "B., m., a., b., p., d. and q."] },
+  { rule := rubi479r78, ruleDecl := ``rubi479r78, proofs := [],
+    counterexamples := [(.real, ``rubi479r78_counterexample_real), (.complex, ``rubi479r78_counterexample_complex)],
+    findings := [
+      "counterexample: at a = c = 1, d = -1 and the other metavariables 0 the conditions hold and the integrand x²/(sin x - x cos x)² is defined near x = π, but the residual integrand 1/sin²(x) is not defined at x = π (Lean theorems rubi479r78_counterexample_real and rubi479r78_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[a, c], d], 0]",
+      optionalFinding "c., a. and d."] },
+  { rule := rubi479r82, ruleDecl := ``rubi479r82, proofs := [],
+    counterexamples := [(.real, ``rubi479r82_counterexample_real), (.complex, ``rubi479r82_counterexample_complex)],
+    findings := [
+      "counterexample: at a = b = c = m = n = 1, d = -1 the conditions hold and the integrand x sin x/(sin x - x cos x)² is defined near x = π, but the residual integrand 1/(x sin x) is not defined at x = π (Lean theorems rubi479r82_counterexample_real and rubi479r82_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[a, c], d], 0]; EqQ[m, Add[2, Multiply[-1, n]]]",
+      optionalFinding "b., a., c. and d."] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -2855,6 +2869,6 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
     | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
     | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 end OSR.Integration

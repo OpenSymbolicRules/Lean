@@ -425,8 +425,14 @@ into a residual integral, over ℝ and ℂ:
 Six of the seven complex proofs are certified (24 in all); 1.1.1.3 #50 states
 `a > 0` and `c > 0` with `relation1#gt`.
 
-Integration now exports 303 rules: 50 proved and 252 refuted over ℝ (one
-unproved), 42 proved and 241 refuted over ℂ (twenty unproved). Of the
+`OSR/IntegrationRec19.lean` refutes 4.7.9 #78 and #82 over ℝ and ℂ at a
+non-integer point: with `a = c = 1` and `d = -1` (so `a c + d = 0`) the
+integrand's denominator `sin x - x cos x` equals `π` at `x = π`, hence stays
+nonzero nearby (continuity), while the residual integrands `1/sin²(x)` and
+`1/(x sin x)` (#82 at `b = m = n = 1`) are undefined at `x = π`.
+
+Integration now exports 305 rules: 50 proved and 254 refuted over ℝ (one
+unproved), 42 proved and 243 refuted over ℂ (twenty unproved). Of the
 complex proofs, 17 are certified. Fourteen other rules remain explicitly
 reported as not migrated. Of the 39 backlog rules, 12 are neither proved
 nor refuted: the six `p + 1/2 ∈ ℤ` rules, 2.3 #44 and #45, and the four

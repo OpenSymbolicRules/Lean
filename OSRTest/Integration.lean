@@ -13,13 +13,13 @@ private def t : Expr := .var "t"
 -- The twenty rules of the syntactic inventory (FreeQ or NeQ conditions,
 -- registered heads, no Int in the result) are migrated or reported, plus
 -- 110 rules with residual integrals and seven unmigrated ones.
-#guard Integration.catalog.length + Integration.notMigrated.length == 317
+#guard Integration.catalog.length + Integration.notMigrated.length == 319
 #guard Integration.notMigrated.length == 14
-#guard (Integration.catalog.filter (·.rule.shape == .antiderivRec)).length == 251
-#guard (Integration.catalog.filter (!·.rule.conditions.isEmpty)).length == 275
+#guard (Integration.catalog.filter (·.rule.shape == .antiderivRec)).length == 253
+#guard (Integration.catalog.filter (!·.rule.conditions.isEmpty)).length == 277
 -- RUBI rules with EqQ conditions are stated with relation1#eq (Cond.eq).
 #guard (Integration.catalog.filter fun e =>
-  e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 120
+  e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 122
 
 -- RUBI 4.16.1: the new degenerate-coefficient cases are refuted in both
 -- domains, with no proof or unresolved domain accidentally attached.
