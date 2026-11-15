@@ -14,6 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Six Integration rules refuted over ℂ at the branch cut of the principal
+  logarithm (`OSR.IntegrationRec26.not_continuous_clog`: an antiderivative
+  is continuous, but `Ψ(x, log x)` jumps at `x = -1` when
+  `Ψ(-1, π i) ≠ Ψ(-1, -π i)`): `integration.reciprocal`, `log_monomial`,
+  `sin_log`, `cos_log`, `log_linear_over_x_split` and `log_over_linear`.
+  Over ℂ: 53 proved, 260 refuted, 7 unproved.
 - Eight one-domain refutations carried to the other domain
   (`OSR/IntegrationRec25.lean`): RUBI 4.16.1 3.1.5 #33 over ℝ; 3.4 #9,
   4.7.6 #2, 1.2.2.2 #19 and 3.5 #14, #17, #22, #23 over ℂ. Integration has

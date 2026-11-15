@@ -1,5 +1,5 @@
 import OSR.Calculus
-import OSR.IntegrationRec25
+import OSR.IntegrationRec26
 
 /-!
 # Integration (RUBI)
@@ -42,7 +42,8 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec17 OSR.IntegrationRec18 OSR.IntegrationRec19
   OSR.IntegrationRec20 OSR.IntegrationRec21
   OSR.IntegrationRec22 OSR.IntegrationRec23
-  OSR.IntegrationRec24 OSR.IntegrationRec25 Filter Topology
+  OSR.IntegrationRec24 OSR.IntegrationRec25
+  OSR.IntegrationRec26 Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -732,18 +733,114 @@ private def condFinding (cs : String) : String :=
 private def recFinding : String :=
   "residual integrals: the result contains Int[…], exported as int(λx. H)(x) (the calculus1#int FMP form); the statement holds for every choice of antiderivatives of the residual integrands. The reference rewriter does not apply this rule."
 
+/-! ## Counterexamples over ℂ at the branch cut of `log` -/
+
+section Witness
+variable {α : Type} [Field α] [CharZero α]
+private theorem ivc0 : intValue? (0 : α) = some 0 := by simpa using intValue?_intCast (α := α) 0
+private theorem ivc1 : intValue? (1 : α) = some 1 := by simpa using intValue?_intCast (α := α) 1
+private theorem ivc2 : intValue? (2 : α) = some 2 := by simpa using intValue?_intCast (α := α) 2
+private theorem ivcm1 : intValue? (-1 : α) = some (-1) := by
+  simpa using intValue?_intCast (α := α) (-1)
+end Witness
+
+/-- **Counterexample** to `∫ 1/x = log x` over ℂ, at the cut: near `x = -1`
+the integrand is defined, but `log` is not continuous at `-1`. -/
+theorem reciprocal_counterexample_complex : ¬ reciprocal.Holds .complex := by
+  show ¬ AntiderivHoldsUnder Interp.complex "x" [] reciprocal.body reciprocal.result
+  rw [antiderivHoldsUnder_nil]
+  intro h
+  have hF : ∀ᶠ v in 𝓝 (-1 : ℂ), Defined Interp.complex (Function.update (fun _ => 0) "x" v)
+      reciprocal.body := by
+    filter_upwards [eventually_ne_nhds (by norm_num : (-1 : ℂ) ≠ 0)] with v hv
+    simp [reciprocal, Defined, eval, Interp.complex, ivcm1, hv]
+  have hc := (h (fun _ => 0) (-1) hF).2.continuousAt
+  apply not_continuous_clog (fun _ l => l) (by fun_prop) (by
+    intro h; have := congrArg Complex.im h; simp at this; linarith [Real.pi_pos])
+  convert hc using 1
+  funext w
+  simp [reciprocal, eval, Interp.complex]
+
+/-- **Counterexample** to `∫ log(c xⁿ) = x log(c xⁿ) - n x` over ℂ, at
+`c = n = 1` and `x = -1`. -/
+theorem logMonomial_counterexample_complex : ¬ logMonomial.Holds .complex := by
+  show ¬ AntiderivHoldsUnder Interp.complex "x" [] logMonomial.body logMonomial.result
+  rw [antiderivHoldsUnder_nil]
+  intro h
+  have hF : ∀ᶠ v in 𝓝 (-1 : ℂ), Defined Interp.complex
+      (Function.update (fun s => if s = "c" ∨ s = "n" then 1 else 0) "x" v) logMonomial.body := by
+    filter_upwards [eventually_ne_nhds (by norm_num : (-1 : ℂ) ≠ 0)] with v hv
+    simp [logMonomial, Defined, eval, Interp.complex, ivc1, hv]
+  have hc := (h _ (-1) hF).2.continuousAt
+  apply not_continuous_clog (fun w l => w * l - w) (by fun_prop) (by
+    intro h; have := congrArg Complex.im h; simp at this; linarith [Real.pi_pos])
+  convert hc using 1
+  funext w
+  simp [logMonomial, eval, Interp.complex, ivc1]
+  ring
+
+private theorem csin_pi_I : Complex.sin (Real.pi * Complex.I) ≠ 0 := by
+  rw [Complex.sin_mul_I, ← Complex.ofReal_sinh]
+  exact mul_ne_zero (by exact_mod_cast (Real.sinh_pos_iff.2 Real.pi_pos).ne') Complex.I_ne_zero
+
+/-- **Counterexample** over ℂ to `∫ sin(d (a + b log(c xⁿ)))`, at `a = 0`,
+`b = c = d = n = 1` and `x = -1`. -/
+theorem sinLog_counterexample_complex : ¬ sinLog.Holds .complex := by
+  show ¬ AntiderivHoldsUnder Interp.complex "x" sinLog.conditions sinLog.body sinLog.result
+  intro h
+  have hF : ∀ᶠ v in 𝓝 (-1 : ℂ), Defined Interp.complex
+      (Function.update (fun s => if s = "b" ∨ s = "c" ∨ s = "d" ∨ s = "n" then 1 else 0) "x" v)
+      sinLog.body := by
+    filter_upwards [eventually_ne_nhds (by norm_num : (-1 : ℂ) ≠ 0)] with v hv
+    simp [sinLog, Defined, eval, Interp.complex, ivc1, hv]
+  have hc := (h _ (by simp [sinLog, Cond.Holds, Defined, eval, Interp.complex, ivc2]) (-1) hF).2.continuousAt
+  apply not_continuous_clog (fun w l => w * Complex.sin l * 2⁻¹ - w * Complex.cos l * 2⁻¹)
+    (by fun_prop) (by
+      intro h
+      apply csin_pi_I
+      simp [Complex.sin_neg, Complex.cos_neg] at h
+      linear_combination -h)
+  convert hc using 1
+  funext w
+  simp [sinLog, eval, Interp.complex, ivc1, ivc2, ivcm1]
+  ring
+
+/-- **Counterexample** over ℂ to `∫ cos(d (a + b log(c xⁿ)))`, at the same
+point. -/
+theorem cosLog_counterexample_complex : ¬ cosLog.Holds .complex := by
+  show ¬ AntiderivHoldsUnder Interp.complex "x" cosLog.conditions cosLog.body cosLog.result
+  intro h
+  have hF : ∀ᶠ v in 𝓝 (-1 : ℂ), Defined Interp.complex
+      (Function.update (fun s => if s = "b" ∨ s = "c" ∨ s = "d" ∨ s = "n" then 1 else 0) "x" v)
+      cosLog.body := by
+    filter_upwards [eventually_ne_nhds (by norm_num : (-1 : ℂ) ≠ 0)] with v hv
+    simp [cosLog, Defined, eval, Interp.complex, ivc1, hv]
+  have hc := (h _ (by simp [cosLog, Cond.Holds, Defined, eval, Interp.complex, ivc2]) (-1) hF).2.continuousAt
+  apply not_continuous_clog (fun w l => w * Complex.cos l * 2⁻¹ + w * Complex.sin l * 2⁻¹)
+    (by fun_prop) (by
+      intro h
+      apply csin_pi_I
+      simp [Complex.sin_neg, Complex.cos_neg] at h
+      linear_combination -h)
+  convert hc using 1
+  funext w
+  simp [cosLog, eval, Interp.complex, ivc1, ivc2, ivcm1]
+  ring
+
+
 /-- The Integration catalogue, in v0.1 file order. -/
 def catalog : List CEntry := [
-  { rule := reciprocal, ruleDecl := ``reciprocal, proofs := [], unproved := [.complex],
-    counterexamples := [(.real, ``reciprocal_counterexample_real)],
+  { rule := reciprocal, ruleDecl := ``reciprocal, proofs := [],
+    counterexamples := [(.real, ``reciprocal_counterexample_real), (.complex, ``reciprocal_counterexample_complex)],
     findings := [
       "counterexample: near x = -1 the integrand 1 · x^(-1) is defined, but ln(-1) is not, since transc1#ln is defined on the positive reals (Lean theorem reciprocal_counterexample_real). RUBI reads Log as the complex logarithm; a real antiderivative is ln|x|, which is outside the fragment.",
-      lnComplexFinding] },
+      "complex: counterexample at the branch cut of the principal logarithm: near x = -1 the integrand is defined, but the result is log x, and log is not continuous at -1 (it tends to -π i from below while log(-1) = π i), so the result has no derivative there (Lean theorem reciprocal_counterexample_complex)."] },
   { rule := logMonomial, ruleDecl := ``logMonomial,
-    proofs := [(.real, ``logMonomial_real)], unproved := [.complex],
+    proofs := [(.real, ``logMonomial_real)],
+    counterexamples := [(.complex, ``logMonomial_counterexample_complex)],
     findings := [
       "real: n must take an integer value, since the fragment interprets arith1#power for integer exponents only; the statement covers every point near which c x^n > 0.",
-      lnComplexFinding, optionalFinding "c. and n."] },
+      "complex: counterexample at the branch cut of the principal logarithm: at c = n = 1 the integrand log x is defined near x = -1, but the result x log x - x is not continuous at -1 (Lean theorem logMonomial_counterexample_complex).", optionalFinding "c. and n."] },
   { rule := logLinearOverX, ruleDecl := ``logLinearOverX, proofs := [],
     counterexamples := [(.real, ``logLinearOverX_counterexample_real),
       (.complex, ``logLinearOverX_counterexample_complex)],
@@ -781,16 +878,18 @@ def catalog : List CEntry := [
       "counterexample: at c = 1 and a = b = d = m = n = 0 the condition m ≠ -1 holds and the integrand is defined everywhere, but (d (m + 1))^(-1) is not (Lean theorems powerLogLinear_counterexample_real and powerLogLinear_counterexample_complex). The rule needs d ≠ 0, which this migration does not add.",
       neqFinding "NeQ[m, -1]", optionalFinding "a., b., c., d., m. and n."] },
   { rule := sinLog, ruleDecl := ``sinLog,
-    proofs := [(.real, ``sinLog_real)], unproved := [.complex],
+    proofs := [(.real, ``sinLog_real)],
+    counterexamples := [(.complex, ``sinLog_counterexample_complex)],
     findings := [
       "real: the condition b^2 d^2 n^2 + 1 ≠ 0 always holds; n must take an integer value, and the statement covers every point near which c x^n > 0.",
-      lnComplexFinding, neqFinding "NeQ[b^2 d^2 n^2 + 1, 0]",
+      "complex: counterexample at the branch cut of the principal logarithm: at a = 0, b = c = d = n = 1 the integrand sin(log x) is defined near x = -1, but the result (x sin(log x) - x cos(log x))/2 jumps across the cut, by sin(π i) = i sinh π ≠ 0 (Lean theorem sinLog_counterexample_complex).", neqFinding "NeQ[b^2 d^2 n^2 + 1, 0]",
       optionalFinding "a., b., c., d. and n."] },
   { rule := cosLog, ruleDecl := ``cosLog,
-    proofs := [(.real, ``cosLog_real)], unproved := [.complex],
+    proofs := [(.real, ``cosLog_real)],
+    counterexamples := [(.complex, ``cosLog_counterexample_complex)],
     findings := [
       "real: the condition b^2 d^2 n^2 + 1 ≠ 0 always holds; n must take an integer value, and the statement covers every point near which c x^n > 0.",
-      lnComplexFinding, neqFinding "NeQ[b^2 d^2 n^2 + 1, 0]",
+      "complex: counterexample at the branch cut of the principal logarithm: at a = 0, b = c = d = n = 1 the integrand cos(log x) is defined near x = -1, but the result (x cos(log x) + x sin(log x))/2 jumps across the cut (Lean theorem cosLog_counterexample_complex).", neqFinding "NeQ[b^2 d^2 n^2 + 1, 0]",
       optionalFinding "a., b., c., d. and n."] },
   { rule := powSinLog, ruleDecl := ``powSinLog, proofs := [],
     counterexamples := [(.real, ``powSinLog_counterexample_real),
@@ -1114,16 +1213,16 @@ def catalog : List CEntry := [
   { rule := splitLogLog, ruleDecl := ``splitLogLog,
     proofs := [(.real, ``splitLogLog_real), (.complex, ``splitLogLog_complex)],
     findings := [recFinding, condFinding "NeQ[Add[Multiply[e, i], Multiply[-1, d, j]], 0]", optionalFinding "a., b., c., e., n., g., h., i., j. and m."] },
-  { rule := logLinOverX, ruleDecl := ``logLinOverX, proofs := [], unproved := [.complex],
-    counterexamples := [(.real, ``logLinOverX_counterexample_real)],
+  { rule := logLinOverX, ruleDecl := ``logLinOverX, proofs := [],
+    counterexamples := [(.real, ``logLinOverX_counterexample_real), (.complex, ``logLinOverX_counterexample_complex)],
     findings := [
       "counterexample: at c = d = 1 and the other metavariables 0 the condition c d > 0 holds and the integrand is defined near x = -1, but log x is not defined at -1 (Lean theorem logLinOverX_counterexample_real); RUBI reads Log as the complex logarithm.",
-      lnComplexFinding, recFinding, condFinding "GtQ[Multiply[c, d], 0]", optionalFinding "a., b., c. and e."] },
-  { rule := logOverLin, ruleDecl := ``logOverLin, proofs := [], unproved := [.complex],
-    counterexamples := [(.real, ``logOverLin_counterexample_real)],
+      "complex: counterexample at the branch cut of the principal logarithm: at a = c = d = 1 and the other metavariables 0 the integrand 1/x is defined near x = -1, but the result is log x (Lean theorem logLinOverX_counterexample_complex).", recFinding, condFinding "GtQ[Multiply[c, d], 0]", optionalFinding "a., b., c. and e."] },
+  { rule := logOverLin, ruleDecl := ``logOverLin, proofs := [],
+    counterexamples := [(.real, ``logOverLin_counterexample_real), (.complex, ``logOverLin_counterexample_complex)],
     findings := [
       "counterexample: at c = d = 1, e = -1 and the other metavariables 0 the condition -c d/e > 0 holds and the integrand is defined near x = 2, but log(d + e x) = log(-1) is not (Lean theorem logOverLin_counterexample_real); RUBI reads Log as the complex logarithm.",
-      lnComplexFinding, recFinding, condFinding "GtQ[Multiply[-1, c, d, Power[e, -1]], 0]", optionalFinding "a., b., c. and e."] },
+      "complex: counterexample at the branch cut of the principal logarithm: at a = c = d = 1, e = -1 and the other metavariables 0 the condition -c d/e > 0 holds and the integrand 1/(1 - x) is defined near x = 2, but the result -log(1 - x) is not continuous at x = 2 (Lean theorem logOverLin_counterexample_complex).", recFinding, condFinding "GtQ[Multiply[-1, c, d, Power[e, -1]], 0]", optionalFinding "a., b., c. and e."] },
   { rule := linPowOverQuad, ruleDecl := ``linPowOverQuad,
     proofs := [(.real, ``linPowOverQuad_real), (.complex, ``linPowOverQuad_complex)],
     findings := [recFinding, condFinding "NeQ[c d^2 + a e^2, 0]; LtQ[m, -1]",

@@ -101,6 +101,7 @@ OSR/IntegrationRec22.lean EqQ proofs: a log scaling rule and a closed form (2)
 OSR/IntegrationRec23.lean EqQ: a log split, a quadratic reduction (2 proofs), 1 refutation
 OSR/IntegrationRec24.lean EqQ: a by-parts rule for two binomials (1 proof)
 OSR/IntegrationRec25.lean refutations carried to the other domain (8)
+OSR/IntegrationRec26.lean discontinuity of log at the cut (`not_continuous_clog`), 2 refutations
 OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (320)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),

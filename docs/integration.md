@@ -486,8 +486,27 @@ vanishes elsewhere (`1 + x²` at `±i`), and `log 2 ≠ 0` is
 over ℂ: their real witnesses use the logarithm of a negative number, which
 is defined over ℂ.
 
+### The branch cut of the complex logarithm
+
+Most rules left unproved over ℂ involve `log`, which is defined for `z ≠ 0`
+but jumps across the negative real axis: `log(-1) = π i`, while
+`log z → -π i` as `z → -1` from below
+(`Complex.tendsto_log_nhdsWithin_im_neg_of_re_neg_of_im_zero`, Mathlib).
+An antiderivative is differentiable, hence continuous, so a rule is refuted
+over ℂ wherever its integrand is defined near a point of the cut while its
+result is `Ψ(x, log x)` with `Ψ(-1, π i) ≠ Ψ(-1, -π i)`
+(`OSR.IntegrationRec26.not_continuous_clog`). Six rules are refuted this way:
+
+| Rule | Witness | Result near the cut |
+|---|---|---|
+| `integration.reciprocal` | `x = -1` | `log x` |
+| `integration.log_monomial` | `c = n = 1`, `x = -1` | `x log x - x` |
+| `integration.sin_log`, `integration.cos_log` | `a = 0`, `b = c = d = n = 1`, `x = -1` | `(x sin(log x) ∓ x cos(log x))/2`; the jump is `sin(π i) = i sinh π ≠ 0` |
+| `integration.log_linear_over_x_split` | `a = c = d = 1`, `x = -1` | `log x` |
+| `integration.log_over_linear` | `a = c = d = 1`, `e = -1`, `x = 2` | `-log(1 - x)` |
+
 Integration now exports 320 rules: 61 proved and 259 refuted over ℝ (none
-unproved), 53 proved and 254 refuted over ℂ (thirteen unproved). Of the
+unproved), 53 proved and 260 refuted over ℂ (seven unproved). Of the
 complex proofs, 28 are certified (the recent ones state `relation1#gt`
 conditions). Fourteen other rules remain explicitly
 reported as not migrated. Of the 39 backlog rules, 12 are neither proved
