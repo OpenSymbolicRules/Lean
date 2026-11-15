@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- RUBI 4.16.1 1.1.3.2 #69 (by parts for a product of two binomials) proved
+  over ℝ and ℂ (`OSR/IntegrationRec24.lean`). The catalogue has 320 rules:
+  61 proved and 258 refuted over ℝ, 53 proved (28 certified) and 247
+  refuted over ℂ.
 - RUBI 4.16.1 3.3 #15 (splitting a logarithm of a quotient) and 1.2.1.2 #101
   (a quadratic reduction when `m + 2 p + 3 = 0`) proved over ℝ and ℂ, and
   1.2.1.2 #103 refuted in both domains at `m = p = -1`

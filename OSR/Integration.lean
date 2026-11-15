@@ -1,5 +1,5 @@
 import OSR.Calculus
-import OSR.IntegrationRec23
+import OSR.IntegrationRec24
 
 /-!
 # Integration (RUBI)
@@ -41,7 +41,8 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec13 OSR.IntegrationRec14 OSR.IntegrationRec15 OSR.IntegrationRec16
   OSR.IntegrationRec17 OSR.IntegrationRec18 OSR.IntegrationRec19
   OSR.IntegrationRec20 OSR.IntegrationRec21
-  OSR.IntegrationRec22 OSR.IntegrationRec23 Filter Topology
+  OSR.IntegrationRec22 OSR.IntegrationRec23
+  OSR.IntegrationRec24 Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -2923,7 +2924,13 @@ def catalog : List CEntry := [
     proofs := [(.real, ``linQuadPowEqReduce_real), (.complex, ``linQuadPowEqReduce_complex)],
     findings := [
       recFinding,
-      condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; NeQ[Add[Multiply[c, Power[d, 2]], Multiply[-1, b, d, e], Multiply[a, Power[e, 2]]], 0]; NeQ[Add[Multiply[2, c, d], Multiply[-1, b, e]], 0]; EqQ[Add[m, Multiply[2, p], 3], 0]; LtQ[p, -1]", optionalFinding "d., e., a., b. and c."] }
+      condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; NeQ[Add[Multiply[c, Power[d, 2]], Multiply[-1, b, d, e], Multiply[a, Power[e, 2]]], 0]; NeQ[Add[Multiply[2, c, d], Multiply[-1, b, e]], 0]; EqQ[Add[m, Multiply[2, p], 3], 0]; LtQ[p, -1]", optionalFinding "d., e., a., b. and c."] },
+  { rule := monoBinomPairByParts, ruleDecl := ``monoBinomPairByParts,
+    proofs := [(.real, ``monoBinomPairByParts_real), (.complex, ``monoBinomPairByParts_complex)],
+    findings := [
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[a2, b1], Multiply[a1, b2]], 0]; EqQ[Add[Multiply[Add[m, 1], Power[Multiply[2, n], -1]], p], 0]; GtQ[p, 0]", optionalFinding "m., b1. and b2."] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -2954,6 +2961,7 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
     | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
-    | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl <;> decide
 
 end OSR.Integration

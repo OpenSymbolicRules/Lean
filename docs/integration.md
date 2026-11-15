@@ -471,9 +471,15 @@ computed by SymPy 1.14.0 modulo `sin² + cos² = 1` and `a c + d = 0`.
 | 1.2.1.2 #101 | proved over ℝ and ℂ: with `m = -2 p - 3`, the derivative identity reduces to `(b + 2 c x)² - 4 c (a + b x + c x²) = b² - 4 a c` |
 | 1.2.1.2 #103 | refuted over ℝ and ℂ at `m = p = -1`, `a = b = e = 1`: the integrand `1/(x (1 + x))` is defined near `x = 1`, the result divides by `m + 1 = 0` |
 
-Integration now exports 319 rules: 60 proved and 258 refuted over ℝ (one
-unproved), 52 proved and 247 refuted over ℂ (twenty unproved). Of the
-complex proofs, 28 are certified (the two new ones state `relation1#gt`
+`OSR/IntegrationRec24.lean` proves 1.1.3.2 #69 over ℝ and ℂ, a by-parts rule
+for `x^m (a₁ + b₁ xⁿ)^p (a₂ + b₂ xⁿ)^p` when `a₂ b₁ + a₁ b₂ = 0` and
+`(m + 1)/(2 n) + p = 0`, `p > 0`: then `b₁ (a₂ + b₂ xⁿ) + b₂ (a₁ + b₁ xⁿ) =
+2 b₁ b₂ xⁿ`. The point `x = 0` is outside the domain: the condition needs
+`n ≠ 0`, and either `n < 0` or `m = -2 n p - 1 < 0`.
+
+Integration now exports 320 rules: 61 proved and 258 refuted over ℝ (one
+unproved), 53 proved and 247 refuted over ℂ (twenty unproved). Of the
+complex proofs, 28 are certified (the recent ones state `relation1#gt`
 conditions). Fourteen other rules remain explicitly
 reported as not migrated. Of the 39 backlog rules, 12 are neither proved
 nor refuted: the six `p + 1/2 ∈ ℤ` rules, 2.3 #44 and #45, and the four

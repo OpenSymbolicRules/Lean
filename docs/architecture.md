@@ -99,7 +99,8 @@ OSR/IntegrationRec20.lean EqQ trigonometric identities (4 proofs, 1 refutation)
 OSR/IntegrationRec21.lean EqQ linearity proofs (2) and refutations at d = 0 (2)
 OSR/IntegrationRec22.lean EqQ proofs: a log scaling rule and a closed form (2)
 OSR/IntegrationRec23.lean EqQ: a log split, a quadratic reduction (2 proofs), 1 refutation
-OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (319)
+OSR/IntegrationRec24.lean EqQ: a by-parts rule for two binomials (1 proof)
+OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (320)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
                        generation of rule set, reports and conformance cases
