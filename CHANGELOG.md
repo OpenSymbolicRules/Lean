@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- RUBI 4.16.1 1.1.1.2 #4 proved over ℝ and ℂ (`OSR/IntegrationRec16.lean`);
+  3.2.1 #7, 4.7.8 #47 and #48 refuted over ℝ and ℂ
+  (`OSR/IntegrationRec15.lean`). The catalogue has 295 rules: 42 proved and
+  252 refuted over ℝ, 34 proved (18 certified) and 241 refuted over ℂ.
 - 108 RUBI 4.16.1 rules with `EqQ` conditions migrated and refuted
   (`OSR/IntegrationRec13.lean`, `OSR/IntegrationRec14.lean`): all over ℝ,
   102 also over ℂ, by Lean counterexamples proposed by the numerical search.

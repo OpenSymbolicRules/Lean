@@ -28,5 +28,7 @@ import OSR.IntegrationRec11
 import OSR.IntegrationRec12
 import OSR.IntegrationRec13
 import OSR.IntegrationRec14
+import OSR.IntegrationRec15
+import OSR.IntegrationRec16
 import OSR.Integration
 import OSR.Export

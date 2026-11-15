@@ -1,5 +1,5 @@
 import OSR.Calculus
-import OSR.IntegrationRec14
+import OSR.IntegrationRec16
 
 /-!
 # Integration (RUBI)
@@ -38,7 +38,8 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec4 OSR.IntegrationRec5 OSR.IntegrationRec6
   OSR.IntegrationRec7 OSR.IntegrationRec8 OSR.IntegrationRec9
   OSR.IntegrationRec10 OSR.IntegrationRec11 OSR.IntegrationRec12
-  OSR.IntegrationRec13 OSR.IntegrationRec14 Filter Topology
+  OSR.IntegrationRec13 OSR.IntegrationRec14 OSR.IntegrationRec15 OSR.IntegrationRec16
+  Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -2758,7 +2759,31 @@ def catalog : List CEntry := [
       "counterexample: at c = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the result is not defined at x = 1 (Lean theorems rubi479r81_counterexample_real and rubi479r81_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
       recFinding,
       condFinding "EqQ[Add[Multiply[a, c], Multiply[-1, d]], 0]",
-      optionalFinding "a., c. and d."] }
+      optionalFinding "a., c. and d."] },
+  { rule := rubi321r7, ruleDecl := ``rubi321r7, proofs := [],
+    counterexamples := [(.real, ``rubi321r7_counterexample_real), (.complex, ``rubi321r7_counterexample_complex)],
+    findings := [
+      "counterexample: at b = -3, c = -3, e = 2, g = -2 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the residual integrand 1 is not defined at x = 1 (Lean theorems rubi321r7_counterexample_real and rubi321r7_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; EqQ[Add[Multiply[b, f], Multiply[-1, a, g]], 0]",
+      optionalFinding "A., B., e., a., b., c., d., n., f. and g."] },
+  { rule := rubi478r47, ruleDecl := ``rubi478r47, proofs := [],
+    counterexamples := [(.real, ``rubi478r47_counterexample_real), (.complex, ``rubi478r47_counterexample_complex)],
+    findings := [
+      "counterexample: at b = 1, n = 1 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorems rubi478r47_counterexample_real and rubi478r47_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      recFinding,
+      condFinding "EqQ[m, Add[n, Multiply[-1, 1]]]",
+      optionalFinding "m., a., n. and b."] },
+  { rule := rubi478r48, ruleDecl := ``rubi478r48, proofs := [],
+    counterexamples := [(.real, ``rubi478r48_counterexample_real), (.complex, ``rubi478r48_counterexample_complex)],
+    findings := [
+      "counterexample: at b = 1, n = 1 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorems rubi478r48_counterexample_real and rubi478r48_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      recFinding,
+      condFinding "EqQ[m, Add[n, Multiply[-1, 1]]]",
+      optionalFinding "m., a., n. and b."] },
+  { rule := linLinPow, ruleDecl := ``linLinPow,
+    proofs := [(.real, ``linLinPow_real), (.complex, ``linLinPow_complex)],
+    findings := [condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; EqQ[Add[m, n, 2], 0]; NeQ[m, -1]", optionalFinding "a., b., m., c. and d."] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -2788,6 +2813,6 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
     | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
     | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl <;> decide
 
 end OSR.Integration

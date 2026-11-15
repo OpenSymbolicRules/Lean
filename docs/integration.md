@@ -394,8 +394,20 @@ arguments, which the complex logarithm defines), and five proposals were not
 proved in either domain; those are left out, as are the 43 rules without a
 proposal.
 
-Integration now exports 291 rules: 41 proved and 249 refuted over ℝ (one
-unproved), 33 proved and 238 refuted over ℂ (twenty unproved). Of the
+Of the 43 rules without a proposal, six have a literal fractional exponent
+in their pattern (vacuous in the fragment). A random-sampling search
+(development aid) refutes 3.2.1 #7; 4.7.8 #47 and #48 divide by `a n`, and the
+optional `a` may vanish, while their real integrands need `x > 0`, a guard the
+search does not classify, so the witnesses (`a = 0`, `b = n = 1`, `x = 1`) were
+written by hand (`OSR/IntegrationRec15.lean`, both domains).
+`OSR/IntegrationRec16.lean` proves 1.1.1.2 #4 (`integration.linear_linear_power`)
+over ℝ and ℂ: when `m + n + 2 = 0`,
+`((a + b x)^(m+1) (c + d x)^(n+1))' = (m + 1) (b c - a d) (a + b x)^m (c + d x)^n`.
+Its conditions use only `relation1#neq` and `relation1#eq`, so the complex
+proof is certified, bringing the certified complex proofs to 18.
+
+Integration now exports 295 rules: 42 proved and 252 refuted over ℝ (one
+unproved), 34 proved and 241 refuted over ℂ (twenty unproved). Of the
 complex proofs, 17 are certified. Fourteen other rules remain explicitly
 reported as not migrated. Of the 39 backlog rules, 12 are neither proved
 nor refuted: the six `p + 1/2 ∈ ℤ` rules, 2.3 #44 and #45, and the four

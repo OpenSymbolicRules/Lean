@@ -13,13 +13,13 @@ private def t : Expr := .var "t"
 -- The twenty rules of the syntactic inventory (FreeQ or NeQ conditions,
 -- registered heads, no Int in the result) are migrated or reported, plus
 -- 110 rules with residual integrals and seven unmigrated ones.
-#guard Integration.catalog.length + Integration.notMigrated.length == 305
+#guard Integration.catalog.length + Integration.notMigrated.length == 309
 #guard Integration.notMigrated.length == 14
-#guard (Integration.catalog.filter (·.rule.shape == .antiderivRec)).length == 240
-#guard (Integration.catalog.filter (!·.rule.conditions.isEmpty)).length == 263
+#guard (Integration.catalog.filter (·.rule.shape == .antiderivRec)).length == 243
+#guard (Integration.catalog.filter (!·.rule.conditions.isEmpty)).length == 267
 -- RUBI rules with EqQ conditions are stated with relation1#eq (Cond.eq).
 #guard (Integration.catalog.filter fun e =>
-  e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 108
+  e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 112
 
 -- RUBI 4.16.1: the new degenerate-coefficient cases are refuted in both
 -- domains, with no proof or unresolved domain accidentally attached.
@@ -27,7 +27,8 @@ private def degenerateCoefficientIds : List String := [
   "integration.rubi_1_2_2_4_r57", "integration.rubi_1_2_2_4_r58",
   "integration.rubi_2_1_r10", "integration.rubi_4_1_12_r45",
   "integration.rubi_4_1_12_r46", "integration.rubi_4_1_12_r53",
-  "integration.rubi_4_1_12_r54", "integration.rubi_3_1_4_r11"]
+  "integration.rubi_4_1_12_r54", "integration.rubi_3_1_4_r11",
+  "integration.rubi_4_7_8_r47", "integration.rubi_4_7_8_r48"]
 
 #guard degenerateCoefficientIds.all fun id =>
   match Integration.catalog.find? (·.rule.id == id) with
@@ -103,7 +104,8 @@ private def rules : List CRule :=
   "integration.split_power_linear_log_over_x_monomial", "integration.sin_power_log_reduction",
   "integration.cos_power_log_reduction", "integration.power_sin_power_reduction",
   "integration.power_cos_power_reduction", "integration.quadratic_power_reduction",
-  "integration.linear_quadratic_power_reduction", "integration.quartic_power_reduction"]
+  "integration.linear_quadratic_power_reduction", "integration.quartic_power_reduction",
+  "integration.linear_linear_power"]
 
 -- A conditional rule applies only when its conditions are decided: int(λt. t^m)
 -- stays (m ≠ -1 is undecided), int(λt. t^(-1)) stays (decided false),
