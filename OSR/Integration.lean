@@ -3513,7 +3513,13 @@ def catalog : List CEntry := [
     findings := [
       "independence: mn, q are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       recFinding,
-      condFinding "EqQ[mn, Multiply[-1, n]]; IntegerQ[q]", optionalFinding "a., b., n., p., d., mn., q., f. and r."] }
+      condFinding "EqQ[mn, Multiply[-1, n]]; IntegerQ[q]", optionalFinding "a., b., n., p., d., mn., q., f. and r."] },
+  { rule := monoBinomTripleNegFlip, ruleDecl := ``monoBinomTripleNegFlip,
+    proofs := [(.real, ``monoBinomTripleNegFlip_real), (.complex, ``monoBinomTripleNegFlip_complex)],
+    findings := [
+      "independence: mn, q are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[mn, Multiply[-1, n]]; IntegerQ[q]", optionalFinding "m., b., n., p., d., mn., q., f. and r."] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -3549,6 +3555,6 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
     | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
-    | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 end OSR.Integration

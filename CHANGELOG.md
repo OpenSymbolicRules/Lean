@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- RUBI 4.16.1 1.1.3.6 #29 proved over ℝ and ℂ (`OSR/IntegrationRec34.lean`),
+  the `x^m` variant of 1.1.3.5 #41. The catalogue has 377 rules: 67 proved
+  and 310 refuted over ℝ, 59 proved (32 certified), 317 refuted and one
+  unproved over ℂ.
 - RUBI 4.16.1 1.1.3.5 #41 proved over ℝ and ℂ (`OSR/IntegrationRec34.lean`):
   `(c + d x^(-n))^q = (d + c xⁿ)^q / x^(n q)`. The catalogue has 376 rules:
   66 proved and 310 refuted over ℝ, 58 proved (31 certified), 317 refuted
