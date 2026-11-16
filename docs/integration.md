@@ -541,8 +541,12 @@ left out), and 35 rules excluded for metavariables that may
 depend on `x` (`u_`) and 18 whose conditions use `Simplify`, are the next
 backlog.
 
-Integration now exports 359 rules: 61 proved and 298 refuted over ℝ (none
-unproved), 53 proved, 305 refuted and one unproved over ℂ. Of the
+`OSR/IntegrationRec30.lean` refutes 12 more in both domains: random sampling
+of the 144 candidates without a grid proposal returned 17 proposals (four use
+`Sqrt` and are held back, one did not survive Lean).
+
+Integration now exports 371 rules: 61 proved and 310 refuted over ℝ (none
+unproved), 53 proved, 317 refuted and one unproved over ℂ. Of the
 complex proofs, 28 are certified (the recent ones state `relation1#gt`
 conditions). Fourteen other rules remain explicitly
 reported as not migrated. Of the 39 backlog rules, 12 are neither proved

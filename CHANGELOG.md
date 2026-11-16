@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Twelve more RUBI rules refuted in both domains from random-sampling
+  proposals (`OSR/IntegrationRec30.lean`). The catalogue has 371 rules: 61
+  proved and 310 refuted over ℝ, 53 proved, 317 refuted and one unproved over ℂ.
 - A wider inventory pass over the registered-head RUBI rules with
   expressible conditions and `x`-independent metavariables found 213 new
   candidates; 39 are refuted in Lean (`OSR/IntegrationRec29.lean`), 38 in

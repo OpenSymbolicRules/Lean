@@ -105,7 +105,8 @@ OSR/IntegrationRec26.lean discontinuity of log at the cut (`not_continuous_clog`
 OSR/IntegrationRec27.lean branch-cut refutations of by-parts rules (6)
 OSR/IntegrationRec28.lean branch-cut refutation of 3.2.3 #5 (residual antiderivatives with a constant)
 OSR/IntegrationRec29.lean refutations from a wider inventory pass (39), per domain
-OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (359)
+OSR/IntegrationRec30.lean refutations proposed by random sampling (12), per domain
+OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (371)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
                        generation of rule set, reports and conformance cases
