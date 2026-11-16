@@ -607,14 +607,22 @@ where `b c - a d ≠ 0` and the `EqQ` condition exclude `n = 0`:
 | 1.1.3.3 #10 `∫ (a + b xⁿ)^p (c + d xⁿ)` | `a ≠ 0` | `integration.rubi_1_1_3_3_r10_nondegenerate` |
 | 1.1.3.4 #14 `∫ (e x)^m (a + b xⁿ)^p (c + d xⁿ)` | `a e (m + 1) ≠ 0` | `integration.rubi_1_1_3_4_r14_nondegenerate` |
 
+`OSR/IntegrationRec40.lean` proves three variants on quadratic trinomials:
+
+| Rule as stated | Added condition | Variant |
+|---|---|---|
+| 1.2.1.2 #4 `∫ (d + e x) (a + b x + c x²)^p`, `2 c d = b e` | `b (p + 1) ≠ 0` | `integration.rubi_1_2_1_2_r4_nondegenerate` |
+| 1.2.1.3 #1 `∫ (e x)^m (f + g x) (b x + c x²)^p` | `c (m + 2 p + 2) ≠ 0` | `integration.rubi_1_2_1_3_r1_nondegenerate` |
+| 1.2.1.4 #1 `∫ x^m (f + g x)^n (b x + c x²)` | `g (m + n + 3) ≠ 0` | `integration.rubi_1_2_1_4_r1_nondegenerate` |
+
 A development triage adds `D ≠ 0` for every coefficient-only denominator
 `D^k` (`k < 0`) of the result of the 318 refuted rules: 291 receive a
 condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 391 rules: 81 proved and 310 refuted over ℝ (none
-unproved), 73 proved (46 certified), 317 refuted and one unproved over ℂ.
+Integration now exports 394 rules: 84 proved and 310 refuted over ℝ (none
+unproved), 76 proved (49 certified), 317 refuted and one unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that
