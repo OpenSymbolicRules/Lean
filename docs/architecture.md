@@ -107,7 +107,8 @@ OSR/IntegrationRec28.lean branch-cut refutation of 3.2.3 #5 (residual antideriva
 OSR/IntegrationRec29.lean refutations from a wider inventory pass (39), per domain
 OSR/IntegrationRec30.lean refutations proposed by random sampling (12), per domain
 OSR/IntegrationRec31.lean improper trinomials with equal powers (2 proofs)
-OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (373)
+OSR/IntegrationRec32.lean a trinomial with a negative exponent (1 proof)
+OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (374)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
                        generation of rule set, reports and conformance cases

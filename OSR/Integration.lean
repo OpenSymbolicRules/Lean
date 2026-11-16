@@ -1,5 +1,5 @@
 import OSR.Calculus
-import OSR.IntegrationRec31
+import OSR.IntegrationRec32
 
 /-!
 # Integration (RUBI)
@@ -45,7 +45,8 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec24 OSR.IntegrationRec25
   OSR.IntegrationRec26 OSR.IntegrationRec27
   OSR.IntegrationRec28 OSR.IntegrationRec29
-  OSR.IntegrationRec30 OSR.IntegrationRec31 Filter Topology
+  OSR.IntegrationRec30 OSR.IntegrationRec31
+  OSR.IntegrationRec32 Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -3493,7 +3494,13 @@ def catalog : List CEntry := [
     findings := [
       "independence: q, r are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       recFinding,
-      condFinding "EqQ[q, n]; EqQ[r, n]", optionalFinding "m., a., q., b., n., c., r. and p."] }
+      condFinding "EqQ[q, n]; EqQ[r, n]", optionalFinding "m., a., q., b., n., c., r. and p."] },
+  { rule := trinomNegPow, ruleDecl := ``trinomNegPow,
+    proofs := [(.real, ``trinomNegPow_real), (.complex, ``trinomNegPow_complex)],
+    findings := [
+      "independence: n, n2, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; LtQ[n, 0]; IntegerQ[p]", optionalFinding "b., c., n2. and p."] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -3529,6 +3536,6 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
     | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
-    | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 end OSR.Integration

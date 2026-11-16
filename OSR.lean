@@ -45,5 +45,6 @@ import OSR.IntegrationRec28
 import OSR.IntegrationRec29
 import OSR.IntegrationRec30
 import OSR.IntegrationRec31
+import OSR.IntegrationRec32
 import OSR.Integration
 import OSR.Export
