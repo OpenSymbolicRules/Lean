@@ -18,6 +18,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- 120 strengthened variants distributed unproved with a numerical check over
+  ℝ (`OSR/IntegrationNum1.lean`, Specification V1-R-005e), in their own module
+  with their own well-formedness theorem; the finding texts move to
+  `OSR/IntegrationFindings.lean`. Strengthened variants of 1.2.1.2 #1 and
+  1.2.1.3 #20 with `d ≠ 0` and `e ≠ 0`, and of 1.2.1.3 #19 with `e^p ≠ 0`, proved
+  over ℝ and ℂ (`OSR/IntegrationRec48.lean`). The catalogue has 534 rules: 104
+  proved, 310 refuted and 120 unproved over ℝ; 96 proved (69 certified), 317
+  refuted and 121 unproved over ℂ.
 - First strengthened variants of rules with residual integrals: 1.2.1.2 #20
   with `e^p ≠ 0`, #103 with `(m + 1) (c d² - b d e + a e²) ≠ 0` and #104 with
   `(m + 1) (c d² + a e²) ≠ 0`, proved over ℝ and ℂ

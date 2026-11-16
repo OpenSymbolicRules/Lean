@@ -1,5 +1,6 @@
 import OSR.Calculus
-import OSR.IntegrationRec47
+import OSR.IntegrationRec48
+import OSR.IntegrationNum1
 
 /-!
 # Integration (RUBI)
@@ -53,7 +54,7 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec41 OSR.IntegrationRec42
   OSR.IntegrationRec43 OSR.IntegrationRec44
   OSR.IntegrationRec45 OSR.IntegrationRec46
-  OSR.IntegrationRec47 Filter Topology
+  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationFindings Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -778,24 +779,6 @@ theorem cosLog_real : cosLog.Holds .real := by
 
 private def lnComplexFinding : String :=
   "complex: not proved; ln is defined for z ≠ 0, but the principal logarithm is discontinuous across the negative real axis (its branch cut), where the integrand is defined, so the statement is not expected to hold there."
-
-private def optionalFinding (vars : String) (plural : Bool := true) : String :=
-  if plural then
-    s!"matching: the optional wildcards {vars} of the v0.1 pattern are ordinary metavariables; the v1 rule does not match the instances with RUBI's default values."
-  else
-    s!"matching: the optional wildcard {vars} of the v0.1 pattern is an ordinary metavariable; the v1 rule does not match the instances with RUBI's default value."
-
-private def neqFinding (cond : String) : String :=
-  s!"conditions: RUBI's {cond} becomes a relation1#neq condition, read semantically (both sides defined, values different); Mathematica's NeQ tests that the difference is not possibly zero. The reference rewriter does not apply conditional rules."
-
-private def integerFinding (m : String) : String :=
-  s!"exponent: the fragment interprets arith1#power for integer exponents only, so the statement covers the integer values of {m}; for other values the integrand is undefined."
-
-private def condFinding (cs : String) : String :=
-  s!"conditions: RUBI's {cs} become OSR v1 conditions (relation1#neq, relation1#eq, relation1#gt, set1#in with setname1#Z), read semantically on defined values."
-
-private def recFinding : String :=
-  "residual integrals: the result contains Int[…], exported as int(λx. H)(x) (the calculus1#int FMP form); the statement holds for every choice of antiderivatives of the residual integrands. The reference rewriter does not apply this rule."
 
 /-! ## Counterexamples over ℂ at the branch cut of `log` -/
 
@@ -3804,7 +3787,31 @@ def catalogPart5 : List CEntry := [
       "strengthened: the condition (m + 1) (c d^2 + a e^2) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_2_r104, which stays refuted.",
       recFinding,
       condFinding "NeQ[Add[Multiply[c, Power[d, 2]], Multiply[a, Power[e, 2]]], 0]; EqQ[Add[m, Multiply[2, p], 3], 0]",
-      optionalFinding "e. and c."] }
+      optionalFinding "e. and c."] },
+  { rule := rubi1212r1Nondeg, ruleDecl := ``rubi1212r1Nondeg,
+    proofs := [(.real, ``rubi1212r1Nondeg_real), (.complex, ``rubi1212r1Nondeg_complex)],
+    findings := [
+      "strengthened: the conditions d ≠ 0 and e ≠ 0 (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_2_r1, which stays refuted.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; EqQ[Add[Multiply[c, Power[d, 2]], Multiply[-1, b, d, e], Multiply[a, Power[e, 2]]], 0]; IntegerQ[p]",
+      optionalFinding "e., m., a., b., c. and p."] },
+  { rule := rubi1213r20Nondeg, ruleDecl := ``rubi1213r20Nondeg,
+    proofs := [(.real, ``rubi1213r20Nondeg_real), (.complex, ``rubi1213r20Nondeg_complex)],
+    findings := [
+      "strengthened: the conditions d ≠ 0 and e ≠ 0 (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_3_r20, which stays refuted.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; EqQ[Add[Multiply[c, Power[d, 2]], Multiply[-1, b, d, e], Multiply[a, Power[e, 2]]], 0]; IntegerQ[p]",
+      optionalFinding "e., f., g., a., b., c. and p."] },
+  { rule := rubi1213r19Nondeg, ruleDecl := ``rubi1213r19Nondeg,
+    proofs := [(.real, ``rubi1213r19Nondeg_real), (.complex, ``rubi1213r19Nondeg_complex)],
+    findings := [
+      "strengthened: the condition e^p ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_3_r19, which stays refuted.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IntegerQ[p]",
+      optionalFinding "e., m., f., g., b., c. and p."] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -3813,23 +3820,30 @@ theorem catalogPart5_wellFormed : ∀ e ∈ catalogPart5,
     (if e.rule.shape == .antiderivRec then e.rule.recOk else e.rule.wellFormed) = true := by
   intro e he
   simp only [catalogPart5, List.mem_cons, List.mem_nil_iff, or_false] at he
-  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl <;> decide
 
-/-- The Integration catalogue, in v0.1 file order. -/
-def catalog : List CEntry :=
+/-- The rules with a proof or a counterexample, in v0.1 file order. -/
+def catalogVerified : List CEntry :=
   catalogPart1 ++ catalogPart2 ++ catalogPart3 ++ catalogPart4 ++ catalogPart5
+
+/-- The Integration catalogue: the verified rules, then the strengthened variants checked
+numerically (`OSR.IntegrationNum1`), unproved. -/
+def catalog : List CEntry :=
+  catalogVerified ++ IntegrationNum1.entries
 
 /-- Every catalogue rule is well formed: recursive rules by `recOk`, the
 others by `wellFormed`. -/
 theorem catalog_wellFormed : ∀ e ∈ catalog,
     (if e.rule.shape == .antiderivRec then e.rule.recOk else e.rule.wellFormed) = true := by
   intro e he
-  simp only [catalog, List.mem_append] at he
-  rcases he with (((h | h) | h) | h) | h
+  simp only [catalog, catalogVerified, List.mem_append] at he
+  rcases he with ((((h | h) | h) | h) | h) | h
   · exact catalogPart1_wellFormed e h
   · exact catalogPart2_wellFormed e h
   · exact catalogPart3_wellFormed e h
   · exact catalogPart4_wellFormed e h
   · exact catalogPart5_wellFormed e h
+  · exact IntegrationNum1.entries_wellFormed e h
 
 end OSR.Integration

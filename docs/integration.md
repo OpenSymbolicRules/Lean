@@ -659,6 +659,28 @@ alone it is false at `e = d = m = 0`, like #25.
 residual integrals, stated for every choice of antiderivatives of the
 residual integrands: 1.2.1.2 #20 with `e^p ≠ 0`, #103 with
 `(m + 1) (c d² - b d e + a e²) ≠ 0` and #104 with `(m + 1) (c d² + a e²) ≠ 0`.
+`OSR/IntegrationRec48.lean` proves 1.2.1.2 #1 and 1.2.1.3 #20 with `d ≠ 0` and
+`e ≠ 0` (the converted condition `c d² - b d e + a e² = 0` factors the
+trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
+
+### Strengthened variants checked numerically
+
+`OSR/IntegrationNum1.lean` distributes 120 more strengthened variants before
+their proofs (Specification V1-R-005e): both domains are unproved, and a
+`numerical:` finding records the evidence. Each candidate was checked over ℝ
+by central differences, each residual integral replaced by a function whose
+derivative is the residual integrand at the point, on assignments where each
+metavariable is 0 with probability 0.4 (otherwise an integer between -3 and
+3), and kept only with no failure on at least 50 points; a point where the
+integrand is defined but a residual integrand or the result is not counts as
+a failure. This adversarial sampling rejects the false candidates 1.2.1.3 #24
+and #25 that a uniform sampling had accepted, and 44 others, mostly
+logarithmic rules whose results need sign conditions over ℝ; it errs on the
+safe side (4.1.12 #81, proved above, fails at 2 of 721 points through
+rounding). The complex domain is
+not checked. The entries live in their own module with their own
+well-formedness theorem; `Integration.catalog` is `catalogVerified` followed
+by them.
 
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
@@ -670,8 +692,9 @@ condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 411 rules: 101 proved and 310 refuted over ℝ (none
-unproved), 93 proved (66 certified), 317 refuted and one unproved over ℂ.
+Integration now exports 534 rules: 104 proved, 310 refuted and 120 unproved
+(checked numerically) over ℝ, 96 proved (69 certified), 317 refuted and 121
+unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that
