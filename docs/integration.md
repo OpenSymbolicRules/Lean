@@ -639,6 +639,16 @@ where `b c - a d ≠ 0` and the `EqQ` condition exclude `n = 0`:
 | 1.2.3.5 #2 `∫ (d + e xⁿ + f x²ⁿ) (a + b xⁿ + c x²ⁿ)^p` | `a ≠ 0` | `integration.rubi_1_2_3_5_r2_nondegenerate` |
 | 1.2.1.3 #14 `∫ (d + e x) (f + g x) (a + c x²)^p` | `2 c (p + 1) (2 p + 3) ≠ 0` | `integration.rubi_1_2_1_3_r14_nondegenerate` |
 
+`OSR/IntegrationRec44.lean` proves two more:
+
+| Rule as stated | Added condition | Variant |
+|---|---|---|
+| 1.2.1.3 #13 `∫ (d + e x) (f + g x) (a + b x + c x²)^p` | `2 c² (p + 1) (2 p + 3) ≠ 0` | `integration.rubi_1_2_1_3_r13_nondegenerate` |
+| 1.1.1.7 #6 `∫ x^m (a₁ + b₁ xⁿ)^p (a₂ + b₂ xⁿ)^p`, `m = 2 n - 1` | `2 b₁ b₂ n (p + 1) ≠ 0` | `integration.rubi_1_1_1_7_r6_nondegenerate` |
+
+Like 1.2.1.3 #25, the candidate variant of 1.2.1.3 #24 is false at
+`e = d = m = 0` and is not included.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.
@@ -649,8 +659,8 @@ condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 403 rules: 93 proved and 310 refuted over ℝ (none
-unproved), 85 proved (58 certified), 317 refuted and one unproved over ℂ.
+Integration now exports 405 rules: 95 proved and 310 refuted over ℝ (none
+unproved), 87 proved (60 certified), 317 refuted and one unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that

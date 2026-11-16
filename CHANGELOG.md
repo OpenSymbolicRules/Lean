@@ -14,6 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Strengthened variants of 1.2.1.3 #13 with `2 c² (p + 1) (2 p + 3) ≠ 0` and
+  1.1.1.7 #6 with `2 b1 b2 n (p + 1) ≠ 0`, proved over ℝ and ℂ
+  (`OSR/IntegrationRec44.lean`). The catalogue has 405 rules: 95 proved and
+  310 refuted over ℝ, 87 proved (60 certified), 317 refuted and one unproved
+  over ℂ.
 - Strengthened variants of 1.2.3.5 #2 with `a ≠ 0` and 1.2.1.3 #14 with
   `2 c (p + 1) (2 p + 3) ≠ 0`, proved over ℝ and ℂ
   (`OSR/IntegrationRec43.lean`). The catalogue has 403 rules: 93 proved and
