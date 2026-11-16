@@ -64,5 +64,6 @@ import OSR.IntegrationRec47
 import OSR.IntegrationRec48
 import OSR.IntegrationFindings
 import OSR.IntegrationNum1
+import OSR.IntegrationRec49
 import OSR.Integration
 import OSR.Export

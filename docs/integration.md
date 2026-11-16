@@ -665,7 +665,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 ### Strengthened variants checked numerically
 
-`OSR/IntegrationNum1.lean` distributes 120 more strengthened variants before
+`OSR/IntegrationNum1.lean` distributes 117 more strengthened variants before
 their proofs (Specification V1-R-005e): both domains are unproved, and a
 `numerical:` finding records the evidence. Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
@@ -680,7 +680,10 @@ safe side (4.1.12 #81, proved above, fails at 2 of 721 points through
 rounding). The complex domain is
 not checked. The entries live in their own module with their own
 well-formedness theorem; `Integration.catalog` is `catalogVerified` followed
-by them.
+by them. When a variant is proved, its definition stays in
+`OSR/IntegrationNum1.lean` and its entry moves to the verified catalogue:
+`OSR/IntegrationRec49.lean` proves 1.2.2.3 #7 and #8 (the quartic factors as
+`(d + e x²) (a/d + c x²/e)`) and 1.1.3.3 #15.
 
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
@@ -692,8 +695,8 @@ condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 534 rules: 104 proved, 310 refuted and 120 unproved
-(checked numerically) over ℝ, 96 proved (69 certified), 317 refuted and 121
+Integration now exports 534 rules: 107 proved, 310 refuted and 117 unproved
+(checked numerically) over ℝ, 99 proved (72 certified), 317 refuted and 118
 unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,

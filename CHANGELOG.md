@@ -18,6 +18,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Proofs of three variants first distributed unproved, 1.2.2.3 #7 and #8 and
+  1.1.3.3 #15 (`OSR/IntegrationRec49.lean`); their entries move to the verified
+  catalogue. The catalogue has 534 rules: 107 proved, 310 refuted and 117
+  unproved over ℝ; 99 proved (72 certified), 317 refuted and 118 unproved over
+  ℂ.
 - 120 strengthened variants distributed unproved with a numerical check over
   ℝ (`OSR/IntegrationNum1.lean`, Specification V1-R-005e), in their own module
   with their own well-formedness theorem; the finding texts move to
