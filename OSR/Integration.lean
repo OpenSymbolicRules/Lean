@@ -1,5 +1,5 @@
 import OSR.Calculus
-import OSR.IntegrationRec28
+import OSR.IntegrationRec29
 
 /-!
 # Integration (RUBI)
@@ -44,7 +44,7 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec22 OSR.IntegrationRec23
   OSR.IntegrationRec24 OSR.IntegrationRec25
   OSR.IntegrationRec26 OSR.IntegrationRec27
-  OSR.IntegrationRec28 Filter Topology
+  OSR.IntegrationRec28 OSR.IntegrationRec29 Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -3027,10 +3027,314 @@ def catalog : List CEntry := [
     findings := [
       "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
       recFinding,
-      condFinding "EqQ[Add[Multiply[a2, b1], Multiply[a1, b2]], 0]; EqQ[Add[Multiply[Add[m, 1], Power[Multiply[2, n], -1]], p], 0]; GtQ[p, 0]", optionalFinding "m., b1. and b2."] }
+      condFinding "EqQ[Add[Multiply[a2, b1], Multiply[a1, b2]], 0]; EqQ[Add[Multiply[Add[m, 1], Power[Multiply[2, n], -1]], p], 0]; GtQ[p, 0]", optionalFinding "m., b1. and b2."] },
+  { rule := rubi1114r44, ruleDecl := ``rubi1114r44, proofs := [],
+    counterexamples := [(.real, ``rubi1114r44_counterexample_real), (.complex, ``rubi1114r44_counterexample_complex)],
+    findings := [
+      "counterexample: at d = 1, e = 1, f = 1, g = 1, h = 1, i = 1, m = 1, n = 1, p = 1, q = 1, r = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the result is not defined at x = 1 (Lean theorems rubi1114r44_counterexample_real and rubi1114r44_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      recFinding,
+      optionalFinding "i., a., b., c., d., e., f., g. and h."] },
+  { rule := rubi1133r11, ruleDecl := ``rubi1133r11, proofs := [],
+    counterexamples := [(.real, ``rubi1133r11_counterexample_real), (.complex, ``rubi1133r11_counterexample_complex)],
+    findings := [
+      "counterexample: at b2 = 1, c = 1, d = 1, n = 2, non2 = 1, p = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the result is not defined at x = 1 (Lean theorems rubi1133r11_counterexample_real and rubi1133r11_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: non2 is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[non2, Multiply[n, Power[2, -1]]]; EqQ[Add[Multiply[a2, b1], Multiply[a1, b2]], 0]; EqQ[Add[Multiply[a1, a2, d], Multiply[-1, b1, b2, c, Add[Multiply[n, Add[p, 1]], 1]]], 0]",
+      optionalFinding "b1., non2., p., b2. and d."] },
+  { rule := rubi1133r15, ruleDecl := ``rubi1133r15, proofs := [],
+    counterexamples := [(.real, ``rubi1133r15_counterexample_real), (.complex, ``rubi1133r15_counterexample_complex)],
+    findings := [
+      "counterexample: at a = 1, d = 1, p = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the result is not defined at x = 1 (Lean theorems rubi1133r15_counterexample_real and rubi1133r15_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; NeQ[Add[Multiply[n, Add[p, 1]], 1], 0]",
+      optionalFinding "b. and d."] },
+  { rule := rubi1133r16, ruleDecl := ``rubi1133r16, proofs := [],
+    counterexamples := [(.real, ``rubi1133r16_counterexample_real), (.complex, ``rubi1133r16_counterexample_complex)],
+    findings := [
+      "counterexample: at b2 = 1, c = 1, d = 1, n = 2, non2 = 1, p = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the result is not defined at x = 1 (Lean theorems rubi1133r16_counterexample_real and rubi1133r16_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: non2 is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[non2, Multiply[n, Power[2, -1]]]; EqQ[Add[Multiply[a2, b1], Multiply[a1, b2]], 0]; NeQ[Add[Multiply[n, Add[p, 1]], 1], 0]",
+      optionalFinding "b1., non2., p., b2. and d."] },
+  { rule := rubi1134r15, ruleDecl := ``rubi1134r15, proofs := [],
+    counterexamples := [(.real, ``rubi1134r15_counterexample_real), (.complex, ``rubi1134r15_counterexample_complex)],
+    findings := [
+      "counterexample: at b2 = 1, c = 1, d = 1, e = 1, m = 1, n = 2, non2 = 1, p = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the result is not defined at x = 1 (Lean theorems rubi1134r15_counterexample_real and rubi1134r15_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: non2 is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[non2, Multiply[n, Power[2, -1]]]; EqQ[Add[Multiply[a2, b1], Multiply[a1, b2]], 0]; EqQ[Add[Multiply[a1, a2, d, Add[m, 1]], Multiply[-1, b1, b2, c, Add[m, Multiply[n, Add[p, 1]], 1]]], 0]; NeQ[m, -1]",
+      optionalFinding "e., m., b1., non2., p., b2. and d."] },
+  { rule := rubi1134r25, ruleDecl := ``rubi1134r25, proofs := [],
+    counterexamples := [(.real, ``rubi1134r25_counterexample_real), (.complex, ``rubi1134r25_counterexample_complex)],
+    findings := [
+      "counterexample: at b2 = 1, c = 1, d = 1, e = 1, m = 1, n = 2, non2 = 1, p = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the result is not defined at x = 1 (Lean theorems rubi1134r25_counterexample_real and rubi1134r25_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: non2 is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[non2, Multiply[n, Power[2, -1]]]; EqQ[Add[Multiply[a2, b1], Multiply[a1, b2]], 0]; NeQ[Add[m, Multiply[n, Add[p, 1]], 1], 0]",
+      optionalFinding "e., m., b1., non2., p., b2. and d."] },
+  { rule := rubi1135r30, ruleDecl := ``rubi1135r30, proofs := [],
+    counterexamples := [(.real, ``rubi1135r30_counterexample_real), (.complex, ``rubi1135r30_counterexample_complex)],
+    findings := [
+      "counterexample: at a = 1, e = 1, f = 1, n = 1, p = -3, q = 1, r = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the result is not defined at x = 1 (Lean theorems rubi1135r30_counterexample_real and rubi1135r30_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: p, q are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "ILtQ[p, 0]; GtQ[q, 0]",
+      optionalFinding "b., d. and f."] },
+  { rule := rubi1136r28, ruleDecl := ``rubi1136r28, proofs := [],
+    counterexamples := [(.real, ``rubi1136r28_counterexample_real), (.complex, ``rubi1136r28_counterexample_complex)],
+    findings := [
+      "counterexample: at d = 1, e = 1, f = 1, g = 1, m = 1, n = 1, p = 1, q = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the result is not defined at x = 0 (Lean theorems rubi1136r28_counterexample_real and rubi1136r28_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      recFinding,
+      optionalFinding "g., m., b., d. and f."] },
+  { rule := rubi1137r16, ruleDecl := ``rubi1137r16, proofs := [],
+    counterexamples := [(.real, ``rubi1137r16_counterexample_real), (.complex, ``rubi1137r16_counterexample_complex)],
+    findings := [
+      "counterexample: at d = 1, e = 1, f = 1, g = 1, n = 1, n2 = 2, p = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the result is not defined at x = 1 (Lean theorems rubi1137r16_counterexample_real and rubi1137r16_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: n2 is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; EqQ[Add[Multiply[a, c, f], Multiply[-1, e, Add[Multiply[b, c], Multiply[a, d]], Add[Multiply[n, Add[p, 1]], 1]]], 0]; EqQ[Add[Multiply[a, c, g], Multiply[-1, b, d, e, Add[Multiply[2, n, Add[p, 1]], 1]]], 0]",
+      optionalFinding "f., n., g., n2., b., p. and d."] },
+  { rule := rubi1137r17, ruleDecl := ``rubi1137r17, proofs := [],
+    counterexamples := [(.real, ``rubi1137r17_counterexample_real), (.complex, ``rubi1137r17_counterexample_complex)],
+    findings := [
+      "counterexample: at c = -1, d = -1, e = -1, g = -1, n = -1, n2 = -2 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorems rubi1137r17_counterexample_real and rubi1137r17_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: n2 is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; EqQ[Add[Multiply[n, Add[p, 1]], 1], 0]; EqQ[Add[Multiply[a, c, g], Multiply[-1, b, d, e, Add[Multiply[2, n, Add[p, 1]], 1]]], 0]",
+      optionalFinding "g., n2., b., n., p. and d."] },
+  { rule := rubi1138r18, ruleDecl := ``rubi1138r18, proofs := [],
+    counterexamples := [(.real, ``rubi1138r18_counterexample_real), (.complex, ``rubi1138r18_counterexample_complex)],
+    findings := [
+      "counterexample: at d = 1, e = 1, f = 1, g = 1, h = 1, m = 1, n = 1, n2 = 2, p = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the result is not defined at x = 1 (Lean theorems rubi1138r18_counterexample_real and rubi1138r18_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: n2 is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; EqQ[Add[Multiply[a, c, f, Add[m, 1]], Multiply[-1, e, Add[Multiply[b, c], Multiply[a, d]], Add[m, Multiply[n, Add[p, 1]], 1]]], 0]; EqQ[Add[Multiply[a, c, g, Add[m, 1]], Multiply[-1, b, d, e, Add[m, Multiply[2, n, Add[p, 1]], 1]]], 0]; NeQ[m, -1]",
+      optionalFinding "h., m., f., n., g., n2., b., p. and d."] },
+  { rule := rubi1138r19, ruleDecl := ``rubi1138r19, proofs := [],
+    counterexamples := [(.real, ``rubi1138r19_counterexample_real), (.complex, ``rubi1138r19_counterexample_complex)],
+    findings := [
+      "counterexample: at b = -2, d = -2, g = -2, h = -2, m = -2, n = -1, n2 = -2, p = -2 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorems rubi1138r19_counterexample_real and rubi1138r19_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: n2 is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; EqQ[Add[m, Multiply[n, Add[p, 1]], 1], 0]; EqQ[Add[Multiply[a, c, g, Add[m, 1]], Multiply[-1, b, d, e, Add[m, Multiply[2, n, Add[p, 1]], 1]]], 0]; NeQ[m, -1]",
+      optionalFinding "h., m., g., n2., b., n., p. and d."] },
+  { rule := rubi1212r96, ruleDecl := ``rubi1212r96, proofs := [],
+    counterexamples := [(.real, ``rubi1212r96_counterexample_real), (.complex, ``rubi1212r96_counterexample_complex)],
+    findings := [
+      "counterexample: at a = 2, e = 2, m = 2, p = -2 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the result is not defined at x = 1 (Lean theorems rubi1212r96_counterexample_real and rubi1212r96_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: m, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[c, Power[d, 2]], Multiply[a, Power[e, 2]]], 0]; EqQ[Add[m, Multiply[2, p], 2], 0]; LtQ[p, -1]",
+      optionalFinding "e. and c."] },
+  { rule := rubi1231r3, ruleDecl := ``rubi1231r3, proofs := [],
+    counterexamples := [(.real, ``rubi1231r3_counterexample_real), (.complex, ``rubi1231r3_counterexample_complex)],
+    findings := [
+      "counterexample: at n = 1, n2 = 2, p = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the result is not defined at x = 1 (Lean theorems rubi1231r3_counterexample_real and rubi1231r3_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: n2 is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; EqQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]",
+      optionalFinding "b., n., c. and n2."] },
+  { rule := rubi1231r5, ruleDecl := ``rubi1231r5, proofs := [],
+    counterexamples := [(.real, ``rubi1231r5_counterexample_real), (.complex, ``rubi1231r5_counterexample_complex)],
+    findings := [
+      "counterexample: at b = 1, c = 1, p = -3 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the result is not defined at x = 1 (Lean theorems rubi1231r5_counterexample_real and rubi1231r5_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: n2, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; ILtQ[p, -1]",
+      optionalFinding "b., c. and n2."] },
+  { rule := rubi1232r10, ruleDecl := ``rubi1232r10, proofs := [],
+    counterexamples := [(.real, ``rubi1232r10_counterexample_real), (.complex, ``rubi1232r10_counterexample_complex)],
+    findings := [
+      "counterexample: at b = 1, m = 1, n = 1, n2 = 2, p = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the result is not defined at x = 1 (Lean theorems rubi1232r10_counterexample_real and rubi1232r10_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: n, n2, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; IGtQ[n, 0]; IGtQ[p, 0]; NeQ[Add[m, Multiply[2, n, p], 1], 0]",
+      optionalFinding "d., m., b., c. and n2."] },
+  { rule := rubi1232r18, ruleDecl := ``rubi1232r18, proofs := [],
+    counterexamples := [(.real, ``rubi1232r18_counterexample_real), (.complex, ``rubi1232r18_counterexample_complex)],
+    findings := [
+      "counterexample: at b = 2, m = 2, n = 1, n2 = 2 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorems rubi1232r18_counterexample_real and rubi1232r18_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: m, n, n2 are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; IGtQ[n, 0]; GtQ[m, Add[Multiply[2, n], Multiply[-1, 1]]]",
+      optionalFinding "d., b., c. and n2."] },
+  { rule := rubi1233r11, ruleDecl := ``rubi1233r11, proofs := [],
+    counterexamples := [(.real, ``rubi1233r11_counterexample_real), (.complex, ``rubi1233r11_counterexample_complex)],
+    findings := [
+      "counterexample: at b = 1, e = 1, n = 1, n2 = 2, p = 1, q = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the residual integrand 1 is not defined at x = 1 (Lean theorems rubi1233r11_counterexample_real and rubi1233r11_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: n2, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; EqQ[Add[Multiply[c, Power[d, 2]], Multiply[-1, b, d, e], Multiply[a, Power[e, 2]]], 0]; IntegerQ[p]",
+      optionalFinding "e., q., b., c. and p."] },
+  { rule := rubi1233r12, ruleDecl := ``rubi1233r12, proofs := [],
+    counterexamples := [(.real, ``rubi1233r12_counterexample_real), (.complex, ``rubi1233r12_counterexample_complex)],
+    findings := [
+      "counterexample: at e = 1, n = 1, n2 = 2, p = 1, q = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the residual integrand 1 is not defined at x = 1 (Lean theorems rubi1233r12_counterexample_real and rubi1233r12_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: n2, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; EqQ[Add[Multiply[c, Power[d, 2]], Multiply[a, Power[e, 2]]], 0]; IntegerQ[p]",
+      optionalFinding "e., q., c. and p."] },
+  { rule := rubi1233r19, ruleDecl := ``rubi1233r19, proofs := [],
+    counterexamples := [(.real, ``rubi1233r19_counterexample_real), (.complex, ``rubi1233r19_counterexample_complex)],
+    findings := [
+      "counterexample: at b = 1, c = 1, d = 1, n = 1, n2 = 2 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the result is not defined at x = 1 (Lean theorems rubi1233r19_counterexample_real and rubi1233r19_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: n2 is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; NeQ[Add[Multiply[c, Power[d, 2]], Multiply[-1, b, d, e], Multiply[a, Power[e, 2]]], 0]",
+      optionalFinding "e., b. and c."] },
+  { rule := rubi1233r20, ruleDecl := ``rubi1233r20, proofs := [],
+    counterexamples := [(.real, ``rubi1233r20_counterexample_real), (.complex, ``rubi1233r20_counterexample_complex)],
+    findings := [
+      "counterexample: at c = 1, d = 1, n = 1, n2 = 2 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the result is not defined at x = 1 (Lean theorems rubi1233r20_counterexample_real and rubi1233r20_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: n2 is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; NeQ[Add[Multiply[c, Power[d, 2]], Multiply[a, Power[e, 2]]], 0]",
+      optionalFinding "e. and c."] },
+  { rule := rubi1233r27, ruleDecl := ``rubi1233r27, proofs := [],
+    counterexamples := [(.real, ``rubi1233r27_counterexample_real), (.complex, ``rubi1233r27_counterexample_complex)],
+    findings := [
+      "counterexample: at c = 1, d = 1, e = 1, p = -3 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the result is not defined at x = 1 (Lean theorems rubi1233r27_counterexample_real and rubi1233r27_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: n2, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; ILtQ[p, -1]",
+      optionalFinding "e. and c."] },
+  { rule := rubi1233r50, ruleDecl := ``rubi1233r50, proofs := [],
+    counterexamples := [(.real, ``rubi1233r50_counterexample_real), (.complex, ``rubi1233r50_counterexample_complex)],
+    findings := [
+      "counterexample: at b = 1, e = 1, f = 1, g = 1, n = 1, n2 = 2, p = 1, q = 1, r = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the residual integrand 1 is not defined at x = 1 (Lean theorems rubi1233r50_counterexample_real and rubi1233r50_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: n2, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; EqQ[Add[Multiply[c, Power[d, 2]], Multiply[-1, b, d, e], Multiply[a, Power[e, 2]]], 0]; IntegerQ[p]",
+      optionalFinding "e., q., g., r., b., c. and p."] },
+  { rule := rubi1233r51, ruleDecl := ``rubi1233r51, proofs := [],
+    counterexamples := [(.real, ``rubi1233r51_counterexample_real), (.complex, ``rubi1233r51_counterexample_complex)],
+    findings := [
+      "counterexample: at e = 1, f = 1, g = 1, n = 1, n2 = 2, p = 1, q = 1, r = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the residual integrand 1 is not defined at x = 1 (Lean theorems rubi1233r51_counterexample_real and rubi1233r51_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: n2, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; EqQ[Add[Multiply[c, Power[d, 2]], Multiply[a, Power[e, 2]]], 0]; IntegerQ[p]",
+      optionalFinding "e., q., g., r., c. and p."] },
+  { rule := rubi1234r17, ruleDecl := ``rubi1234r17, proofs := [],
+    counterexamples := [(.real, ``rubi1234r17_counterexample_real), (.complex, ``rubi1234r17_counterexample_complex)],
+    findings := [
+      "counterexample: at b = 1, e = 1, f = 1, m = 1, n = 1, n2 = 2, p = 1, q = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the residual integrand 1 is not defined at x = 1 (Lean theorems rubi1234r17_counterexample_real and rubi1234r17_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: n2, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; EqQ[Add[Multiply[c, Power[d, 2]], Multiply[-1, b, d, e], Multiply[a, Power[e, 2]]], 0]; IntegerQ[p]",
+      optionalFinding "f., m., e., q., b., c. and p."] },
+  { rule := rubi1234r18, ruleDecl := ``rubi1234r18, proofs := [],
+    counterexamples := [(.real, ``rubi1234r18_counterexample_real), (.complex, ``rubi1234r18_counterexample_complex)],
+    findings := [
+      "counterexample: at e = 1, f = 1, m = 1, n = 1, n2 = 2, p = 1, q = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the residual integrand 1 is not defined at x = 1 (Lean theorems rubi1234r18_counterexample_real and rubi1234r18_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: n2, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; EqQ[Add[Multiply[c, Power[d, 2]], Multiply[a, Power[e, 2]]], 0]; IntegerQ[p]",
+      optionalFinding "f., m., e., q., c. and p."] },
+  { rule := rubi1234r38, ruleDecl := ``rubi1234r38, proofs := [],
+    counterexamples := [(.real, ``rubi1234r38_counterexample_real), (.complex, ``rubi1234r38_counterexample_complex)],
+    findings := [
+      "counterexample: at e = 1, f = 1, m = 1, n = 1, n2 = 2, p = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the result is not defined at x = 1 (Lean theorems rubi1234r38_counterexample_real and rubi1234r38_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: m, n, n2 are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; IGtQ[n, 0]; GtQ[m, Add[n, Multiply[-1, 1]]]; NeQ[Add[m, Multiply[n, Add[Multiply[2, p], 1]], 1], 0]; IntegerQ[p]",
+      optionalFinding "f., m., e. and c."] },
+  { rule := rubi1235r2, ruleDecl := ``rubi1235r2, proofs := [],
+    counterexamples := [(.real, ``rubi1235r2_counterexample_real), (.complex, ``rubi1235r2_counterexample_complex)],
+    findings := [
+      "counterexample: at d = 1, e = 1, f = 1, n = 1, n2 = 2, p = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the result is not defined at x = 1 (Lean theorems rubi1235r2_counterexample_real and rubi1235r2_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: n2 is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; EqQ[Add[Multiply[a, e], Multiply[-1, b, d, Add[Multiply[n, Add[p, 1]], 1]]], 0]; EqQ[Add[Multiply[a, f], Multiply[-1, c, d, Add[Multiply[2, n, Add[p, 1]], 1]]], 0]",
+      optionalFinding "e., n., f., n2., b., c. and p."] },
+  { rule := rubi1235r3, ruleDecl := ``rubi1235r3, proofs := [],
+    counterexamples := [(.real, ``rubi1235r3_counterexample_real), (.complex, ``rubi1235r3_counterexample_complex)],
+    findings := [
+      "counterexample: at b = -1, d = -1, f = -1, n = -1, n2 = -2 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorems rubi1235r3_counterexample_real and rubi1235r3_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: n2 is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; EqQ[Add[Multiply[n, Add[p, 1]], 1], 0]; EqQ[Add[Multiply[c, d], Multiply[a, f]], 0]",
+      optionalFinding "f., n2., b., n., c. and p."] },
+  { rule := rubi1236r3, ruleDecl := ``rubi1236r3, proofs := [],
+    counterexamples := [(.real, ``rubi1236r3_counterexample_real), (.complex, ``rubi1236r3_counterexample_complex)],
+    findings := [
+      "counterexample: at d = 1, e = 1, f = 1, g = 1, m = 1, n = 1, n2 = 2, p = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the result is not defined at x = 1 (Lean theorems rubi1236r3_counterexample_real and rubi1236r3_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: n2 is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; EqQ[Add[Multiply[a, e, Add[m, 1]], Multiply[-1, b, d, Add[m, Multiply[n, Add[p, 1]], 1]]], 0]; EqQ[Add[Multiply[a, f, Add[m, 1]], Multiply[-1, c, d, Add[m, Multiply[2, n, Add[p, 1]], 1]]], 0]; NeQ[m, -1]",
+      optionalFinding "g., m., e., n., f., n2., b., c. and p."] },
+  { rule := rubi1236r4, ruleDecl := ``rubi1236r4, proofs := [],
+    counterexamples := [(.real, ``rubi1236r4_counterexample_real), (.complex, ``rubi1236r4_counterexample_complex)],
+    findings := [
+      "counterexample: at c = -2, f = -2, g = -2, m = -2, n = -1, n2 = -2, p = -2 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorems rubi1236r4_counterexample_real and rubi1236r4_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: n2 is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; EqQ[Add[m, Multiply[n, Add[p, 1]], 1], 0]; EqQ[Add[Multiply[c, d], Multiply[a, f]], 0]; NeQ[m, -1]",
+      optionalFinding "g., m., f., n2., b., n., c. and p."] },
+  { rule := rubi21r7, ruleDecl := ``rubi21r7, proofs := [],
+    counterexamples := [(.real, ``rubi21r7_counterexample_real), (.complex, ``rubi21r7_counterexample_complex)],
+    findings := [
+      "counterexample: at c = 1, d = 1, e = 1, g = 1, m = 1, n = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the result is not defined at x = 1 (Lean theorems rubi21r7_counterexample_real and rubi21r7_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      recFinding,
+      optionalFinding "c., d., m., b., g., e. and f."] },
+  { rule := rubi23r13, ruleDecl := ``rubi23r13, proofs := [],
+    counterexamples := [(.real, ``rubi23r13_counterexample_real), (.complex, ``rubi23r13_counterexample_complex)],
+    findings := [
+      "counterexample: at c = 1, d = 1, e = 1, f = 1, m = 1, n = 2 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the result is not defined at x = 1 (Lean theorems rubi23r13_counterexample_real and rubi23r13_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[m, Add[n, Multiply[-1, 1]]]; EqQ[Add[Multiply[d, e], Multiply[-1, c, f]], 0]",
+      optionalFinding "e., f., m., a., b., c. and d."] },
+  { rule := rubi23r37, ruleDecl := ``rubi23r37, proofs := [],
+    counterexamples := [(.real, ``rubi23r37_counterexample_real), (.complex, ``rubi23r37_counterexample_complex)],
+    findings := [
+      "counterexample: at a = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the residual integrand 1 is not defined at x = 1 (Lean theorems rubi23r37_counterexample_real and rubi23r37_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      recFinding,
+      optionalFinding "a., b. and c."] },
+  { rule := rubi312r11, ruleDecl := ``rubi312r11, proofs := [],
+    counterexamples := [(.real, ``rubi312r11_counterexample_real), (.complex, ``rubi312r11_counterexample_complex)],
+    findings := [
+      "counterexample: at c = 1, d = 1, m = 1, p = 1, q = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the result is not defined at x = 0 (Lean theorems rubi312r11_counterexample_real and rubi312r11_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      recFinding,
+      optionalFinding "d., a., b., c., n. and p."] },
+  { rule := rubi321r12, ruleDecl := ``rubi321r12, proofs := [],
+    counterexamples := [(.real, ``rubi321r12_counterexample_real), (.complex, ``rubi321r12_counterexample_complex)],
+    findings := [
+      "counterexample: at A = 1, B = 1, a = -3, b = 1, c = 1, d = 1, e = 1, f = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the result is not defined at x = 1 (Lean theorems rubi321r12_counterexample_real and rubi321r12_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: mn is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[n, mn], 0]; NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]",
+      optionalFinding "A., B., e., a., b., n., c., d., f. and g."] },
+  { rule := rubi321r2, ruleDecl := ``rubi321r2, proofs := [],
+    counterexamples := [(.real, ``rubi321r2_counterexample_real), (.complex, ``rubi321r2_counterexample_complex)],
+    findings := [
+      "counterexample: at B = 1, a = -3, b = 1, c = 1, d = 1, e = 1, p = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the residual integrand 1 is not defined at x = -1 (Lean theorems rubi321r2_counterexample_real and rubi321r2_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: mn, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[n, mn], 0]; NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; IGtQ[p, 0]",
+      optionalFinding "A., B., e., a., b., n., c., d. and p."] },
+  { rule := rubi322r17, ruleDecl := ``rubi322r17, proofs := [],
+    counterexamples := [(.real, ``rubi322r17_counterexample_real), (.complex, ``rubi322r17_counterexample_complex)],
+    findings := [
+      "counterexample: at A = 1, B = 1, a = 1, c = 1, e = 1, f = 1, g = 1, m = 1, mn = -1, n = 1, p = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the result is not defined at x = 1 (Lean theorems rubi322r17_counterexample_real and rubi322r17_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "independence: m, mn are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[n, mn], 0]; IGtQ[n, 0]; EqQ[Add[Multiply[b, d, f], Multiply[-1, a, c, h]], 0]; EqQ[Add[Multiply[b, d, g], Multiply[-1, h, Add[Multiply[b, c], Multiply[a, d]]]], 0]; IntegerQ[m]",
+      optionalFinding "f., g., h., m., A., B., e., a., b., n., c., d. and p."] },
+  { rule := rubi35r8, ruleDecl := ``rubi35r8, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi35r8_counterexample_real)],
+    findings := [
+      "counterexample: at c = 2, d = -1, e = 2, f = 2, g = 2, m = 2, n = 2 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the residual integrand 1 is not defined at x = 1 (Lean theorem rubi35r8_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; the counterexample of the other domain was not established over ℂ.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "GtQ[m, 0]; NeQ[d, 1]",
+      optionalFinding "f., g., m., e., c., a., b. and n."] }
 ]
 
 set_option maxRecDepth 4096 in
+set_option maxHeartbeats 1000000 in
 /-- Every catalogue rule is well formed: recursive rules by `recOk`, the
 others by `wellFormed`. -/
 theorem catalog_wellFormed : ∀ e ∈ catalog,
@@ -3059,6 +3363,8 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
     | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
     | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+    | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 end OSR.Integration

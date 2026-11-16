@@ -522,9 +522,27 @@ integrand `log(-x)²/x` is defined near `x = -1` and `B = log(-x) - log x`
 jumps there. Antiderivatives are free up to a constant; with linear ones and
 `2 Φ₂ + Φ₃ = 2` at `-1`, a continuous result would make `B` continuous.
 
-Integration now exports 320 rules: 61 proved and 259 refuted over ℝ, 53
-proved and 267 refuted over ℂ; no statement is left unproved in either
-domain. Of the
+That left no statement unproved among the 320 rules.
+
+### A wider pass over the registered-head rules
+
+A new inventory of RUBI 4.16.1 (the committed v0.1 corpus) selected the rules
+whose heads are all registered, whose conditions are expressible (`FreeQ`,
+`NeQ`, `EqQ`, `GtQ`, `LtQ`, `IntegerQ`, `IntegersQ`, `IGtQ`, `ILtQ`), whose
+metavariables are independent of `x` (`FreeQ` or numeric predicates), and
+that were not yet considered: 213 rules. The numerical search proposed a
+counterexample for 69; `OSR/IntegrationRec29.lean` keeps 39 rules refuted in
+Lean, 38 in both domains and one over ℝ only (its real witness does not carry
+over to ℂ). Twenty-two further refutations use `Sqrt`, which the converter in
+progress maps to `arith1#root`; the committed faithfulness check does not
+yet accept that convention, so they are held back.
+The other 145 candidates (one, 3.3 #43, has a condition on `x` itself and is
+left out), and 35 rules excluded for metavariables that may
+depend on `x` (`u_`) and 18 whose conditions use `Simplify`, are the next
+backlog.
+
+Integration now exports 359 rules: 61 proved and 298 refuted over ℝ (none
+unproved), 53 proved, 305 refuted and one unproved over ℂ. Of the
 complex proofs, 28 are certified (the recent ones state `relation1#gt`
 conditions). Fourteen other rules remain explicitly
 reported as not migrated. Of the 39 backlog rules, 12 are neither proved

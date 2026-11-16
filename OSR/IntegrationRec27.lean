@@ -38,7 +38,7 @@ private theorem ccos_pi_I : Complex.cos (Real.pi * Complex.I) ≠ 0 := by
   exact_mod_cast (Real.cosh_pos Real.pi).ne'
 
 private theorem hne_log :
-    (fun (w l : ℂ) => l) (-1) (Real.pi * Complex.I) ≠ (fun (w l : ℂ) => l) (-1) (-(Real.pi * Complex.I)) := by
+    (fun (_ l : ℂ) => l) (-1) (Real.pi * Complex.I) ≠ (fun (_ l : ℂ) => l) (-1) (-(Real.pi * Complex.I)) := by
   intro h; have := congrArg Complex.im h; simp at this; linarith [Real.pi_pos]
 
 /-- The discontinuity survives the addition of a continuous function. -/

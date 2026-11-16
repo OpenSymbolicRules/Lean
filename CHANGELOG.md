@@ -14,6 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- A wider inventory pass over the registered-head RUBI rules with
+  expressible conditions and `x`-independent metavariables found 213 new
+  candidates; 39 are refuted in Lean (`OSR/IntegrationRec29.lean`), 38 in
+  both domains and one over ℝ only (22 more, using `Sqrt`, wait for the
+  converter's `arith1#root` convention). The catalogue has 359 rules: 61
+  proved and 298 refuted over ℝ, 53 proved, 305 refuted and one unproved
+  over ℂ.
 - RUBI 4.16.1 3.2.3 #5 refuted over ℂ at the branch cut of `log`, with
   residual antiderivatives chosen up to a constant (`OSR/IntegrationRec28.lean`).
   No Integration statement is left unproved in either domain: 61 proved and
