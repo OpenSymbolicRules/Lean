@@ -1,5 +1,5 @@
 import OSR.Calculus
-import OSR.IntegrationRec26
+import OSR.IntegrationRec27
 
 /-!
 # Integration (RUBI)
@@ -43,7 +43,7 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec20 OSR.IntegrationRec21
   OSR.IntegrationRec22 OSR.IntegrationRec23
   OSR.IntegrationRec24 OSR.IntegrationRec25
-  OSR.IntegrationRec26 Filter Topology
+  OSR.IntegrationRec26 OSR.IntegrationRec27 Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -930,11 +930,12 @@ def catalog : List CEntry := [
       "counterexample: at c = d = 1 and n = p = 0 the integrand log(c log(d x^n)^p) = log 1 is defined everywhere, but the residual integrand 1/log(d x^n) = 1/log 1 is not (Lean theorems logPowLog_counterexample_real and logPowLog_counterexample_complex). Its coefficient -n p vanishes there, but the residual integral is still undefined. The rule needs log(d x^n) ≠ 0 wherever the integrand is defined, which p ≠ 0 ensures; this migration does not add it.",
       recFinding, optionalFinding "c., d., n. and p."] },
   { rule := logLinPow, ruleDecl := ``logLinPow,
-    proofs := [(.real, ``logLinPow_real)], unproved := [.complex],
+    proofs := [(.real, ``logLinPow_real)],
+    counterexamples := [(.complex, ``logLinPow_counterexample_complex)],
     findings := [
       "conditions: RUBI's GtQ[p, 0] becomes p > 0 (relation1#gt) and IntegerQ[2 p] becomes 2 p ∈ ℤ (set1#in, setname1#Z); the fragment interprets arith1#power for integer exponents only, so the statement covers the integer values of p.",
       "independence: p is not in the v0.1 FreeQ list, but RUBI's GtQ[p, 0] only holds for a numeric p, so the v1 rule declares p independent of x, as the statement requires.",
-      lnComplexFinding, recFinding, optionalFinding "a., b., c., n. and p."] },
+      "complex: counterexample at the branch cut of the principal logarithm: at a = 0, b = c = n = p = 1 the integrand log x is defined near x = -1, but the result x log x - Φ(x) jumps across the cut for every continuous Φ (Lean theorem logLinPow_counterexample_complex).", recFinding, optionalFinding "a., b., c., n. and p."] },
   { rule := sinXLog, ruleDecl := ``sinXLog, proofs := [],
     counterexamples := [(.real, ``sinXLog_counterexample_real),
       (.complex, ``sinXLog_counterexample_complex)],
@@ -1970,32 +1971,36 @@ def catalog : List CEntry := [
       "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
       recFinding, condFinding "IGtQ[m, 0]; NeQ[Add[a, b], 0]; NeQ[Add[a, c], 0]", optionalFinding "f., g., m., a., b., d., e. and c."] },
   { rule := logPowLogPow, ruleDecl := ``logPowLogPow,
-    proofs := [(.real, ``logPowLogPow_real)], unproved := [.complex],
+    proofs := [(.real, ``logPowLogPow_real)],
+    counterexamples := [(.complex, ``logPowLogPow_counterexample_complex)],
     findings := [
       "independence: p and q are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       recFinding, condFinding "IGtQ[p, 0]; IGtQ[q, 0]",
-      optionalFinding "a., b., c., n., p., d., e., f., r. and q.", lnComplexFinding] },
+      optionalFinding "a., b., c., n., p., d., e., f., r. and q.", "complex: counterexample at the branch cut of the principal logarithm: at a = e = 0 and b = c = n = p = d = f = r = q = 1 the integrand log x is defined near x = -1, but the result x log x - Φ(x) jumps across the cut (Lean theorem logPowLogPow_counterexample_complex)."] },
   { rule := quadPowLog, ruleDecl := ``quadPowLog,
-    proofs := [(.real, ``quadPowLog_real)], unproved := [.complex],
+    proofs := [(.real, ``quadPowLog_real)],
+    counterexamples := [(.complex, ``quadPowLog_counterexample_complex)],
     findings := [
       "independence: q is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
       recFinding, condFinding "GtQ[q, 0]",
-      optionalFinding "e., q., a., b., c. and n.", lnComplexFinding] },
+      optionalFinding "e., q., a., b., c. and n.", "complex: counterexample at the branch cut of the principal logarithm: at d = q = b = c = n = 1 and the other metavariables 0 the integrand log x is defined near x = -1, but the result contains x log x/3 and jumps across the cut (Lean theorem quadPowLog_counterexample_complex)."] },
   { rule := powLinLogOverX2, ruleDecl := ``powLinLogOverX2,
     proofs := [(.real, ``powLinLogOverX2_real), (.complex, ``powLinLogOverX2_complex)],
     findings := [
       "independence: p and q are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       recFinding, condFinding "IGtQ[p, 0]; GtQ[q, 0]; IntegerQ[Multiply[2, q]]", optionalFinding "e., q., a., b., c., n. and p."] },
   { rule := sinPowLog, ruleDecl := ``sinPowLog,
-    proofs := [(.real, ``sinPowLog_real)], unproved := [.complex],
+    proofs := [(.real, ``sinPowLog_real)],
+    counterexamples := [(.complex, ``sinPowLog_counterexample_complex)],
     findings := [
       "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
-      recFinding, condFinding "IGtQ[p, 1]; NeQ[Add[Multiply[Power[b, 2], Power[d, 2], Power[n, 2], Power[p, 2]], 1], 0]", optionalFinding "d., a., b., c. and n.", lnComplexFinding] },
+      recFinding, condFinding "IGtQ[p, 1]; NeQ[Add[Multiply[Power[b, 2], Power[d, 2], Power[n, 2], Power[p, 2]], 1], 0]", optionalFinding "d., a., b., c. and n.", "complex: counterexample at the branch cut of the principal logarithm: at p = 2, b = c = d = n = 1, a = 0 the integrand sin²(log x) is defined near x = -1, but the result jumps by 4 cos(π i) sin(π i)/5 ≠ 0 across the cut (Lean theorem sinPowLog_counterexample_complex)."] },
   { rule := cosPowLog, ruleDecl := ``cosPowLog,
-    proofs := [(.real, ``cosPowLog_real)], unproved := [.complex],
+    proofs := [(.real, ``cosPowLog_real)],
+    counterexamples := [(.complex, ``cosPowLog_counterexample_complex)],
     findings := [
       "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
-      recFinding, condFinding "IGtQ[p, 1]; NeQ[Add[Multiply[Power[b, 2], Power[d, 2], Power[n, 2], Power[p, 2]], 1], 0]", optionalFinding "d., a., b., c. and n.", lnComplexFinding] },
+      recFinding, condFinding "IGtQ[p, 1]; NeQ[Add[Multiply[Power[b, 2], Power[d, 2], Power[n, 2], Power[p, 2]], 1], 0]", optionalFinding "d., a., b., c. and n.", "complex: counterexample at the branch cut of the principal logarithm: at p = 2, b = c = d = n = 1, a = 0 the integrand cos²(log x) is defined near x = -1, but the result jumps by 4 cos(π i) sin(π i)/5 ≠ 0 across the cut (Lean theorem cosPowLog_counterexample_complex)."] },
   { rule := powSinPowReduce, ruleDecl := ``powSinPowReduce,
     proofs := [(.real, ``powSinPowReduce_real), (.complex, ``powSinPowReduce_complex)],
     findings := [
@@ -2657,11 +2662,11 @@ def catalog : List CEntry := [
       recFinding,
       condFinding "EqQ[m, Add[r, Multiply[-1, 1]]]; NeQ[q, -1]; IGtQ[p, 0]",
       optionalFinding "m., f., g., r., q., a., b., c., e., n. and p."] },
-  { rule := rubi33r40, ruleDecl := ``rubi33r40, proofs := [], unproved := [.complex],
-    counterexamples := [(.real, ``rubi33r40_counterexample_real)],
+  { rule := rubi33r40, ruleDecl := ``rubi33r40, proofs := [],
+    counterexamples := [(.real, ``rubi33r40_counterexample_real), (.complex, ``rubi33r40_counterexample_complex)],
     findings := [
       "counterexample: at b = 1, c = 1, d = 1, f = 1, g = 1, h = 1, i = 1, m = 1, n = 1 and the other metavariables 0 the conditions hold and the integrand is defined near x = -1, but the residual integrand 1 is not defined at x = -1 (Lean theorem rubi33r40_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
-      "complex: not proved; the counterexample of the other domain was not established over ℂ.",
+      "complex: counterexample at the branch cut of the principal logarithm: at a = f = c = d = h = i = 1 and the other metavariables 0 the integrand 1/x is defined near x = -1, but the result is log x (Lean theorem rubi33r40_counterexample_complex).",
       recFinding,
       condFinding "EqQ[Add[Multiply[e, i], Multiply[-1, d, j]], 0]",
       optionalFinding "a., b., c., e., n., f., g., h., i., j. and m."] },

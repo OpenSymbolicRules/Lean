@@ -14,6 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Six by-parts Integration rules refuted over ℂ at the branch cut of `log`
+  (`OSR/IntegrationRec27.lean`, `not_continuous_clog_add`):
+  `log_linear_power`, `power_log_times_power_log`,
+  `quadratic_power_log_by_parts`, `sin_power_log_reduction`,
+  `cos_power_log_reduction` and 3.3 #40. One complex statement (3.2.3 #5)
+  remains unproved: 53 proved and 266 refuted over ℂ.
 - Six Integration rules refuted over ℂ at the branch cut of the principal
   logarithm (`OSR.IntegrationRec26.not_continuous_clog`: an antiderivative
   is continuous, but `Ψ(x, log x)` jumps at `x = -1` when

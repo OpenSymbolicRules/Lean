@@ -505,8 +505,18 @@ result is `Ψ(x, log x)` with `Ψ(-1, π i) ≠ Ψ(-1, -π i)`
 | `integration.log_linear_over_x_split` | `a = c = d = 1`, `x = -1` | `log x` |
 | `integration.log_over_linear` | `a = c = d = 1`, `e = -1`, `x = 2` | `-log(1 - x)` |
 
+`OSR/IntegrationRec27.lean` extends the argument to by-parts rules, whose
+result is `Ψ(x, log x)` plus residual antiderivatives (chosen linear, hence
+continuous; `not_continuous_clog_add`): `integration.log_linear_power`,
+`power_log_times_power_log` (result `x log x - Φ(x)`),
+`quadratic_power_log_by_parts` (`x log x/3 + …`), `sin_power_log_reduction`
+and `cos_power_log_reduction` at `p = 2` (jump `4 cos(π i) sin(π i)/5`, with
+`cos(π i) = cosh π` and `sin(π i) = i sinh π`), and 3.3 #40 (result `log x`).
+Only 3.2.3 #5 stays unproved over ℂ: its discontinuous factor multiplies
+residual integrals.
+
 Integration now exports 320 rules: 61 proved and 259 refuted over ℝ (none
-unproved), 53 proved and 260 refuted over ℂ (seven unproved). Of the
+unproved), 53 proved and 266 refuted over ℂ (one unproved). Of the
 complex proofs, 28 are certified (the recent ones state `relation1#gt`
 conditions). Fourteen other rules remain explicitly
 reported as not migrated. Of the 39 backlog rules, 12 are neither proved
