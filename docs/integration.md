@@ -552,8 +552,11 @@ of the 144 candidates without a grid proposal returned 17 proposals (four use
 `OSR/IntegrationRec32.lean` proves 1.2.3.1 #1 over ℝ and ℂ: for `n < 0`,
 `(a + b xⁿ + c x²ⁿ)^p = x^(2 n p) (c + b x^(-n) + a x^(-2n))^p` (`trinom_core`).
 
-Integration now exports 374 rules: 64 proved and 310 refuted over ℝ (none
-unproved), 56 proved, 317 refuted and one unproved over ℂ.
+`OSR/IntegrationRec33.lean` proves 1.1.3.4 #45 over ℝ and ℂ, a partial-fraction
+split of `(e x)^m/((a + b xⁿ)(c + d xⁿ))` when `b c - a d ≠ 0`.
+
+Integration now exports 375 rules: 65 proved and 310 refuted over ℝ (none
+unproved), 57 proved, 317 refuted and one unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that

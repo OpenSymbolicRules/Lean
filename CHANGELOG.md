@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- RUBI 4.16.1 1.1.3.4 #45 proved over ℝ and ℂ (`OSR/IntegrationRec33.lean`),
+  a partial-fraction split of `(e x)^m/((a + b xⁿ)(c + d xⁿ))`. The catalogue
+  has 375 rules: 65 proved and 310 refuted over ℝ, 57 proved (30 certified),
+  317 refuted and one unproved over ℂ.
 - RUBI 4.16.1 1.2.3.1 #1 proved over ℝ and ℂ (`OSR/IntegrationRec32.lean`):
   for `n < 0`, `(a + b xⁿ + c x²ⁿ)^p = x^(2 n p) (c + b x^(-n) + a x^(-2n))^p`.
   The catalogue has 374 rules: 64 proved and 310 refuted over ℝ, 56 proved

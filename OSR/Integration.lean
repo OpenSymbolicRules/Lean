@@ -1,5 +1,5 @@
 import OSR.Calculus
-import OSR.IntegrationRec32
+import OSR.IntegrationRec33
 
 /-!
 # Integration (RUBI)
@@ -46,7 +46,7 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec26 OSR.IntegrationRec27
   OSR.IntegrationRec28 OSR.IntegrationRec29
   OSR.IntegrationRec30 OSR.IntegrationRec31
-  OSR.IntegrationRec32 Filter Topology
+  OSR.IntegrationRec32 OSR.IntegrationRec33 Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -3500,7 +3500,13 @@ def catalog : List CEntry := [
     findings := [
       "independence: n, n2, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       recFinding,
-      condFinding "EqQ[n2, Multiply[2, n]]; LtQ[n, 0]; IntegerQ[p]", optionalFinding "b., c., n2. and p."] }
+      condFinding "EqQ[n2, Multiply[2, n]]; LtQ[n, 0]; IntegerQ[p]", optionalFinding "b., c., n2. and p."] },
+  { rule := pfMonoBinomPair, ruleDecl := ``pfMonoBinomPair,
+    proofs := [(.real, ``pfMonoBinomPair_real), (.complex, ``pfMonoBinomPair_complex)],
+    findings := [
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; IGtQ[n, 0]", optionalFinding "e., m., b. and d."] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -3536,6 +3542,6 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
     | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
-    | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 end OSR.Integration
