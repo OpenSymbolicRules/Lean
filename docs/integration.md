@@ -566,8 +566,36 @@ split of `(e x)^m/((a + b xⁿ)(c + d xⁿ))` when `b c - a d ≠ 0`.
 `OSR/IntegrationRec36.lean` proves 1.2.3.3 #56 and #57 over ℝ and ℂ by
 linearity, `(A + B x^m) F = A F + B x^m F` under the integral.
 
-Integration now exports 381 rules: 71 proved and 310 refuted over ℝ (none
-unproved), 63 proved, 317 refuted and one unproved over ℂ.
+### Strengthened variants
+
+Most refutations (about 220 of 318) come from a degenerate coefficient: at
+`b = 0`, `c = 0` or `m = -1` the integrand is defined everywhere while the
+result divides by zero. RUBI never reaches these cases, because an earlier
+rule or evaluation handles them; an OSR v1 rule is stated on its own. A
+*strengthened variant* (Specification V1-R-005e) is a new rule with the id of
+the rule as stated plus `_nondegenerate`, the same `legacy_id`, the same
+pattern and replacement, and the converted RUBI conditions followed by the
+missing non-degeneracy condition, declared in a `strengthened:` finding. The
+refuted rule as stated stays in the catalogue with its counterexample, and
+the Integration faithfulness check counts strengthened rules separately.
+
+`OSR/IntegrationRec37.lean` proves the first four over ℝ and ℂ:
+
+| Rule as stated | Added condition | Variant |
+|---|---|---|
+| 1.1.1.1 #4 `∫ (a + b x)^m` | `b (m + 1) ≠ 0` | `integration.linear_power_nondegenerate` |
+| 9.1 #9 `∫ a (b + c x)` | `2 c ≠ 0` | `integration.constant_times_linear_nondegenerate` |
+| 4.1.13 #11 `∫ (d + e x) sin(a + b x + c x²)` | `2 c ≠ 0` | `integration.rubi_4_1_13_r11_nondegenerate` |
+| 4.1.13 #12 `∫ (d + e x) cos(a + b x + c x²)` | `2 c ≠ 0` | `integration.rubi_4_1_13_r12_nondegenerate` |
+
+A development triage adds `D ≠ 0` for every coefficient-only denominator
+`D^k` (`k < 0`) of the result of the 318 refuted rules: 291 receive a
+condition, and a numerical truth check finds 206 of these variants true (35
+without residual integrals), 39 still refuted, 41 never defined in the samples
+and 5 mixed. They are the backlog of strengthened variants.
+
+Integration now exports 385 rules: 75 proved and 310 refuted over ℝ (none
+unproved), 67 proved (40 certified), 317 refuted and one unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that
@@ -608,5 +636,5 @@ pattern does not bind: 630 of them use the constants `E`, `ImaginaryI` or
   found for a residual integral may be substituted.
 - An engine applying conditional rules needs a decision procedure for the
   conditions on the matched terms.
-- Conditioned variants of the refuted rules (`c ≠ 0`, `b ≠ 0 ∧ n ≠ 0`) would
-  be new rules, not migrations; they need a decision on provenance.
+- Prove the remaining strengthened variants found true numerically (about
+  200), family by family.

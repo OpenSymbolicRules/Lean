@@ -112,7 +112,8 @@ OSR/IntegrationRec33.lean partial fractions of a pair of binomials (1 proof)
 OSR/IntegrationRec34.lean flipping a binomial in x^(-n) (2 proofs)
 OSR/IntegrationRec35.lean flipping binomials in x^n (2 proofs)
 OSR/IntegrationRec36.lean linearity in a polynomial factor (2 proofs)
-OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (381)
+OSR/IntegrationRec37.lean strengthened variants with a non-degeneracy condition (4 proofs)
+OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (385)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
                        generation of rule set, reports and conformance cases

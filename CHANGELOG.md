@@ -14,6 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Strengthened variants (Specification V1-R-005e): four corrected rules with a
+  non-degeneracy condition appended to the converted RUBI conditions, proved
+  over ℝ and ℂ (`OSR/IntegrationRec37.lean`): 1.1.1.1 #4 with
+  `b (m + 1) ≠ 0`, 9.1 #9, 4.1.13 #11 and #12 with `2 c ≠ 0`. Their ids end in
+  `_nondegenerate`; the refutations of the rules as stated are kept. The
+  catalogue has 385 rules: 75 proved and 310 refuted over ℝ, 67 proved (40
+  certified), 317 refuted and one unproved over ℂ.
 - RUBI 4.16.1 1.2.3.3 #56 and #57 proved over ℝ and ℂ by linearity
   (`OSR/IntegrationRec36.lean`). The catalogue has 381 rules: 71 proved and
   310 refuted over ℝ, 63 proved (36 certified), 317 refuted and one unproved

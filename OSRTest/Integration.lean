@@ -13,13 +13,13 @@ private def t : Expr := .var "t"
 -- The twenty rules of the syntactic inventory (FreeQ or NeQ conditions,
 -- registered heads, no Int in the result) are migrated or reported, plus
 -- 110 rules with residual integrals and seven unmigrated ones.
-#guard Integration.catalog.length + Integration.notMigrated.length == 422
+#guard Integration.catalog.length + Integration.notMigrated.length == 426
 #guard Integration.notMigrated.length == 41
 #guard (Integration.catalog.filter (·.rule.shape == .antiderivRec)).length == 313
-#guard (Integration.catalog.filter (!·.rule.conditions.isEmpty)).length == 348
+#guard (Integration.catalog.filter (!·.rule.conditions.isEmpty)).length == 352
 -- RUBI rules with EqQ conditions are stated with relation1#eq (Cond.eq).
 #guard (Integration.catalog.filter fun e =>
-  e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 189
+  e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 191
 
 -- RUBI 4.16.1: the new degenerate-coefficient cases are refuted in both
 -- domains, with no proof or unresolved domain accidentally attached.
@@ -36,6 +36,29 @@ private def degenerateCoefficientIds : List String := [
   | some e => e.proofs.isEmpty && e.unproved.isEmpty &&
       [Domain.real, Domain.complex].all fun d =>
         (e.counterexamples.lookup d).isSome
+
+-- Strengthened variants: a `_nondegenerate` rule shares the legacy identifier
+-- of a refuted catalogue rule, keeps its conditions as a prefix, appends at
+-- least one, declares it in a `strengthened:` finding and is proved in both
+-- domains.
+private def strengthenedIds : List String := [
+  "integration.linear_power_nondegenerate", "integration.constant_times_linear_nondegenerate",
+  "integration.rubi_4_1_13_r11_nondegenerate", "integration.rubi_4_1_13_r12_nondegenerate"]
+
+#guard (Integration.catalog.filter fun e =>
+  e.findings.any (·.startsWith "strengthened:")).map (·.rule.id) == strengthenedIds
+#guard strengthenedIds.all fun id =>
+  match Integration.catalog.find? (·.rule.id == id) with
+  | none => false
+  | some v =>
+    match Integration.catalog.find? (·.rule.id ++ "_nondegenerate" == id) with
+    | none => false
+    | some o =>
+      o.rule.legacyId == v.rule.legacyId && o.proofs.isEmpty &&
+      o.rule.body == v.rule.body && o.rule.result == v.rule.result &&
+      o.rule.conditions.length < v.rule.conditions.length &&
+      v.rule.conditions.take o.rule.conditions.length == o.rule.conditions &&
+      [Domain.real, Domain.complex].all fun d => (v.proofs.lookup d).isSome
 
 -- Identifiers are unique, every rule is well formed and has the antiderivative shape.
 #guard (Integration.catalog.map (·.rule.id)).eraseDups.length == Integration.catalog.length
@@ -120,7 +143,9 @@ private def rules : List CRule :=
   "integration.binomial_triple_negative_flip",
   "integration.monomial_binomial_triple_negative_flip",
   "integration.binomial_triple_positive_flip", "integration.monomial_binomial_triple_positive_flip",
-  "integration.linear_split_binomial_trinomial", "integration.linear_split_binomial_binomial"]
+  "integration.linear_split_binomial_trinomial", "integration.linear_split_binomial_binomial",
+  "integration.linear_power_nondegenerate", "integration.constant_times_linear_nondegenerate",
+  "integration.rubi_4_1_13_r11_nondegenerate", "integration.rubi_4_1_13_r12_nondegenerate"]
 
 -- A conditional rule applies only when its conditions are decided: int(λt. t^m)
 -- stays (m ≠ -1 is undecided), int(λt. t^(-1)) stays (decided false),
