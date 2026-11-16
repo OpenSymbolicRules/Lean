@@ -588,14 +588,25 @@ the Integration faithfulness check counts strengthened rules separately.
 | 4.1.13 #11 `∫ (d + e x) sin(a + b x + c x²)` | `2 c ≠ 0` | `integration.rubi_4_1_13_r11_nondegenerate` |
 | 4.1.13 #12 `∫ (d + e x) cos(a + b x + c x²)` | `2 c ≠ 0` | `integration.rubi_4_1_13_r12_nondegenerate` |
 
+`OSR/IntegrationRec38.lean` proves four binomial variants over ℝ and ℂ, with
+integer exponents (`zpow`) and the points where a negative power is undefined
+excluded by the definedness of the integrand:
+
+| Rule as stated | Added condition | Variant |
+|---|---|---|
+| 1.1.1.2 #1 `∫ (a + b x)^m (c + d x)`, `a d = b c (m + 2)` | `b (m + 2) ≠ 0` | `integration.rubi_1_1_1_2_r1_nondegenerate` |
+| 1.1.3.2 #3 `∫ x^m (a + b xⁿ)^p`, `m = n - 1` | `b n (p + 1) ≠ 0` | `integration.rubi_1_1_3_2_r3_nondegenerate` |
+| 1.1.3.1 #3 `∫ (a + b xⁿ)^p`, `1/n + p + 1 = 0` | `a ≠ 0` | `integration.rubi_1_1_3_1_r3_nondegenerate` |
+| 1.1.3.2 #6 `∫ (c x)^m (a + b xⁿ)^p`, `(m + 1)/n + p + 1 = 0` | `a c (m + 1) ≠ 0` | `integration.rubi_1_1_3_2_r6_nondegenerate` |
+
 A development triage adds `D ≠ 0` for every coefficient-only denominator
 `D^k` (`k < 0`) of the result of the 318 refuted rules: 291 receive a
 condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 385 rules: 75 proved and 310 refuted over ℝ (none
-unproved), 67 proved (40 certified), 317 refuted and one unproved over ℂ.
+Integration now exports 389 rules: 79 proved and 310 refuted over ℝ (none
+unproved), 71 proved (44 certified), 317 refuted and one unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that

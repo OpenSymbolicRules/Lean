@@ -14,6 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Four more strengthened variants, proved over ℝ and ℂ
+  (`OSR/IntegrationRec38.lean`): 1.1.1.2 #1 with `b (m + 2) ≠ 0`, 1.1.3.2 #3
+  with `b n (p + 1) ≠ 0`, 1.1.3.1 #3 with `a ≠ 0` and 1.1.3.2 #6 with
+  `a c (m + 1) ≠ 0`. The catalogue has 389 rules: 79 proved and 310 refuted
+  over ℝ, 71 proved (44 certified), 317 refuted and one unproved over ℂ.
 - Strengthened variants (Specification V1-R-005e): four corrected rules with a
   non-degeneracy condition appended to the converted RUBI conditions, proved
   over ℝ and ℂ (`OSR/IntegrationRec37.lean`): 1.1.1.1 #4 with
