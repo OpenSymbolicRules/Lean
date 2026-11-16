@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- RUBI 4.16.1 1.2.3.3 #56 and #57 proved over ℝ and ℂ by linearity
+  (`OSR/IntegrationRec36.lean`). The catalogue has 381 rules: 71 proved and
+  310 refuted over ℝ, 63 proved (36 certified), 317 refuted and one unproved
+  over ℂ.
 - RUBI 4.16.1 1.1.3.5 #42 and 1.1.3.6 #30 proved over ℝ and ℂ
   (`OSR/IntegrationRec35.lean`, `pos_flip`). The catalogue has 379 rules: 69
   proved and 310 refuted over ℝ, 61 proved (34 certified), 317 refuted and

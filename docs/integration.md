@@ -563,8 +563,11 @@ split of `(e x)^m/((a + b xⁿ)(c + d xⁿ))` when `b c - a d ≠ 0`.
 `(a + b xⁿ)^p = x^(n p) (b + a x^(-n))^p` (`pos_flip`) for the two binomials in
 `xⁿ` when the third is in `x^(-n)`.
 
-Integration now exports 379 rules: 69 proved and 310 refuted over ℝ (none
-unproved), 61 proved, 317 refuted and one unproved over ℂ.
+`OSR/IntegrationRec36.lean` proves 1.2.3.3 #56 and #57 over ℝ and ℂ by
+linearity, `(A + B x^m) F = A F + B x^m F` under the integral.
+
+Integration now exports 381 rules: 71 proved and 310 refuted over ℝ (none
+unproved), 63 proved, 317 refuted and one unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that

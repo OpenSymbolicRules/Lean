@@ -1,5 +1,5 @@
 import OSR.Calculus
-import OSR.IntegrationRec35
+import OSR.IntegrationRec36
 
 /-!
 # Integration (RUBI)
@@ -47,7 +47,8 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec28 OSR.IntegrationRec29
   OSR.IntegrationRec30 OSR.IntegrationRec31
   OSR.IntegrationRec32 OSR.IntegrationRec33
-  OSR.IntegrationRec34 OSR.IntegrationRec35 Filter Topology
+  OSR.IntegrationRec34 OSR.IntegrationRec35
+  OSR.IntegrationRec36 Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -3531,7 +3532,19 @@ def catalog : List CEntry := [
     findings := [
       "independence: mn, p, r are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       recFinding,
-      condFinding "EqQ[mn, Multiply[-1, n]]; IntegerQ[p]; IntegerQ[r]", optionalFinding "m., a., b., n., p., d., mn., q., f. and r."] }
+      condFinding "EqQ[mn, Multiply[-1, n]]; IntegerQ[p]; IntegerQ[r]", optionalFinding "m., a., b., n., p., d., mn., q., f. and r."] },
+  { rule := linTrinomSplit, ruleDecl := ``linTrinomSplit,
+    proofs := [(.real, ``linTrinomSplit_real), (.complex, ``linTrinomSplit_complex)],
+    findings := [
+      "independence: n2 is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; EqQ[Add[m, Multiply[-1, n], 1], 0]", optionalFinding "B., m., e., q., b., c. and p."] },
+  { rule := linBinomSplit, ruleDecl := ``linBinomSplit,
+    proofs := [(.real, ``linBinomSplit_real), (.complex, ``linBinomSplit_complex)],
+    findings := [
+      "independence: n2 is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; EqQ[Add[m, Multiply[-1, n], 1], 0]", optionalFinding "B., m., e., q., c. and p."] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -3568,6 +3581,6 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
     | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
     | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl <;> decide
 
 end OSR.Integration
