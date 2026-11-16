@@ -546,7 +546,16 @@ of the 144 candidates without a grid proposal returned 17 proposals (four use
 `Sqrt` and are held back, one did not survive Lean).
 
 Integration now exports 371 rules: 61 proved and 310 refuted over ℝ (none
-unproved), 53 proved, 317 refuted and one unproved over ℂ. Of the
+unproved), 53 proved, 317 refuted and one unproved over ℂ.
+
+A numerical truth check of the remaining candidates (development tool,
+finite differences with linear residual antiderivatives) finds 69 that
+behave as true identities, the proof backlog, and 58 whose integrand was
+never defined in the samples. Of these, 27 are genuinely outside the
+fragment: a condition forces a half-integer exponent, or the integrand has
+an exponent with denominator 2. They join the rules reported as not
+migrated (41 in all). The other 31 carry `EqQ` conditions that random
+sampling cannot meet. Of the
 complex proofs, 28 are certified (the recent ones state `relation1#gt`
 conditions). Fourteen other rules remain explicitly
 reported as not migrated. Of the 39 backlog rules, 12 are neither proved

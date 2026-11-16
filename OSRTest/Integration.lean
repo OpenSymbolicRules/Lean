@@ -13,8 +13,8 @@ private def t : Expr := .var "t"
 -- The twenty rules of the syntactic inventory (FreeQ or NeQ conditions,
 -- registered heads, no Int in the result) are migrated or reported, plus
 -- 110 rules with residual integrals and seven unmigrated ones.
-#guard Integration.catalog.length + Integration.notMigrated.length == 385
-#guard Integration.notMigrated.length == 14
+#guard Integration.catalog.length + Integration.notMigrated.length == 412
+#guard Integration.notMigrated.length == 41
 #guard (Integration.catalog.filter (·.rule.shape == .antiderivRec)).length == 303
 #guard (Integration.catalog.filter (!·.rule.conditions.isEmpty)).length == 338
 -- RUBI rules with EqQ conditions are stated with relation1#eq (Cond.eq).

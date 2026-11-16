@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- 27 RUBI rules reported as not migrated: a condition forces a half-integer
+  exponent, or the integrand has an exponent with denominator 2, so the
+  integrand is nowhere defined in the fragment (41 not migrated in all).
 - Twelve more RUBI rules refuted in both domains from random-sampling
   proposals (`OSR/IntegrationRec30.lean`). The catalogue has 371 rules: 61
   proved and 310 refuted over ℝ, 53 proved, 317 refuted and one unproved over ℂ.
