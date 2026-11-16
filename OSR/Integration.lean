@@ -1,5 +1,5 @@
 import OSR.Calculus
-import OSR.IntegrationRec45
+import OSR.IntegrationRec46
 
 /-!
 # Integration (RUBI)
@@ -52,7 +52,7 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec38 OSR.IntegrationRec39 OSR.IntegrationRec40
   OSR.IntegrationRec41 OSR.IntegrationRec42
   OSR.IntegrationRec43 OSR.IntegrationRec44
-  OSR.IntegrationRec45 Filter Topology
+  OSR.IntegrationRec45 OSR.IntegrationRec46 Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -3703,7 +3703,13 @@ def catalog : List CEntry := [
     findings := [
       "strengthened: the conditions c (m + 2 p + 2) ≠ 0 and e ≠ 0 (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_3_r25, which stays refuted, and the case e = d = m = 0, f ≠ 0, where the result with only the first condition is not an antiderivative.",
       condFinding "EqQ[Add[Multiply[c, Power[d, 2]], Multiply[a, Power[e, 2]]], 0]; EqQ[Add[Multiply[m, Add[Multiply[d, g], Multiply[e, f]]], Multiply[2, e, f, Add[p, 1]]], 0]",
-      optionalFinding "e., f., g. and c."] }
+      optionalFinding "e., f., g. and c."] },
+  { rule := rubi1213r24Nondeg, ruleDecl := ``rubi1213r24Nondeg,
+    proofs := [(.real, ``rubi1213r24Nondeg_real), (.complex, ``rubi1213r24Nondeg_complex)],
+    findings := [
+      "strengthened: the conditions c (m + 2 p + 2) ≠ 0 and e ≠ 0 (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_3_r24, which stays refuted, and the case e = d = m = 0, where the result with only the first condition is not an antiderivative.",
+      condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; EqQ[Add[Multiply[c, Power[d, 2]], Multiply[-1, b, d, e], Multiply[a, Power[e, 2]]], 0]; EqQ[Add[Multiply[m, Add[Multiply[g, Add[Multiply[c, d], Multiply[-1, b, e]]], Multiply[c, e, f]]], Multiply[e, Add[p, 1], Add[Multiply[2, c, f], Multiply[-1, b, g]]]], 0]",
+      optionalFinding "d., e., f., g., a., b. and c."] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -3741,6 +3747,6 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl <;> decide
 
 end OSR.Integration
