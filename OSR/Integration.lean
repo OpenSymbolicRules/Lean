@@ -1,5 +1,5 @@
 import OSR.Calculus
-import OSR.IntegrationRec44
+import OSR.IntegrationRec45
 
 /-!
 # Integration (RUBI)
@@ -51,7 +51,8 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec36 OSR.IntegrationRec37
   OSR.IntegrationRec38 OSR.IntegrationRec39 OSR.IntegrationRec40
   OSR.IntegrationRec41 OSR.IntegrationRec42
-  OSR.IntegrationRec43 OSR.IntegrationRec44 Filter Topology
+  OSR.IntegrationRec43 OSR.IntegrationRec44
+  OSR.IntegrationRec45 Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -3690,7 +3691,19 @@ def catalog : List CEntry := [
     findings := [
       "strengthened: the condition 2 b1 b2 n (p + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_1_1_7_r6, which stays refuted.",
       condFinding "EqQ[Add[Multiply[a2, b1], Multiply[a1, b2]], 0]; EqQ[Add[m, Multiply[-1, 2, n], 1], 0]; NeQ[p, -1]",
-      optionalFinding "m., b1., n. and b2."] }
+      optionalFinding "m., b1., n. and b2."] },
+  { rule := rubi1113r9Nondeg, ruleDecl := ``rubi1113r9Nondeg,
+    proofs := [(.real, ``rubi1113r9Nondeg_real), (.complex, ``rubi1113r9Nondeg_complex)],
+    findings := [
+      "strengthened: the condition d^2 f^2 (n + p + 2) (n + p + 3) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_1_1_3_r9, which stays refuted.",
+      condFinding "NeQ[Add[n, p, 2], 0]; NeQ[Add[n, p, 3], 0]; EqQ[Add[Multiply[d, f, Add[n, p, 2], Add[Multiply[Power[a, 2], d, f, Add[n, p, 3]], Multiply[-1, b, Add[Multiply[b, c, e], Multiply[a, Add[Multiply[d, e, Add[n, 1]], Multiply[c, f, Add[p, 1]]]]]]]], Multiply[-1, b, Add[Multiply[d, e, Add[n, 1]], Multiply[c, f, Add[p, 1]]], Add[Multiply[a, d, f, Add[n, p, 4]], Multiply[-1, b, Add[Multiply[d, e, Add[n, 2]], Multiply[c, f, Add[p, 2]]]]]]], 0]",
+      optionalFinding "a., b., c., d., n., e., f. and p."] },
+  { rule := rubi1213r25Nondeg, ruleDecl := ``rubi1213r25Nondeg,
+    proofs := [(.real, ``rubi1213r25Nondeg_real), (.complex, ``rubi1213r25Nondeg_complex)],
+    findings := [
+      "strengthened: the conditions c (m + 2 p + 2) ≠ 0 and e ≠ 0 (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_3_r25, which stays refuted, and the case e = d = m = 0, f ≠ 0, where the result with only the first condition is not an antiderivative.",
+      condFinding "EqQ[Add[Multiply[c, Power[d, 2]], Multiply[a, Power[e, 2]]], 0]; EqQ[Add[Multiply[m, Add[Multiply[d, g], Multiply[e, f]]], Multiply[2, e, f, Add[p, 1]]], 0]",
+      optionalFinding "e., f., g. and c."] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -3728,6 +3741,6 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl <;> decide
 
 end OSR.Integration
