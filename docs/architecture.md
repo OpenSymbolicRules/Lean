@@ -118,7 +118,8 @@ OSR/IntegrationRec39.lean strengthened binomial-pair variants, third batch (2 pr
 OSR/IntegrationRec40.lean strengthened quadratic-trinomial variants, fourth batch (3 proofs)
 OSR/IntegrationRec41.lean strengthened variants, fifth batch (2 proofs)
 OSR/IntegrationRec42.lean strengthened variants, sixth batch (5 proofs)
-OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (401)
+OSR/IntegrationRec43.lean strengthened variants, seventh batch (2 proofs)
+OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (403)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
                        generation of rule set, reports and conformance cases
