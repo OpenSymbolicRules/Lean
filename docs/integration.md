@@ -555,8 +555,11 @@ of the 144 candidates without a grid proposal returned 17 proposals (four use
 `OSR/IntegrationRec33.lean` proves 1.1.3.4 #45 over ℝ and ℂ, a partial-fraction
 split of `(e x)^m/((a + b xⁿ)(c + d xⁿ))` when `b c - a d ≠ 0`.
 
-Integration now exports 375 rules: 65 proved and 310 refuted over ℝ (none
-unproved), 57 proved, 317 refuted and one unproved over ℂ.
+`OSR/IntegrationRec34.lean` proves 1.1.3.5 #41 over ℝ and ℂ:
+`(c + d x^(-n))^q = (d + c xⁿ)^q / x^(n q)` (`neg_flip`, for `x ≠ 0` or `n = 0`).
+
+Integration now exports 376 rules: 66 proved and 310 refuted over ℝ (none
+unproved), 58 proved, 317 refuted and one unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that
