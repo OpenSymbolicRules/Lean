@@ -622,14 +622,28 @@ where `b c - a d ≠ 0` and the `EqQ` condition exclude `n = 0`:
 | 1.1.1.3 #2 `∫ (a + b x) (c + d x)^n (e + f x)^p` | `d f (n + p + 2) ≠ 0` | `integration.rubi_1_1_1_3_r2_nondegenerate` |
 | 1.2.1.1 #3 `∫ (a + b x + c x²)^p`, `b² = 4 a c` | `2 c (2 p + 1) ≠ 0` | `integration.rubi_1_2_1_1_r3_nondegenerate` |
 
+`OSR/IntegrationRec42.lean` proves five more:
+
+| Rule as stated | Added condition | Variant |
+|---|---|---|
+| 1.2.1.2 #55 `∫ (d + e x)^m (a + b x + c x²)^p` | `e (p + 1) (b² - 4 a c) ≠ 0` | `integration.rubi_1_2_1_2_r55_nondegenerate` |
+| 4.1.12 #81 `∫ x^m sin(a + b xⁿ)^p cos(a + b xⁿ)`, `m = n - 1` | `b n (p + 1) ≠ 0` | `integration.rubi_4_1_12_r81_nondegenerate` |
+| 4.1.12 #82 `∫ x^m cos(a + b xⁿ)^p sin(a + b xⁿ)`, `m = n - 1` | `b n (p + 1) ≠ 0` | `integration.rubi_4_1_12_r82_nondegenerate` |
+| 1.2.1.4 #65 `∫ x² (d + e x)^m (a + b x + c x²)^p` | `c e (m + 2 p + 3) ≠ 0` | `integration.rubi_1_2_1_4_r65_nondegenerate` |
+| 1.2.1.4 #66 `∫ x² (d + e x)^m (a + c x²)^p` | `c e (m + 2 p + 3) ≠ 0` | `integration.rubi_1_2_1_4_r66_nondegenerate` |
+
+The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
+(`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
+samples missed; it needs `e ≠ 0` as well and is not included.
+
 A development triage adds `D ≠ 0` for every coefficient-only denominator
 `D^k` (`k < 0`) of the result of the 318 refuted rules: 291 receive a
 condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 396 rules: 86 proved and 310 refuted over ℝ (none
-unproved), 78 proved (51 certified), 317 refuted and one unproved over ℂ.
+Integration now exports 401 rules: 91 proved and 310 refuted over ℝ (none
+unproved), 83 proved (56 certified), 317 refuted and one unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that
