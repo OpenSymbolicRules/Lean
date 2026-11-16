@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- RUBI 4.16.1 3.2.3 #5 refuted over ℂ at the branch cut of `log`, with
+  residual antiderivatives chosen up to a constant (`OSR/IntegrationRec28.lean`).
+  No Integration statement is left unproved in either domain: 61 proved and
+  259 refuted over ℝ, 53 proved and 267 refuted over ℂ.
 - Six by-parts Integration rules refuted over ℂ at the branch cut of `log`
   (`OSR/IntegrationRec27.lean`, `not_continuous_clog_add`):
   `log_linear_power`, `power_log_times_power_log`,

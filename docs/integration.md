@@ -512,11 +512,19 @@ continuous; `not_continuous_clog_add`): `integration.log_linear_power`,
 `quadratic_power_log_by_parts` (`x log x/3 + …`), `sin_power_log_reduction`
 and `cos_power_log_reduction` at `p = 2` (jump `4 cos(π i) sin(π i)/5`, with
 `cos(π i) = cosh π` and `sin(π i) = i sinh π`), and 3.3 #40 (result `log x`).
-Only 3.2.3 #5 stays unproved over ℂ: its discontinuous factor multiplies
-residual integrals.
+3.2.3 #5, whose discontinuous factor multiplies residual integrals, needs
+another choice of antiderivatives (below).
 
-Integration now exports 320 rules: 61 proved and 259 refuted over ℝ (none
-unproved), 53 proved and 266 refuted over ℂ (one unproved). Of the
+`OSR/IntegrationRec28.lean` refutes the last one, 3.2.3 #5, whose result is
+`I₁ + B(x) (2 I₂ + I₃)` with `B = log(e (…)^r) - log((a+b x)^(p r)) -
+log((c+d x)^(q r))`. At `e = -1`, `b = c = f = h = p = r = 1` (others `0`) the
+integrand `log(-x)²/x` is defined near `x = -1` and `B = log(-x) - log x`
+jumps there. Antiderivatives are free up to a constant; with linear ones and
+`2 Φ₂ + Φ₃ = 2` at `-1`, a continuous result would make `B` continuous.
+
+Integration now exports 320 rules: 61 proved and 259 refuted over ℝ, 53
+proved and 267 refuted over ℂ; no statement is left unproved in either
+domain. Of the
 complex proofs, 28 are certified (the recent ones state `relation1#gt`
 conditions). Fourteen other rules remain explicitly
 reported as not migrated. Of the 39 backlog rules, 12 are neither proved

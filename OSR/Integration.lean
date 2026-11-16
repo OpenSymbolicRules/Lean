@@ -1,5 +1,5 @@
 import OSR.Calculus
-import OSR.IntegrationRec27
+import OSR.IntegrationRec28
 
 /-!
 # Integration (RUBI)
@@ -43,7 +43,8 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec20 OSR.IntegrationRec21
   OSR.IntegrationRec22 OSR.IntegrationRec23
   OSR.IntegrationRec24 OSR.IntegrationRec25
-  OSR.IntegrationRec26 OSR.IntegrationRec27 Filter Topology
+  OSR.IntegrationRec26 OSR.IntegrationRec27
+  OSR.IntegrationRec28 Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -2639,11 +2640,11 @@ def catalog : List CEntry := [
       recFinding,
       condFinding "EqQ[Add[Multiply[b, d, f], Multiply[-1, a, c, h]], 0]; EqQ[Add[Multiply[b, d, g], Multiply[-1, h, Add[Multiply[b, c], Multiply[a, d]]]], 0]; IntegerQ[m]",
       optionalFinding "f., g., h., m., A., B., e., a., b., c., d., n. and p."] },
-  { rule := rubi323r5, ruleDecl := ``rubi323r5, proofs := [], unproved := [.complex],
-    counterexamples := [(.real, ``rubi323r5_counterexample_real)],
+  { rule := rubi323r5, ruleDecl := ``rubi323r5, proofs := [],
+    counterexamples := [(.real, ``rubi323r5_counterexample_real), (.complex, ``rubi323r5_counterexample_complex)],
     findings := [
       "counterexample: at a = -1, c = -1, d = -1, e = 1, f = -1, g = -1, p = -1, r = -1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the residual integrand 1 is not defined at x = 1 (Lean theorem rubi323r5_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
-      "complex: not proved; the counterexample of the other domain was not established over ℂ.",
+      "complex: counterexample at the branch cut of the principal logarithm: at e = -1, b = c = f = h = p = r = 1 and the other metavariables 0 the integrand log(-x)²/x is defined near x = -1, but the factor log(-x) - log x of the result jumps across the cut; with linear residual antiderivatives such that 2 Φ₂ + Φ₃ = 2 at -1, the result is not continuous there (Lean theorem rubi323r5_counterexample_complex).",
       recFinding,
       condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; EqQ[Add[Multiply[b, g], Multiply[-1, a, h]], 0]",
       optionalFinding "e., f., a., b., p., c., d., q., r., g. and h."] },

@@ -103,6 +103,7 @@ OSR/IntegrationRec24.lean EqQ: a by-parts rule for two binomials (1 proof)
 OSR/IntegrationRec25.lean refutations carried to the other domain (8)
 OSR/IntegrationRec26.lean discontinuity of log at the cut (`not_continuous_clog`), 2 refutations
 OSR/IntegrationRec27.lean branch-cut refutations of by-parts rules (6)
+OSR/IntegrationRec28.lean branch-cut refutation of 3.2.3 #5 (residual antiderivatives with a constant)
 OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (320)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
