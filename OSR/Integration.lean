@@ -1,5 +1,5 @@
 import OSR.Calculus
-import OSR.IntegrationRec30
+import OSR.IntegrationRec31
 
 /-!
 # Integration (RUBI)
@@ -45,7 +45,7 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec24 OSR.IntegrationRec25
   OSR.IntegrationRec26 OSR.IntegrationRec27
   OSR.IntegrationRec28 OSR.IntegrationRec29
-  OSR.IntegrationRec30 Filter Topology
+  OSR.IntegrationRec30 OSR.IntegrationRec31 Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -3481,7 +3481,19 @@ def catalog : List CEntry := [
       "independence: mn is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
       recFinding,
       condFinding "EqQ[Add[n, mn], 0]; NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; EqQ[Add[Multiply[b, f], Multiply[-1, a, g]], 0]",
-      optionalFinding "A., B., e., a., b., n., c., d., f. and g."] }
+      optionalFinding "A., B., e., a., b., n., c., d., f. and g."] },
+  { rule := improperTrinomEq, ruleDecl := ``improperTrinomEq,
+    proofs := [(.real, ``improperTrinomEq_real), (.complex, ``improperTrinomEq_complex)],
+    findings := [
+      "independence: q, r are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[n, q]; EqQ[r, n]", optionalFinding "a., q., b., n., c. and r."] },
+  { rule := monoImproperTrinomEq, ruleDecl := ``monoImproperTrinomEq,
+    proofs := [(.real, ``monoImproperTrinomEq_real), (.complex, ``monoImproperTrinomEq_complex)],
+    findings := [
+      "independence: q, r are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[q, n]; EqQ[r, n]", optionalFinding "m., a., q., b., n., c., r. and p."] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -3517,6 +3529,6 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
     | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
-    | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 end OSR.Integration

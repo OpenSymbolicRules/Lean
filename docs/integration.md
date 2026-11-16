@@ -545,8 +545,12 @@ backlog.
 of the 144 candidates without a grid proposal returned 17 proposals (four use
 `Sqrt` and are held back, one did not survive Lean).
 
-Integration now exports 371 rules: 61 proved and 310 refuted over ℝ (none
-unproved), 53 proved, 317 refuted and one unproved over ℂ.
+`OSR/IntegrationRec31.lean` proves the first two of the backlog over ℝ and ℂ,
+1.2.4.1 #1 and 1.2.4.2 #1: `a x^q + b x^n + c x^r = (a + b + c) x^n` when
+`q = n = r`.
+
+Integration now exports 373 rules: 63 proved and 310 refuted over ℝ (none
+unproved), 55 proved, 317 refuted and one unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that

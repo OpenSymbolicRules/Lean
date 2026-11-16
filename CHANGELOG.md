@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- RUBI 4.16.1 1.2.4.1 #1 and 1.2.4.2 #1 proved over ℝ and ℂ
+  (`OSR/IntegrationRec31.lean`): `a x^q + b x^n + c x^r = (a + b + c) x^n`
+  when `q = n = r`. The catalogue has 373 rules: 63 proved and 310 refuted
+  over ℝ, 55 proved (30 certified), 317 refuted and one unproved over ℂ.
 - 27 RUBI rules reported as not migrated: a condition forces a half-integer
   exponent, or the integrand has an exponent with denominator 2, so the
   integrand is nowhere defined in the fragment (41 not migrated in all).
