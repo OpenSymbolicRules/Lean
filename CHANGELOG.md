@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- RUBI 4.16.1 1.1.3.5 #42 and 1.1.3.6 #30 proved over ℝ and ℂ
+  (`OSR/IntegrationRec35.lean`, `pos_flip`). The catalogue has 379 rules: 69
+  proved and 310 refuted over ℝ, 61 proved (34 certified), 317 refuted and
+  one unproved over ℂ.
 - RUBI 4.16.1 1.1.3.6 #29 proved over ℝ and ℂ (`OSR/IntegrationRec34.lean`),
   the `x^m` variant of 1.1.3.5 #41. The catalogue has 377 rules: 67 proved
   and 310 refuted over ℝ, 59 proved (32 certified), 317 refuted and one

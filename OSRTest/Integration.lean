@@ -13,13 +13,13 @@ private def t : Expr := .var "t"
 -- The twenty rules of the syntactic inventory (FreeQ or NeQ conditions,
 -- registered heads, no Int in the result) are migrated or reported, plus
 -- 110 rules with residual integrals and seven unmigrated ones.
-#guard Integration.catalog.length + Integration.notMigrated.length == 418
+#guard Integration.catalog.length + Integration.notMigrated.length == 420
 #guard Integration.notMigrated.length == 41
-#guard (Integration.catalog.filter (·.rule.shape == .antiderivRec)).length == 309
-#guard (Integration.catalog.filter (!·.rule.conditions.isEmpty)).length == 344
+#guard (Integration.catalog.filter (·.rule.shape == .antiderivRec)).length == 311
+#guard (Integration.catalog.filter (!·.rule.conditions.isEmpty)).length == 346
 -- RUBI rules with EqQ conditions are stated with relation1#eq (Cond.eq).
 #guard (Integration.catalog.filter fun e =>
-  e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 185
+  e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 187
 
 -- RUBI 4.16.1: the new degenerate-coefficient cases are refuted in both
 -- domains, with no proof or unresolved domain accidentally attached.
@@ -118,7 +118,8 @@ private def rules : List CRule :=
   "integration.monomial_improper_trinomial_equal_powers", "integration.trinomial_negative_power",
   "integration.partial_fractions_monomial_binomial_pair",
   "integration.binomial_triple_negative_flip",
-  "integration.monomial_binomial_triple_negative_flip"]
+  "integration.monomial_binomial_triple_negative_flip",
+  "integration.binomial_triple_positive_flip", "integration.monomial_binomial_triple_positive_flip"]
 
 -- A conditional rule applies only when its conditions are decided: int(λt. t^m)
 -- stays (m ≠ -1 is undecided), int(λt. t^(-1)) stays (decided false),
