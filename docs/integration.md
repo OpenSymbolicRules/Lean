@@ -599,14 +599,22 @@ excluded by the definedness of the integrand:
 | 1.1.3.1 #3 `∫ (a + b xⁿ)^p`, `1/n + p + 1 = 0` | `a ≠ 0` | `integration.rubi_1_1_3_1_r3_nondegenerate` |
 | 1.1.3.2 #6 `∫ (c x)^m (a + b xⁿ)^p`, `(m + 1)/n + p + 1 = 0` | `a c (m + 1) ≠ 0` | `integration.rubi_1_1_3_2_r6_nondegenerate` |
 
+`OSR/IntegrationRec39.lean` proves two variants with a second binomial factor,
+where `b c - a d ≠ 0` and the `EqQ` condition exclude `n = 0`:
+
+| Rule as stated | Added condition | Variant |
+|---|---|---|
+| 1.1.3.3 #10 `∫ (a + b xⁿ)^p (c + d xⁿ)` | `a ≠ 0` | `integration.rubi_1_1_3_3_r10_nondegenerate` |
+| 1.1.3.4 #14 `∫ (e x)^m (a + b xⁿ)^p (c + d xⁿ)` | `a e (m + 1) ≠ 0` | `integration.rubi_1_1_3_4_r14_nondegenerate` |
+
 A development triage adds `D ≠ 0` for every coefficient-only denominator
 `D^k` (`k < 0`) of the result of the 318 refuted rules: 291 receive a
 condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 389 rules: 79 proved and 310 refuted over ℝ (none
-unproved), 71 proved (44 certified), 317 refuted and one unproved over ℂ.
+Integration now exports 391 rules: 81 proved and 310 refuted over ℝ (none
+unproved), 73 proved (46 certified), 317 refuted and one unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that

@@ -13,13 +13,13 @@ private def t : Expr := .var "t"
 -- The twenty rules of the syntactic inventory (FreeQ or NeQ conditions,
 -- registered heads, no Int in the result) are migrated or reported, plus
 -- 110 rules with residual integrals and seven unmigrated ones.
-#guard Integration.catalog.length + Integration.notMigrated.length == 430
+#guard Integration.catalog.length + Integration.notMigrated.length == 432
 #guard Integration.notMigrated.length == 41
 #guard (Integration.catalog.filter (·.rule.shape == .antiderivRec)).length == 313
-#guard (Integration.catalog.filter (!·.rule.conditions.isEmpty)).length == 356
+#guard (Integration.catalog.filter (!·.rule.conditions.isEmpty)).length == 358
 -- RUBI rules with EqQ conditions are stated with relation1#eq (Cond.eq).
 #guard (Integration.catalog.filter fun e =>
-  e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 195
+  e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 197
 
 -- RUBI 4.16.1: the new degenerate-coefficient cases are refuted in both
 -- domains, with no proof or unresolved domain accidentally attached.
@@ -45,7 +45,8 @@ private def strengthenedIds : List String := [
   "integration.linear_power_nondegenerate", "integration.constant_times_linear_nondegenerate",
   "integration.rubi_4_1_13_r11_nondegenerate", "integration.rubi_4_1_13_r12_nondegenerate",
   "integration.rubi_1_1_1_2_r1_nondegenerate", "integration.rubi_1_1_3_2_r3_nondegenerate",
-  "integration.rubi_1_1_3_1_r3_nondegenerate", "integration.rubi_1_1_3_2_r6_nondegenerate"]
+  "integration.rubi_1_1_3_1_r3_nondegenerate", "integration.rubi_1_1_3_2_r6_nondegenerate",
+  "integration.rubi_1_1_3_3_r10_nondegenerate", "integration.rubi_1_1_3_4_r14_nondegenerate"]
 
 #guard (Integration.catalog.filter fun e =>
   e.findings.any (·.startsWith "strengthened:")).map (·.rule.id) == strengthenedIds
@@ -149,7 +150,8 @@ private def rules : List CRule :=
   "integration.linear_power_nondegenerate", "integration.constant_times_linear_nondegenerate",
   "integration.rubi_4_1_13_r11_nondegenerate", "integration.rubi_4_1_13_r12_nondegenerate",
   "integration.rubi_1_1_1_2_r1_nondegenerate", "integration.rubi_1_1_3_2_r3_nondegenerate",
-  "integration.rubi_1_1_3_1_r3_nondegenerate", "integration.rubi_1_1_3_2_r6_nondegenerate"]
+  "integration.rubi_1_1_3_1_r3_nondegenerate", "integration.rubi_1_1_3_2_r6_nondegenerate",
+  "integration.rubi_1_1_3_3_r10_nondegenerate", "integration.rubi_1_1_3_4_r14_nondegenerate"]
 
 -- A conditional rule applies only when its conditions are decided: int(λt. t^m)
 -- stays (m ≠ -1 is undecided), int(λt. t^(-1)) stays (decided false),

@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Strengthened variants of 1.1.3.3 #10 with `a ≠ 0` and 1.1.3.4 #14 with
+  `a e (m + 1) ≠ 0`, proved over ℝ and ℂ (`OSR/IntegrationRec39.lean`). The
+  catalogue has 391 rules: 81 proved and 310 refuted over ℝ, 73 proved (46
+  certified), 317 refuted and one unproved over ℂ.
 - Four more strengthened variants, proved over ℝ and ℂ
   (`OSR/IntegrationRec38.lean`): 1.1.1.2 #1 with `b (m + 2) ≠ 0`, 1.1.3.2 #3
   with `b n (p + 1) ≠ 0`, 1.1.3.1 #3 with `a ≠ 0` and 1.1.3.2 #6 with

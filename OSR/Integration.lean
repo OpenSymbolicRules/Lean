@@ -1,5 +1,5 @@
 import OSR.Calculus
-import OSR.IntegrationRec38
+import OSR.IntegrationRec39
 
 /-!
 # Integration (RUBI)
@@ -49,7 +49,7 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec32 OSR.IntegrationRec33
   OSR.IntegrationRec34 OSR.IntegrationRec35
   OSR.IntegrationRec36 OSR.IntegrationRec37
-  OSR.IntegrationRec38 Filter Topology
+  OSR.IntegrationRec38 OSR.IntegrationRec39 Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -3591,7 +3591,19 @@ def catalog : List CEntry := [
     findings := [
       "strengthened: the condition a c (m + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_1_3_2_r6, which stays refuted.",
       condFinding "EqQ[Add[Multiply[Add[m, 1], Power[n, -1]], p, 1], 0]; NeQ[m, -1]",
-      optionalFinding "c., m. and b."] }
+      optionalFinding "c., m. and b."] },
+  { rule := rubi1133r10Nondeg, ruleDecl := ``rubi1133r10Nondeg,
+    proofs := [(.real, ``rubi1133r10Nondeg_real), (.complex, ``rubi1133r10Nondeg_complex)],
+    findings := [
+      "strengthened: the condition a ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_1_3_3_r10, which stays refuted.",
+      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; EqQ[Add[Multiply[a, d], Multiply[-1, b, c, Add[Multiply[n, Add[p, 1]], 1]]], 0]",
+      optionalFinding "b., p. and d."] },
+  { rule := rubi1134r14Nondeg, ruleDecl := ``rubi1134r14Nondeg,
+    proofs := [(.real, ``rubi1134r14Nondeg_real), (.complex, ``rubi1134r14Nondeg_complex)],
+    findings := [
+      "strengthened: the condition a e (m + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_1_3_4_r14, which stays refuted.",
+      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; EqQ[Add[Multiply[a, d, Add[m, 1]], Multiply[-1, b, c, Add[m, Multiply[n, Add[p, 1]], 1]]], 0]; NeQ[m, -1]",
+      optionalFinding "e., m., b., p. and d."] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -3628,6 +3640,6 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl <;> decide
+    rfl | rfl | rfl <;> decide
 
 end OSR.Integration
