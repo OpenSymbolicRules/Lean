@@ -655,6 +655,11 @@ proves 1.2.1.3 #24 the same way, with `c (m + 2 p + 2) ≠ 0` and `e ≠ 0`
 (`integration.rubi_1_2_1_3_r24_nondegenerate`): with the first condition
 alone it is false at `e = d = m = 0`, like #25.
 
+`OSR/IntegrationRec47.lean` begins the strengthened variants of rules with
+residual integrals, stated for every choice of antiderivatives of the
+residual integrands: 1.2.1.2 #20 with `e^p ≠ 0`, #103 with
+`(m + 1) (c d² - b d e + a e²) ≠ 0` and #104 with `(m + 1) (c d² + a e²) ≠ 0`.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.
@@ -665,8 +670,8 @@ condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 408 rules: 98 proved and 310 refuted over ℝ (none
-unproved), 90 proved (63 certified), 317 refuted and one unproved over ℂ.
+Integration now exports 411 rules: 101 proved and 310 refuted over ℝ (none
+unproved), 93 proved (66 certified), 317 refuted and one unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that

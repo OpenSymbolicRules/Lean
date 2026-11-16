@@ -122,7 +122,8 @@ OSR/IntegrationRec43.lean strengthened variants, seventh batch (2 proofs)
 OSR/IntegrationRec44.lean strengthened variants, eighth batch (2 proofs)
 OSR/IntegrationRec45.lean strengthened variants, ninth batch (2 proofs)
 OSR/IntegrationRec46.lean strengthened variant of 1.2.1.3 #24 (1 proof)
-OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (408)
+OSR/IntegrationRec47.lean strengthened variants with residual integrals (3 proofs)
+OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (411)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
                        generation of rule set, reports and conformance cases

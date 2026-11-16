@@ -1,5 +1,5 @@
 import OSR.Calculus
-import OSR.IntegrationRec46
+import OSR.IntegrationRec47
 
 /-!
 # Integration (RUBI)
@@ -52,7 +52,8 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec38 OSR.IntegrationRec39 OSR.IntegrationRec40
   OSR.IntegrationRec41 OSR.IntegrationRec42
   OSR.IntegrationRec43 OSR.IntegrationRec44
-  OSR.IntegrationRec45 OSR.IntegrationRec46 Filter Topology
+  OSR.IntegrationRec45 OSR.IntegrationRec46
+  OSR.IntegrationRec47 Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -891,8 +892,8 @@ theorem cosLog_counterexample_complex : ¬ cosLog.Holds .complex := by
   ring
 
 
-/-- The Integration catalogue, in v0.1 file order. -/
-def catalog : List CEntry := [
+/-- The Integration catalogue, in v0.1 file order: part 1. -/
+def catalogPart1 : List CEntry := [
   { rule := reciprocal, ruleDecl := ``reciprocal, proofs := [],
     counterexamples := [(.real, ``reciprocal_counterexample_real), (.complex, ``reciprocal_counterexample_complex)],
     findings := [
@@ -1506,7 +1507,25 @@ def catalog : List CEntry := [
       "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       recFinding,
       condFinding "LtQ[0, n, Add[m, 1]]; NeQ[p, -1]",
-      optionalFinding "m., a., b., n. and p."] },
+      optionalFinding "m., a., b., n. and p."] }
+]
+
+set_option maxRecDepth 4096 in
+set_option maxHeartbeats 1000000 in
+theorem catalogPart1_wellFormed : ∀ e ∈ catalogPart1,
+    (if e.rule.shape == .antiderivRec then e.rule.recOk else e.rule.wellFormed) = true := by
+  intro e he
+  simp only [catalogPart1, List.mem_cons, List.mem_nil_iff, or_false] at he
+  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+
+/-- The Integration catalogue, in v0.1 file order: part 2. -/
+def catalogPart2 : List CEntry := [
   { rule := rubi4112r84, ruleDecl := ``rubi4112r84, proofs := [],
     counterexamples := [(.real, ``rubi4112r84_counterexample_real), (.complex, ``rubi4112r84_counterexample_complex)],
     findings := [
@@ -2241,7 +2260,25 @@ def catalog : List CEntry := [
       "counterexample: at a = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the residual integrand 1 is not defined at x = 1 (Lean theorems rubi1137r5_counterexample_real and rubi1137r5_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
       recFinding,
       condFinding "EqQ[Add[Multiply[a, Power[B, 3]], Multiply[-1, b, Power[A, 3]]], 0]",
-      optionalFinding "B. and b."] },
+      optionalFinding "B. and b."] }
+]
+
+set_option maxRecDepth 4096 in
+set_option maxHeartbeats 1000000 in
+theorem catalogPart2_wellFormed : ∀ e ∈ catalogPart2,
+    (if e.rule.shape == .antiderivRec then e.rule.recOk else e.rule.wellFormed) = true := by
+  intro e he
+  simp only [catalogPart2, List.mem_cons, List.mem_nil_iff, or_false] at he
+  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+
+/-- The Integration catalogue, in v0.1 file order: part 3. -/
+def catalogPart3 : List CEntry := [
   { rule := rubi1211r1, ruleDecl := ``rubi1211r1, proofs := [],
     counterexamples := [(.real, ``rubi1211r1_counterexample_real), (.complex, ``rubi1211r1_counterexample_complex)],
     findings := [
@@ -2972,7 +3009,25 @@ def catalog : List CEntry := [
     findings := [
       "independence: q is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
       recFinding,
-      condFinding "EqQ[m, q]; IntegerQ[q]", optionalFinding "m., e., q., a., b., c., n. and p."] },
+      condFinding "EqQ[m, q]; IntegerQ[q]", optionalFinding "m., e., q., a., b., c., n. and p."] }
+]
+
+set_option maxRecDepth 4096 in
+set_option maxHeartbeats 1000000 in
+theorem catalogPart3_wellFormed : ∀ e ∈ catalogPart3,
+    (if e.rule.shape == .antiderivRec then e.rule.recOk else e.rule.wellFormed) = true := by
+  intro e he
+  simp only [catalogPart3, List.mem_cons, List.mem_nil_iff, or_false] at he
+  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+
+/-- The Integration catalogue, in v0.1 file order: part 4. -/
+def catalogPart4 : List CEntry := [
   { rule := powInvLinLogLin, ruleDecl := ``powInvLinLogLin,
     proofs := [(.real, ``powInvLinLogLin_real), (.complex, ``powInvLinLogLin_complex)],
     findings := [
@@ -3660,7 +3715,25 @@ def catalog : List CEntry := [
     findings := [
       "strengthened: the condition c e (m + 2 p + 3) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_4_r65, which stays refuted.",
       condFinding "EqQ[Add[Multiply[b, e, Add[m, p, 2]], Multiply[2, c, d, Add[p, 1]]], 0]; EqQ[Add[Multiply[b, d, Add[p, 1]], Multiply[a, e, Add[m, 1]]], 0]; NeQ[Add[m, Multiply[2, p], 3], 0]",
-      optionalFinding "d., e., m., a., b., c. and p."] },
+      optionalFinding "d., e., m., a., b., c. and p."] }
+]
+
+set_option maxRecDepth 4096 in
+set_option maxHeartbeats 1000000 in
+theorem catalogPart4_wellFormed : ∀ e ∈ catalogPart4,
+    (if e.rule.shape == .antiderivRec then e.rule.recOk else e.rule.wellFormed) = true := by
+  intro e he
+  simp only [catalogPart4, List.mem_cons, List.mem_nil_iff, or_false] at he
+  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+
+/-- The Integration catalogue, in v0.1 file order: part 5. -/
+def catalogPart5 : List CEntry := [
   { rule := rubi1214r66Nondeg, ruleDecl := ``rubi1214r66Nondeg,
     proofs := [(.real, ``rubi1214r66Nondeg_real), (.complex, ``rubi1214r66Nondeg_complex)],
     findings := [
@@ -3709,44 +3782,54 @@ def catalog : List CEntry := [
     findings := [
       "strengthened: the conditions c (m + 2 p + 2) ≠ 0 and e ≠ 0 (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_3_r24, which stays refuted, and the case e = d = m = 0, where the result with only the first condition is not an antiderivative.",
       condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; EqQ[Add[Multiply[c, Power[d, 2]], Multiply[-1, b, d, e], Multiply[a, Power[e, 2]]], 0]; EqQ[Add[Multiply[m, Add[Multiply[g, Add[Multiply[c, d], Multiply[-1, b, e]]], Multiply[c, e, f]]], Multiply[e, Add[p, 1], Add[Multiply[2, c, f], Multiply[-1, b, g]]]], 0]",
-      optionalFinding "d., e., f., g., a., b. and c."] }
+      optionalFinding "d., e., f., g., a., b. and c."] },
+  { rule := rubi1212r20Nondeg, ruleDecl := ``rubi1212r20Nondeg,
+    proofs := [(.real, ``rubi1212r20Nondeg_real), (.complex, ``rubi1212r20Nondeg_complex)],
+    findings := [
+      "strengthened: the condition e^p ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_2_r20, which stays refuted.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IntegerQ[p]",
+      optionalFinding "e., m., b., c. and p."] },
+  { rule := rubi1212r103Nondeg, ruleDecl := ``rubi1212r103Nondeg,
+    proofs := [(.real, ``rubi1212r103Nondeg_real), (.complex, ``rubi1212r103Nondeg_complex)],
+    findings := [
+      "strengthened: the condition (m + 1) (c d^2 - b d e + a e^2) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_2_r103, which stays refuted.",
+      recFinding,
+      condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; NeQ[Add[Multiply[c, Power[d, 2]], Multiply[-1, b, d, e], Multiply[a, Power[e, 2]]], 0]; NeQ[Add[Multiply[2, c, d], Multiply[-1, b, e]], 0]; EqQ[Add[m, Multiply[2, p], 3], 0]",
+      optionalFinding "d., e., a., b. and c."] },
+  { rule := rubi1212r104Nondeg, ruleDecl := ``rubi1212r104Nondeg,
+    proofs := [(.real, ``rubi1212r104Nondeg_real), (.complex, ``rubi1212r104Nondeg_complex)],
+    findings := [
+      "strengthened: the condition (m + 1) (c d^2 + a e^2) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_2_r104, which stays refuted.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[c, Power[d, 2]], Multiply[a, Power[e, 2]]], 0]; EqQ[Add[m, Multiply[2, p], 3], 0]",
+      optionalFinding "e. and c."] }
 ]
 
 set_option maxRecDepth 4096 in
 set_option maxHeartbeats 1000000 in
+theorem catalogPart5_wellFormed : ∀ e ∈ catalogPart5,
+    (if e.rule.shape == .antiderivRec then e.rule.recOk else e.rule.wellFormed) = true := by
+  intro e he
+  simp only [catalogPart5, List.mem_cons, List.mem_nil_iff, or_false] at he
+  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+
+/-- The Integration catalogue, in v0.1 file order. -/
+def catalog : List CEntry :=
+  catalogPart1 ++ catalogPart2 ++ catalogPart3 ++ catalogPart4 ++ catalogPart5
+
 /-- Every catalogue rule is well formed: recursive rules by `recOk`, the
 others by `wellFormed`. -/
 theorem catalog_wellFormed : ∀ e ∈ catalog,
     (if e.rule.shape == .antiderivRec then e.rule.recOk else e.rule.wellFormed) = true := by
   intro e he
-  simp only [catalog, List.mem_cons, List.mem_nil_iff, or_false] at he
-  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl <;> decide
+  simp only [catalog, List.mem_append] at he
+  rcases he with (((h | h) | h) | h) | h
+  · exact catalogPart1_wellFormed e h
+  · exact catalogPart2_wellFormed e h
+  · exact catalogPart3_wellFormed e h
+  · exact catalogPart4_wellFormed e h
+  · exact catalogPart5_wellFormed e h
 
 end OSR.Integration

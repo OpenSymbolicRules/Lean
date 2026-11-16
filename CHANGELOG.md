@@ -8,12 +8,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
+- The Integration catalogue is split into parts of at most 100 entries
+  (`catalogPart1` …), each with its own well-formedness theorem: the single
+  list literal reached the code generator's recursion limit at 411 entries.
+  `Integration.catalog` is their concatenation, in the same order.
 - Report the three unmigrated structural derivative rules as lacking the
   differentiability assumptions needed by their operands, in addition to
   using the non-OpenMath `osr#Apply` construct. The v1 format cannot express
   these premises, so no assumptions were added silently.
 
 ### Added
+- First strengthened variants of rules with residual integrals: 1.2.1.2 #20
+  with `e^p ≠ 0`, #103 with `(m + 1) (c d² - b d e + a e²) ≠ 0` and #104 with
+  `(m + 1) (c d² + a e²) ≠ 0`, proved over ℝ and ℂ
+  (`OSR/IntegrationRec47.lean`). The catalogue has 411 rules: 101 proved and
+  310 refuted over ℝ, 93 proved (66 certified), 317 refuted and one unproved
+  over ℂ.
 - Strengthened variant of 1.2.1.3 #24 with `c (m + 2 p + 2) ≠ 0` and `e ≠ 0`,
   proved over ℝ and ℂ (`OSR/IntegrationRec46.lean`). The catalogue has 408
   rules: 98 proved and 310 refuted over ℝ, 90 proved (63 certified), 317
