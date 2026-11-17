@@ -125,7 +125,7 @@ OSR/IntegrationRec46.lean strengthened variant of 1.2.1.3 #24 (1 proof)
 OSR/IntegrationRec47.lean strengthened variants with residual integrals (3 proofs)
 OSR/IntegrationRec48.lean strengthened variants with residual integrals, second batch (3 proofs)
 OSR/IntegrationFindings.lean texts of the standard migration findings
-OSR/IntegrationNum1.lean strengthened variants checked numerically, unproved (83)
+OSR/IntegrationNum1.lean strengthened variants checked numerically, unproved (80)
 OSR/IntegrationRec49.lean proofs of variants first checked numerically (3 proofs)
 OSR/IntegrationRec50.lean proof of a variant first checked numerically (1 proof)
 OSR/IntegrationRec51.lean proofs of variants first checked numerically (4 proofs)
@@ -133,6 +133,7 @@ OSR/IntegrationRec52.lean proofs of variants first checked numerically (3 proofs
 OSR/IntegrationRec53.lean proofs of variants first checked numerically (5 proofs)
 OSR/IntegrationRec54.lean proofs of variants first checked numerically (6 proofs)
 OSR/IntegrationRec55.lean proofs of variants first checked numerically (4 proofs)
+OSR/IntegrationRec56.lean proofs of variants first checked numerically (3 proofs)
 OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (523)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),

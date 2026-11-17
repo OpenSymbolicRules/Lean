@@ -71,5 +71,6 @@ import OSR.IntegrationRec52
 import OSR.IntegrationRec53
 import OSR.IntegrationRec54
 import OSR.IntegrationRec55
+import OSR.IntegrationRec56
 import OSR.Integration
 import OSR.Export
