@@ -665,7 +665,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 ### Strengthened variants checked numerically
 
-`OSR/IntegrationNum1.lean` distributes 70 more strengthened variants before
+`OSR/IntegrationNum1.lean` distributes 68 more strengthened variants before
 their proofs (Specification V1-R-005e): both domains are unproved, and a
 `numerical:` finding records the evidence. Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
@@ -727,6 +727,9 @@ certified over ℂ). `OSR/IntegrationRec60.lean` proves 1.1.3.5 #30 (the same
 identity in `xⁿ`, with `p < 0` and `q > 0`) and 1.2.1.2 #43 and #44
 (`m > 1`), whose derivative identity is `(m - 1)` times the converted
 condition `c d² - b d e + a e² = 0` (not certified over ℂ).
+`OSR/IntegrationRec61.lean` proves 1.2.1.2 #45 (`m < 0`, identity `-m` times
+the condition) and #39 (`m > 0`, `p < -1`, identity `2 (b + 2 c x) (p + 1)`
+times the condition); not certified over ℂ.
 
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
@@ -738,8 +741,8 @@ condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 523 rules: 143 proved, 310 refuted and 70 unproved
-(checked numerically) over ℝ, 135 proved (87 certified), 317 refuted and 71
+Integration now exports 523 rules: 145 proved, 310 refuted and 68 unproved
+(checked numerically) over ℝ, 137 proved (87 certified), 317 refuted and 69
 unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,

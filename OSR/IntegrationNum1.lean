@@ -1918,15 +1918,6 @@ def entries : List CEntry := [
       recFinding,
       condFinding "EqQ[r, Add[q, Multiply[-1, 1]]]; NeQ[p, -1]; NeQ[Add[Multiply[a, e, m], Multiply[-1, b, d, n, q]], 0]",
       optionalFinding "d., m., e., c., n., r., a., b. and p."] },
-  { rule := rubi1212r39Nondeg, ruleDecl := ``rubi1212r39Nondeg, proofs := [],
-    unproved := [.real, .complex],
-    findings := [
-      "strengthened: the conditions NeQ[Multiply[e, Add[p, 1], Add[Power[b, 2], Multiply[-1, 4, a, c]]], 0]; NeQ[Multiply[Add[p, 1], Add[Power[b, 2], Multiply[-1, 4, a, c]]], 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_2_r39, which stays refuted.",
-      "numerical: checked over ℝ only, with no failure at 77 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise an integer between -3 and 3) and points where the integrand is defined, comparing a central difference of the result with the integrand, each residual integral replaced by a function whose derivative there is the residual integrand. In addition, the real zeros of every base raised to a negative or non-integer power in the residual integrands and the result were searched for, and the integrand is not defined around any of them. This is not a proof, and the complex domain is not checked.",
-      "independence: m, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
-      recFinding,
-      condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; EqQ[Add[Multiply[c, Power[d, 2]], Multiply[-1, b, d, e], Multiply[a, Power[e, 2]]], 0]; LtQ[p, -1]; LtQ[0, m, 1]; IntegerQ[Multiply[2, p]]",
-      optionalFinding "d., e., a., b. and c."] },
   { rule := rubi1213r33Nondeg, ruleDecl := ``rubi1213r33Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -2311,15 +2302,6 @@ def entries : List CEntry := [
       recFinding,
       condFinding "EqQ[Add[m, Multiply[r, Add[q, 1]], 1], 0]; NeQ[m, -1]",
       optionalFinding "f., m., e., r., a., b., c. and n."] },
-  { rule := rubi1212r45Nondeg, ruleDecl := ``rubi1212r45Nondeg, proofs := [],
-    unproved := [.real, .complex],
-    findings := [
-      "strengthened: the condition NeQ[Multiply[Add[m, p, 1], Add[Multiply[2, c, d], Multiply[-1, b, e]]], 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_2_r45, which stays refuted.",
-      "numerical: checked over ℝ only, with no failure at 259 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise an integer between -3 and 3) and points where the integrand is defined, comparing a central difference of the result with the integrand, each residual integral replaced by a function whose derivative there is the residual integrand. In addition, the real zeros of every base raised to a negative or non-integer power in the residual integrands and the result were searched for, and the integrand is not defined around any of them. This is not a proof, and the complex domain is not checked.",
-      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
-      recFinding,
-      condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; EqQ[Add[Multiply[c, Power[d, 2]], Multiply[-1, b, d, e], Multiply[a, Power[e, 2]]], 0]; LtQ[m, 0]; NeQ[Add[m, p, 1], 0]; IntegerQ[Multiply[2, p]]",
-      optionalFinding "d., e., a., b. and c."] },
   { rule := rubi4112r34Nondeg, ruleDecl := ``rubi4112r34Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -2458,6 +2440,6 @@ theorem entries_wellFormed : ∀ e ∈ entries,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 end OSR.IntegrationNum1
