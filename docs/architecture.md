@@ -193,6 +193,8 @@ OSR/IntegrationRec112.lean variants excluding a zero of their numerical check, w
 OSR/IntegrationRec113.lean variants with a tighter exponent bound, with their proofs (4)
 OSR/IntegrationRec114.lean variant excluding zeros of its numerical check, with its proof over ℝ (1)
 OSR/IntegrationRec115.lean variant with positive exponents, with its proof (1)
+OSR/IntegrationRec116.lean variants of the cubic factorisation rules, with their proofs (2)
+OSR/IntegrationRec117.lean exponential variants with a locally constant exponent, with their proofs (5)
 OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (523)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),

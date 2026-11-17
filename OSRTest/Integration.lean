@@ -13,13 +13,13 @@ private def t : Expr := .var "t"
 -- The twenty rules of the syntactic inventory (FreeQ or NeQ conditions,
 -- registered heads, no Int in the result) are migrated or reported, plus
 -- 110 rules with residual integrals and seven unmigrated ones.
-#guard Integration.catalogVerified.length + Integration.notMigrated.length == 628
+#guard Integration.catalogVerified.length + Integration.notMigrated.length == 635
 #guard Integration.notMigrated.length == 41
-#guard (Integration.catalogVerified.filter (·.rule.shape == .antiderivRec)).length == 487
-#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 554
+#guard (Integration.catalogVerified.filter (·.rule.shape == .antiderivRec)).length == 494
+#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 561
 -- RUBI rules with EqQ conditions are stated with relation1#eq (Cond.eq).
 #guard (Integration.catalogVerified.filter fun e =>
-  e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 286
+  e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 288
 
 -- RUBI 4.16.1: the new degenerate-coefficient cases are refuted in both
 -- domains, with no proof or unresolved domain accidentally attached.
@@ -122,7 +122,11 @@ private def strengthenedIds : List String := [
   "integration.rubi_1_1_3_7_r5_nondegenerate",
   "integration.rubi_1_2_2_4_r59_nondegenerate", "integration.rubi_1_2_2_4_r60_nondegenerate",
   "integration.rubi_1_2_2_4_r61_nondegenerate", "integration.rubi_1_2_2_4_r62_nondegenerate",
-  "integration.rubi_1_1_1_3_r53_nondegenerate"]
+  "integration.rubi_1_1_1_3_r53_nondegenerate",
+  "integration.rubi_1_3_1_r4_nondegenerate", "integration.rubi_1_3_2_r1_nondegenerate",
+  "integration.rubi_2_3_r11_nondegenerate", "integration.rubi_2_3_r23_nondegenerate",
+  "integration.rubi_2_3_r24_nondegenerate", "integration.rubi_2_3_r26_nondegenerate",
+  "integration.rubi_2_3_r35_nondegenerate"]
 
 #guard strengthenedIds.all fun id =>
   match Integration.catalogVerified.find? (·.rule.id == id) with
@@ -391,7 +395,11 @@ private def rules : List CRule :=
   "integration.power_log_log_nondegenerate", "integration.power_log_monomial_log_linear_nondegenerate",
   "integration.rubi_1_2_2_4_r59_nondegenerate", "integration.rubi_1_2_2_4_r60_nondegenerate",
   "integration.rubi_1_2_2_4_r61_nondegenerate", "integration.rubi_1_2_2_4_r62_nondegenerate",
-  "integration.power_log_binomial_nondegenerate", "integration.rubi_1_1_1_3_r53_nondegenerate"]
+  "integration.power_log_binomial_nondegenerate", "integration.rubi_1_1_1_3_r53_nondegenerate",
+  "integration.rubi_1_3_1_r4_nondegenerate", "integration.rubi_1_3_2_r1_nondegenerate",
+  "integration.rubi_2_3_r11_nondegenerate", "integration.rubi_2_3_r23_nondegenerate",
+  "integration.rubi_2_3_r24_nondegenerate", "integration.rubi_2_3_r26_nondegenerate",
+  "integration.rubi_2_3_r35_nondegenerate"]
 
 -- A conditional rule applies only when its conditions are decided: int(λt. t^m)
 -- stays (m ≠ -1 is undecided), int(λt. t^(-1)) stays (decided false),

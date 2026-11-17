@@ -884,6 +884,17 @@ proves 3.4 #7 (`integration.power_log_binomial`) with `f (m + 1) ≠ 0` and
 `p, n ≠ 0`; at `n = 0` the residual integrand `x^(n-1) (f x)^(m+1)/(d + e xⁿ)`
 is undefined at `x = 0`.
 
+`OSR/IntegrationRec116.lean` proves 1.3.1 #4 and 1.3.2 #1 over ℝ and ℂ: when
+`4 b³ + 27 a² d = 0`, `(3 a - b x)(3 a + 2 b x)² = 27 a² (a + b x + d x³)`, and
+RUBI's own `3^(3p) a^(2p) ≠ 0` suffices since integer powers need no other
+condition. Their numerical failures were an artefact of the check's overflow
+guard. `OSR/IntegrationRec117.lean` proves 2.3 #11, #23, #24, #26 and #35 over
+ℝ and ℂ with `F > 0`, which `log F` needs. OSR powers have integer exponents,
+so an integrand `F^g(x)` is defined near a point only where `g` is a locally
+constant integer; over ℝ and ℂ an integer-valued function continuous at a
+point is constant near it, so `g' = 0` there, which makes the logarithmic
+term of the result vanish (`b = 0`, or `d = 0`, or `f = 0` for #35).
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.
@@ -894,8 +905,8 @@ condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 587 rules: 277 proved and 310 refuted over ℝ, 220
-proved (111 certified), 317 refuted and 50 unproved over ℂ.
+Integration now exports 594 rules: 284 proved and 310 refuted over ℝ, 227
+proved (113 certified), 317 refuted and 50 unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that

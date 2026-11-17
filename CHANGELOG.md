@@ -29,6 +29,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Seven more variants, proved over ℝ and ℂ: 1.3.1 #4 and 1.3.2 #1
+  (`OSR/IntegrationRec116.lean`), whose reported numerical failures were an
+  artefact of the check's overflow guard, and 2.3 #11, #23, #24, #26 and #35
+  with `F > 0` (`IntegrationRec117`). The catalogue has 594 rules: 284 proved
+  and 310 refuted over ℝ; 227 proved (113 certified), 317 refuted and 50
+  unproved over ℂ.
 - Six more variants whose candidates had failed the numerical truth check,
   proved with a tighter exponent bound or more `≠ 0` conditions: 1.2.2.4 #59
   and #60 (with `m > 3`) and #61 and #62 (with `m > 1`), whose residual

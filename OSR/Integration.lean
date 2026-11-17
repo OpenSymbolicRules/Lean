@@ -1,6 +1,8 @@
 import OSR.Calculus
 import OSR.IntegrationRec48
 import OSR.IntegrationNum1
+import OSR.IntegrationRec117
+import OSR.IntegrationRec116
 import OSR.IntegrationRec115
 import OSR.IntegrationRec114
 import OSR.IntegrationRec113
@@ -121,7 +123,7 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec41 OSR.IntegrationRec42
   OSR.IntegrationRec43 OSR.IntegrationRec44
   OSR.IntegrationRec45 OSR.IntegrationRec46
-  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationRec53 OSR.IntegrationRec54 OSR.IntegrationRec55 OSR.IntegrationRec56 OSR.IntegrationRec57 OSR.IntegrationRec58 OSR.IntegrationRec59 OSR.IntegrationRec60 OSR.IntegrationRec61 OSR.IntegrationRec62 OSR.IntegrationRec63 OSR.IntegrationRec64 OSR.IntegrationRec65 OSR.IntegrationRec66 OSR.IntegrationNum1 OSR.IntegrationRec67 OSR.IntegrationRec68 OSR.IntegrationRec69 OSR.IntegrationRec70 OSR.IntegrationRec71 OSR.IntegrationRec72 OSR.IntegrationRec73 OSR.IntegrationRec74 OSR.IntegrationRec75 OSR.IntegrationRec76 OSR.IntegrationRec77 OSR.IntegrationRec78 OSR.IntegrationRec79 OSR.IntegrationRec80 OSR.IntegrationRec81 OSR.IntegrationRec82 OSR.IntegrationRec83 OSR.IntegrationNum1 OSR.IntegrationRec84 OSR.IntegrationRec85 OSR.IntegrationRec86 OSR.IntegrationRec87 OSR.IntegrationRec88 OSR.IntegrationRec89 OSR.IntegrationRec90 OSR.IntegrationRec91 OSR.IntegrationRec92 OSR.IntegrationRec93 OSR.IntegrationRec94 OSR.IntegrationRec95 OSR.IntegrationRec96 OSR.IntegrationRec97 OSR.IntegrationRec98 OSR.IntegrationRec99 OSR.IntegrationRec100 OSR.IntegrationRec101 OSR.IntegrationRec102 OSR.IntegrationRec103 OSR.IntegrationRec104 OSR.IntegrationRec105 OSR.IntegrationRec106 OSR.IntegrationRec107 OSR.IntegrationRec108 OSR.IntegrationRec109 OSR.IntegrationRec110 OSR.IntegrationRec111 OSR.IntegrationRec112 OSR.IntegrationRec113 OSR.IntegrationRec114 OSR.IntegrationRec115 OSR.IntegrationFindings Filter Topology
+  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationRec53 OSR.IntegrationRec54 OSR.IntegrationRec55 OSR.IntegrationRec56 OSR.IntegrationRec57 OSR.IntegrationRec58 OSR.IntegrationRec59 OSR.IntegrationRec60 OSR.IntegrationRec61 OSR.IntegrationRec62 OSR.IntegrationRec63 OSR.IntegrationRec64 OSR.IntegrationRec65 OSR.IntegrationRec66 OSR.IntegrationNum1 OSR.IntegrationRec67 OSR.IntegrationRec68 OSR.IntegrationRec69 OSR.IntegrationRec70 OSR.IntegrationRec71 OSR.IntegrationRec72 OSR.IntegrationRec73 OSR.IntegrationRec74 OSR.IntegrationRec75 OSR.IntegrationRec76 OSR.IntegrationRec77 OSR.IntegrationRec78 OSR.IntegrationRec79 OSR.IntegrationRec80 OSR.IntegrationRec81 OSR.IntegrationRec82 OSR.IntegrationRec83 OSR.IntegrationNum1 OSR.IntegrationRec84 OSR.IntegrationRec85 OSR.IntegrationRec86 OSR.IntegrationRec87 OSR.IntegrationRec88 OSR.IntegrationRec89 OSR.IntegrationRec90 OSR.IntegrationRec91 OSR.IntegrationRec92 OSR.IntegrationRec93 OSR.IntegrationRec94 OSR.IntegrationRec95 OSR.IntegrationRec96 OSR.IntegrationRec97 OSR.IntegrationRec98 OSR.IntegrationRec99 OSR.IntegrationRec100 OSR.IntegrationRec101 OSR.IntegrationRec102 OSR.IntegrationRec103 OSR.IntegrationRec104 OSR.IntegrationRec105 OSR.IntegrationRec106 OSR.IntegrationRec107 OSR.IntegrationRec108 OSR.IntegrationRec109 OSR.IntegrationRec110 OSR.IntegrationRec111 OSR.IntegrationRec112 OSR.IntegrationRec113 OSR.IntegrationRec114 OSR.IntegrationRec115 OSR.IntegrationRec116 OSR.IntegrationRec117 OSR.IntegrationFindings Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -5313,7 +5315,63 @@ def catalogPart6 : List CEntry := [
       "strengthened: the conditions NeQ[Power[f, 2], 0]; GtQ[m, 0]; GtQ[n, 0] (relation1#gt, relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_1_1_3_r53, which stays refuted. A first variant without GtQ[m, 0] and GtQ[n, 0] was false: the numerical check found a residual integrand undefined where the integrand is defined, at m = 0 or n = 0.",
       recFinding,
       condFinding "IGtQ[Add[m, n], 0]; EqQ[Add[Multiply[2, b, d, e], Multiply[-1, f, Add[Multiply[b, c], Multiply[a, d]]]], 0]",
-      optionalFinding "a., b., c., d., e. and f."] }
+      optionalFinding "a., b., c., d., e. and f."] },
+  { rule := rubi131r4Nondeg, ruleDecl := ``rubi131r4Nondeg,
+    proofs := [(.real, ``rubi131r4Nondeg_real), (.complex, ``rubi131r4Nondeg_complex)],
+    findings := [
+      "strengthened: the condition NeQ[Multiply[Power[3, Multiply[3, p]], Power[a, Multiply[2, p]]], 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_3_1_r4, which stays refuted. The numerical check had reported failures that were an artefact of its overflow guard, which treated values above 10^6 as undefined.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[4, Power[b, 3]], Multiply[27, Power[a, 2], d]], 0]; IntegerQ[p]",
+      optionalFinding "a., b. and d."] },
+  { rule := rubi132r1Nondeg, ruleDecl := ``rubi132r1Nondeg,
+    proofs := [(.real, ``rubi132r1Nondeg_real), (.complex, ``rubi132r1Nondeg_complex)],
+    findings := [
+      "strengthened: the condition NeQ[Multiply[Power[3, Multiply[3, p]], Power[a, Multiply[2, p]]], 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_3_2_r1, which stays refuted. The numerical check had reported failures that were an artefact of its overflow guard, which treated values above 10^6 as undefined.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[4, Power[b, 3]], Multiply[27, Power[a, 2], d]], 0]; IntegerQ[p]",
+      optionalFinding "e., f., m., b., d. and p."] },
+  { rule := rubi23r11Nondeg, ruleDecl := ``rubi23r11Nondeg,
+    proofs := [(.real, ``rubi23r11Nondeg_real), (.complex, ``rubi23r11Nondeg_complex)],
+    findings := [
+      "strengthened: the conditions NeQ[d, 0]; GtQ[F, 0] (relation1#gt, relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_2_3_r11, which stays refuted. A first variant without GtQ[F, 0] was false: log F is undefined at F = 0. OSR powers have integer exponents, so the integrand is defined near a point only where its exponent is a locally constant integer; the proof shows that this makes the logarithmic term vanish.",
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IntegerQ[Multiply[2, Power[n, -1]]]; ILtQ[n, 0]",
+      optionalFinding "a., b., c. and d."] },
+  { rule := rubi23r23Nondeg, ruleDecl := ``rubi23r23Nondeg,
+    proofs := [(.real, ``rubi23r23Nondeg_real), (.complex, ``rubi23r23Nondeg_complex)],
+    findings := [
+      "strengthened: the conditions NeQ[Multiply[Add[m, 1], Power[f, 2]], 0]; NeQ[Multiply[Power[f, 2], Add[m, 1]], 0]; GtQ[F, 0] (relation1#gt, relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_2_3_r23, which stays refuted. A first variant without GtQ[F, 0] was false: log F is undefined at F = 0. OSR powers have integer exponents, so the integrand is defined near a point only where its exponent is a locally constant integer; the proof shows that this makes the logarithmic term vanish.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[d, e], Multiply[-1, c, f]], 0]; LtQ[m, -1]",
+      optionalFinding "e., f., a., b., c. and d."] },
+  { rule := rubi23r24Nondeg, ruleDecl := ``rubi23r24Nondeg,
+    proofs := [(.real, ``rubi23r24Nondeg_real), (.complex, ``rubi23r24Nondeg_complex)],
+    findings := [
+      "strengthened: the conditions NeQ[Multiply[f, Add[m, 1]], 0]; GtQ[F, 0] (relation1#gt, relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_2_3_r24, which stays refuted. A first variant without GtQ[F, 0] was false: log F is undefined at F = 0. OSR powers have integer exponents, so the integrand is defined near a point only where its exponent is a locally constant integer; the proof shows that this makes the logarithmic term vanish.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[d, e], Multiply[-1, c, f]], 0]; IGtQ[n, 2]; LtQ[m, -1]",
+      optionalFinding "e., f., a., b., c. and d."] },
+  { rule := rubi23r26Nondeg, ruleDecl := ``rubi23r26Nondeg,
+    proofs := [(.real, ``rubi23r26Nondeg_real), (.complex, ``rubi23r26Nondeg_complex)],
+    findings := [
+      "strengthened: the conditions NeQ[Multiply[f, Add[m, 1]], 0]; GtQ[F, 0] (relation1#gt, relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_2_3_r26, which stays refuted. A first variant without GtQ[F, 0] was false: log F is undefined at F = 0. OSR powers have integer exponents, so the integrand is defined near a point only where its exponent is a locally constant integer; the proof shows that this makes the logarithmic term vanish.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[d, e], Multiply[-1, c, f]], 0]; ILtQ[m, -1]",
+      optionalFinding "e., f., a., b., c. and d."] },
+  { rule := rubi23r35Nondeg, ruleDecl := ``rubi23r35Nondeg,
+    proofs := [(.real, ``rubi23r35Nondeg_real), (.complex, ``rubi23r35Nondeg_complex)],
+    findings := [
+      "strengthened: the conditions NeQ[Multiply[h, Add[m, 1]], 0]; GtQ[F, 0] (relation1#gt, relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_2_3_r35, which stays refuted. A first variant without GtQ[F, 0] was false: log F is undefined at F = 0. OSR powers have integer exponents, so the integrand is defined near a point only where its exponent is a locally constant integer; the proof shows that this makes the logarithmic term vanish.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; NeQ[Add[Multiply[d, g], Multiply[-1, c, h]], 0]; ILtQ[m, -1]",
+      optionalFinding "g., h., e., f., a., b., c. and d."] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -5328,7 +5386,7 @@ theorem catalogPart6_wellFormed : ∀ e ∈ catalogPart6,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=
