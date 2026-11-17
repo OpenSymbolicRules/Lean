@@ -1,6 +1,7 @@
 import OSR.Calculus
 import OSR.IntegrationRec48
 import OSR.IntegrationNum1
+import OSR.IntegrationRec60
 import OSR.IntegrationRec59
 import OSR.IntegrationRec58
 import OSR.IntegrationRec57
@@ -65,7 +66,7 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec41 OSR.IntegrationRec42
   OSR.IntegrationRec43 OSR.IntegrationRec44
   OSR.IntegrationRec45 OSR.IntegrationRec46
-  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationRec53 OSR.IntegrationRec54 OSR.IntegrationRec55 OSR.IntegrationRec56 OSR.IntegrationRec57 OSR.IntegrationRec58 OSR.IntegrationRec59 OSR.IntegrationFindings Filter Topology
+  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationRec53 OSR.IntegrationRec54 OSR.IntegrationRec55 OSR.IntegrationRec56 OSR.IntegrationRec57 OSR.IntegrationRec58 OSR.IntegrationRec59 OSR.IntegrationRec60 OSR.IntegrationFindings Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -4106,7 +4107,31 @@ def catalogPart5 : List CEntry := [
       "independence: q is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
       recFinding,
       condFinding "LtQ[q, -1]",
-      optionalFinding "d., f. and b."] }
+      optionalFinding "d., f. and b."] },
+  { rule := rubi1135r30Nondeg, ruleDecl := ``rubi1135r30Nondeg, 
+    proofs := [(.real, ``rubi1135r30Nondeg_real), (.complex, ``rubi1135r30Nondeg_complex)],
+    findings := [
+      "strengthened: the condition NeQ[b, 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_1_3_5_r30, which stays refuted.",
+      "independence: p, q are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "ILtQ[p, 0]; GtQ[q, 0]",
+      optionalFinding "b., d. and f."] },
+  { rule := rubi1212r43Nondeg, ruleDecl := ``rubi1212r43Nondeg, 
+    proofs := [(.real, ``rubi1212r43Nondeg_real), (.complex, ``rubi1212r43Nondeg_complex)],
+    findings := [
+      "strengthened: the condition NeQ[Multiply[c, Add[m, Multiply[2, p], 1]], 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_2_r43, which stays refuted.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; EqQ[Add[Multiply[c, Power[d, 2]], Multiply[-1, b, d, e], Multiply[a, Power[e, 2]]], 0]; GtQ[m, 1]; NeQ[Add[m, Multiply[2, p], 1], 0]; IntegerQ[Multiply[2, p]]",
+      optionalFinding "d., e., a., b. and c."] },
+  { rule := rubi1212r44Nondeg, ruleDecl := ``rubi1212r44Nondeg, 
+    proofs := [(.real, ``rubi1212r44Nondeg_real), (.complex, ``rubi1212r44Nondeg_complex)],
+    findings := [
+      "strengthened: the condition NeQ[Multiply[c, Add[m, Multiply[2, p], 1]], 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_2_r44, which stays refuted.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[c, Power[d, 2]], Multiply[a, Power[e, 2]]], 0]; GtQ[m, 1]; NeQ[Add[m, Multiply[2, p], 1], 0]; IntegerQ[Multiply[2, p]]",
+      optionalFinding "e. and c."] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -4118,7 +4143,7 @@ theorem catalogPart5_wellFormed : ∀ e ∈ catalogPart5,
   rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=
