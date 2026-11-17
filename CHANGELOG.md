@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- The strengthened variant of 3.3 #22 distributed unproved was false: at
+  `n = 0` the integrand is defined around `x = -d/e`, where the residual
+  integrand is not. It now also appends `n ≠ 0`, and is proved over ℝ.
+
 ### Removed
 - 11 strengthened variants distributed unproved, refuted by a pole probe of the
   numerical check (a residual integrand or the result undefined where the
@@ -24,6 +29,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Proofs of the last twelve strengthened variants distributed unproved:
+  4.1.12 #43 and #44, 1.1.1.4 #3 and #6, 1.2.1.3 #33, 1.1.3.3 #16 and
+  1.1.3.4 #25 over ℝ and ℂ (`OSR/IntegrationRec82.lean`, `IntegrationRec87` to
+  `IntegrationRec91`), and 4.7.8 #13 and #14, 3.4 #2, 3.2.1 #1 and 3.3 #22 over
+  ℝ only, with the real logarithm (`IntegrationRec83` to `IntegrationRec86`).
+  `OSR.IntegrationNum1.entries` is now empty. The catalogue has 523 rules: 213
+  proved and 310 refuted over ℝ; 181 proved (96 certified), 317 refuted and
+  25 unproved over ℂ.
 - Proofs of 2.1 #9 and #10 over ℝ and ℂ, first distributed unproved
   (`OSR/IntegrationRec81.lean`). The catalogue has 523 rules: 201 proved, 310
   refuted and 12 unproved over ℝ; 174 proved (92 certified), 317 refuted and 32

@@ -665,9 +665,10 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 ### Strengthened variants checked numerically
 
-`OSR/IntegrationNum1.lean` distributes 12 more strengthened variants before
-their proofs (Specification V1-R-005e): both domains are unproved, and a
-`numerical:` finding records the evidence. Each candidate was checked over ℝ
+`OSR/IntegrationNum1.lean` distributed strengthened variants before their
+proofs (Specification V1-R-005e): both domains unproved, and a `numerical:`
+finding recording the evidence. All of them are now proved and its list of
+entries is empty. Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
 derivative is the residual integrand at the point, on assignments where each
 metavariable is 0 with probability 0.4 (otherwise an integer between -3 and
@@ -786,6 +787,27 @@ of `(a + b xⁿ + c x²ⁿ)^p` for `p < -1` (not certified over ℂ).
 `OSR/IntegrationRec81.lean` proves, over ℝ and ℂ, 2.1 #9 and #10, the
 reductions of `(c + d x)^m (a + b (F^(g (e + f x)))ⁿ)^p` that split off the
 constant `a` (not certified over ℂ).
+The last twelve follow. Over ℝ and ℂ: `OSR/IntegrationRec82.lean` proves
+4.1.12 #43 and #44, the reductions of `x^m sin(a + b xⁿ)^p` and of the cosine
+analogue for `m = 2 n - 1` and `p > 1` (with `sin² + cos² = 1`);
+`OSR/IntegrationRec87.lean` 1.1.1.4 #6 and `OSR/IntegrationRec88.lean`
+1.1.1.4 #3, the reductions of `(a + b x)^m (c + d x)^n (e + f x)(g + h x)`;
+`OSR/IntegrationRec89.lean` 1.2.1.3 #33, where `c d² + a e² = 0` makes
+`e² (a + c x²)` equal to `c (e x - d)(d + e x)`; and `OSR/IntegrationRec90.lean`
+and `OSR/IntegrationRec91.lean` 1.1.3.3 #16 and 1.1.3.4 #25, where
+`a2 b1 + a1 b2 = 0` makes `(a1 + b1 x^(n/2))(a2 + b2 x^(n/2))` equal to
+`a1 a2 + b1 b2 xⁿ`. Over ℝ only, with the real logarithm:
+`OSR/IntegrationRec83.lean` proves 4.7.8 #13 and #14, the reductions of
+`(e x)^m sin(d (a + b log (c xⁿ)))^p` and of the cosine analogue for `p > 1`;
+`OSR/IntegrationRec84.lean` 3.4 #2, with `d/dx log (c (d + e/x)^p) =
+-e p/(x (d x + e))`; `OSR/IntegrationRec85.lean` 3.2.1 #1, with
+`d/dx log (e ((a + b x)/(c + d x))ⁿ) = n (b c - a d)/((a + b x)(c + d x))`; and
+`OSR/IntegrationRec86.lean` 3.3 #22. The variant of 3.3 #22 distributed
+before its proof was false: at `n = 0` the integrand `x^(r-1) (f + g xʳ)^q
+(a + b log c)^p` is defined around `x = -d/e`, where the residual integrand,
+with the factor `(d + e x)⁻¹`, is not. It now appends `n ≠ 0` as well, which
+the pole probe missed because the base `d + e x` has no negative power in the
+integrand.
 
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
@@ -797,9 +819,8 @@ condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 523 rules: 201 proved, 310 refuted and 12 unproved
-(checked numerically) over ℝ, 174 proved (92 certified), 317 refuted and 32
-unproved over ℂ.
+Integration now exports 523 rules: 213 proved and 310 refuted over ℝ, 181
+proved (96 certified), 317 refuted and 25 unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that
