@@ -190,6 +190,9 @@ OSR/IntegrationRec109.lean variant sampled with its equality condition solved, w
 OSR/IntegrationRec110.lean variant excluding a zero of its numerical check, with its proof (1)
 OSR/IntegrationRec111.lean variants excluding a zero of their numerical check, with their proofs over ℝ (3)
 OSR/IntegrationRec112.lean variants excluding a zero of their numerical check, with their proofs over ℝ (4)
+OSR/IntegrationRec113.lean variants with a tighter exponent bound, with their proofs (4)
+OSR/IntegrationRec114.lean variant excluding zeros of its numerical check, with its proof over ℝ (1)
+OSR/IntegrationRec115.lean variant with positive exponents, with its proof (1)
 OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (523)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),

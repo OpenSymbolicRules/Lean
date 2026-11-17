@@ -128,5 +128,8 @@ import OSR.IntegrationRec109
 import OSR.IntegrationRec110
 import OSR.IntegrationRec111
 import OSR.IntegrationRec112
+import OSR.IntegrationRec113
+import OSR.IntegrationRec114
+import OSR.IntegrationRec115
 import OSR.Integration
 import OSR.Export

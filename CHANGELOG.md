@@ -29,6 +29,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Six more variants whose candidates had failed the numerical truth check,
+  proved with a tighter exponent bound or more `≠ 0` conditions: 1.2.2.4 #59
+  and #60 (with `m > 3`) and #61 and #62 (with `m > 1`), whose residual
+  integrands have a pole at `x = 0` for `m = 3` (resp. `m = 1`), and 1.1.1.3
+  #53 (with `m, n > 0`), over ℝ and ℂ (`OSR/IntegrationRec113.lean`,
+  `IntegrationRec115`); and 3.4 #7 (`integration.power_log_binomial`, with
+  `p, n ≠ 0`) over ℝ only (`IntegrationRec114`). The catalogue has 587 rules:
+  277 proved and 310 refuted over ℝ; 220 proved (111 certified), 317 refuted
+  and 50 unproved over ℂ.
 - Eight variants whose candidates had failed the numerical truth check at a
   single zero, proved with one more `≠ 0` condition: 1.1.3.7 #5 (with
   `B ≠ 0`) over ℝ and ℂ (`OSR/IntegrationRec110.lean`), and 3.3 #29, #30, #31

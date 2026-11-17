@@ -870,6 +870,20 @@ integrand is nowhere defined; otherwise `B³ (a + b x³) = b (A + B x)(A² - A B
 excluded zero a residual integrand or the result is undefined somewhere the
 integrand is defined.
 
+Six more candidates need a tighter exponent bound. RUBI 1.2.2.4 #59–62 split
+off residual integrands with `(f x)^(m-4)` (#59, #60) or `(f x)^(m-2)` (#61,
+#62): RUBI's `m > 2` (resp. `m > 0`) admits the integer `m = 3` (resp. `m = 1`),
+where they have a pole at `x = 0` that the integrand does not.
+`OSR/IntegrationRec113.lean` proves them over ℝ and ℂ with `m > 3` (resp.
+`m > 1`) and RUBI's own `c d² - b d e + a e² ≠ 0`, from `d² P - (a d + (b d -
+a e) x²)(d + e x²) = (c d² - b d e + a e²) x⁴` and its analogues.
+`OSR/IntegrationRec115.lean` proves 1.1.1.3 #53 over ℝ and ℂ with `m, n > 0`
+and `f² ≠ 0`: `2 b d e = f (b c + a d)` gives `f² (a + b x)(c + d x) = b d (e +
+f x)² + (b e - a f)(d e - c f)`. Over ℝ only, `OSR/IntegrationRec114.lean`
+proves 3.4 #7 (`integration.power_log_binomial`) with `f (m + 1) ≠ 0` and
+`p, n ≠ 0`; at `n = 0` the residual integrand `x^(n-1) (f x)^(m+1)/(d + e xⁿ)`
+is undefined at `x = 0`.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.
@@ -880,8 +894,8 @@ condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 581 rules: 271 proved and 310 refuted over ℝ, 215
-proved (111 certified), 317 refuted and 49 unproved over ℂ.
+Integration now exports 587 rules: 277 proved and 310 refuted over ℝ, 220
+proved (111 certified), 317 refuted and 50 unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that
