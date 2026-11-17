@@ -24,6 +24,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Proofs of 4.1.12 #33 and #34, first distributed unproved
+  (`OSR/IntegrationRec68.lean`). The catalogue has 523 rules: 179 proved, 310
+  refuted and 34 unproved over ℝ; 171 proved (92 certified), 317 refuted and 35
+  unproved over ℂ.
 - Proofs of three variants with `tan` first distributed unproved, 4.7.9 #16,
   #27 and #30 (`OSR/IntegrationRec67.lean`). The catalogue has 523 rules: 177
   proved, 310 refuted and 36 unproved over ℝ; 169 proved (92 certified), 317
