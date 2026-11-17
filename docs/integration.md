@@ -665,7 +665,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 ### Strengthened variants checked numerically
 
-`OSR/IntegrationNum1.lean` distributes 15 more strengthened variants before
+`OSR/IntegrationNum1.lean` distributes 14 more strengthened variants before
 their proofs (Specification V1-R-005e): both domains are unproved, and a
 `numerical:` finding records the evidence. Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
@@ -781,6 +781,8 @@ from `d/dx (a xⁿ log (b x)) = xⁿ⁻¹ (a n log (b x) + a)`, and
 `(g x)^m (a + b log (c xⁿ))^p (d + e log (f xʳ))^q`, and
 `OSR/IntegrationRec79.lean` 3.5 #16 and #21, where `r = q - 1` and
 `d/dx (a xᵐ + b log (c xⁿ)^q) = a m xᵐ⁻¹ + b q n log (c xⁿ)^(q-1)/x`.
+`OSR/IntegrationRec80.lean` proves, over ℝ and ℂ, 1.2.3.1 #5, the reduction
+of `(a + b xⁿ + c x²ⁿ)^p` for `p < -1` (not certified over ℂ).
 
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
@@ -792,8 +794,8 @@ condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 523 rules: 198 proved, 310 refuted and 15 unproved
-(checked numerically) over ℝ, 171 proved (92 certified), 317 refuted and 35
+Integration now exports 523 rules: 199 proved, 310 refuted and 14 unproved
+(checked numerically) over ℝ, 172 proved (92 certified), 317 refuted and 34
 unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
