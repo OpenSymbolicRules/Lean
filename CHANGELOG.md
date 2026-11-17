@@ -24,6 +24,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Proof over ℝ only of 3.1.3 #1, first distributed unproved
+  (`OSR/IntegrationRec73.lean`). The catalogue has 523 rules: 188 proved, 310
+  refuted and 25 unproved over ℝ; 171 proved (92 certified), 317 refuted and 35
+  unproved over ℂ.
 - Proof over ℝ only of the variant of `log_power_over_linear_square`, first
   distributed unproved (`OSR/IntegrationRec72.lean`). The catalogue has 523
   rules: 187 proved, 310 refuted and 26 unproved over ℝ; 171 proved (92
