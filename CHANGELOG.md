@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Removed
+- 11 strengthened variants distributed unproved, refuted by a pole probe of the
+  numerical check (a residual integrand or the result undefined where the
+  integrand is defined), among them 1.1.3.3 #18 at `n = 1`, `p = 0`. The
+  `numerical:` findings now describe both passes.
+
 ### Changed
 - The Integration catalogue is split into parts of at most 100 entries
   (`catalogPart1` …), each with its own well-formedness theorem: the single
@@ -18,6 +24,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Proof of the strengthened variant of 1.1.3.4 #24, first distributed unproved
+  (`OSR/IntegrationRec50.lean`). The catalogue has 523 rules: 108 proved, 310
+  refuted and 105 unproved over ℝ; 100 proved (73 certified), 317 refuted and
+  106 unproved over ℂ.
 - Proofs of three variants first distributed unproved, 1.2.2.3 #7 and #8 and
   1.1.3.3 #15 (`OSR/IntegrationRec49.lean`); their entries move to the verified
   catalogue. The catalogue has 534 rules: 107 proved, 310 refuted and 117
