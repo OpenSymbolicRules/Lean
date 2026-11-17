@@ -1890,14 +1890,6 @@ def entries : List CEntry := [
       recFinding,
       condFinding "EqQ[Add[Multiply[c, Power[d, 2]], Multiply[a, Power[e, 2]]], 0]; NeQ[Add[m, Multiply[2, p], 2], 0]; NeQ[m, 2]",
       optionalFinding "e., f., g. and c."] },
-  { rule := logPowOverSqNondeg, ruleDecl := ``logPowOverSqNondeg, proofs := [],
-    unproved := [.real, .complex],
-    findings := [
-      "strengthened: the condition NeQ[d, 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.log_power_over_linear_square, which stays refuted.",
-      "numerical: checked over ℝ only, with no failure at 761 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise an integer between -3 and 3) and points where the integrand is defined, comparing a central difference of the result with the integrand, each residual integral replaced by a function whose derivative there is the residual integrand. In addition, the real zeros of every base raised to a negative or non-integer power in the residual integrands and the result were searched for, and the integrand is not defined around any of them. This is not a proof, and the complex domain is not checked.",
-      recFinding,
-      condFinding "GtQ[p, 0]",
-      optionalFinding "a., b., c., n., p. and e."] },
   { rule := linFourNondeg, ruleDecl := ``linFourNondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -2075,6 +2067,6 @@ theorem entries_wellFormed : ∀ e ∈ entries,
   intro e he
   simp only [entries, List.mem_cons, List.mem_nil_iff, or_false] at he
   rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 end OSR.IntegrationNum1

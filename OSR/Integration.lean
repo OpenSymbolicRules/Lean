@@ -1,6 +1,7 @@
 import OSR.Calculus
 import OSR.IntegrationRec48
 import OSR.IntegrationNum1
+import OSR.IntegrationRec72
 import OSR.IntegrationRec71
 import OSR.IntegrationRec70
 import OSR.IntegrationRec69
@@ -77,7 +78,7 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec41 OSR.IntegrationRec42
   OSR.IntegrationRec43 OSR.IntegrationRec44
   OSR.IntegrationRec45 OSR.IntegrationRec46
-  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationRec53 OSR.IntegrationRec54 OSR.IntegrationRec55 OSR.IntegrationRec56 OSR.IntegrationRec57 OSR.IntegrationRec58 OSR.IntegrationRec59 OSR.IntegrationRec60 OSR.IntegrationRec61 OSR.IntegrationRec62 OSR.IntegrationRec63 OSR.IntegrationRec64 OSR.IntegrationRec65 OSR.IntegrationRec66 OSR.IntegrationNum1 OSR.IntegrationRec67 OSR.IntegrationRec68 OSR.IntegrationRec69 OSR.IntegrationRec70 OSR.IntegrationRec71 OSR.IntegrationFindings Filter Topology
+  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationRec53 OSR.IntegrationRec54 OSR.IntegrationRec55 OSR.IntegrationRec56 OSR.IntegrationRec57 OSR.IntegrationRec58 OSR.IntegrationRec59 OSR.IntegrationRec60 OSR.IntegrationRec61 OSR.IntegrationRec62 OSR.IntegrationRec63 OSR.IntegrationRec64 OSR.IntegrationRec65 OSR.IntegrationRec66 OSR.IntegrationNum1 OSR.IntegrationRec67 OSR.IntegrationRec68 OSR.IntegrationRec69 OSR.IntegrationRec70 OSR.IntegrationRec71 OSR.IntegrationRec72 OSR.IntegrationFindings Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -4493,7 +4494,16 @@ def catalogPart5 : List CEntry := [
       "domain: proved over ℝ only, with the real logarithm, which is not differentiable on the complex branch cut; the complex domain is unproved.",
       recFinding,
       condFinding "EqQ[Add[m, Multiply[r, Add[q, 1]], 1], 0]; NeQ[m, -1]",
-      optionalFinding "f., m., e., r., a., b., c. and n."] }
+      optionalFinding "f., m., e., r., a., b., c. and n."] },
+  { rule := logPowOverSqNondeg, ruleDecl := ``logPowOverSqNondeg, 
+    proofs := [(.real, ``logPowOverSqNondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition NeQ[d, 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.log_power_over_linear_square, which stays refuted.",
+      "domain: proved over ℝ only, with the real logarithm, which is not differentiable on the complex branch cut; the complex domain is unproved.",
+      recFinding,
+      condFinding "GtQ[p, 0]",
+      optionalFinding "a., b., c., n., p. and e."] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -4508,7 +4518,7 @@ theorem catalogPart5_wellFormed : ∀ e ∈ catalogPart5,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=
