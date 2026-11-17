@@ -13,13 +13,13 @@ private def t : Expr := .var "t"
 -- The twenty rules of the syntactic inventory (FreeQ or NeQ conditions,
 -- registered heads, no Int in the result) are migrated or reported, plus
 -- 110 rules with residual integrals and seven unmigrated ones.
-#guard Integration.catalogVerified.length + Integration.notMigrated.length == 591
+#guard Integration.catalogVerified.length + Integration.notMigrated.length == 606
 #guard Integration.notMigrated.length == 41
-#guard (Integration.catalogVerified.filter (·.rule.shape == .antiderivRec)).length == 450
-#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 517
+#guard (Integration.catalogVerified.filter (·.rule.shape == .antiderivRec)).length == 465
+#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 532
 -- RUBI rules with EqQ conditions are stated with relation1#eq (Cond.eq).
 #guard (Integration.catalogVerified.filter fun e =>
-  e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 266
+  e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 277
 
 -- RUBI 4.16.1: the new degenerate-coefficient cases are refuted in both
 -- domains, with no proof or unresolved domain accidentally attached.
@@ -108,7 +108,15 @@ private def strengthenedIds : List String := [
   "integration.linear_times_quadratic_power_nondegenerate", "integration.linear_sin_trinomial_nondegenerate",
   "integration.linear_cos_trinomial_nondegenerate", "integration.sin_trinomial_square_nondegenerate",
   "integration.cos_trinomial_square_nondegenerate",
-  "integration.rubi_1_1_3_3_r18_nondegenerate"]
+  "integration.rubi_1_1_3_3_r18_nondegenerate",
+  "integration.rubi_1_2_1_2_r5_nondegenerate", "integration.rubi_1_2_3_3_r50_nondegenerate",
+  "integration.rubi_4_1_12_r45_nondegenerate", "integration.rubi_4_1_12_r46_nondegenerate",
+  "integration.rubi_4_1_12_r53_nondegenerate", "integration.rubi_4_1_12_r54_nondegenerate",
+  "integration.rubi_1_2_1_2_r40_nondegenerate", "integration.rubi_1_2_1_2_r46_nondegenerate",
+  "integration.rubi_1_2_1_2_r96_nondegenerate", "integration.rubi_1_2_3_3_r27_nondegenerate",
+  "integration.rubi_1_2_3_4_r40_nondegenerate", "integration.rubi_1_2_3_4_r34_nondegenerate",
+  "integration.rubi_1_2_3_4_r38_nondegenerate", "integration.rubi_1_2_3_2_r10_nondegenerate",
+  "integration.rubi_1_2_3_2_r18_nondegenerate"]
 
 #guard strengthenedIds.all fun id =>
   match Integration.catalogVerified.find? (·.rule.id == id) with
@@ -351,7 +359,15 @@ private def rules : List CRule :=
   "integration.rubi_1_1_3_3_r18_nondegenerate", "integration.linear_power_log_linear_nondegenerate",
   "integration.power_log_ratio_nondegenerate", "integration.rubi_3_5_r23_nondegenerate",
   "integration.rubi_3_2_1_r2_nondegenerate", "integration.log_product_power_nondegenerate",
-  "integration.power_log_product_nondegenerate", "integration.power_log_product_power_nondegenerate"]
+  "integration.power_log_product_nondegenerate", "integration.power_log_product_power_nondegenerate",
+  "integration.rubi_1_2_1_2_r5_nondegenerate", "integration.rubi_1_2_3_3_r50_nondegenerate",
+  "integration.rubi_4_1_12_r45_nondegenerate", "integration.rubi_4_1_12_r46_nondegenerate",
+  "integration.rubi_4_1_12_r53_nondegenerate", "integration.rubi_4_1_12_r54_nondegenerate",
+  "integration.rubi_1_2_1_2_r40_nondegenerate", "integration.rubi_1_2_1_2_r46_nondegenerate",
+  "integration.rubi_1_2_1_2_r96_nondegenerate", "integration.rubi_1_2_3_3_r27_nondegenerate",
+  "integration.rubi_1_2_3_4_r40_nondegenerate", "integration.rubi_1_2_3_4_r34_nondegenerate",
+  "integration.rubi_1_2_3_4_r38_nondegenerate", "integration.rubi_1_2_3_2_r10_nondegenerate",
+  "integration.rubi_1_2_3_2_r18_nondegenerate"]
 
 -- A conditional rule applies only when its conditions are decided: int(λt. t^m)
 -- stays (m ≠ -1 is undecided), int(λt. t^(-1)) stays (decided false),

@@ -1,6 +1,12 @@
 import OSR.Calculus
 import OSR.IntegrationRec48
 import OSR.IntegrationNum1
+import OSR.IntegrationRec104
+import OSR.IntegrationRec103
+import OSR.IntegrationRec102
+import OSR.IntegrationRec101
+import OSR.IntegrationRec100
+import OSR.IntegrationRec99
 import OSR.IntegrationRec98
 import OSR.IntegrationRec97
 import OSR.IntegrationRec96
@@ -104,7 +110,7 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec41 OSR.IntegrationRec42
   OSR.IntegrationRec43 OSR.IntegrationRec44
   OSR.IntegrationRec45 OSR.IntegrationRec46
-  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationRec53 OSR.IntegrationRec54 OSR.IntegrationRec55 OSR.IntegrationRec56 OSR.IntegrationRec57 OSR.IntegrationRec58 OSR.IntegrationRec59 OSR.IntegrationRec60 OSR.IntegrationRec61 OSR.IntegrationRec62 OSR.IntegrationRec63 OSR.IntegrationRec64 OSR.IntegrationRec65 OSR.IntegrationRec66 OSR.IntegrationNum1 OSR.IntegrationRec67 OSR.IntegrationRec68 OSR.IntegrationRec69 OSR.IntegrationRec70 OSR.IntegrationRec71 OSR.IntegrationRec72 OSR.IntegrationRec73 OSR.IntegrationRec74 OSR.IntegrationRec75 OSR.IntegrationRec76 OSR.IntegrationRec77 OSR.IntegrationRec78 OSR.IntegrationRec79 OSR.IntegrationRec80 OSR.IntegrationRec81 OSR.IntegrationRec82 OSR.IntegrationRec83 OSR.IntegrationNum1 OSR.IntegrationRec84 OSR.IntegrationRec85 OSR.IntegrationRec86 OSR.IntegrationRec87 OSR.IntegrationRec88 OSR.IntegrationRec89 OSR.IntegrationRec90 OSR.IntegrationRec91 OSR.IntegrationRec92 OSR.IntegrationRec93 OSR.IntegrationRec94 OSR.IntegrationRec95 OSR.IntegrationRec96 OSR.IntegrationRec97 OSR.IntegrationRec98 OSR.IntegrationFindings Filter Topology
+  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationRec53 OSR.IntegrationRec54 OSR.IntegrationRec55 OSR.IntegrationRec56 OSR.IntegrationRec57 OSR.IntegrationRec58 OSR.IntegrationRec59 OSR.IntegrationRec60 OSR.IntegrationRec61 OSR.IntegrationRec62 OSR.IntegrationRec63 OSR.IntegrationRec64 OSR.IntegrationRec65 OSR.IntegrationRec66 OSR.IntegrationNum1 OSR.IntegrationRec67 OSR.IntegrationRec68 OSR.IntegrationRec69 OSR.IntegrationRec70 OSR.IntegrationRec71 OSR.IntegrationRec72 OSR.IntegrationRec73 OSR.IntegrationRec74 OSR.IntegrationRec75 OSR.IntegrationRec76 OSR.IntegrationRec77 OSR.IntegrationRec78 OSR.IntegrationRec79 OSR.IntegrationRec80 OSR.IntegrationRec81 OSR.IntegrationRec82 OSR.IntegrationRec83 OSR.IntegrationNum1 OSR.IntegrationRec84 OSR.IntegrationRec85 OSR.IntegrationRec86 OSR.IntegrationRec87 OSR.IntegrationRec88 OSR.IntegrationRec89 OSR.IntegrationRec90 OSR.IntegrationRec91 OSR.IntegrationRec92 OSR.IntegrationRec93 OSR.IntegrationRec94 OSR.IntegrationRec95 OSR.IntegrationRec96 OSR.IntegrationRec97 OSR.IntegrationRec98 OSR.IntegrationRec99 OSR.IntegrationRec100 OSR.IntegrationRec101 OSR.IntegrationRec102 OSR.IntegrationRec103 OSR.IntegrationRec104 OSR.IntegrationFindings Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -4986,7 +4992,127 @@ def catalogPart6 : List CEntry := [
       "domain: proved over ℝ only, with the real logarithm, which is not differentiable on the complex branch cut; the complex domain is unproved.",
       recFinding,
       condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; IGtQ[s, 0]; NeQ[m, -1]",
-      optionalFinding "g., h., m., e., f., a., b., p., c., d., q. and r."] }
+      optionalFinding "g., h., m., e., f., a., b., p., c., d., q. and r."] },
+  { rule := rubi1212r5Nondeg, ruleDecl := ``rubi1212r5Nondeg,
+    proofs := [(.real, ``rubi1212r5Nondeg_real), (.complex, ``rubi1212r5Nondeg_complex)],
+    findings := [
+      "strengthened: the conditions NeQ[d, 0]; NeQ[e, 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_2_r5, which stays refuted.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[2, c, d], Multiply[-1, b, e]], 0]; IGtQ[p, 0]; EqQ[Add[Multiply[c, Power[d, 2]], Multiply[-1, b, d, e], Multiply[a, Power[e, 2]]], 0]",
+      optionalFinding "e., a., b., c. and p."] },
+  { rule := rubi1233r50Nondeg, ruleDecl := ``rubi1233r50Nondeg,
+    proofs := [(.real, ``rubi1233r50Nondeg_real), (.complex, ``rubi1233r50Nondeg_complex)],
+    findings := [
+      "strengthened: the conditions NeQ[d, 0]; NeQ[e, 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_3_3_r50, which stays refuted.",
+      "independence: n2, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; EqQ[Add[Multiply[c, Power[d, 2]], Multiply[-1, b, d, e], Multiply[a, Power[e, 2]]], 0]; IntegerQ[p]",
+      optionalFinding "e., q., g., r., b., c. and p."] },
+  { rule := rubi4112r45Nondeg, ruleDecl := ``rubi4112r45Nondeg,
+    proofs := [(.real, ``rubi4112r45Nondeg_real), (.complex, ``rubi4112r45Nondeg_complex)],
+    findings := [
+      "strengthened: the conditions NeQ[Multiply[Power[b, 2], Power[n, 2], Power[p, 2]], 0]; NeQ[Multiply[b, n, p], 0]; NeQ[p, 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_1_12_r45, which stays refuted.",
+      "independence: m, n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "GtQ[p, 1]; IGtQ[n, 0]; IGtQ[m, Add[Multiply[2, n], Multiply[-1, 1]]]",
+      optionalFinding "m., a. and b."] },
+  { rule := rubi4112r46Nondeg, ruleDecl := ``rubi4112r46Nondeg,
+    proofs := [(.real, ``rubi4112r46Nondeg_real), (.complex, ``rubi4112r46Nondeg_complex)],
+    findings := [
+      "strengthened: the conditions NeQ[Multiply[Power[b, 2], Power[n, 2], Power[p, 2]], 0]; NeQ[Multiply[b, n, p], 0]; NeQ[p, 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_1_12_r46, which stays refuted.",
+      "independence: m, n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "GtQ[p, 1]; IGtQ[n, 0]; IGtQ[m, Add[Multiply[2, n], Multiply[-1, 1]]]",
+      optionalFinding "m., a. and b."] },
+  { rule := rubi4112r53Nondeg, ruleDecl := ``rubi4112r53Nondeg,
+    proofs := [(.real, ``rubi4112r53Nondeg_real), (.complex, ``rubi4112r53Nondeg_complex)],
+    findings := [
+      "strengthened: the conditions NeQ[Multiply[b, n, Add[p, 1]], 0]; NeQ[Multiply[Power[b, 2], Power[n, 2], Add[p, 1], Add[p, 2]], 0]; NeQ[Add[p, 1], 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_1_12_r53, which stays refuted.",
+      "independence: m, n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "LtQ[p, -1]; NeQ[p, -2]; IGtQ[n, 0]; IGtQ[m, Add[Multiply[2, n], Multiply[-1, 1]]]",
+      optionalFinding "m., a. and b."] },
+  { rule := rubi4112r54Nondeg, ruleDecl := ``rubi4112r54Nondeg,
+    proofs := [(.real, ``rubi4112r54Nondeg_real), (.complex, ``rubi4112r54Nondeg_complex)],
+    findings := [
+      "strengthened: the conditions NeQ[Multiply[b, n, Add[p, 1]], 0]; NeQ[Multiply[Power[b, 2], Power[n, 2], Add[p, 1], Add[p, 2]], 0]; NeQ[Add[p, 1], 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_1_12_r54, which stays refuted.",
+      "independence: m, n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "LtQ[p, -1]; NeQ[p, -2]; IGtQ[n, 0]; IGtQ[m, Add[Multiply[2, n], Multiply[-1, 1]]]",
+      optionalFinding "m., a. and b."] },
+  { rule := rubi1212r40Nondeg, ruleDecl := ``rubi1212r40Nondeg,
+    proofs := [(.real, ``rubi1212r40Nondeg_real), (.complex, ``rubi1212r40Nondeg_complex)],
+    findings := [
+      "strengthened: the conditions NeQ[Multiply[2, a, e, Add[p, 1]], 0]; NeQ[Multiply[2, a, Add[p, 1]], 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_2_r40, which stays refuted.",
+      "independence: m, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[c, Power[d, 2]], Multiply[a, Power[e, 2]]], 0]; LtQ[p, -1]; LtQ[0, m, 1]; IntegerQ[Multiply[2, p]]",
+      optionalFinding "e. and c."] },
+  { rule := rubi1212r46Nondeg, ruleDecl := ``rubi1212r46Nondeg,
+    proofs := [(.real, ``rubi1212r46Nondeg_real), (.complex, ``rubi1212r46Nondeg_complex)],
+    findings := [
+      "strengthened: the conditions NeQ[Multiply[2, c, d, Add[m, p, 1]], 0]; NeQ[Multiply[2, d, Add[m, p, 1]], 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_2_r46, which stays refuted.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[c, Power[d, 2]], Multiply[a, Power[e, 2]]], 0]; LtQ[m, 0]; NeQ[Add[m, p, 1], 0]; IntegerQ[Multiply[2, p]]",
+      optionalFinding "e. and c."] },
+  { rule := rubi1212r96Nondeg, ruleDecl := ``rubi1212r96Nondeg,
+    proofs := [(.real, ``rubi1212r96Nondeg_real), (.complex, ``rubi1212r96Nondeg_complex)],
+    findings := [
+      "strengthened: the condition NeQ[Multiply[2, a, c, Add[p, 1]], 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_2_r96, which stays refuted.",
+      "independence: m, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[c, Power[d, 2]], Multiply[a, Power[e, 2]]], 0]; EqQ[Add[m, Multiply[2, p], 2], 0]; LtQ[p, -1]",
+      optionalFinding "e. and c."] },
+  { rule := rubi1233r27Nondeg, ruleDecl := ``rubi1233r27Nondeg,
+    proofs := [(.real, ``rubi1233r27Nondeg_real), (.complex, ``rubi1233r27Nondeg_complex)],
+    findings := [
+      "strengthened: the condition NeQ[Multiply[2, a, n, Add[p, 1]], 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_3_3_r27, which stays refuted.",
+      "independence: n2, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; ILtQ[p, -1]",
+      optionalFinding "e. and c."] },
+  { rule := rubi1234r40Nondeg, ruleDecl := ``rubi1234r40Nondeg,
+    proofs := [(.real, ``rubi1234r40Nondeg_real), (.complex, ``rubi1234r40Nondeg_complex)],
+    findings := [
+      "strengthened: the conditions NeQ[Multiply[a, f, Add[m, 1]], 0]; NeQ[Multiply[a, Power[f, n], Add[m, 1]], 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_3_4_r40, which stays refuted.",
+      "independence: m, n, n2 are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; IGtQ[n, 0]; LtQ[m, -1]; IntegerQ[p]",
+      optionalFinding "f., m., e. and c."] },
+  { rule := rubi1234r34Nondeg, ruleDecl := ``rubi1234r34Nondeg,
+    proofs := [(.real, ``rubi1234r34Nondeg_real), (.complex, ``rubi1234r34Nondeg_complex)],
+    findings := [
+      "strengthened: the condition NeQ[Multiply[2, a, c, n, Add[p, 1]], 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_3_4_r34, which stays refuted.",
+      "independence: m, n, n2, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; IGtQ[n, 0]; LtQ[p, -1]; GtQ[m, Add[n, Multiply[-1, 1]]]; IntegerQ[p]",
+      optionalFinding "f., m., e., c. and p."] },
+  { rule := rubi1234r38Nondeg, ruleDecl := ``rubi1234r38Nondeg,
+    proofs := [(.real, ``rubi1234r38Nondeg_real), (.complex, ``rubi1234r38Nondeg_complex)],
+    findings := [
+      "strengthened: the condition NeQ[Multiply[c, Add[m, Multiply[n, Add[Multiply[2, p], 1]], 1]], 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_3_4_r38, which stays refuted.",
+      "independence: m, n, n2 are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; IGtQ[n, 0]; GtQ[m, Add[n, Multiply[-1, 1]]]; NeQ[Add[m, Multiply[n, Add[Multiply[2, p], 1]], 1], 0]; IntegerQ[p]",
+      optionalFinding "f., m., e. and c."] },
+  { rule := rubi1232r10Nondeg, ruleDecl := ``rubi1232r10Nondeg,
+    proofs := [(.real, ``rubi1232r10Nondeg_real), (.complex, ``rubi1232r10Nondeg_complex)],
+    findings := [
+      "strengthened: the condition NeQ[Multiply[d, Add[m, Multiply[2, n, p], 1]], 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_3_2_r10, which stays refuted.",
+      "independence: n, n2, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; IGtQ[n, 0]; IGtQ[p, 0]; NeQ[Add[m, Multiply[2, n, p], 1], 0]",
+      optionalFinding "d., m., b., c. and n2."] },
+  { rule := rubi1232r18Nondeg, ruleDecl := ``rubi1232r18Nondeg,
+    proofs := [(.real, ``rubi1232r18Nondeg_real), (.complex, ``rubi1232r18Nondeg_complex)],
+    findings := [
+      "strengthened: the conditions NeQ[Multiply[c, Add[m, Multiply[-1, 2, n], 1]], 0]; NeQ[c, 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_3_2_r18, which stays refuted.",
+      "independence: m, n, n2 are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; IGtQ[n, 0]; GtQ[m, Add[Multiply[2, n], Multiply[-1, 1]]]",
+      optionalFinding "d., b., c. and n2."] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -4996,6 +5122,7 @@ theorem catalogPart6_wellFormed : ∀ e ∈ catalogPart6,
   intro e he
   simp only [catalogPart6, List.mem_cons, List.mem_nil_iff, or_false] at he
   rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide

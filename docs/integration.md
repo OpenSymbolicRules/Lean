@@ -839,6 +839,19 @@ r (p b/(a + b x) + q d/(c + d x))`). The last three, 4.1.11 #3 and #4 and
 4.7.9 #79, fail at a point rather than for a parameter value (`x = 0`, a zero
 of `cos (a x)`) and are not included.
 
+Twenty-five candidates had been sampled at fewer than 50 points, most because
+an `EqQ` condition is rarely met by random values. Sampling again with each
+equality solved for one of its coefficients (exponents kept integral), 23 pass
+both numerical passes, two of them only with one more nonzero exponent
+(3.1.4 #22 with `n ≠ 0`, 3.2.3 #8 with `p, q, r ≠ 0`). Over ℝ and ℂ:
+`OSR/IntegrationRec99.lean` proves 1.2.1.2 #5 and 1.2.3.3 #50 (with `d ≠ 0` and
+`e ≠ 0`, the trinomial factors as `(d + e y)(a/d + c y/e)`);
+`OSR/IntegrationRec100.lean` 4.1.12 #45, #46, #53 and #54, whose powers of `x`
+all have nonnegative exponents; `OSR/IntegrationRec101.lean` 1.2.1.2 #40, #46
+and #96 (for #40 and #46, `c d² + a e² = 0` eliminates `a`);
+`OSR/IntegrationRec102.lean` 1.2.3.3 #27; `OSR/IntegrationRec103.lean` 1.2.3.4
+#34, #38 and #40; and `OSR/IntegrationRec104.lean` 1.2.3.2 #10 and #18.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.
@@ -849,8 +862,8 @@ condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 550 rules: 240 proved and 310 refuted over ℝ, 195
-proved (109 certified), 317 refuted and 38 unproved over ℂ.
+Integration now exports 565 rules: 255 proved and 310 refuted over ℝ, 210
+proved (110 certified), 317 refuted and 38 unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that

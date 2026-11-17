@@ -176,6 +176,12 @@ OSR/IntegrationRec95.lean variants of refuted named rules, with their proofs ove
 OSR/IntegrationRec96.lean variant corrected after the pole probe, with its proof (1)
 OSR/IntegrationRec97.lean variants corrected after the pole probe, with their proofs over ℝ (3)
 OSR/IntegrationRec98.lean variants corrected after the pole probe, with their proofs over ℝ (4)
+OSR/IntegrationRec99.lean variants sampled with their equality conditions solved, with their proofs (2)
+OSR/IntegrationRec100.lean variants sampled with their equality conditions solved, with their proofs (4)
+OSR/IntegrationRec101.lean variants sampled with their equality conditions solved, with their proofs (3)
+OSR/IntegrationRec102.lean variants sampled with their equality conditions solved, with their proofs (1)
+OSR/IntegrationRec103.lean variants sampled with their equality conditions solved, with their proofs (3)
+OSR/IntegrationRec104.lean variants sampled with their equality conditions solved, with their proofs (2)
 OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (523)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),

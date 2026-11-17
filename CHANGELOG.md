@@ -29,6 +29,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Fifteen strengthened variants whose candidates had been sampled too rarely
+  (an `EqQ` condition), sampled again with the equalities solved and proved
+  over ℝ and ℂ: 1.2.1.2 #5, #40, #46 and #96, 1.2.3.2 #10 and #18, 1.2.3.3 #27
+  and #50, 1.2.3.4 #34, #38 and #40, and 4.1.12 #45, #46, #53 and #54
+  (`OSR/IntegrationRec99.lean` to `IntegrationRec104`). The catalogue has 565
+  rules: 255 proved and 310 refuted over ℝ; 210 proved (110 certified), 317
+  refuted and 38 unproved over ℂ.
 - Eight strengthened variants that the pole probe had refuted, corrected with
   one more nonzero exponent and proved: 1.1.3.3 #18 (`p ≠ 0`) over ℝ and ℂ
   (`OSR/IntegrationRec96.lean`); 3.3 #7, 3.2.1 #13 and 3.5 #23 (`n ≠ 0`,
