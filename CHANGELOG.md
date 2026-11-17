@@ -29,6 +29,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Eight strengthened variants that the pole probe had refuted, corrected with
+  one more nonzero exponent and proved: 1.1.3.3 #18 (`p ≠ 0`) over ℝ and ℂ
+  (`OSR/IntegrationRec96.lean`); 3.3 #7, 3.2.1 #13 and 3.5 #23 (`n ≠ 0`,
+  `IntegrationRec97`), 3.2.1 #2 (`n ≠ 0`) and 3.2.3 #2, #4 and #7
+  (`p, q, r ≠ 0`, `IntegrationRec98`) over ℝ only. The catalogue has 550
+  rules: 240 proved and 310 refuted over ℝ; 195 proved (109 certified), 317
+  refuted and 38 unproved over ℂ.
 - Strengthened variants of nineteen refuted named rules, which the triage of
   variants had skipped, proved directly: 1.1.1.3 #8, 1.1.1.4 #17, 1.1.3.3 #14,
   1.1.3.5 #2 and #10, 1.2.1.2 #13 and #14, 1.2.1.3 #11 and #12, and 4.1.13 #3,

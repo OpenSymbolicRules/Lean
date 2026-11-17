@@ -824,8 +824,20 @@ one); `OSR/IntegrationRec93.lean` 1.1.1.3 #8, 1.1.3.3 #14 (with `a ≠ 0`, for
 (with `4 c ≠ 0`: `a + b x + c x² = (b + 2 c x)²/(4 c) - (b² - 4 a c)/(4 c)`,
 then the subtraction formulas). Over ℝ only, with the real logarithm,
 `OSR/IntegrationRec95.lean` proves 3.1.2 #1 and #4, 4.7.8 #11 and #12, and
-4.7.8 #45 and #46. The eleven other candidates left by the adversarial
-sampling fail the pole probe and are not included.
+4.7.8 #45 and #46.
+
+Eleven other candidates left by the adversarial sampling fail the pole probe.
+Eight of them fail only at a vanishing exponent, where the integrand no
+longer vanishes or blows up at the pole of a residual integrand: with the
+exponent nonzero as well they pass both numerical passes and are proved.
+`OSR/IntegrationRec96.lean` proves 1.1.3.3 #18 with `p ≠ 0` over ℝ and ℂ (the
+conditions then force `n = -1`, `p = 2`); over ℝ only, with the real logarithm,
+`OSR/IntegrationRec97.lean` proves 3.3 #7, 3.2.1 #13 and 3.5 #23 with `n ≠ 0`,
+and `OSR/IntegrationRec98.lean` 3.2.1 #2 with `n ≠ 0` and 3.2.3 #2, #4 and #7
+with `p, q, r ≠ 0` (from `d/dx log (e (f (a + b x)^p (c + d x)^q)^r) =
+r (p b/(a + b x) + q d/(c + d x))`). The last three, 4.1.11 #3 and #4 and
+4.7.9 #79, fail at a point rather than for a parameter value (`x = 0`, a zero
+of `cos (a x)`) and are not included.
 
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
@@ -837,8 +849,8 @@ condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 542 rules: 232 proved and 310 refuted over ℝ, 194
-proved (108 certified), 317 refuted and 31 unproved over ℂ.
+Integration now exports 550 rules: 240 proved and 310 refuted over ℝ, 195
+proved (109 certified), 317 refuted and 38 unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that

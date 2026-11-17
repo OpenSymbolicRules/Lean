@@ -173,6 +173,9 @@ OSR/IntegrationRec92.lean variants of refuted named rules, with their proofs (5)
 OSR/IntegrationRec93.lean variants of refuted named rules, with their proofs (4)
 OSR/IntegrationRec94.lean variants of refuted named rules, with their proofs (4)
 OSR/IntegrationRec95.lean variants of refuted named rules, with their proofs over ℝ (6)
+OSR/IntegrationRec96.lean variant corrected after the pole probe, with its proof (1)
+OSR/IntegrationRec97.lean variants corrected after the pole probe, with their proofs over ℝ (3)
+OSR/IntegrationRec98.lean variants corrected after the pole probe, with their proofs over ℝ (4)
 OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (523)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
