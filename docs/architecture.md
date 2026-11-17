@@ -182,6 +182,11 @@ OSR/IntegrationRec101.lean variants sampled with their equality conditions solve
 OSR/IntegrationRec102.lean variants sampled with their equality conditions solved, with their proofs (1)
 OSR/IntegrationRec103.lean variants sampled with their equality conditions solved, with their proofs (3)
 OSR/IntegrationRec104.lean variants sampled with their equality conditions solved, with their proofs (2)
+OSR/IntegrationRec105.lean variants sampled with their equality conditions solved, with their proofs (2)
+OSR/IntegrationRec106.lean variants sampled with their equality conditions solved, with their proofs over ℝ (3)
+OSR/IntegrationRec107.lean variant sampled with its equality condition solved, with its proof over ℝ (1)
+OSR/IntegrationRec108.lean variant sampled with its equality condition solved, with its proof (1)
+OSR/IntegrationRec109.lean variant sampled with its equality condition solved, with its proof (1)
 OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (523)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),

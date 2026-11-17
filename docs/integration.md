@@ -850,7 +850,15 @@ both numerical passes, two of them only with one more nonzero exponent
 all have nonnegative exponents; `OSR/IntegrationRec101.lean` 1.2.1.2 #40, #46
 and #96 (for #40 and #46, `c d² + a e² = 0` eliminates `a`);
 `OSR/IntegrationRec102.lean` 1.2.3.3 #27; `OSR/IntegrationRec103.lean` 1.2.3.4
-#34, #38 and #40; and `OSR/IntegrationRec104.lean` 1.2.3.2 #10 and #18.
+#34, #38 and #40; `OSR/IntegrationRec104.lean` 1.2.3.2 #10 and #18;
+`OSR/IntegrationRec105.lean` 1.2.3.4 #61 and #64, splits into two residual
+integrals; `OSR/IntegrationRec108.lean` 1.2.1.3 #26 (the conditions force
+`e ≠ 0`, and `e² (a + b x + c x²) = (d + e x)(c e x - c d + b e)`); and
+`OSR/IntegrationRec109.lean` 1.1.3.3 #5, where `n (p + q + 1) + 1 = 0` closes
+the identity. Over ℝ only, with the real logarithm,
+`OSR/IntegrationRec106.lean` proves 3.1.4 #10 and #22 and 3.3 #12, and
+`OSR/IntegrationRec107.lean` 3.2.3 #8 (`h j = g k` makes
+`1/(j + k x) = h/(k (g + h x))`).
 
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
@@ -862,8 +870,8 @@ condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 565 rules: 255 proved and 310 refuted over ℝ, 210
-proved (110 certified), 317 refuted and 38 unproved over ℂ.
+Integration now exports 573 rules: 263 proved and 310 refuted over ℝ, 214
+proved (110 certified), 317 refuted and 42 unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that
