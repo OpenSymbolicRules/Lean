@@ -29,6 +29,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Strengthened variants of nineteen refuted named rules, which the triage of
+  variants had skipped, proved directly: 1.1.1.3 #8, 1.1.1.4 #17, 1.1.3.3 #14,
+  1.1.3.5 #2 and #10, 1.2.1.2 #13 and #14, 1.2.1.3 #11 and #12, and 4.1.13 #3,
+  #4, #17 and #18 over ℝ and ℂ (`OSR/IntegrationRec92.lean` to
+  `IntegrationRec94`); 3.1.2 #1 and #4 and 4.7.8 #11, #12, #45 and #46 over ℝ
+  only (`IntegrationRec95`). The catalogue has 542 rules: 232 proved and 310
+  refuted over ℝ; 194 proved (108 certified), 317 refuted and 31 unproved
+  over ℂ.
 - Proofs of the last twelve strengthened variants distributed unproved:
   4.1.12 #43 and #44, 1.1.1.4 #3 and #6, 1.2.1.3 #33, 1.1.3.3 #16 and
   1.1.3.4 #25 over ℝ and ℂ (`OSR/IntegrationRec82.lean`, `IntegrationRec87` to

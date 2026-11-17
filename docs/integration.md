@@ -809,6 +809,24 @@ with the factor `(d + e x)⁻¹`, is not. It now appends `n ≠ 0` as well, whic
 the pole probe missed because the base `d + e x` has no negative power in the
 integrand.
 
+### Strengthened variants of the first named rules
+
+The first migrated rules carry names (`integration.power_log_linear`, …)
+rather than RUBI numbers, and the triage of variants had skipped them. Nineteen
+of them, refuted as stated, pass both numerical passes with their
+non-degeneracy conditions and are now proved directly. Over ℝ and ℂ:
+`OSR/IntegrationRec92.lean` proves 1.1.1.4 #17, 1.1.3.5 #10 and #2, and
+1.2.1.3 #11 and #12 (with `b ≠ 0`, `d ≠ 0`, `b c - a d ≠ 0` and `c ≠ 0`: the
+result is a linear combination of residual integrals, or a polynomial plus
+one); `OSR/IntegrationRec93.lean` 1.1.1.3 #8, 1.1.3.3 #14 (with `a ≠ 0`, for
+`n < 0`, where `b + a x⁻ⁿ = x⁻ⁿ (a + b xⁿ)`) and 1.2.1.2 #13 and #14; and
+`OSR/IntegrationRec94.lean` 4.1.13 #17 and #18 (with `2 c ≠ 0`) and #3 and #4
+(with `4 c ≠ 0`: `a + b x + c x² = (b + 2 c x)²/(4 c) - (b² - 4 a c)/(4 c)`,
+then the subtraction formulas). Over ℝ only, with the real logarithm,
+`OSR/IntegrationRec95.lean` proves 3.1.2 #1 and #4, 4.7.8 #11 and #12, and
+4.7.8 #45 and #46. The eleven other candidates left by the adversarial
+sampling fail the pole probe and are not included.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.
@@ -819,8 +837,8 @@ condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 523 rules: 213 proved and 310 refuted over ℝ, 181
-proved (96 certified), 317 refuted and 25 unproved over ℂ.
+Integration now exports 542 rules: 232 proved and 310 refuted over ℝ, 194
+proved (108 certified), 317 refuted and 31 unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that

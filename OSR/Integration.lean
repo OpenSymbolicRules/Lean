@@ -1,6 +1,10 @@
 import OSR.Calculus
 import OSR.IntegrationRec48
 import OSR.IntegrationNum1
+import OSR.IntegrationRec95
+import OSR.IntegrationRec94
+import OSR.IntegrationRec93
+import OSR.IntegrationRec92
 import OSR.IntegrationRec91
 import OSR.IntegrationRec90
 import OSR.IntegrationRec89
@@ -97,7 +101,7 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec41 OSR.IntegrationRec42
   OSR.IntegrationRec43 OSR.IntegrationRec44
   OSR.IntegrationRec45 OSR.IntegrationRec46
-  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationRec53 OSR.IntegrationRec54 OSR.IntegrationRec55 OSR.IntegrationRec56 OSR.IntegrationRec57 OSR.IntegrationRec58 OSR.IntegrationRec59 OSR.IntegrationRec60 OSR.IntegrationRec61 OSR.IntegrationRec62 OSR.IntegrationRec63 OSR.IntegrationRec64 OSR.IntegrationRec65 OSR.IntegrationRec66 OSR.IntegrationNum1 OSR.IntegrationRec67 OSR.IntegrationRec68 OSR.IntegrationRec69 OSR.IntegrationRec70 OSR.IntegrationRec71 OSR.IntegrationRec72 OSR.IntegrationRec73 OSR.IntegrationRec74 OSR.IntegrationRec75 OSR.IntegrationRec76 OSR.IntegrationRec77 OSR.IntegrationRec78 OSR.IntegrationRec79 OSR.IntegrationRec80 OSR.IntegrationRec81 OSR.IntegrationRec82 OSR.IntegrationRec83 OSR.IntegrationNum1 OSR.IntegrationRec84 OSR.IntegrationRec85 OSR.IntegrationRec86 OSR.IntegrationRec87 OSR.IntegrationRec88 OSR.IntegrationRec89 OSR.IntegrationRec90 OSR.IntegrationRec91 OSR.IntegrationFindings Filter Topology
+  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationRec53 OSR.IntegrationRec54 OSR.IntegrationRec55 OSR.IntegrationRec56 OSR.IntegrationRec57 OSR.IntegrationRec58 OSR.IntegrationRec59 OSR.IntegrationRec60 OSR.IntegrationRec61 OSR.IntegrationRec62 OSR.IntegrationRec63 OSR.IntegrationRec64 OSR.IntegrationRec65 OSR.IntegrationRec66 OSR.IntegrationNum1 OSR.IntegrationRec67 OSR.IntegrationRec68 OSR.IntegrationRec69 OSR.IntegrationRec70 OSR.IntegrationRec71 OSR.IntegrationRec72 OSR.IntegrationRec73 OSR.IntegrationRec74 OSR.IntegrationRec75 OSR.IntegrationRec76 OSR.IntegrationRec77 OSR.IntegrationRec78 OSR.IntegrationRec79 OSR.IntegrationRec80 OSR.IntegrationRec81 OSR.IntegrationRec82 OSR.IntegrationRec83 OSR.IntegrationNum1 OSR.IntegrationRec84 OSR.IntegrationRec85 OSR.IntegrationRec86 OSR.IntegrationRec87 OSR.IntegrationRec88 OSR.IntegrationRec89 OSR.IntegrationRec90 OSR.IntegrationRec91 OSR.IntegrationRec92 OSR.IntegrationRec93 OSR.IntegrationRec94 OSR.IntegrationRec95 OSR.IntegrationFindings Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -4772,7 +4776,142 @@ def catalogPart6 : List CEntry := [
       "independence: non2 is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
       recFinding,
       condFinding "EqQ[non2, Multiply[n, Power[2, -1]]]; EqQ[Add[Multiply[a2, b1], Multiply[a1, b2]], 0]; NeQ[Add[m, Multiply[n, Add[p, 1]], 1], 0]",
-      optionalFinding "e., m., b1., non2., p., b2. and d."] }
+      optionalFinding "e., m., b1., non2., p., b2. and d."] },
+  { rule := linOverLinNondeg, ruleDecl := ``linOverLinNondeg,
+    proofs := [(.real, ``linOverLinNondeg_real), (.complex, ``linOverLinNondeg_complex)],
+    findings := [
+      "strengthened: the condition NeQ[b, 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.linear_factor_over_linear, which stays refuted.",
+      recFinding,
+      optionalFinding "c., d., e., f., g., h., a. and b."] },
+  { rule := powerRatioNondeg, ruleDecl := ``powerRatioNondeg,
+    proofs := [(.real, ``powerRatioNondeg_real), (.complex, ``powerRatioNondeg_complex)],
+    findings := [
+      "strengthened: the condition NeQ[d, 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.power_ratio_split, which stays refuted.",
+      recFinding,
+      optionalFinding "b., d. and f."] },
+  { rule := pfGeneralNondeg, ruleDecl := ``pfGeneralNondeg,
+    proofs := [(.real, ``pfGeneralNondeg_real), (.complex, ``pfGeneralNondeg_complex)],
+    findings := [
+      "strengthened: the condition NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.partial_fractions_general, which stays refuted.",
+      recFinding,
+      optionalFinding "b. and d."] },
+  { rule := prodOverTrinomNondeg, ruleDecl := ``prodOverTrinomNondeg,
+    proofs := [(.real, ``prodOverTrinomNondeg_real), (.complex, ``prodOverTrinomNondeg_complex)],
+    findings := [
+      "strengthened: the condition NeQ[c, 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.product_over_trinomial, which stays refuted.",
+      neqFinding "NeQ[b^2 - 4 a c, 0]",
+      recFinding,
+      optionalFinding "a., b., c., d., e. and g."] },
+  { rule := prodOverQuadNondeg, ruleDecl := ``prodOverQuadNondeg,
+    proofs := [(.real, ``prodOverQuadNondeg_real), (.complex, ``prodOverQuadNondeg_complex)],
+    findings := [
+      "strengthened: the condition NeQ[c, 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.product_over_quadratic, which stays refuted.",
+      recFinding,
+      optionalFinding "c., d., e. and g."] },
+  { rule := linTwoPowNondeg, ruleDecl := ``linTwoPowNondeg,
+    proofs := [(.real, ``linTwoPowNondeg_real), (.complex, ``linTwoPowNondeg_complex)],
+    findings := [
+      "strengthened: the condition NeQ[Multiply[d, f, Add[n, p, 2]], 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.linear_times_two_powers, which stays refuted.",
+      neqFinding "NeQ[n + p + 2, 0]",
+      recFinding,
+      optionalFinding "a., b., c., d., n., e., f. and p."] },
+  { rule := linTrinomPowNondeg, ruleDecl := ``linTrinomPowNondeg,
+    proofs := [(.real, ``linTrinomPowNondeg_real), (.complex, ``linTrinomPowNondeg_complex)],
+    findings := [
+      "strengthened: the conditions NeQ[Multiply[2, c, Add[p, 1]], 0]; NeQ[Multiply[2, c], 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.linear_times_trinomial_power, which stays refuted.",
+      neqFinding "NeQ[2 c d - b e, 0] and NeQ[p, -1]",
+      recFinding,
+      optionalFinding "a., b., c., d. and e."] },
+  { rule := binomRatioNondeg, ruleDecl := ``binomRatioNondeg,
+    proofs := [(.real, ``binomRatioNondeg_real), (.complex, ``binomRatioNondeg_complex)],
+    findings := [
+      "strengthened: the condition NeQ[a, 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.binomial_ratio_negative_power, which stays refuted.",
+      neqFinding "NeQ[b c - a d, 0]",
+      "conditions: RUBI's LtQ[n, 0] becomes 0 > n (relation1#gt).",
+      recFinding,
+      optionalFinding "d. and b."] },
+  { rule := linearQuadPowNondeg, ruleDecl := ``linearQuadPowNondeg,
+    proofs := [(.real, ``linearQuadPowNondeg_real), (.complex, ``linearQuadPowNondeg_complex)],
+    findings := [
+      "strengthened: the condition NeQ[Multiply[2, c, Add[p, 1]], 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.linear_times_quadratic_power, which stays refuted.",
+      neqFinding "NeQ[p, -1]",
+      recFinding,
+      optionalFinding "e., c. and p."] },
+  { rule := linSinQuadNondeg, ruleDecl := ``linSinQuadNondeg,
+    proofs := [(.real, ``linSinQuadNondeg_real), (.complex, ``linSinQuadNondeg_complex)],
+    findings := [
+      "strengthened: the condition NeQ[Multiply[2, c], 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.linear_sin_trinomial, which stays refuted.",
+      neqFinding "NeQ[2 c d - b e, 0]",
+      recFinding,
+      optionalFinding "a., b., c., d. and e."] },
+  { rule := linCosQuadNondeg, ruleDecl := ``linCosQuadNondeg,
+    proofs := [(.real, ``linCosQuadNondeg_real), (.complex, ``linCosQuadNondeg_complex)],
+    findings := [
+      "strengthened: the condition NeQ[Multiply[2, c], 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.linear_cos_trinomial, which stays refuted.",
+      neqFinding "NeQ[2 c d - b e, 0]",
+      recFinding,
+      optionalFinding "a., b., c., d. and e."] },
+  { rule := sinTrinomSqNondeg, ruleDecl := ``sinTrinomSqNondeg,
+    proofs := [(.real, ``sinTrinomSqNondeg_real), (.complex, ``sinTrinomSqNondeg_complex)],
+    findings := [
+      "strengthened: the condition NeQ[Multiply[4, c], 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.sin_trinomial_square, which stays refuted.",
+      neqFinding "NeQ[b^2 - 4 a c, 0]",
+      recFinding,
+      optionalFinding "a., b. and c."] },
+  { rule := cosTrinomSqNondeg, ruleDecl := ``cosTrinomSqNondeg,
+    proofs := [(.real, ``cosTrinomSqNondeg_real), (.complex, ``cosTrinomSqNondeg_complex)],
+    findings := [
+      "strengthened: the condition NeQ[Multiply[4, c], 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.cos_trinomial_square, which stays refuted.",
+      neqFinding "NeQ[b^2 - 4 a c, 0]",
+      recFinding,
+      optionalFinding "a., b. and c."] },
+  { rule := logLinearOverXNondeg, ruleDecl := ``logLinearOverXNondeg,
+    proofs := [(.real, ``logLinearOverXNondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition NeQ[Multiply[2, b, n], 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.log_linear_over_x, which stays refuted.",
+      "domain: proved over ℝ only, with the real logarithm, which is not differentiable on the complex branch cut; the complex domain is unproved.",
+      optionalFinding "a., b., c. and n."] },
+  { rule := powerLogLinearNondeg, ruleDecl := ``powerLogLinearNondeg,
+    proofs := [(.real, ``powerLogLinearNondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the conditions NeQ[Multiply[d, Add[m, 1]], 0]; NeQ[Multiply[d, Power[Add[m, 1], 2]], 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.power_log_linear, which stays refuted.",
+      "domain: proved over ℝ only, with the real logarithm, which is not differentiable on the complex branch cut; the complex domain is unproved.",
+      neqFinding "NeQ[m, -1]",
+      optionalFinding "a., b., c., d., m. and n."] },
+  { rule := powSinLogNondeg, ruleDecl := ``powSinLogNondeg,
+    proofs := [(.real, ``powSinLogNondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition NeQ[Add[Multiply[Power[b, 2], Power[d, 2], e, Power[n, 2]], Multiply[e, Power[Add[m, 1], 2]]], 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.power_sin_log, which stays refuted.",
+      "domain: proved over ℝ only, with the real logarithm, which is not differentiable on the complex branch cut; the complex domain is unproved.",
+      neqFinding "NeQ[b^2 d^2 n^2 + (m + 1)^2, 0]",
+      optionalFinding "a., b., c., d., e., m. and n."] },
+  { rule := powCosLogNondeg, ruleDecl := ``powCosLogNondeg,
+    proofs := [(.real, ``powCosLogNondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition NeQ[Add[Multiply[Power[b, 2], Power[d, 2], e, Power[n, 2]], Multiply[e, Power[Add[m, 1], 2]]], 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.power_cos_log, which stays refuted.",
+      "domain: proved over ℝ only, with the real logarithm, which is not differentiable on the complex branch cut; the complex domain is unproved.",
+      neqFinding "NeQ[b^2 d^2 n^2 + (m + 1)^2, 0]",
+      optionalFinding "a., b., c., d., e., m. and n."] },
+  { rule := sinXLogNondeg, ruleDecl := ``sinXLogNondeg,
+    proofs := [(.real, ``sinXLogNondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition NeQ[a, 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.sin_x_log_times_log, which stays refuted.",
+      "domain: proved over ℝ only, with the real logarithm, which is not differentiable on the complex branch cut; the complex domain is unproved.",
+      recFinding,
+      optionalFinding "a. and b."] },
+  { rule := cosXLogNondeg, ruleDecl := ``cosXLogNondeg,
+    proofs := [(.real, ``cosXLogNondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition NeQ[a, 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.cos_x_log_times_log, which stays refuted.",
+      "domain: proved over ℝ only, with the real logarithm, which is not differentiable on the complex branch cut; the complex domain is unproved.",
+      recFinding,
+      optionalFinding "a. and b."] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -4782,7 +4921,9 @@ theorem catalogPart6_wellFormed : ∀ e ∈ catalogPart6,
   intro e he
   simp only [catalogPart6, List.mem_cons, List.mem_nil_iff, or_false] at he
   rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=

@@ -107,5 +107,9 @@ import OSR.IntegrationRec88
 import OSR.IntegrationRec89
 import OSR.IntegrationRec90
 import OSR.IntegrationRec91
+import OSR.IntegrationRec92
+import OSR.IntegrationRec93
+import OSR.IntegrationRec94
+import OSR.IntegrationRec95
 import OSR.Integration
 import OSR.Export

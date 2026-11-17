@@ -19,7 +19,7 @@ Status: **pilot** (`1.0.0-alpha.1` format).  Five rule sets are migrated:
 | Algebra | 20 | 20 / 20 | 18 / 18 | 0 |
 | Logic (domain 𝔹) | 39 | 39 / 39 in 𝔹 | — | 0 |
 | Calculus | 29 | 28 / 28 (+1 counterexample) | 16 / 16 | 3 |
-| Integration (RUBI, 422 considered, 142 strengthened variants) | 523 | 213 / 213 (+310 counterexamples) | 181 / 96 (+317 counterexamples, 25 unproved) | 41 |
+| Integration (RUBI, 422 considered, 161 strengthened variants) | 542 | 232 / 232 (+310 counterexamples) | 194 / 108 (+317 counterexamples, 31 unproved) | 41 |
 
 `tan(arctan z) = z` over ℂ is proved but not certified, because the mapping of
 `transc1#arctan` to `Complex.arctan` is provisional.  `ln(ab) = ln a + ln b`
