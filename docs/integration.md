@@ -860,6 +860,16 @@ the identity. Over ℝ only, with the real logarithm,
 `OSR/IntegrationRec107.lean` 3.2.3 #8 (`h j = g k` makes
 `1/(j + k x) = h/(k (g + h x))`).
 
+Eight candidates that failed the numerical truth check at a single zero of a
+parameter hold once that zero is excluded. `OSR/IntegrationRec110.lean`
+proves 1.1.3.7 #5 over ℝ and ℂ with `B ≠ 0` (at `A = B = 0` the residual
+integrand is nowhere defined; otherwise `B³ (a + b x³) = b (A + B x)(A² - A B x
++ B² x²)`). Over ℝ only, `OSR/IntegrationRec111.lean` proves 3.3 #29 and #31
+(with `n ≠ 0`) and 3.1.5 #33 (with `r ≠ 0`), and `OSR/IntegrationRec112.lean`
+3.3 #30 and #39 (with `n ≠ 0`), 3.4 #27 and 3.5 #3 (with `p ≠ 0`): at the
+excluded zero a residual integrand or the result is undefined somewhere the
+integrand is defined.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.
@@ -870,8 +880,8 @@ condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 573 rules: 263 proved and 310 refuted over ℝ, 214
-proved (110 certified), 317 refuted and 42 unproved over ℂ.
+Integration now exports 581 rules: 271 proved and 310 refuted over ℝ, 215
+proved (111 certified), 317 refuted and 49 unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that

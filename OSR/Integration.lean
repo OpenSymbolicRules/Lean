@@ -1,6 +1,9 @@
 import OSR.Calculus
 import OSR.IntegrationRec48
 import OSR.IntegrationNum1
+import OSR.IntegrationRec112
+import OSR.IntegrationRec111
+import OSR.IntegrationRec110
 import OSR.IntegrationRec109
 import OSR.IntegrationRec108
 import OSR.IntegrationRec107
@@ -115,7 +118,7 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec41 OSR.IntegrationRec42
   OSR.IntegrationRec43 OSR.IntegrationRec44
   OSR.IntegrationRec45 OSR.IntegrationRec46
-  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationRec53 OSR.IntegrationRec54 OSR.IntegrationRec55 OSR.IntegrationRec56 OSR.IntegrationRec57 OSR.IntegrationRec58 OSR.IntegrationRec59 OSR.IntegrationRec60 OSR.IntegrationRec61 OSR.IntegrationRec62 OSR.IntegrationRec63 OSR.IntegrationRec64 OSR.IntegrationRec65 OSR.IntegrationRec66 OSR.IntegrationNum1 OSR.IntegrationRec67 OSR.IntegrationRec68 OSR.IntegrationRec69 OSR.IntegrationRec70 OSR.IntegrationRec71 OSR.IntegrationRec72 OSR.IntegrationRec73 OSR.IntegrationRec74 OSR.IntegrationRec75 OSR.IntegrationRec76 OSR.IntegrationRec77 OSR.IntegrationRec78 OSR.IntegrationRec79 OSR.IntegrationRec80 OSR.IntegrationRec81 OSR.IntegrationRec82 OSR.IntegrationRec83 OSR.IntegrationNum1 OSR.IntegrationRec84 OSR.IntegrationRec85 OSR.IntegrationRec86 OSR.IntegrationRec87 OSR.IntegrationRec88 OSR.IntegrationRec89 OSR.IntegrationRec90 OSR.IntegrationRec91 OSR.IntegrationRec92 OSR.IntegrationRec93 OSR.IntegrationRec94 OSR.IntegrationRec95 OSR.IntegrationRec96 OSR.IntegrationRec97 OSR.IntegrationRec98 OSR.IntegrationRec99 OSR.IntegrationRec100 OSR.IntegrationRec101 OSR.IntegrationRec102 OSR.IntegrationRec103 OSR.IntegrationRec104 OSR.IntegrationRec105 OSR.IntegrationRec106 OSR.IntegrationRec107 OSR.IntegrationRec108 OSR.IntegrationRec109 OSR.IntegrationFindings Filter Topology
+  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationRec53 OSR.IntegrationRec54 OSR.IntegrationRec55 OSR.IntegrationRec56 OSR.IntegrationRec57 OSR.IntegrationRec58 OSR.IntegrationRec59 OSR.IntegrationRec60 OSR.IntegrationRec61 OSR.IntegrationRec62 OSR.IntegrationRec63 OSR.IntegrationRec64 OSR.IntegrationRec65 OSR.IntegrationRec66 OSR.IntegrationNum1 OSR.IntegrationRec67 OSR.IntegrationRec68 OSR.IntegrationRec69 OSR.IntegrationRec70 OSR.IntegrationRec71 OSR.IntegrationRec72 OSR.IntegrationRec73 OSR.IntegrationRec74 OSR.IntegrationRec75 OSR.IntegrationRec76 OSR.IntegrationRec77 OSR.IntegrationRec78 OSR.IntegrationRec79 OSR.IntegrationRec80 OSR.IntegrationRec81 OSR.IntegrationRec82 OSR.IntegrationRec83 OSR.IntegrationNum1 OSR.IntegrationRec84 OSR.IntegrationRec85 OSR.IntegrationRec86 OSR.IntegrationRec87 OSR.IntegrationRec88 OSR.IntegrationRec89 OSR.IntegrationRec90 OSR.IntegrationRec91 OSR.IntegrationRec92 OSR.IntegrationRec93 OSR.IntegrationRec94 OSR.IntegrationRec95 OSR.IntegrationRec96 OSR.IntegrationRec97 OSR.IntegrationRec98 OSR.IntegrationRec99 OSR.IntegrationRec100 OSR.IntegrationRec101 OSR.IntegrationRec102 OSR.IntegrationRec103 OSR.IntegrationRec104 OSR.IntegrationRec105 OSR.IntegrationRec106 OSR.IntegrationRec107 OSR.IntegrationRec108 OSR.IntegrationRec109 OSR.IntegrationRec110 OSR.IntegrationRec111 OSR.IntegrationRec112 OSR.IntegrationFindings Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -5188,7 +5191,78 @@ def catalogPart6 : List CEntry := [
       "independence: q is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
       recFinding,
       condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; EqQ[Add[Multiply[n, Add[p, q, 1]], 1], 0]; GtQ[q, 0]; NeQ[p, -1]",
-      optionalFinding "b., d. and q."] }
+      optionalFinding "b., d. and q."] },
+  { rule := rubi1137r5Nondeg, ruleDecl := ``rubi1137r5Nondeg,
+    proofs := [(.real, ``rubi1137r5Nondeg_real), (.complex, ``rubi1137r5Nondeg_complex)],
+    findings := [
+      "strengthened: the conditions NeQ[b, 0]; NeQ[B, 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_1_3_7_r5, which stays refuted. Without NeQ[B, 0] the variant is false at A = B = 0, where the residual integrand is nowhere defined.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[a, Power[B, 3]], Multiply[-1, b, Power[A, 3]]], 0]",
+      optionalFinding "B. and b."] },
+  { rule := logLogLinOverXNondeg, ruleDecl := ``logLogLinOverXNondeg,
+    proofs := [(.real, ``logLogLinOverXNondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the conditions NeQ[Multiply[2, m], 0]; NeQ[n, 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.log_monomial_log_linear_over_x, which stays refuted. A first variant without NeQ[n, 0] was false: the numerical check found the integrand defined where a residual integrand or the result is not, at n = 0.",
+      "domain: proved over ℝ only, with the real logarithm, which is not differentiable on the complex branch cut; the complex domain is unproved.",
+      recFinding,
+      optionalFinding "f., m., a., b., c., e. and n."] },
+  { rule := rubi33r31Nondeg, ruleDecl := ``rubi33r31Nondeg,
+    proofs := [(.real, ``rubi33r31Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the conditions NeQ[Multiply[2, m], 0]; NeQ[n, 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_3_3_r31, which stays refuted. A first variant without NeQ[n, 0] was false: the numerical check found the integrand defined where a residual integrand or the result is not, at n = 0.",
+      "domain: proved over ℝ only, with the real logarithm, which is not differentiable on the complex branch cut; the complex domain is unproved.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[p, 0]",
+      optionalFinding "f., m., a., b., c., e., n. and p."] },
+  { rule := rubi315r33Nondeg, ruleDecl := ``rubi315r33Nondeg,
+    proofs := [(.real, ``rubi315r33Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the conditions NeQ[Multiply[b, n, Add[p, 1]], 0]; NeQ[r, 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_3_1_5_r33, which stays refuted. A first variant without NeQ[r, 0] was false: the numerical check found the integrand defined where a residual integrand or the result is not, at r = 0.",
+      "domain: proved over ℝ only, with the real logarithm, which is not differentiable on the complex branch cut; the complex domain is unproved.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[p, 0]; NeQ[Multiply[d, e], 1]",
+      optionalFinding "d., f., m., r., a., b., c., n. and p."] },
+  { rule := powTwoLogLinNondeg, ruleDecl := ``powTwoLogLinNondeg,
+    proofs := [(.real, ``powTwoLogLinNondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the conditions NeQ[Add[m, 1], 0]; NeQ[n, 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.power_two_log_linear, which stays refuted. A first variant without NeQ[n, 0] was false: the numerical check found the integrand defined where a residual integrand or the result is not, at n = 0.",
+      "domain: proved over ℝ only, with the real logarithm, which is not differentiable on the complex branch cut; the complex domain is unproved.",
+      recFinding,
+      condFinding "NeQ[m, -1]",
+      optionalFinding "m., a., b., c., e., n., f. and g."] },
+  { rule := logPowLogBinOverXNondeg, ruleDecl := ``logPowLogBinOverXNondeg,
+    proofs := [(.real, ``logPowLogBinOverXNondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the conditions NeQ[Multiply[q, Add[m, 1]], 0]; NeQ[p, 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.log_power_log_binomial_over_x, which stays refuted. A first variant without NeQ[p, 0] was false: the numerical check found the integrand defined where a residual integrand or the result is not, at p = 0.",
+      "domain: proved over ℝ only, with the real logarithm, which is not differentiable on the complex branch cut; the complex domain is unproved.",
+      recFinding,
+      condFinding "NeQ[m, -1]",
+      optionalFinding "f., q., m., a., b., c., e. and p."] },
+  { rule := logLogWeightedNondeg, ruleDecl := ``logLogWeightedNondeg,
+    proofs := [(.real, ``logLogWeightedNondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the conditions NeQ[Multiply[e, Add[m, 1]], 0]; NeQ[Add[m, 1], 0]; NeQ[p, 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.power_log_log, which stays refuted. A first variant without NeQ[p, 0] was false: the numerical check found the integrand defined where a residual integrand or the result is not, at p = 0.",
+      "domain: proved over ℝ only, with the real logarithm, which is not differentiable on the complex branch cut; the complex domain is unproved.",
+      neqFinding "NeQ[m, -1]",
+      recFinding,
+      optionalFinding "e., m., a., b., c., d., n. and p."] },
+  { rule := powLogLogLinNondeg, ruleDecl := ``powLogLogLinNondeg,
+    proofs := [(.real, ``powLogLogLinNondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the conditions NeQ[Multiply[g, Add[q, 1]], 0]; NeQ[Add[q, 1], 0]; NeQ[Multiply[g, Power[Add[q, 1], 2]], 0]; NeQ[n, 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.power_log_monomial_log_linear, which stays refuted. A first variant without NeQ[n, 0] was false: the numerical check found the integrand defined where a residual integrand or the result is not, at n = 0.",
+      "domain: proved over ℝ only, with the real logarithm, which is not differentiable on the complex branch cut; the complex domain is unproved.",
+      recFinding,
+      condFinding "NeQ[q, -1]",
+      optionalFinding "g., q., f., m., a., b., c., e. and n."] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -5202,7 +5276,7 @@ theorem catalogPart6_wellFormed : ∀ e ∈ catalogPart6,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=

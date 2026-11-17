@@ -29,6 +29,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Eight variants whose candidates had failed the numerical truth check at a
+  single zero, proved with one more `≠ 0` condition: 1.1.3.7 #5 (with
+  `B ≠ 0`) over ℝ and ℂ (`OSR/IntegrationRec110.lean`), and 3.3 #29, #30, #31
+  and #39, 3.4 #27, 3.5 #3 and 3.1.5 #33 (with the exponent, `n`, `p` or `r`,
+  nonzero) over ℝ only (`IntegrationRec111`, `IntegrationRec112`). The
+  catalogue has 581 rules: 271 proved and 310 refuted over ℝ; 215 proved
+  (111 certified), 317 refuted and 49 unproved over ℂ.
 - Eight more such variants proved: 1.1.3.3 #5, 1.2.1.3 #26 and 1.2.3.4 #61 and
   #64 over ℝ and ℂ (`OSR/IntegrationRec105.lean`, `IntegrationRec108`,
   `IntegrationRec109`), and 3.1.4 #10, 3.1.4 #22 (with `n ≠ 0`), 3.3 #12 and

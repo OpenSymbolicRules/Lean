@@ -187,6 +187,9 @@ OSR/IntegrationRec106.lean variants sampled with their equality conditions solve
 OSR/IntegrationRec107.lean variant sampled with its equality condition solved, with its proof over ℝ (1)
 OSR/IntegrationRec108.lean variant sampled with its equality condition solved, with its proof (1)
 OSR/IntegrationRec109.lean variant sampled with its equality condition solved, with its proof (1)
+OSR/IntegrationRec110.lean variant excluding a zero of its numerical check, with its proof (1)
+OSR/IntegrationRec111.lean variants excluding a zero of their numerical check, with their proofs over ℝ (3)
+OSR/IntegrationRec112.lean variants excluding a zero of their numerical check, with their proofs over ℝ (4)
 OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (523)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
