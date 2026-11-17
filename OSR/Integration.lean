@@ -1,6 +1,7 @@
 import OSR.Calculus
 import OSR.IntegrationRec48
 import OSR.IntegrationNum1
+import OSR.IntegrationRec53
 import OSR.IntegrationRec52
 import OSR.IntegrationRec51
 import OSR.IntegrationRec50
@@ -58,7 +59,7 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec41 OSR.IntegrationRec42
   OSR.IntegrationRec43 OSR.IntegrationRec44
   OSR.IntegrationRec45 OSR.IntegrationRec46
-  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationFindings Filter Topology
+  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationRec53 OSR.IntegrationFindings Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -3900,7 +3901,47 @@ def catalogPart5 : List CEntry := [
       "independence: n2 is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
       recFinding,
       condFinding "EqQ[n2, Multiply[2, n]]; NeQ[Add[Multiply[c, Power[d, 2]], Multiply[a, Power[e, 2]]], 0]",
-      optionalFinding "e. and c."] }
+      optionalFinding "e. and c."] },
+  { rule := rubi1216r5Nondeg, ruleDecl := ``rubi1216r5Nondeg, 
+    proofs := [(.real, ``rubi1216r5Nondeg_real), (.complex, ``rubi1216r5Nondeg_complex)],
+    findings := [
+      "strengthened: the conditions NeQ[a, 0]; NeQ[c, 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_6_r5, which stays refuted.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[c, Power[g, 2]], Multiply[-1, b, g, h], Multiply[a, Power[h, 2]]], 0]; EqQ[Add[Multiply[Power[c, 2], d, Power[g, 2]], Multiply[-1, a, c, e, g, h], Multiply[Power[a, 2], f, Power[h, 2]]], 0]; IntegerQ[m]",
+      optionalFinding "h., m., b., c., d., e. and f."] },
+  { rule := rubi1216r6Nondeg, ruleDecl := ``rubi1216r6Nondeg, 
+    proofs := [(.real, ``rubi1216r6Nondeg_real), (.complex, ``rubi1216r6Nondeg_complex)],
+    findings := [
+      "strengthened: the conditions NeQ[a, 0]; NeQ[c, 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_6_r6, which stays refuted.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[c, Power[g, 2]], Multiply[a, Power[h, 2]]], 0]; EqQ[Add[Multiply[Power[c, 2], d, Power[g, 2]], Multiply[-1, a, c, e, g, h], Multiply[Power[a, 2], f, Power[h, 2]]], 0]; IntegerQ[m]",
+      optionalFinding "h., m., c., d., e. and f."] },
+  { rule := rubi1216r7Nondeg, ruleDecl := ``rubi1216r7Nondeg, 
+    proofs := [(.real, ``rubi1216r7Nondeg_real), (.complex, ``rubi1216r7Nondeg_complex)],
+    findings := [
+      "strengthened: the conditions NeQ[a, 0]; NeQ[c, 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_6_r7, which stays refuted.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[c, Power[g, 2]], Multiply[-1, b, g, h], Multiply[a, Power[h, 2]]], 0]; EqQ[Add[Multiply[Power[c, 2], d, Power[g, 2]], Multiply[Power[a, 2], f, Power[h, 2]]], 0]; IntegerQ[m]",
+      optionalFinding "h., m., b., c., d. and f."] },
+  { rule := rubi1216r8Nondeg, ruleDecl := ``rubi1216r8Nondeg, 
+    proofs := [(.real, ``rubi1216r8Nondeg_real), (.complex, ``rubi1216r8Nondeg_complex)],
+    findings := [
+      "strengthened: the conditions NeQ[a, 0]; NeQ[c, 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_6_r8, which stays refuted.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[c, Power[g, 2]], Multiply[a, Power[h, 2]]], 0]; EqQ[Add[Multiply[Power[c, 2], d, Power[g, 2]], Multiply[Power[a, 2], f, Power[h, 2]]], 0]; IntegerQ[m]",
+      optionalFinding "h., m., c., d. and f."] },
+  { rule := rubi1216r10Nondeg, ruleDecl := ``rubi1216r10Nondeg, 
+    proofs := [(.real, ``rubi1216r10Nondeg_real), (.complex, ``rubi1216r10Nondeg_complex)],
+    findings := [
+      "strengthened: the conditions NeQ[e, 0]; NeQ[f, 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_6_r10, which stays refuted.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[c, Power[e, 2]], Multiply[a, Power[f, 2]]], 0]; IntegerQ[p]",
+      optionalFinding "c., e. and f."] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -3910,7 +3951,8 @@ theorem catalogPart5_wellFormed : ∀ e ∈ catalogPart5,
   intro e he
   simp only [catalogPart5, List.mem_cons, List.mem_nil_iff, or_false] at he
   rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=
