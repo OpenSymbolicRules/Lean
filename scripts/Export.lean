@@ -821,7 +821,7 @@ in the registry, 60 further rules without residual integrals whose conditions
 are expressible (including `EqQ`, `relation1#eq`), and 342 rules with residual
 integrals (313 migrated); the other 5,835 rules are not yet considered. One hundred and eight strengthened variants
 of refuted rules (identifiers ending in `_nondegenerate`) append a non-degeneracy condition to
-the converted RUBI conditions and are proved, seventeen more over ℝ only; 17 more are distributed unproved, with a
+the converted RUBI conditions and are proved, nineteen more over ℝ only; 15 more are distributed unproved, with a
 numerical check over ℝ in a `numerical:` finding; the refutations of the original rules are kept. The reference rewriter applies a
 conditional rule only when its substituted conditions are closed and decided
 true by exact rational arithmetic (`OSR.Cond.decide?`), and does not apply
