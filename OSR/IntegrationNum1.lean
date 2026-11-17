@@ -1856,15 +1856,6 @@ def entries : List CEntry := [
       recFinding,
       condFinding "NeQ[m, -1]; EqQ[Add[Multiply[a, Add[m, 1]], Multiply[-1, b, n]], 0]",
       optionalFinding "d., m., a., b., c. and n."] },
-  { rule := rubi313r7Nondeg, ruleDecl := ``rubi313r7Nondeg, proofs := [],
-    unproved := [.real, .complex],
-    findings := [
-      "strengthened: the condition NeQ[Multiply[b, n, Add[p, 1]], 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_3_1_3_r7, which stays refuted.",
-      "numerical: checked over ℝ only, with no failure at 58 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise an integer between -3 and 3) and points where the integrand is defined, comparing a central difference of the result with the integrand, each residual integral replaced by a function whose derivative there is the residual integrand. In addition, the real zeros of every base raised to a negative or non-integer power in the residual integrands and the result were searched for, and the integrand is not defined around any of them. This is not a proof, and the complex domain is not checked.",
-      "independence: p, q are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
-      recFinding,
-      condFinding "LtQ[p, -1]; GtQ[q, 0]",
-      optionalFinding "e., q., a., b., c. and n."] },
   { rule := rubi35r21Nondeg, ruleDecl := ``rubi35r21Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -2032,6 +2023,6 @@ theorem entries_wellFormed : ∀ e ∈ entries,
   intro e he
   simp only [entries, List.mem_cons, List.mem_nil_iff, or_false] at he
   rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 end OSR.IntegrationNum1
