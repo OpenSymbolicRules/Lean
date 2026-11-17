@@ -1,6 +1,7 @@
 import OSR.Calculus
 import OSR.IntegrationRec48
 import OSR.IntegrationNum1
+import OSR.IntegrationRec67
 import OSR.IntegrationRec66
 import OSR.IntegrationRec65
 import OSR.IntegrationRec64
@@ -72,7 +73,7 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec41 OSR.IntegrationRec42
   OSR.IntegrationRec43 OSR.IntegrationRec44
   OSR.IntegrationRec45 OSR.IntegrationRec46
-  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationRec53 OSR.IntegrationRec54 OSR.IntegrationRec55 OSR.IntegrationRec56 OSR.IntegrationRec57 OSR.IntegrationRec58 OSR.IntegrationRec59 OSR.IntegrationRec60 OSR.IntegrationRec61 OSR.IntegrationRec62 OSR.IntegrationRec63 OSR.IntegrationRec64 OSR.IntegrationRec65 OSR.IntegrationRec66 OSR.IntegrationNum1 OSR.IntegrationFindings Filter Topology
+  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationRec53 OSR.IntegrationRec54 OSR.IntegrationRec55 OSR.IntegrationRec56 OSR.IntegrationRec57 OSR.IntegrationRec58 OSR.IntegrationRec59 OSR.IntegrationRec60 OSR.IntegrationRec61 OSR.IntegrationRec62 OSR.IntegrationRec63 OSR.IntegrationRec64 OSR.IntegrationRec65 OSR.IntegrationRec66 OSR.IntegrationNum1 OSR.IntegrationRec67 OSR.IntegrationFindings Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -4380,7 +4381,31 @@ def catalogPart5 : List CEntry := [
       "independence: p, q are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       recFinding,
       condFinding "IGtQ[p, 0]; ILtQ[q, -1]",
-      optionalFinding "e., r., a., b., c., n. and p."] }
+      optionalFinding "e., r., a., b., c., n. and p."] },
+  { rule := rubi479r16Nondeg, ruleDecl := ``rubi479r16Nondeg, 
+    proofs := [(.real, ``rubi479r16Nondeg_real), (.complex, ``rubi479r16Nondeg_complex)],
+    findings := [
+      "strengthened: the condition NeQ[a, 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_7_9_r16, which stays refuted.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]",
+      optionalFinding "e., f., m., c., d., n. and b."] },
+  { rule := rubi479r27Nondeg, ruleDecl := ``rubi479r27Nondeg, 
+    proofs := [(.real, ``rubi479r27Nondeg_real), (.complex, ``rubi479r27Nondeg_complex)],
+    findings := [
+      "strengthened: the condition NeQ[b, 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_7_9_r27, which stays refuted.",
+      "independence: m, n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]; IGtQ[p, 0]",
+      optionalFinding "e., f., m., c., d., p., n. and b."] },
+  { rule := rubi479r30Nondeg, ruleDecl := ``rubi479r30Nondeg, 
+    proofs := [(.real, ``rubi479r30Nondeg_real), (.complex, ``rubi479r30Nondeg_complex)],
+    findings := [
+      "strengthened: the condition NeQ[a, 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_7_9_r30, which stays refuted.",
+      "independence: m, n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]; IGtQ[p, 0]",
+      optionalFinding "e., f., m., c., d., p., n. and b."] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -4394,7 +4419,7 @@ theorem catalogPart5_wellFormed : ∀ e ∈ catalogPart5,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=
