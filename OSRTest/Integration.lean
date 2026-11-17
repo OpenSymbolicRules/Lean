@@ -13,10 +13,10 @@ private def t : Expr := .var "t"
 -- The twenty rules of the syntactic inventory (FreeQ or NeQ conditions,
 -- registered heads, no Int in the result) are migrated or reported, plus
 -- 110 rules with residual integrals and seven unmigrated ones.
-#guard Integration.catalogVerified.length + Integration.notMigrated.length == 550
+#guard Integration.catalogVerified.length + Integration.notMigrated.length == 552
 #guard Integration.notMigrated.length == 41
-#guard (Integration.catalogVerified.filter (·.rule.shape == .antiderivRec)).length == 413
-#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 476
+#guard (Integration.catalogVerified.filter (·.rule.shape == .antiderivRec)).length == 415
+#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 478
 -- RUBI rules with EqQ conditions are stated with relation1#eq (Cond.eq).
 #guard (Integration.catalogVerified.filter fun e =>
   e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 257
@@ -95,7 +95,8 @@ private def strengthenedIds : List String := [
   "integration.rubi_4_7_9_r16_nondegenerate", "integration.rubi_4_7_9_r27_nondegenerate",
   "integration.rubi_4_7_9_r30_nondegenerate", "integration.rubi_4_1_12_r33_nondegenerate",
   "integration.rubi_4_1_12_r34_nondegenerate",
-  "integration.rubi_1_2_3_1_r5_nondegenerate"]
+  "integration.rubi_1_2_3_1_r5_nondegenerate",
+  "integration.rubi_2_1_r9_nondegenerate", "integration.rubi_2_1_r10_nondegenerate"]
 
 #guard strengthenedIds.all fun id =>
   match Integration.catalogVerified.find? (·.rule.id == id) with
@@ -148,7 +149,7 @@ private def strengthenedRealIds : List String := [
 -- distributed unproved: no proof and no counterexample, both domains unproved,
 -- a strengthened: and a numerical: finding, and the pattern, replacement and
 -- prefix conditions of the refuted rule they correct.
-#guard IntegrationNum1.entries.length == 14
+#guard IntegrationNum1.entries.length == 12
 #guard IntegrationNum1.entries.all fun v =>
   v.proofs.isEmpty && v.counterexamples.isEmpty && v.unproved == [.real, .complex] &&
   v.findings.any (·.startsWith "strengthened:") && v.findings.any (·.startsWith "numerical:") &&
@@ -307,7 +308,8 @@ private def rules : List CRule :=
   "integration.rubi_3_1_3_r7_nondegenerate", "integration.rubi_4_7_8_r47_nondegenerate",
   "integration.rubi_4_7_8_r48_nondegenerate", "integration.rubi_3_1_2_r3_nondegenerate",
   "integration.rubi_3_1_5_r28_nondegenerate", "integration.rubi_3_5_r16_nondegenerate",
-  "integration.rubi_3_5_r21_nondegenerate", "integration.rubi_1_2_3_1_r5_nondegenerate"]
+  "integration.rubi_3_5_r21_nondegenerate", "integration.rubi_1_2_3_1_r5_nondegenerate",
+  "integration.rubi_2_1_r9_nondegenerate", "integration.rubi_2_1_r10_nondegenerate"]
 
 -- A conditional rule applies only when its conditions are decided: int(λt. t^m)
 -- stays (m ≠ -1 is undecided), int(λt. t^(-1)) stays (decided false),
