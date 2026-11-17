@@ -665,7 +665,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 ### Strengthened variants checked numerically
 
-`OSR/IntegrationNum1.lean` distributes 93 more strengthened variants before
+`OSR/IntegrationNum1.lean` distributes 87 more strengthened variants before
 their proofs (Specification V1-R-005e): both domains are unproved, and a
 `numerical:` finding records the evidence. Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
@@ -698,7 +698,14 @@ and `e ≠ 0` (`a + c x²ⁿ` factors as `(d + e xⁿ) (a/d + c xⁿ/e)`) and 1.
 1.2.1.6 #5 to #8 with `a ≠ 0` and `c ≠ 0` (the converted conditions make
 `(g + h x) (d + e x + f x²)` equal to `(d g/a + f h x/c) (a + b x + c x²)`; when
 `h = 0` they force `g = 0`) and 1.2.1.6 #10 with `e ≠ 0` and `f ≠ 0` (`x (a + c x²)`
-equals `(a/e + c x/f) (e x + f x²)`).
+equals `(a/e + c x/f) (e x + f x²)`). `OSR/IntegrationRec54.lean` proves 1.2.1.6
+#9 (`x (a + b x + c x²) = (a/e + c x/f) (e x + f x²)`), 1.2.1.3 #36
+(`a + b x + c x² = (f + g x) (a/f + c x/g)`) and 1.2.2.4 #55 to #58, whose
+partial fractions in `x²` rest on identities such as
+`(a e + c d x²) (d + e x²) - (c d² + a e²) x² = d e (a + c x⁴)`; the
+converted conditions `p > 0` and `m < 0` make the residual integrands
+defined wherever the integrand is (over ℂ these four are proved but not
+certified: the order conditions have no certified mapping there).
 
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
@@ -710,8 +717,8 @@ condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 523 rules: 120 proved, 310 refuted and 93 unproved
-(checked numerically) over ℝ, 112 proved (85 certified), 317 refuted and 94
+Integration now exports 523 rules: 126 proved, 310 refuted and 87 unproved
+(checked numerically) over ℝ, 118 proved (87 certified), 317 refuted and 88
 unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
