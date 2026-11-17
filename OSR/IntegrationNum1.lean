@@ -1951,23 +1951,6 @@ def entries : List CEntry := [
       recFinding,
       condFinding "EqQ[non2, Multiply[n, Power[2, -1]]]; EqQ[Add[Multiply[a2, b1], Multiply[a1, b2]], 0]; NeQ[Add[m, Multiply[n, Add[p, 1]], 1], 0]",
       optionalFinding "e., m., b1., non2., p., b2. and d."] },
-  { rule := rubi4113r2Nondeg, ruleDecl := ``rubi4113r2Nondeg, proofs := [],
-    unproved := [.real, .complex],
-    findings := [
-      "strengthened: the condition NeQ[Multiply[4, c], 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_1_13_r2, which stays refuted.",
-      "numerical: checked over ℝ only, with no failure at 1288 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise an integer between -3 and 3) and points where the integrand is defined, comparing a central difference of the result with the integrand, each residual integral replaced by a function whose derivative there is the residual integrand. In addition, the real zeros of every base raised to a negative or non-integer power in the residual integrands and the result were searched for, and the integrand is not defined around any of them. This is not a proof, and the complex domain is not checked.",
-      recFinding,
-      condFinding "EqQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]",
-      optionalFinding "a., b. and c."] },
-  { rule := rubi4113r16Nondeg, ruleDecl := ``rubi4113r16Nondeg, proofs := [],
-    unproved := [.real, .complex],
-    findings := [
-      "strengthened: the conditions NeQ[Multiply[e, Add[m, 1]], 0]; NeQ[Multiply[Power[e, 2], Add[m, 1]], 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_1_13_r16, which stays refuted.",
-      "numerical: checked over ℝ only, with no failure at 469 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise an integer between -3 and 3) and points where the integrand is defined, comparing a central difference of the result with the integrand, each residual integral replaced by a function whose derivative there is the residual integrand. In addition, the real zeros of every base raised to a negative or non-integer power in the residual integrands and the result were searched for, and the integrand is not defined around any of them. This is not a proof, and the complex domain is not checked.",
-      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
-      recFinding,
-      condFinding "EqQ[Add[Multiply[2, c, d], Multiply[-1, b, e]], 0]; LtQ[m, -1]",
-      optionalFinding "d., e., a., b. and c."] },
   { rule := rubi479r16Nondeg, ruleDecl := ``rubi479r16Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -2030,24 +2013,6 @@ def entries : List CEntry := [
       recFinding,
       condFinding "EqQ[Add[m, Multiply[-1, 2, n], 1], 0]; GtQ[p, 1]",
       optionalFinding "m., a. and b."] },
-  { rule := rubi4113r14Nondeg, ruleDecl := ``rubi4113r14Nondeg, proofs := [],
-    unproved := [.real, .complex],
-    findings := [
-      "strengthened: the condition NeQ[Multiply[2, c], 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_1_13_r14, which stays refuted.",
-      "numerical: checked over ℝ only, with no failure at 504 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise an integer between -3 and 3) and points where the integrand is defined, comparing a central difference of the result with the integrand, each residual integral replaced by a function whose derivative there is the residual integrand. In addition, the real zeros of every base raised to a negative or non-integer power in the residual integrands and the result were searched for, and the integrand is not defined around any of them. This is not a proof, and the complex domain is not checked.",
-      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
-      recFinding,
-      condFinding "EqQ[Add[Multiply[2, c, d], Multiply[-1, b, e]], 0]; GtQ[m, 1]",
-      optionalFinding "d., e., a., b. and c."] },
-  { rule := rubi4113r22Nondeg, ruleDecl := ``rubi4113r22Nondeg, proofs := [],
-    unproved := [.real, .complex],
-    findings := [
-      "strengthened: the conditions NeQ[Multiply[e, Add[m, 1]], 0]; NeQ[Multiply[Power[e, 2], Add[m, 1]], 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_1_13_r22, which stays refuted.",
-      "numerical: checked over ℝ only, with no failure at 987 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise an integer between -3 and 3) and points where the integrand is defined, comparing a central difference of the result with the integrand, each residual integral replaced by a function whose derivative there is the residual integrand. In addition, the real zeros of every base raised to a negative or non-integer power in the residual integrands and the result were searched for, and the integrand is not defined around any of them. This is not a proof, and the complex domain is not checked.",
-      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
-      recFinding,
-      condFinding "NeQ[Add[Multiply[b, e], Multiply[-1, 2, c, d]], 0]; LtQ[m, -1]",
-      optionalFinding "d., e., a., b. and c."] },
   { rule := rubi478r13Nondeg, ruleDecl := ``rubi478r13Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -2120,23 +2085,6 @@ def entries : List CEntry := [
       recFinding,
       condFinding "EqQ[Add[m, Multiply[-1, 2, n], 1], 0]; GtQ[p, 1]",
       optionalFinding "m., a. and b."] },
-  { rule := rubi4113r1Nondeg, ruleDecl := ``rubi4113r1Nondeg, proofs := [],
-    unproved := [.real, .complex],
-    findings := [
-      "strengthened: the condition NeQ[Multiply[4, c], 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_1_13_r1, which stays refuted.",
-      "numerical: checked over ℝ only, with no failure at 1400 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise an integer between -3 and 3) and points where the integrand is defined, comparing a central difference of the result with the integrand, each residual integral replaced by a function whose derivative there is the residual integrand. In addition, the real zeros of every base raised to a negative or non-integer power in the residual integrands and the result were searched for, and the integrand is not defined around any of them. This is not a proof, and the complex domain is not checked.",
-      recFinding,
-      condFinding "EqQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]",
-      optionalFinding "a., b. and c."] },
-  { rule := rubi4113r15Nondeg, ruleDecl := ``rubi4113r15Nondeg, proofs := [],
-    unproved := [.real, .complex],
-    findings := [
-      "strengthened: the conditions NeQ[Multiply[e, Add[m, 1]], 0]; NeQ[Multiply[Power[e, 2], Add[m, 1]], 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_1_13_r15, which stays refuted.",
-      "numerical: checked over ℝ only, with no failure at 511 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise an integer between -3 and 3) and points where the integrand is defined, comparing a central difference of the result with the integrand, each residual integral replaced by a function whose derivative there is the residual integrand. In addition, the real zeros of every base raised to a negative or non-integer power in the residual integrands and the result were searched for, and the integrand is not defined around any of them. This is not a proof, and the complex domain is not checked.",
-      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
-      recFinding,
-      condFinding "EqQ[Add[Multiply[2, c, d], Multiply[-1, b, e]], 0]; LtQ[m, -1]",
-      optionalFinding "d., e., a., b. and c."] },
   { rule := rubi478r14Nondeg, ruleDecl := ``rubi478r14Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -2198,15 +2146,6 @@ def entries : List CEntry := [
       recFinding,
       condFinding "IGtQ[n, 0]; LtQ[n, Add[m, 1]]",
       optionalFinding "e., m., c. and d."] },
-  { rule := rubi4113r20Nondeg, ruleDecl := ``rubi4113r20Nondeg, proofs := [],
-    unproved := [.real, .complex],
-    findings := [
-      "strengthened: the condition NeQ[Multiply[2, c], 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_1_13_r20, which stays refuted.",
-      "numerical: checked over ℝ only, with no failure at 1365 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise an integer between -3 and 3) and points where the integrand is defined, comparing a central difference of the result with the integrand, each residual integral replaced by a function whose derivative there is the residual integrand. In addition, the real zeros of every base raised to a negative or non-integer power in the residual integrands and the result were searched for, and the integrand is not defined around any of them. This is not a proof, and the complex domain is not checked.",
-      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
-      recFinding,
-      condFinding "NeQ[Add[Multiply[b, e], Multiply[-1, 2, c, d]], 0]; GtQ[m, 1]",
-      optionalFinding "d., e., a., b. and c."] },
   { rule := rubi479r30Nondeg, ruleDecl := ``rubi479r30Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -2249,24 +2188,6 @@ def entries : List CEntry := [
       recFinding,
       condFinding "IGtQ[n, 0]; LtQ[n, Add[m, 1]]",
       optionalFinding "e., m., c. and d."] },
-  { rule := rubi4113r13Nondeg, ruleDecl := ``rubi4113r13Nondeg, proofs := [],
-    unproved := [.real, .complex],
-    findings := [
-      "strengthened: the condition NeQ[Multiply[2, c], 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_1_13_r13, which stays refuted.",
-      "numerical: checked over ℝ only, with no failure at 511 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise an integer between -3 and 3) and points where the integrand is defined, comparing a central difference of the result with the integrand, each residual integral replaced by a function whose derivative there is the residual integrand. In addition, the real zeros of every base raised to a negative or non-integer power in the residual integrands and the result were searched for, and the integrand is not defined around any of them. This is not a proof, and the complex domain is not checked.",
-      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
-      recFinding,
-      condFinding "EqQ[Add[Multiply[2, c, d], Multiply[-1, b, e]], 0]; GtQ[m, 1]",
-      optionalFinding "d., e., a., b. and c."] },
-  { rule := rubi4113r21Nondeg, ruleDecl := ``rubi4113r21Nondeg, proofs := [],
-    unproved := [.real, .complex],
-    findings := [
-      "strengthened: the conditions NeQ[Multiply[e, Add[m, 1]], 0]; NeQ[Multiply[Power[e, 2], Add[m, 1]], 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_1_13_r21, which stays refuted.",
-      "numerical: checked over ℝ only, with no failure at 1141 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise an integer between -3 and 3) and points where the integrand is defined, comparing a central difference of the result with the integrand, each residual integral replaced by a function whose derivative there is the residual integrand. In addition, the real zeros of every base raised to a negative or non-integer power in the residual integrands and the result were searched for, and the integrand is not defined around any of them. This is not a proof, and the complex domain is not checked.",
-      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
-      recFinding,
-      condFinding "NeQ[Add[Multiply[b, e], Multiply[-1, 2, c, d]], 0]; LtQ[m, -1]",
-      optionalFinding "d., e., a., b. and c."] },
   { rule := rubi312r5Nondeg, ruleDecl := ``rubi312r5Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -2321,15 +2242,6 @@ def entries : List CEntry := [
       recFinding,
       condFinding "EqQ[n2, Multiply[2, n]]; NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; ILtQ[p, -1]",
       optionalFinding "b., c. and n2."] },
-  { rule := rubi4113r19Nondeg, ruleDecl := ``rubi4113r19Nondeg, proofs := [],
-    unproved := [.real, .complex],
-    findings := [
-      "strengthened: the condition NeQ[Multiply[2, c], 0] (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_1_13_r19, which stays refuted.",
-      "numerical: checked over ℝ only, with no failure at 1197 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise an integer between -3 and 3) and points where the integrand is defined, comparing a central difference of the result with the integrand, each residual integral replaced by a function whose derivative there is the residual integrand. In addition, the real zeros of every base raised to a negative or non-integer power in the residual integrands and the result were searched for, and the integrand is not defined around any of them. This is not a proof, and the complex domain is not checked.",
-      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
-      recFinding,
-      condFinding "NeQ[Add[Multiply[b, e], Multiply[-1, 2, c, d]], 0]; GtQ[m, 1]",
-      optionalFinding "d., e., a., b. and c."] },
   { rule := rubi478r48Nondeg, ruleDecl := ``rubi478r48Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -2359,7 +2271,6 @@ theorem entries_wellFormed : ∀ e ∈ entries,
   rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 end OSR.IntegrationNum1
