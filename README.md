@@ -82,7 +82,8 @@ just setup        # fetch Mathlib (pinned) and its build cache
 just build        # compile registry, rules and proofs
 just test         # #guard tests and examples
 just doc          # HTML documentation and LLM text exports in docs/build/
-just check        # replay modules with leanchecker
+just check        # replay modules with leanchecker (OSR_CHECK_JOBS=N runs N
+                  #   replays in parallel, about 3 GB of memory each)
 just export       # audit rule and termination proofs, write generated/
                   #   <set>.osr.json, <set>.report.{json,md}, registry.json,
                   #   conformance/<set>.cases.json for set in trigonometry,

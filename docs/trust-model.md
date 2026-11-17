@@ -18,7 +18,10 @@ then verifies, in the elaborated environment:
   custom axiom make the export fail.
 
 `just check` replays the compiled modules with `leanchecker`, a second kernel
-pass over the `.olean` files, which detects environment manipulation.
+pass over the `.olean` files, which detects environment manipulation. The
+replays are independent: `OSR_CHECK_JOBS=N just check` runs `N` of them in
+parallel (each loads Mathlib, about 3 GB of memory); the default is one at a
+time, and any failing replay fails the recipe.
 
 ## What is trusted, not proved
 

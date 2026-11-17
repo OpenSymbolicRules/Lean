@@ -19,6 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `numerical:` findings now describe both passes.
 
 ### Changed
+- `just check` can replay modules with `leanchecker` in parallel:
+  `OSR_CHECK_JOBS=N` runs `N` replays at once (default 1). With 8 jobs the
+  replay of the 175 modules takes about two minutes.
 - The Integration catalogue is split into parts of at most 100 entries
   (`catalogPart1` …), each with its own well-formedness theorem: the single
   list literal reached the code generator's recursion limit at 411 entries.
