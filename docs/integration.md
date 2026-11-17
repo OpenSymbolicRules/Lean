@@ -665,7 +665,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 ### Strengthened variants checked numerically
 
-`OSR/IntegrationNum1.lean` distributes 49 more strengthened variants before
+`OSR/IntegrationNum1.lean` distributes 45 more strengthened variants before
 their proofs (Specification V1-R-005e): both domains are unproved, and a
 `numerical:` finding records the evidence. Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
@@ -743,6 +743,12 @@ certified over ℂ). `OSR/IntegrationRec64.lean` proves 4.1.13 #1 and #2, where
 over ℝ and ℂ), and the integrations by parts 4.1.13 #13 to #16 and #19 to #22
 of `(d + e x)^m` times the sine or cosine of `a + b x + c x²`, from
 `e (b + 2 c x) = (b e - 2 c d) + 2 c (d + e x)` (not certified over ℂ).
+`OSR/IntegrationRec65.lean` proves 4.7.9 #11 and #12, which split
+`cos² / (a + b sin)` and its mirror with `sin² + cos² = 1` (a hypothesis
+instantiated by Mathlib; not certified over ℂ), and 2.3 #32 and #33, whose
+exponents agree: `e + f (a + b x)/(c + d x)` is `e + f b/d` when `b c = a d`
+and `(d e + b f)/d - f (b c - a d)/(d (c + d x))` in general (certified over
+ℝ and ℂ).
 
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
@@ -754,8 +760,8 @@ condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 523 rules: 164 proved, 310 refuted and 49 unproved
-(checked numerically) over ℝ, 156 proved (90 certified), 317 refuted and 50
+Integration now exports 523 rules: 168 proved, 310 refuted and 45 unproved
+(checked numerically) over ℝ, 160 proved (92 certified), 317 refuted and 46
 unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
