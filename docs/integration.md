@@ -665,7 +665,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 ### Strengthened variants checked numerically
 
-`OSR/IntegrationNum1.lean` distributes 29 more strengthened variants before
+`OSR/IntegrationNum1.lean` distributes 27 more strengthened variants before
 their proofs (Specification V1-R-005e): both domains are unproved, and a
 `numerical:` finding records the evidence. Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
@@ -762,7 +762,9 @@ from `x (n/x) = n`: the proofs use the real logarithm, which is not
 differentiable on the complex branch cut, so the complex domain stays
 unproved and a `domain:` finding replaces the `numerical:` one.
 `OSR/IntegrationRec70.lean` proves over ℝ 3.1.4 #12 and 3.1.5 #8,
-integrations by parts of `(f x)^m (d + e x)^q (a + b log (c xⁿ))`.
+integrations by parts of `(f x)^m (d + e x)^q (a + b log (c xⁿ))`, and
+`OSR/IntegrationRec71.lean` 3.1.4 #2 and 3.1.5 #3, those of
+`(f x)^m (d + e xʳ)^q (a + b log (c xⁿ))` when `m + r (q + 1) + 1 = 0`.
 
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
@@ -774,7 +776,7 @@ condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 523 rules: 184 proved, 310 refuted and 29 unproved
+Integration now exports 523 rules: 186 proved, 310 refuted and 27 unproved
 (checked numerically) over ℝ, 171 proved (92 certified), 317 refuted and 35
 unproved over ℂ.
 
