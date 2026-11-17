@@ -2260,15 +2260,6 @@ def entries : List CEntry := [
       recFinding,
       condFinding "IGtQ[p, 0]; IGtQ[q, 0]; NeQ[m, -1]",
       optionalFinding "g., m., a., b., c., n., p., d., e., f., r. and q."] },
-  { rule := rubi1113r13Nondeg, ruleDecl := ``rubi1113r13Nondeg, proofs := [],
-    unproved := [.real, .complex],
-    findings := [
-      "strengthened: the conditions NeQ[Multiply[b, d, Add[p, Multiply[-1, 1]]], 0]; NeQ[Multiply[b, d], 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_1_1_3_r13, which stays refuted.",
-      "numerical: checked over ℝ only, with no failure at 1043 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise an integer between -3 and 3) and points where the integrand is defined, comparing a central difference of the result with the integrand, each residual integral replaced by a function whose derivative there is the residual integrand. In addition, the real zeros of every base raised to a negative or non-integer power in the residual integrands and the result were searched for, and the integrand is not defined around any of them. This is not a proof, and the complex domain is not checked.",
-      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
-      recFinding,
-      condFinding "GtQ[p, 1]",
-      optionalFinding "e., f., a., b., c. and d."] },
   { rule := rubi1135r25Nondeg, ruleDecl := ``rubi1135r25Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -2347,15 +2338,6 @@ def entries : List CEntry := [
       recFinding,
       condFinding "EqQ[Add[m, Multiply[r, Add[q, 1]], 1], 0]; NeQ[m, -1]",
       optionalFinding "f., m., e., r., a., b., c. and n."] },
-  { rule := rubi1113r14Nondeg, ruleDecl := ``rubi1113r14Nondeg, proofs := [],
-    unproved := [.real, .complex],
-    findings := [
-      "strengthened: the conditions NeQ[Multiply[Add[p, 1], Add[Multiply[b, e], Multiply[-1, a, f]], Add[Multiply[d, e], Multiply[-1, c, f]]], 0]; NeQ[Multiply[Add[Multiply[b, e], Multiply[-1, a, f]], Add[Multiply[d, e], Multiply[-1, c, f]]], 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_1_1_3_r14, which stays refuted.",
-      "numerical: checked over ℝ only, with no failure at 1274 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise an integer between -3 and 3) and points where the integrand is defined, comparing a central difference of the result with the integrand, each residual integral replaced by a function whose derivative there is the residual integrand. In addition, the real zeros of every base raised to a negative or non-integer power in the residual integrands and the result were searched for, and the integrand is not defined around any of them. This is not a proof, and the complex domain is not checked.",
-      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
-      recFinding,
-      condFinding "LtQ[p, -1]",
-      optionalFinding "e., f., a., b., c. and d."] },
   { rule := rubi1135r26Nondeg, ruleDecl := ``rubi1135r26Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -2531,6 +2513,6 @@ theorem entries_wellFormed : ∀ e ∈ entries,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl <;> decide
 
 end OSR.IntegrationNum1
