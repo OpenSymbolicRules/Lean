@@ -13,13 +13,13 @@ private def t : Expr := .var "t"
 -- The twenty rules of the syntactic inventory (FreeQ or NeQ conditions,
 -- registered heads, no Int in the result) are migrated or reported, plus
 -- 110 rules with residual integrals and seven unmigrated ones.
-#guard Integration.catalogVerified.length + Integration.notMigrated.length == 543
+#guard Integration.catalogVerified.length + Integration.notMigrated.length == 545
 #guard Integration.notMigrated.length == 41
-#guard (Integration.catalogVerified.filter (·.rule.shape == .antiderivRec)).length == 407
-#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 469
+#guard (Integration.catalogVerified.filter (·.rule.shape == .antiderivRec)).length == 409
+#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 471
 -- RUBI rules with EqQ conditions are stated with relation1#eq (Cond.eq).
 #guard (Integration.catalogVerified.filter fun e =>
-  e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 251
+  e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 253
 
 -- RUBI 4.16.1: the new degenerate-coefficient cases are refuted in both
 -- domains, with no proof or unresolved domain accidentally attached.
@@ -118,7 +118,8 @@ private def strengthenedRealIds : List String := [
   "integration.rubi_3_1_5_r3_nondegenerate", "integration.log_power_over_linear_square_nondegenerate",
   "integration.rubi_3_1_3_r1_nondegenerate", "integration.rubi_3_1_3_r10_nondegenerate",
   "integration.rubi_3_1_4_r13_nondegenerate", "integration.rubi_3_1_5_r9_nondegenerate",
-  "integration.rubi_3_1_3_r7_nondegenerate"]
+  "integration.rubi_3_1_3_r7_nondegenerate", "integration.rubi_4_7_8_r47_nondegenerate",
+  "integration.rubi_4_7_8_r48_nondegenerate"]
 
 #guard strengthenedRealIds.all fun id =>
   match Integration.catalogVerified.find? (·.rule.id == id) with
@@ -141,7 +142,7 @@ private def strengthenedRealIds : List String := [
 -- distributed unproved: no proof and no counterexample, both domains unproved,
 -- a strengthened: and a numerical: finding, and the pattern, replacement and
 -- prefix conditions of the refuted rule they correct.
-#guard IntegrationNum1.entries.length == 21
+#guard IntegrationNum1.entries.length == 19
 #guard IntegrationNum1.entries.all fun v =>
   v.proofs.isEmpty && v.counterexamples.isEmpty && v.unproved == [.real, .complex] &&
   v.findings.any (·.startsWith "strengthened:") && v.findings.any (·.startsWith "numerical:") &&
@@ -297,7 +298,8 @@ private def rules : List CRule :=
   "integration.rubi_3_1_5_r3_nondegenerate", "integration.log_power_over_linear_square_nondegenerate",
   "integration.rubi_3_1_3_r1_nondegenerate", "integration.rubi_3_1_3_r10_nondegenerate",
   "integration.rubi_3_1_4_r13_nondegenerate", "integration.rubi_3_1_5_r9_nondegenerate",
-  "integration.rubi_3_1_3_r7_nondegenerate"]
+  "integration.rubi_3_1_3_r7_nondegenerate", "integration.rubi_4_7_8_r47_nondegenerate",
+  "integration.rubi_4_7_8_r48_nondegenerate"]
 
 -- A conditional rule applies only when its conditions are decided: int(λt. t^m)
 -- stays (m ≠ -1 is undecided), int(λt. t^(-1)) stays (decided false),
