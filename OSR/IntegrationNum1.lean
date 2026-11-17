@@ -2156,14 +2156,6 @@ def entries : List CEntry := [
       recFinding,
       condFinding "LtQ[m, -1]; LtQ[n, -1]",
       optionalFinding "a., b., c., d., f., g. and h."] },
-  { rule := rubi1212r54Nondeg, ruleDecl := ``rubi1212r54Nondeg, proofs := [],
-    unproved := [.real, .complex],
-    findings := [
-      "strengthened: the conditions NeQ[Multiply[d, Add[Power[b, 2], Multiply[-1, 4, a, c]]], 0]; NeQ[Multiply[Power[d, 2], Add[Power[b, 2], Multiply[-1, 4, a, c]]], 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_2_r54, which stays refuted.",
-      "numerical: checked over ℝ only, with no failure at 910 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise an integer between -3 and 3) and points where the integrand is defined, comparing a central difference of the result with the integrand, each residual integral replaced by a function whose derivative there is the residual integrand. In addition, the real zeros of every base raised to a negative or non-integer power in the residual integrands and the result were searched for, and the integrand is not defined around any of them. This is not a proof, and the complex domain is not checked.",
-      recFinding,
-      condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; EqQ[Add[Multiply[2, c, d], Multiply[-1, b, e]], 0]",
-      optionalFinding "e., a., b. and c."] },
   { rule := rubi4112r44Nondeg, ruleDecl := ``rubi4112r44Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -2440,6 +2432,6 @@ theorem entries_wellFormed : ∀ e ∈ entries,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 end OSR.IntegrationNum1

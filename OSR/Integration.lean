@@ -1,6 +1,7 @@
 import OSR.Calculus
 import OSR.IntegrationRec48
 import OSR.IntegrationNum1
+import OSR.IntegrationRec62
 import OSR.IntegrationRec61
 import OSR.IntegrationRec60
 import OSR.IntegrationRec59
@@ -67,7 +68,7 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec41 OSR.IntegrationRec42
   OSR.IntegrationRec43 OSR.IntegrationRec44
   OSR.IntegrationRec45 OSR.IntegrationRec46
-  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationRec53 OSR.IntegrationRec54 OSR.IntegrationRec55 OSR.IntegrationRec56 OSR.IntegrationRec57 OSR.IntegrationRec58 OSR.IntegrationRec59 OSR.IntegrationRec60 OSR.IntegrationRec61 OSR.IntegrationFindings Filter Topology
+  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationRec53 OSR.IntegrationRec54 OSR.IntegrationRec55 OSR.IntegrationRec56 OSR.IntegrationRec57 OSR.IntegrationRec58 OSR.IntegrationRec59 OSR.IntegrationRec60 OSR.IntegrationRec61 OSR.IntegrationRec62 OSR.IntegrationFindings Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -4148,7 +4149,14 @@ def catalogPart5 : List CEntry := [
       "independence: m, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       recFinding,
       condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; EqQ[Add[Multiply[c, Power[d, 2]], Multiply[-1, b, d, e], Multiply[a, Power[e, 2]]], 0]; LtQ[p, -1]; LtQ[0, m, 1]; IntegerQ[Multiply[2, p]]",
-      optionalFinding "d., e., a., b. and c."] }
+      optionalFinding "d., e., a., b. and c."] },
+  { rule := rubi1212r54Nondeg, ruleDecl := ``rubi1212r54Nondeg, 
+    proofs := [(.real, ``rubi1212r54Nondeg_real), (.complex, ``rubi1212r54Nondeg_complex)],
+    findings := [
+      "strengthened: the conditions NeQ[Multiply[d, Add[Power[b, 2], Multiply[-1, 4, a, c]]], 0]; NeQ[Multiply[Power[d, 2], Add[Power[b, 2], Multiply[-1, 4, a, c]]], 0] (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_2_r54, which stays refuted.",
+      recFinding,
+      condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; EqQ[Add[Multiply[2, c, d], Multiply[-1, b, e]], 0]",
+      optionalFinding "e., a., b. and c."] }
 ]
 
 set_option maxRecDepth 4096 in
@@ -4160,7 +4168,7 @@ theorem catalogPart5_wellFormed : ∀ e ∈ catalogPart5,
   rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=
