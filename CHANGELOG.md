@@ -24,6 +24,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Proofs of four variants first distributed unproved, 1.1.1.3 #12, 1.1.1.4
+  #38, 1.2.1.2 #12 and 1.2.1.3 #16 (`OSR/IntegrationRec55.lean`). The
+  catalogue has 523 rules: 130 proved, 310 refuted and 83 unproved over ℝ; 122
+  proved (87 certified: order conditions have no certified mapping over ℂ),
+  317 refuted and 84 unproved over ℂ.
 - Proofs of six variants first distributed unproved, 1.2.1.6 #9, 1.2.1.3 #36
   and 1.2.2.4 #55 to #58 (`OSR/IntegrationRec54.lean`). The catalogue has 523
   rules: 126 proved, 310 refuted and 87 unproved over ℝ; 118 proved (87
