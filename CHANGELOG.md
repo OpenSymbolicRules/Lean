@@ -24,6 +24,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Proofs over ℝ only of 3.1.1 #3 and 3.1.2 #5 and #6, first distributed
+  unproved (`OSR/IntegrationRec69.lean`); their complex domain stays unproved,
+  recorded in a `domain:` finding. The catalogue has 523 rules: 182 proved, 310
+  refuted and 31 unproved over ℝ; 171 proved (92 certified), 317 refuted and 35
+  unproved over ℂ.
 - Proofs of 4.1.12 #33 and #34, first distributed unproved
   (`OSR/IntegrationRec68.lean`). The catalogue has 523 rules: 179 proved, 310
   refuted and 34 unproved over ℝ; 171 proved (92 certified), 317 refuted and 35
