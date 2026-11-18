@@ -5395,54 +5395,63 @@ def catalogPart7 : List CEntry := [
     proofs := [(.real, ``rubi1233r41_real), (.complex, ``rubi1233r41_complex)],
     findings := [
       recFinding,
+      "independence: mn, mn2, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       condFinding "EqQ[mn, Multiply[-1, n]]; EqQ[mn2, Multiply[2, mn]]; IntegerQ[p]",
       optionalFinding "e., n., q., a., b., mn., c., mn2. and p."] },
   { rule := rubi1233r42, ruleDecl := ``rubi1233r42,
     proofs := [(.real, ``rubi1233r42_real), (.complex, ``rubi1233r42_complex)],
     findings := [
       recFinding,
+      "independence: mn2, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       condFinding "EqQ[mn2, Multiply[-2, n]]; IntegerQ[p]",
       optionalFinding "e., n., q., a., c., mn2. and p."] },
   { rule := rubi1233r47, ruleDecl := ``rubi1233r47,
     proofs := [(.real, ``rubi1233r47_real), (.complex, ``rubi1233r47_complex)],
     findings := [
       recFinding,
+      "independence: mn, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       condFinding "EqQ[mn, Multiply[-1, n]]; IntegerQ[p]",
       optionalFinding "e., q., b., c., n. and p."] },
   { rule := rubi1234r92, ruleDecl := ``rubi1234r92,
     proofs := [(.real, ``rubi1234r92_real), (.complex, ``rubi1234r92_complex)],
     findings := [
       recFinding,
+      "independence: mn, mn2, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       condFinding "EqQ[mn, Multiply[-1, n]]; EqQ[mn2, Multiply[2, mn]]; IntegerQ[p]",
       optionalFinding "m., e., n., q., a., b., mn., c., mn2. and p."] },
   { rule := rubi1234r93, ruleDecl := ``rubi1234r93,
     proofs := [(.real, ``rubi1234r93_real), (.complex, ``rubi1234r93_complex)],
     findings := [
       recFinding,
+      "independence: mn2, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       condFinding "EqQ[mn2, Multiply[-2, n]]; IntegerQ[p]",
       optionalFinding "m., e., n., q., a., c., mn2. and p."] },
   { rule := rubi1234r100, ruleDecl := ``rubi1234r100,
     proofs := [(.real, ``rubi1234r100_real), (.complex, ``rubi1234r100_complex)],
     findings := [
       recFinding,
+      "independence: mn, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       condFinding "EqQ[mn, Multiply[-1, n]]; IntegerQ[p]",
       optionalFinding "m., e., q., b., c., n. and p."] },
   { rule := rubi1212r93, ruleDecl := ``rubi1212r93,
     proofs := [(.real, ``rubi1212r93_real), (.complex, ``rubi1212r93_complex)],
     findings := [
       recFinding,
+      "independence: m, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; NeQ[Add[Multiply[c, Power[d, 2]], Multiply[-1, b, d, e], Multiply[a, Power[e, 2]]], 0]; NeQ[Add[Multiply[2, c, d], Multiply[-1, b, e]], 0]; EqQ[Add[m, Multiply[2, p], 2], 0]; GtQ[p, 0]",
       optionalFinding "d., e., a., b. and c."] },
   { rule := rubi1212r94, ruleDecl := ``rubi1212r94,
     proofs := [(.real, ``rubi1212r94_real), (.complex, ``rubi1212r94_complex)],
     findings := [
       recFinding,
+      "independence: m, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       condFinding "NeQ[Add[Multiply[c, Power[d, 2]], Multiply[a, Power[e, 2]]], 0]; EqQ[Add[m, Multiply[2, p], 2], 0]; GtQ[p, 0]",
       optionalFinding "e. and c."] },
   { rule := rubi1212r95, ruleDecl := ``rubi1212r95,
     proofs := [(.real, ``rubi1212r95_real), (.complex, ``rubi1212r95_complex)],
     findings := [
       recFinding,
+      "independence: m, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; NeQ[Add[Multiply[c, Power[d, 2]], Multiply[-1, b, d, e], Multiply[a, Power[e, 2]]], 0]; NeQ[Add[Multiply[2, c, d], Multiply[-1, b, e]], 0]; EqQ[Add[m, Multiply[2, p], 2], 0]; LtQ[p, -1]",
       optionalFinding "d., e., a., b. and c."] }
 ]

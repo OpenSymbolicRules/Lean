@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- The nine RUBI rules migrated in report `37faa87a…` declare exponent
+  metavariables (`m`, `p`, `mn`, `mn2`) independent of x without the
+  `independence:` finding that the Integration faithfulness check requires;
+  the finding is added.
 - The strengthened variant of 3.3 #22 distributed unproved was false: at
   `n = 0` the integrand is defined around `x = -d/e`, where the residual
   integrand is not. It now also appends `n ≠ 0`, and is proved over ℝ.
