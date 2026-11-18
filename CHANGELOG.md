@@ -36,6 +36,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Eight more RUBI rules are migrated and proved over ℝ by linear splits
+  with integer exponents (`OSR/IntegrationRec139.lean`): 7.3.4 #107 and
+  7.3.1 #127 (linearity), 7.3.4 #130, 7.3.1 #150, 7.3.7 #3 and 7.3.4 #3
+  (arctanh into logarithms), and 6.1.12 #19 and #20 (addition formulas of
+  sinh and cosh). The catalogue has 914 rules (742 RUBI rules considered):
+  338 proved and 576 refuted over ℝ; 240 proved (119 certified), 370 refuted
+  and 304 unproved over ℂ.
 - 7.3.4 #39 and 7.3.1 #59 are migrated and proved over ℝ
   (`OSR/IntegrationRec138.lean`): `artanh u = (log(1 + u) - log(1 - u))/2` on
   `(-1, 1)` splits the integrand into the two residual integrands. The
