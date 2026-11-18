@@ -955,6 +955,12 @@ argument derived from the quotient rule. `OSR/IntegrationRec135.lean` proves
 `A(c x/√(a + b x²))`: `x A'(u) u' = c x/√(a + b x²)` is a field identity in
 `r = 1/√(a + b x²)`.
 
+`OSR/IntegrationRec136.lean` and `IntegrationRec137` prove the rules for
+`(a + b A(c x))^p/(x² √(d + e x²))` and `(f x)^m (a + b A(c x))^p/√(d + e x²)`
+(7.3.4 #89, #91, 7.3.1 #109, #111, 5.3.4 #89, #91): with `q = √(d + e x²)`,
+the condition gives `q² = d (1 ∓ c² x²)`, so after eliminating
+`d = q²/(1 ∓ c² x²)` the derivative identity is rational in `q`.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.
@@ -965,8 +971,8 @@ condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 898 rules: 322 proved and 576 refuted over ℝ, 240
-proved (119 certified), 370 refuted and 288 unproved over ℂ.
+Integration now exports 904 rules: 328 proved and 576 refuted over ℝ, 240
+proved (119 certified), 370 refuted and 294 unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that
