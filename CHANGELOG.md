@@ -36,6 +36,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- 14 more RUBI rules not considered before are migrated and proved as
+  stated: twelve split by linearity into residual integrals with constant
+  coefficients (5.3.4 #41, #132, #138, #140 over ℝ and ℂ; 7.3.4 #41, #132,
+  #138, #140 and 7.3.1 #61, #152, #158, #160 over ℝ, their arctanh having no
+  complex interpretation; `OSR/IntegrationRec128.lean`), and 5.3.4 #107 and
+  6.7.7 #33 over ℝ (`IntegrationRec129`). The catalogue has 864 rules (692
+  RUBI rules considered): 307 proved and 557 refuted over ℝ; 240 proved
+  (119 certified), 370 refuted and 254 unproved over ℂ.
 - 247 RUBI rules not considered before are migrated and refuted as stated
   (`OSR/IntegrationRec120.lean` … `IntegrationRec127`): for each, an explicit
   assignment satisfies the conditions and makes the integrand defined near a

@@ -198,6 +198,8 @@ OSR/IntegrationRec117.lean exponential variants with a locally constant exponent
 OSR/IntegrationRec118.lean RUBI 1.2.3.3/1.2.3.4 normalisations of negative powers, with their proofs (6)
 OSR/IntegrationRec119.lean RUBI 1.2.1.2 reductions with m + 2p + 2 = 0, with their proofs (3)
 OSR/IntegrationRec120.lean … IntegrationRec127.lean: RUBI rules refuted by numerical witnesses (247)
+OSR/IntegrationRec128.lean RUBI rules split by linearity into residual integrals, with their proofs (12)
+OSR/IntegrationRec129.lean RUBI rules split with the real reciprocal functions, with their proofs over ℝ (2)
 OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (523)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),

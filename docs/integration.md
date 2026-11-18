@@ -921,6 +921,16 @@ has a complex interpretation in the fragment. 39 further candidates whose
 real counterexample did not check, one whose condition depends on x (3.3 #43), and 141 that hold numerically, are left
 for later.
 
+Fourteen of these are now proved as RUBI states them.
+`OSR/IntegrationRec128.lean` proves twelve rules whose result is a
+combination of residual integrals with constant coefficients and whose
+integrand is the same combination of their integrands, an identity of the
+polynomial ring once each function application is an atom (5.3.4 #41, #132,
+#138, #140 over ℝ and ℂ; 7.3.4 #41, #132, #138, #140 and 7.3.1 #61, #152,
+#158, #160 over ℝ only, arctanh having no complex interpretation).
+`OSR/IntegrationRec129.lean` proves 5.3.4 #107 and 6.7.7 #33 over ℝ, using
+the real definitions of the reciprocal functions.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.
@@ -931,8 +941,8 @@ condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 850 rules: 293 proved and 557 refuted over ℝ, 236
-proved (119 certified), 370 refuted and 244 unproved over ℂ.
+Integration now exports 864 rules: 307 proved and 557 refuted over ℝ, 240
+proved (119 certified), 370 refuted and 254 unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that

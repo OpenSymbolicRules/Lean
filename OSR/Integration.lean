@@ -12,6 +12,8 @@ import OSR.IntegrationRec124
 import OSR.IntegrationRec125
 import OSR.IntegrationRec126
 import OSR.IntegrationRec127
+import OSR.IntegrationRec128
+import OSR.IntegrationRec129
 import OSR.IntegrationRec116
 import OSR.IntegrationRec115
 import OSR.IntegrationRec114
@@ -133,7 +135,7 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec41 OSR.IntegrationRec42
   OSR.IntegrationRec43 OSR.IntegrationRec44
   OSR.IntegrationRec45 OSR.IntegrationRec46
-  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationRec53 OSR.IntegrationRec54 OSR.IntegrationRec55 OSR.IntegrationRec56 OSR.IntegrationRec57 OSR.IntegrationRec58 OSR.IntegrationRec59 OSR.IntegrationRec60 OSR.IntegrationRec61 OSR.IntegrationRec62 OSR.IntegrationRec63 OSR.IntegrationRec64 OSR.IntegrationRec65 OSR.IntegrationRec66 OSR.IntegrationNum1 OSR.IntegrationRec67 OSR.IntegrationRec68 OSR.IntegrationRec69 OSR.IntegrationRec70 OSR.IntegrationRec71 OSR.IntegrationRec72 OSR.IntegrationRec73 OSR.IntegrationRec74 OSR.IntegrationRec75 OSR.IntegrationRec76 OSR.IntegrationRec77 OSR.IntegrationRec78 OSR.IntegrationRec79 OSR.IntegrationRec80 OSR.IntegrationRec81 OSR.IntegrationRec82 OSR.IntegrationRec83 OSR.IntegrationNum1 OSR.IntegrationRec84 OSR.IntegrationRec85 OSR.IntegrationRec86 OSR.IntegrationRec87 OSR.IntegrationRec88 OSR.IntegrationRec89 OSR.IntegrationRec90 OSR.IntegrationRec91 OSR.IntegrationRec92 OSR.IntegrationRec93 OSR.IntegrationRec94 OSR.IntegrationRec95 OSR.IntegrationRec96 OSR.IntegrationRec97 OSR.IntegrationRec98 OSR.IntegrationRec99 OSR.IntegrationRec100 OSR.IntegrationRec101 OSR.IntegrationRec102 OSR.IntegrationRec103 OSR.IntegrationRec104 OSR.IntegrationRec105 OSR.IntegrationRec106 OSR.IntegrationRec107 OSR.IntegrationRec108 OSR.IntegrationRec109 OSR.IntegrationRec110 OSR.IntegrationRec111 OSR.IntegrationRec112 OSR.IntegrationRec113 OSR.IntegrationRec114 OSR.IntegrationRec115 OSR.IntegrationRec116 OSR.IntegrationRec117 OSR.IntegrationRec118 OSR.IntegrationRec119 OSR.IntegrationRec120 OSR.IntegrationRec121 OSR.IntegrationRec122 OSR.IntegrationRec123 OSR.IntegrationRec124 OSR.IntegrationRec125 OSR.IntegrationRec126 OSR.IntegrationRec127 OSR.IntegrationFindings Filter Topology
+  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationRec53 OSR.IntegrationRec54 OSR.IntegrationRec55 OSR.IntegrationRec56 OSR.IntegrationRec57 OSR.IntegrationRec58 OSR.IntegrationRec59 OSR.IntegrationRec60 OSR.IntegrationRec61 OSR.IntegrationRec62 OSR.IntegrationRec63 OSR.IntegrationRec64 OSR.IntegrationRec65 OSR.IntegrationRec66 OSR.IntegrationNum1 OSR.IntegrationRec67 OSR.IntegrationRec68 OSR.IntegrationRec69 OSR.IntegrationRec70 OSR.IntegrationRec71 OSR.IntegrationRec72 OSR.IntegrationRec73 OSR.IntegrationRec74 OSR.IntegrationRec75 OSR.IntegrationRec76 OSR.IntegrationRec77 OSR.IntegrationRec78 OSR.IntegrationRec79 OSR.IntegrationRec80 OSR.IntegrationRec81 OSR.IntegrationRec82 OSR.IntegrationRec83 OSR.IntegrationNum1 OSR.IntegrationRec84 OSR.IntegrationRec85 OSR.IntegrationRec86 OSR.IntegrationRec87 OSR.IntegrationRec88 OSR.IntegrationRec89 OSR.IntegrationRec90 OSR.IntegrationRec91 OSR.IntegrationRec92 OSR.IntegrationRec93 OSR.IntegrationRec94 OSR.IntegrationRec95 OSR.IntegrationRec96 OSR.IntegrationRec97 OSR.IntegrationRec98 OSR.IntegrationRec99 OSR.IntegrationRec100 OSR.IntegrationRec101 OSR.IntegrationRec102 OSR.IntegrationRec103 OSR.IntegrationRec104 OSR.IntegrationRec105 OSR.IntegrationRec106 OSR.IntegrationRec107 OSR.IntegrationRec108 OSR.IntegrationRec109 OSR.IntegrationRec110 OSR.IntegrationRec111 OSR.IntegrationRec112 OSR.IntegrationRec113 OSR.IntegrationRec114 OSR.IntegrationRec115 OSR.IntegrationRec116 OSR.IntegrationRec117 OSR.IntegrationRec118 OSR.IntegrationRec119 OSR.IntegrationRec120 OSR.IntegrationRec121 OSR.IntegrationRec122 OSR.IntegrationRec123 OSR.IntegrationRec124 OSR.IntegrationRec125 OSR.IntegrationRec126 OSR.IntegrationRec127 OSR.IntegrationRec128 OSR.IntegrationRec129 OSR.IntegrationFindings Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -7568,7 +7570,98 @@ def catalogPart9 : List CEntry := [
       "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
       recFinding,
       condFinding "IGtQ[m, 0]",
-      optionalFinding "e., f., m., a. and b."] }
+      optionalFinding "e., f., m., a. and b."] },
+  { rule := rubi734r140, ruleDecl := ``rubi734r140,
+    proofs := [(.real, ``rubi734r140_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#arctanh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      optionalFinding "e., f., g., a., b. and c."] },
+  { rule := rubi534r41, ruleDecl := ``rubi534r41,
+    proofs := [(.real, ``rubi534r41_real), (.complex, ``rubi534r41_complex)],
+    findings := [
+      recFinding,
+      optionalFinding "b., c., d. and e."] },
+  { rule := rubi734r41, ruleDecl := ``rubi734r41,
+    proofs := [(.real, ``rubi734r41_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#arctanh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      optionalFinding "b., c., d. and e."] },
+  { rule := rubi734r138, ruleDecl := ``rubi734r138,
+    proofs := [(.real, ``rubi734r138_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#arctanh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      optionalFinding "f., g., b. and c."] },
+  { rule := rubi534r140, ruleDecl := ``rubi534r140,
+    proofs := [(.real, ``rubi534r140_real), (.complex, ``rubi534r140_complex)],
+    findings := [
+      recFinding,
+      optionalFinding "e., f., g., a., b. and c."] },
+  { rule := rubi734r132, ruleDecl := ``rubi734r132,
+    proofs := [(.real, ``rubi734r132_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#arctanh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      optionalFinding "d., m., b., c. and n."] },
+  { rule := rubi534r138, ruleDecl := ``rubi534r138,
+    proofs := [(.real, ``rubi534r138_real), (.complex, ``rubi534r138_complex)],
+    findings := [
+      recFinding,
+      optionalFinding "f., g., b. and c."] },
+  { rule := rubi534r132, ruleDecl := ``rubi534r132,
+    proofs := [(.real, ``rubi534r132_real), (.complex, ``rubi534r132_complex)],
+    findings := [
+      recFinding,
+      optionalFinding "d., m., b., c. and n."] },
+  { rule := rubi731r160, ruleDecl := ``rubi731r160,
+    proofs := [(.real, ``rubi731r160_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#arctanh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      optionalFinding "e., f., g., a., b. and c."] },
+  { rule := rubi731r61, ruleDecl := ``rubi731r61,
+    proofs := [(.real, ``rubi731r61_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#arctanh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      optionalFinding "b., c., d. and e."] },
+  { rule := rubi731r158, ruleDecl := ``rubi731r158,
+    proofs := [(.real, ``rubi731r158_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#arctanh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      optionalFinding "f., g., b. and c."] },
+  { rule := rubi731r152, ruleDecl := ``rubi731r152,
+    proofs := [(.real, ``rubi731r152_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#arctanh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      optionalFinding "d., m., b., c. and n."] },
+  { rule := rubi534r107, ruleDecl := ``rubi534r107,
+    proofs := [(.real, ``rubi534r107_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; the proof uses identities of the real functions and was not carried to ℂ.",
+      recFinding,
+      optionalFinding "f., m., e., q., b. and c."] },
+  { rule := rubi677r33, ruleDecl := ``rubi677r33,
+    proofs := [(.real, ``rubi677r33_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; the proof uses identities of the real functions and was not carried to ℂ.",
+      recFinding,
+      condFinding "EqQ[Add[Power[f, 2], Multiply[-1, Power[g, 2]]], 0]; EqQ[Add[Power[h, 2], Power[i, 2]], 0]; EqQ[Add[Multiply[g, h], Multiply[f, i]], 0]",
+      optionalFinding "c., a., b., i., d., e. and g."] }
 ]
 
 theorem catalogPart9_wellFormed : ∀ e ∈ catalogPart9,
@@ -7578,7 +7671,8 @@ theorem catalogPart9_wellFormed : ∀ e ∈ catalogPart9,
   rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=
