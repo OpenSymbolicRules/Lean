@@ -36,6 +36,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Six more RUBI rules are migrated and proved over ℝ by splits with a shifted
+  exponent: `1/(d + e x) = 1/d - e x/(d (d + e x))` for 7.3.4 #5, 7.3.1 #25 and
+  5.3.4 #5 (`OSR/IntegrationRec140.lean`), and `d (d + e x²)^q = (d + e x²)^(q+1)
+  - e x² (d + e x²)^q` for 7.3.4 #95, 7.3.1 #115 and 5.3.4 #95
+  (`IntegrationRec141`); the conditions force `d ≠ 0`. The catalogue has 920
+  rules (748 RUBI rules considered): 344 proved and 576 refuted over ℝ; 240
+  proved (119 certified), 370 refuted and 310 unproved over ℂ.
 - Eight more RUBI rules are migrated and proved over ℝ by linear splits
   with integer exponents (`OSR/IntegrationRec139.lean`): 7.3.4 #107 and
   7.3.1 #127 (linearity), 7.3.4 #130, 7.3.1 #150, 7.3.7 #3 and 7.3.4 #3

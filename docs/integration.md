@@ -969,6 +969,12 @@ integer exponents taken from the integrand's definedness: 7.3.4 #107 and
 7.3.1 #127 by linearity, 7.3.4 #130, 7.3.1 #150, 7.3.7 #3 and 7.3.4 #3 with the
 arctanh identity, and 6.1.12 #19 and #20 with the addition formulas of sinh
 and cosh.
+`OSR/IntegrationRec140.lean` and `IntegrationRec141` prove six splits with a
+shifted exponent over ℝ: `1/(d + e x) = 1/d - e x/(d (d + e x))` with
+`(f x)^(m+1) = (f x)^m f x` (7.3.4 #5, 7.3.1 #25, 5.3.4 #5), and
+`d (d + e x²)^q = (d + e x²)^(q+1) - e x² (d + e x²)^q` (7.3.4 #95, 7.3.1 #115,
+5.3.4 #95). In each the condition forces `d ≠ 0`: with `d = 0` it gives
+`e = 0`, and the integrand is nowhere defined.
 
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
@@ -980,8 +986,8 @@ condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 914 rules: 338 proved and 576 refuted over ℝ, 240
-proved (119 certified), 370 refuted and 304 unproved over ℂ.
+Integration now exports 920 rules: 344 proved and 576 refuted over ℝ, 240
+proved (119 certified), 370 refuted and 310 unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that
