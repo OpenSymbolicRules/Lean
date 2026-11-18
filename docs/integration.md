@@ -936,6 +936,17 @@ counterexample theorems need `sin c`, `cos c` or `sinh c` nonzero at a small
 integer `c`, which the first batch did not discharge. They stay unproved
 over ℂ.
 
+Ten more are proved over ℝ by integration by parts.
+`OSR/IntegrationRec131.lean` proves `∫ A(u) = x A(u) - ∫ x u' A'(u)` for
+`A = artanh` with `u = a + b xⁿ` or `c xⁿ` (7.3.4 #1, 7.3.7 #1, 7.3.1 #168)
+and `A = arctan` with `u = a + b xⁿ` (5.3.7 #1); it also derives the
+derivative of `Real.artanh`, `1/(1 - x²)` on `(-1, 1)`, which Mathlib lacks,
+from `Real.artanh_eq_half_log`. `OSR/IntegrationRec132.lean` and
+`IntegrationRec133` prove the rules for `(d + e log(f + g x²)) (a + b A(c x))`
+without and with a factor `xᵐ`, `m/2` a negative integer (7.3.4 #134, #142,
+7.3.1 #154, #162, 5.3.4 #134, #142): the product rule leaves exactly the two
+residual integrands.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.
@@ -946,8 +957,8 @@ condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 883 rules: 307 proved and 576 refuted over ℝ, 240
-proved (119 certified), 370 refuted and 273 unproved over ℂ.
+Integration now exports 893 rules: 317 proved and 576 refuted over ℝ, 240
+proved (119 certified), 370 refuted and 283 unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that

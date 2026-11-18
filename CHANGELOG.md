@@ -36,6 +36,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Ten more RUBI rules not considered before are migrated and proved over ℝ
+  by integration by parts: `∫ A(u) = x A(u) - ∫ x u' A'(u)` for arctanh and
+  arctan of `a + b xⁿ` or `c xⁿ` (7.3.4 #1, 7.3.7 #1, 7.3.1 #168, 5.3.7 #1;
+  `OSR/IntegrationRec131.lean`), and `(d + e log(f + g x²)) (a + b A(c x))`
+  with or without a factor `xᵐ` (7.3.4 #134, #142, 7.3.1 #154, #162, 5.3.4
+  #134, #142; `IntegrationRec132`, `IntegrationRec133`). Mathlib has no
+  derivative of `Real.artanh`; `OSR.IntegrationRec131.hasDerivAt_artanh`
+  derives it from `Real.artanh_eq_half_log`. The catalogue has 893 rules
+  (721 RUBI rules considered): 317 proved and 576 refuted over ℝ; 240 proved
+  (119 certified), 370 refuted and 283 unproved over ℂ.
 - 19 more RUBI rules not considered before are migrated and refuted over ℝ
   (`OSR/IntegrationRec130.lean`); their counterexample theorems needed the
   values of sin, cos and sinh at small integers to be nonzero. They stay
