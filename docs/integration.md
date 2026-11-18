@@ -906,6 +906,21 @@ polynomial once `m = -2p - 2` is substituted, and was checked exactly with
 Giac. For #95 (`p < -1`, so `m ≥ 2`) every power of `d + e x` that occurs has
 a nonnegative exponent.
 
+247 further RUBI rules are migrated and refuted as stated
+(`OSR/IntegrationRec120.lean` … `IntegrationRec127`), among the rules not
+considered before whose heads all have an OpenMath symbol and an OSR
+operator (Integration now maps the reciprocal, hyperbolic and inverse
+functions to `transc1` and reads `Sqrt` as `root(a, 2)`). A numerical search
+gives each an assignment of the metavariables and a point where the
+conditions hold and the integrand is defined nearby, but the result or a
+residual integrand is not; the counterexample theorems are generated from
+these witnesses. All 247 are refuted over ℝ and 53 over ℂ; the other 194 are
+unproved over ℂ, mostly because their integrand uses sec, csc, coth, sech,
+csch, an inverse function other than arctan, or a square root, none of which
+has a complex interpretation in the fragment. 39 further candidates whose
+real counterexample did not check, one whose condition depends on x (3.3 #43), and 141 that hold numerically, are left
+for later.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.
@@ -916,8 +931,8 @@ condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 603 rules: 293 proved and 310 refuted over ℝ, 236
-proved (119 certified), 317 refuted and 50 unproved over ℂ.
+Integration now exports 850 rules: 293 proved and 557 refuted over ℝ, 236
+proved (119 certified), 370 refuted and 244 unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that

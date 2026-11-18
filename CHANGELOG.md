@@ -36,6 +36,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- 247 RUBI rules not considered before are migrated and refuted as stated
+  (`OSR/IntegrationRec120.lean` … `IntegrationRec127`): for each, an explicit
+  assignment satisfies the conditions and makes the integrand defined near a
+  point where the result or a residual integrand is not. All are refuted
+  over ℝ; 53 also over ℂ. The other 194 are unproved over ℂ, most because
+  their integrand uses a function without a complex interpretation in the
+  fragment (sec, csc, coth, sech, csch, the inverse functions other than
+  arctan, or the square root), so it is nowhere defined there. They use the
+  `transc1` mappings of reciprocal, hyperbolic and inverse functions and the
+  `Sqrt` → `root(a, 2)` reading now committed in Integration. The catalogue
+  has 850 rules (678 RUBI rules considered): 293 proved and 557 refuted over
+  ℝ; 236 proved (119 certified), 370 refuted and 244 unproved over ℂ.
 - Nine RUBI rules not considered before, now migrated and proved over ℝ and
   ℂ as RUBI states them: 1.2.3.3 #41, #42 and #47 and 1.2.3.4 #92, #93 and
   #100 (`OSR/IntegrationRec118.lean`), which rewrite `(a + b x^(-n) + c
