@@ -931,6 +931,11 @@ polynomial ring once each function application is an atom (5.3.4 #41, #132,
 `OSR/IntegrationRec129.lean` proves 5.3.4 #107 and 6.7.7 #33 over ℝ, using
 the real definitions of the reciprocal functions.
 
+`OSR/IntegrationRec130.lean` refutes 19 more of the candidates over ℝ: their
+counterexample theorems need `sin c`, `cos c` or `sinh c` nonzero at a small
+integer `c`, which the first batch did not discharge. They stay unproved
+over ℂ.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.
@@ -941,8 +946,8 @@ condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 864 rules: 307 proved and 557 refuted over ℝ, 240
-proved (119 certified), 370 refuted and 254 unproved over ℂ.
+Integration now exports 883 rules: 307 proved and 576 refuted over ℝ, 240
+proved (119 certified), 370 refuted and 273 unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that

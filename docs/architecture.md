@@ -200,6 +200,7 @@ OSR/IntegrationRec119.lean RUBI 1.2.1.2 reductions with m + 2p + 2 = 0, with the
 OSR/IntegrationRec120.lean … IntegrationRec127.lean: RUBI rules refuted by numerical witnesses (247)
 OSR/IntegrationRec128.lean RUBI rules split by linearity into residual integrals, with their proofs (12)
 OSR/IntegrationRec129.lean RUBI rules split with the real reciprocal functions, with their proofs over ℝ (2)
+OSR/IntegrationRec130.lean further RUBI rules refuted by numerical witnesses over ℝ (19)
 OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (523)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),

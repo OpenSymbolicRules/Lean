@@ -36,6 +36,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- 19 more RUBI rules not considered before are migrated and refuted over ℝ
+  (`OSR/IntegrationRec130.lean`); their counterexample theorems needed the
+  values of sin, cos and sinh at small integers to be nonzero. They stay
+  unproved over ℂ. The catalogue has 883 rules (711 RUBI rules considered):
+  307 proved and 576 refuted over ℝ; 240 proved (119 certified), 370 refuted
+  and 273 unproved over ℂ.
 - 14 more RUBI rules not considered before are migrated and proved as
   stated: twelve split by linearity into residual integrals with constant
   coefficients (5.3.4 #41, #132, #138, #140 over ℝ and ℂ; 7.3.4 #41, #132,
