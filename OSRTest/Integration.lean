@@ -13,13 +13,13 @@ private def t : Expr := .var "t"
 -- The twenty rules of the syntactic inventory (FreeQ or NeQ conditions,
 -- registered heads, no Int in the result) are migrated or reported, plus
 -- 110 rules with residual integrals and seven unmigrated ones.
-#guard Integration.catalogVerified.length + Integration.notMigrated.length == 635
+#guard Integration.catalogVerified.length + Integration.notMigrated.length == 644
 #guard Integration.notMigrated.length == 41
-#guard (Integration.catalogVerified.filter (·.rule.shape == .antiderivRec)).length == 494
-#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 561
+#guard (Integration.catalogVerified.filter (·.rule.shape == .antiderivRec)).length == 503
+#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 570
 -- RUBI rules with EqQ conditions are stated with relation1#eq (Cond.eq).
 #guard (Integration.catalogVerified.filter fun e =>
-  e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 288
+  e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 297
 
 -- RUBI 4.16.1: the new degenerate-coefficient cases are refuted in both
 -- domains, with no proof or unresolved domain accidentally attached.
@@ -399,7 +399,8 @@ private def rules : List CRule :=
   "integration.rubi_1_3_1_r4_nondegenerate", "integration.rubi_1_3_2_r1_nondegenerate",
   "integration.rubi_2_3_r11_nondegenerate", "integration.rubi_2_3_r23_nondegenerate",
   "integration.rubi_2_3_r24_nondegenerate", "integration.rubi_2_3_r26_nondegenerate",
-  "integration.rubi_2_3_r35_nondegenerate"]
+  "integration.rubi_2_3_r35_nondegenerate",
+  "integration.rubi_1_2_3_3_r41", "integration.rubi_1_2_3_3_r42", "integration.rubi_1_2_3_3_r47", "integration.rubi_1_2_3_4_r92", "integration.rubi_1_2_3_4_r93", "integration.rubi_1_2_3_4_r100", "integration.rubi_1_2_1_2_r93", "integration.rubi_1_2_1_2_r94", "integration.rubi_1_2_1_2_r95"]
 
 -- A conditional rule applies only when its conditions are decided: int(λt. t^m)
 -- stays (m ≠ -1 is undecided), int(λt. t^(-1)) stays (decided false),

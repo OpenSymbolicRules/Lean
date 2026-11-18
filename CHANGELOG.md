@@ -32,6 +32,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Nine RUBI rules not considered before, now migrated and proved over ℝ and
+  ℂ as RUBI states them: 1.2.3.3 #41, #42 and #47 and 1.2.3.4 #92, #93 and
+  #100 (`OSR/IntegrationRec118.lean`), which rewrite `(a + b x^(-n) + c
+  x^(-2n))^p` as `x^(-2np) (c + b xⁿ + a x^(2n))^p`, and the reductions
+  1.2.1.2 #93, #94 and #95 with `m + 2p + 2 = 0` (`IntegrationRec119`). They
+  are the first entries of `catalogPart7`. The catalogue has 603 rules (431
+  RUBI rules considered): 293 proved and 310 refuted over ℝ; 236 proved (CERT
+  certified), 317 refuted and 50 unproved over ℂ.
 - Seven more variants, proved over ℝ and ℂ: 1.3.1 #4 and 1.3.2 #1
   (`OSR/IntegrationRec116.lean`), whose reported numerical failures were an
   artefact of the check's overflow guard, and 2.3 #11, #23, #24, #26 and #35

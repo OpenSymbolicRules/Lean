@@ -2,6 +2,8 @@ import OSR.Calculus
 import OSR.IntegrationRec48
 import OSR.IntegrationNum1
 import OSR.IntegrationRec117
+import OSR.IntegrationRec118
+import OSR.IntegrationRec119
 import OSR.IntegrationRec116
 import OSR.IntegrationRec115
 import OSR.IntegrationRec114
@@ -123,7 +125,7 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec41 OSR.IntegrationRec42
   OSR.IntegrationRec43 OSR.IntegrationRec44
   OSR.IntegrationRec45 OSR.IntegrationRec46
-  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationRec53 OSR.IntegrationRec54 OSR.IntegrationRec55 OSR.IntegrationRec56 OSR.IntegrationRec57 OSR.IntegrationRec58 OSR.IntegrationRec59 OSR.IntegrationRec60 OSR.IntegrationRec61 OSR.IntegrationRec62 OSR.IntegrationRec63 OSR.IntegrationRec64 OSR.IntegrationRec65 OSR.IntegrationRec66 OSR.IntegrationNum1 OSR.IntegrationRec67 OSR.IntegrationRec68 OSR.IntegrationRec69 OSR.IntegrationRec70 OSR.IntegrationRec71 OSR.IntegrationRec72 OSR.IntegrationRec73 OSR.IntegrationRec74 OSR.IntegrationRec75 OSR.IntegrationRec76 OSR.IntegrationRec77 OSR.IntegrationRec78 OSR.IntegrationRec79 OSR.IntegrationRec80 OSR.IntegrationRec81 OSR.IntegrationRec82 OSR.IntegrationRec83 OSR.IntegrationNum1 OSR.IntegrationRec84 OSR.IntegrationRec85 OSR.IntegrationRec86 OSR.IntegrationRec87 OSR.IntegrationRec88 OSR.IntegrationRec89 OSR.IntegrationRec90 OSR.IntegrationRec91 OSR.IntegrationRec92 OSR.IntegrationRec93 OSR.IntegrationRec94 OSR.IntegrationRec95 OSR.IntegrationRec96 OSR.IntegrationRec97 OSR.IntegrationRec98 OSR.IntegrationRec99 OSR.IntegrationRec100 OSR.IntegrationRec101 OSR.IntegrationRec102 OSR.IntegrationRec103 OSR.IntegrationRec104 OSR.IntegrationRec105 OSR.IntegrationRec106 OSR.IntegrationRec107 OSR.IntegrationRec108 OSR.IntegrationRec109 OSR.IntegrationRec110 OSR.IntegrationRec111 OSR.IntegrationRec112 OSR.IntegrationRec113 OSR.IntegrationRec114 OSR.IntegrationRec115 OSR.IntegrationRec116 OSR.IntegrationRec117 OSR.IntegrationFindings Filter Topology
+  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationRec53 OSR.IntegrationRec54 OSR.IntegrationRec55 OSR.IntegrationRec56 OSR.IntegrationRec57 OSR.IntegrationRec58 OSR.IntegrationRec59 OSR.IntegrationRec60 OSR.IntegrationRec61 OSR.IntegrationRec62 OSR.IntegrationRec63 OSR.IntegrationRec64 OSR.IntegrationRec65 OSR.IntegrationRec66 OSR.IntegrationNum1 OSR.IntegrationRec67 OSR.IntegrationRec68 OSR.IntegrationRec69 OSR.IntegrationRec70 OSR.IntegrationRec71 OSR.IntegrationRec72 OSR.IntegrationRec73 OSR.IntegrationRec74 OSR.IntegrationRec75 OSR.IntegrationRec76 OSR.IntegrationRec77 OSR.IntegrationRec78 OSR.IntegrationRec79 OSR.IntegrationRec80 OSR.IntegrationRec81 OSR.IntegrationRec82 OSR.IntegrationRec83 OSR.IntegrationNum1 OSR.IntegrationRec84 OSR.IntegrationRec85 OSR.IntegrationRec86 OSR.IntegrationRec87 OSR.IntegrationRec88 OSR.IntegrationRec89 OSR.IntegrationRec90 OSR.IntegrationRec91 OSR.IntegrationRec92 OSR.IntegrationRec93 OSR.IntegrationRec94 OSR.IntegrationRec95 OSR.IntegrationRec96 OSR.IntegrationRec97 OSR.IntegrationRec98 OSR.IntegrationRec99 OSR.IntegrationRec100 OSR.IntegrationRec101 OSR.IntegrationRec102 OSR.IntegrationRec103 OSR.IntegrationRec104 OSR.IntegrationRec105 OSR.IntegrationRec106 OSR.IntegrationRec107 OSR.IntegrationRec108 OSR.IntegrationRec109 OSR.IntegrationRec110 OSR.IntegrationRec111 OSR.IntegrationRec112 OSR.IntegrationRec113 OSR.IntegrationRec114 OSR.IntegrationRec115 OSR.IntegrationRec116 OSR.IntegrationRec117 OSR.IntegrationRec118 OSR.IntegrationRec119 OSR.IntegrationFindings Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -5388,9 +5390,72 @@ theorem catalogPart6_wellFormed : ∀ e ∈ catalogPart6,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
+def catalogPart7 : List CEntry := [
+  { rule := rubi1233r41, ruleDecl := ``rubi1233r41,
+    proofs := [(.real, ``rubi1233r41_real), (.complex, ``rubi1233r41_complex)],
+    findings := [
+      recFinding,
+      condFinding "EqQ[mn, Multiply[-1, n]]; EqQ[mn2, Multiply[2, mn]]; IntegerQ[p]",
+      optionalFinding "e., n., q., a., b., mn., c., mn2. and p."] },
+  { rule := rubi1233r42, ruleDecl := ``rubi1233r42,
+    proofs := [(.real, ``rubi1233r42_real), (.complex, ``rubi1233r42_complex)],
+    findings := [
+      recFinding,
+      condFinding "EqQ[mn2, Multiply[-2, n]]; IntegerQ[p]",
+      optionalFinding "e., n., q., a., c., mn2. and p."] },
+  { rule := rubi1233r47, ruleDecl := ``rubi1233r47,
+    proofs := [(.real, ``rubi1233r47_real), (.complex, ``rubi1233r47_complex)],
+    findings := [
+      recFinding,
+      condFinding "EqQ[mn, Multiply[-1, n]]; IntegerQ[p]",
+      optionalFinding "e., q., b., c., n. and p."] },
+  { rule := rubi1234r92, ruleDecl := ``rubi1234r92,
+    proofs := [(.real, ``rubi1234r92_real), (.complex, ``rubi1234r92_complex)],
+    findings := [
+      recFinding,
+      condFinding "EqQ[mn, Multiply[-1, n]]; EqQ[mn2, Multiply[2, mn]]; IntegerQ[p]",
+      optionalFinding "m., e., n., q., a., b., mn., c., mn2. and p."] },
+  { rule := rubi1234r93, ruleDecl := ``rubi1234r93,
+    proofs := [(.real, ``rubi1234r93_real), (.complex, ``rubi1234r93_complex)],
+    findings := [
+      recFinding,
+      condFinding "EqQ[mn2, Multiply[-2, n]]; IntegerQ[p]",
+      optionalFinding "m., e., n., q., a., c., mn2. and p."] },
+  { rule := rubi1234r100, ruleDecl := ``rubi1234r100,
+    proofs := [(.real, ``rubi1234r100_real), (.complex, ``rubi1234r100_complex)],
+    findings := [
+      recFinding,
+      condFinding "EqQ[mn, Multiply[-1, n]]; IntegerQ[p]",
+      optionalFinding "m., e., q., b., c., n. and p."] },
+  { rule := rubi1212r93, ruleDecl := ``rubi1212r93,
+    proofs := [(.real, ``rubi1212r93_real), (.complex, ``rubi1212r93_complex)],
+    findings := [
+      recFinding,
+      condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; NeQ[Add[Multiply[c, Power[d, 2]], Multiply[-1, b, d, e], Multiply[a, Power[e, 2]]], 0]; NeQ[Add[Multiply[2, c, d], Multiply[-1, b, e]], 0]; EqQ[Add[m, Multiply[2, p], 2], 0]; GtQ[p, 0]",
+      optionalFinding "d., e., a., b. and c."] },
+  { rule := rubi1212r94, ruleDecl := ``rubi1212r94,
+    proofs := [(.real, ``rubi1212r94_real), (.complex, ``rubi1212r94_complex)],
+    findings := [
+      recFinding,
+      condFinding "NeQ[Add[Multiply[c, Power[d, 2]], Multiply[a, Power[e, 2]]], 0]; EqQ[Add[m, Multiply[2, p], 2], 0]; GtQ[p, 0]",
+      optionalFinding "e. and c."] },
+  { rule := rubi1212r95, ruleDecl := ``rubi1212r95,
+    proofs := [(.real, ``rubi1212r95_real), (.complex, ``rubi1212r95_complex)],
+    findings := [
+      recFinding,
+      condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; NeQ[Add[Multiply[c, Power[d, 2]], Multiply[-1, b, d, e], Multiply[a, Power[e, 2]]], 0]; NeQ[Add[Multiply[2, c, d], Multiply[-1, b, e]], 0]; EqQ[Add[m, Multiply[2, p], 2], 0]; LtQ[p, -1]",
+      optionalFinding "d., e., a., b. and c."] }
+]
+
+theorem catalogPart7_wellFormed : ∀ e ∈ catalogPart7,
+    (if e.rule.shape == .antiderivRec then e.rule.recOk else e.rule.wellFormed) = true := by
+  intro e he
+  simp only [catalogPart7, List.mem_cons, List.mem_nil_iff, or_false] at he
+  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=
-  catalogPart1 ++ catalogPart2 ++ catalogPart3 ++ catalogPart4 ++ catalogPart5 ++ catalogPart6
+  catalogPart1 ++ catalogPart2 ++ catalogPart3 ++ catalogPart4 ++ catalogPart5 ++ catalogPart6 ++ catalogPart7
 
 /-- The Integration catalogue: the verified rules, then the strengthened variants checked
 numerically (`OSR.IntegrationNum1`), unproved. -/
@@ -5403,13 +5468,14 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
     (if e.rule.shape == .antiderivRec then e.rule.recOk else e.rule.wellFormed) = true := by
   intro e he
   simp only [catalog, catalogVerified, List.mem_append] at he
-  rcases he with (((((h | h) | h) | h) | h) | h) | h
+  rcases he with ((((((h | h) | h) | h) | h) | h) | h) | h
   · exact catalogPart1_wellFormed e h
   · exact catalogPart2_wellFormed e h
   · exact catalogPart3_wellFormed e h
   · exact catalogPart4_wellFormed e h
   · exact catalogPart5_wellFormed e h
   · exact catalogPart6_wellFormed e h
+  · exact catalogPart7_wellFormed e h
   · exact IntegrationNum1.entries_wellFormed e h
 
 end OSR.Integration

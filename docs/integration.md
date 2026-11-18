@@ -895,6 +895,17 @@ constant integer; over ℝ and ℂ an integer-valued function continuous at a
 point is constant near it, so `g' = 0` there, which makes the logarithmic
 term of the result vanish (`b = 0`, or `d = 0`, or `f = 0` for #35).
 
+Nine RUBI rules that had not been considered are migrated and proved as
+RUBI states them, over ℝ and ℂ. `OSR/IntegrationRec118.lean` proves 1.2.3.3
+#41, #42 and #47 and 1.2.3.4 #92, #93 and #100: for an integer `p`,
+`(a + b x^(-n) + c x^(-2n))^p = x^(-2np) (c + b xⁿ + a x^(2n))^p` (and the
+analogue with `x^(-np)`) wherever the integrand is defined, since `x ≠ 0`
+there unless `n = 0`. `OSR/IntegrationRec119.lean` proves the reductions
+1.2.1.2 #93, #94 and #95 (`m + 2p + 2 = 0`); the derivative identity is
+polynomial once `m = -2p - 2` is substituted, and was checked exactly with
+Giac. For #95 (`p < -1`, so `m ≥ 2`) every power of `d + e x` that occurs has
+a nonnegative exponent.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.
@@ -905,8 +916,8 @@ condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 594 rules: 284 proved and 310 refuted over ℝ, 227
-proved (113 certified), 317 refuted and 50 unproved over ℂ.
+Integration now exports 603 rules: 293 proved and 310 refuted over ℝ, 236
+proved (119 certified), 317 refuted and 50 unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that
