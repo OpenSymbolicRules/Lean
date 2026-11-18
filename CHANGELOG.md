@@ -36,6 +36,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Five more RUBI rules are migrated and proved over ℝ by integration by
+  parts: arctan(tanh(a + b x)) and arctan(coth(a + b x)) (5.3.7 #43, #45;
+  `OSR/IntegrationRec134.lean`, with the derivatives of tanh and coth of a
+  linear argument), and arctanh(c x/√(a + b x²)) with `b = c²` and
+  arctan(c x/√(a + b x²)) with `b = -c²` (7.3.4 #13, 7.3.7 #13, 5.3.7 #13;
+  `IntegrationRec135`). The catalogue has 898 rules (726 RUBI rules
+  considered): 322 proved and 576 refuted over ℝ; 240 proved (119 certified),
+  370 refuted and 288 unproved over ℂ.
 - Ten more RUBI rules not considered before are migrated and proved over ℝ
   by integration by parts: `∫ A(u) = x A(u) - ∫ x u' A'(u)` for arctanh and
   arctan of `a + b xⁿ` or `c xⁿ` (7.3.4 #1, 7.3.7 #1, 7.3.1 #168, 5.3.7 #1;

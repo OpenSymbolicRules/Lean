@@ -203,6 +203,7 @@ OSR/IntegrationRec129.lean RUBI rules split with the real reciprocal functions, 
 OSR/IntegrationRec130.lean further RUBI rules refuted by numerical witnesses over ℝ (19)
 OSR/IntegrationRec131.lean integration by parts of arctanh/arctan of a monomial, the derivative of Real.artanh (4)
 OSR/IntegrationRec132.lean, IntegrationRec133.lean: integration by parts of log·arctanh/arctan products (6)
+OSR/IntegrationRec134.lean, IntegrationRec135.lean: integration by parts of arctan(tanh), arctan(coth) and A(c x/√(a + b x²)) (5)
 OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (523)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),

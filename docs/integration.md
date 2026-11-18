@@ -947,6 +947,14 @@ without and with a factor `xᵐ`, `m/2` a negative integer (7.3.4 #134, #142,
 7.3.1 #154, #162, 5.3.4 #134, #142): the product rule leaves exactly the two
 residual integrands.
 
+`OSR/IntegrationRec134.lean` proves 5.3.7 #43 and #45 over ℝ:
+`(arctan ∘ tanh)(a + b x)' = b/(cosh² + sinh²) = b sech(2a + 2b x)` and the
+analogue for coth, with the derivatives of tanh and coth of a linear
+argument derived from the quotient rule. `OSR/IntegrationRec135.lean` proves
+7.3.4 #13, 7.3.7 #13 (arctanh, `b = c²`) and 5.3.7 #13 (arctan, `b = -c²`) for
+`A(c x/√(a + b x²))`: `x A'(u) u' = c x/√(a + b x²)` is a field identity in
+`r = 1/√(a + b x²)`.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.
@@ -957,8 +965,8 @@ condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 893 rules: 317 proved and 576 refuted over ℝ, 240
-proved (119 certified), 370 refuted and 283 unproved over ℂ.
+Integration now exports 898 rules: 322 proved and 576 refuted over ℝ, 240
+proved (119 certified), 370 refuted and 288 unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that
