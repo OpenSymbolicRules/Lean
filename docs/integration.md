@@ -961,6 +961,10 @@ argument derived from the quotient rule. `OSR/IntegrationRec135.lean` proves
 the condition gives `q² = d (1 ∓ c² x²)`, so after eliminating
 `d = q²/(1 ∓ c² x²)` the derivative identity is rational in `q`.
 
+`OSR/IntegrationRec138.lean` proves 7.3.4 #39 and 7.3.1 #59 over ℝ:
+`artanh u = (log(1 + u) - log(1 - u))/2` for `-1 < u < 1` (from
+`Real.artanh_eq_half_log`) splits the integrand into the residual integrands.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.
@@ -971,8 +975,8 @@ condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
 
-Integration now exports 904 rules: 328 proved and 576 refuted over ℝ, 240
-proved (119 certified), 370 refuted and 294 unproved over ℂ.
+Integration now exports 906 rules: 330 proved and 576 refuted over ℝ, 240
+proved (119 certified), 370 refuted and 296 unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that

@@ -205,6 +205,7 @@ OSR/IntegrationRec131.lean integration by parts of arctanh/arctan of a monomial,
 OSR/IntegrationRec132.lean, IntegrationRec133.lean: integration by parts of log·arctanh/arctan products (6)
 OSR/IntegrationRec134.lean, IntegrationRec135.lean: integration by parts of arctan(tanh), arctan(coth) and A(c x/√(a + b x²)) (5)
 OSR/IntegrationRec136.lean, IntegrationRec137.lean: integration by parts of (a + b A(c x))^p over square roots (6)
+OSR/IntegrationRec138.lean arctanh split into logarithms (2)
 OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (523)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),

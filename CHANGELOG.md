@@ -36,6 +36,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- 7.3.4 #39 and 7.3.1 #59 are migrated and proved over ℝ
+  (`OSR/IntegrationRec138.lean`): `artanh u = (log(1 + u) - log(1 - u))/2` on
+  `(-1, 1)` splits the integrand into the two residual integrands. The
+  catalogue has 906 rules (734 RUBI rules considered): 330 proved and 576
+  refuted over ℝ; 240 proved (119 certified), 370 refuted and 296 unproved
+  over ℂ.
 - Six more RUBI rules are migrated and proved over ℝ by integration by parts:
   `(a + b A(c x))^p/(x² √(d + e x²))` and `(f x)^m (a + b A(c x))^p/√(d + e x²)`
   for `A = artanh` with `c² d + e = 0` and `A = arctan` with `e = c² d`
