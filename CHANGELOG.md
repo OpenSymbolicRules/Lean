@@ -43,6 +43,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Six more RUBI rules are migrated (`OSR/IntegrationRec161.lean`): integrations
+  by parts of `(e x)^m sinh(c + d xⁿ)`, `(e x)^m cosh(c + d xⁿ)` (6.1.12 #27,
+  #28) and of `x^m sin^p(a + b xⁿ)`, `x^m cos^p(a + b xⁿ)` with `m + n = 0`
+  (4.1.12 #41, #42), proved over ℝ and ℂ, and of
+  `(a + b log(c (d + e x)ⁿ))^p/(f + g x)²` (3.3 #9) over ℝ; 5.3.5 #7 is refuted
+  over ℝ and ℂ at `f = 0`, where the result's `(f (m + 1))^(-1)` is undefined.
+  The catalogue has 1007 rules (835 RUBI rules considered): 422 proved and 585
+  refuted over ℝ; 253 proved (120 certified), 375 refuted and 379 unproved
+  over ℂ.
 - Four more RUBI rules are migrated (`OSR/IntegrationRec159.lean`,
   `IntegrationRec160`): 5.3.4 #144, 6.3.12 #3 and #4 are refuted over ℝ
   (6.3.12 #3 over ℂ too) by explicit assignments at which the integrand is

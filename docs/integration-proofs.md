@@ -491,6 +491,12 @@ rules of 2.2 and 2.3 (which, like 4.7.7 #1 and #2, stay out of the fragment):
 5.3.4 #144 and 6.3.12 #3, #4, refuted over ℝ (6.3.12 #3 over ℂ too). `IntegrationRec160` proves 1.2.2.3
 #25 over ℝ by linearity.
 
+`OSR/IntegrationRec161.lean` integrates by parts 6.1.12 #27, #28 and 4.1.12
+#41, #42 over ℝ and ℂ (for `m + n = 0`, `n x^(m+1) x^(n-1) = n` also at
+`x = 0`, where `n = 0`) and 3.3 #9 over ℝ (`(d + e x) θ' = n e` for
+`θ = log(c (d + e x)ⁿ)`, as for 6.7.8), and refutes 5.3.5 #7 over ℝ and ℂ at
+`f = 0`.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.
