@@ -482,6 +482,15 @@ and #8 stay among the rules not migrated.
 - 6.7.9 #73 (ℝ and ℂ) and #75: `2 (a + b cosh² u + c sinh² u) = 2a + b - c +
   (b + c) cosh 2u`, multiplying by `cosh² u` for the sech/tanh form.
 
+A numerical pass over the 399 RUBI rules not yet considered whose heads and
+conditions the fragment translates (rules with a generic factor `u`, `v` or
+`w` excluded) finds 47 candidates true and 164 false. The definedness search
+finds witnesses for 26 of the false ones; `OSR/IntegrationRec159.lean` keeps
+the three that compile, have conditions free of x and are not exponential
+rules of 2.2 and 2.3 (which, like 4.7.7 #1 and #2, stay out of the fragment):
+5.3.4 #144 and 6.3.12 #3, #4, refuted over ℝ (6.3.12 #3 over ℂ too). `IntegrationRec160` proves 1.2.2.3
+#25 over ℝ by linearity.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.

@@ -43,6 +43,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Four more RUBI rules are migrated (`OSR/IntegrationRec159.lean`,
+  `IntegrationRec160`): 5.3.4 #144, 6.3.12 #3 and #4 are refuted over ℝ
+  (6.3.12 #3 over ℂ too) by explicit assignments at which the integrand is
+  defined but the result is not, and 1.2.2.3 #25 is proved over ℝ by
+  linearity. The catalogue has 1001 rules (829 RUBI rules considered): 417
+  proved and 584 refuted over ℝ; 249 proved (120 certified), 374 refuted and
+  378 unproved over ℂ.
 - Eight more RUBI rules are migrated (`OSR/IntegrationRec157.lean`,
   `IntegrationRec158`): 4.7.6 #4, #5 and 6.7.6 #4 are refuted over ℝ and ℂ (at
   `n = 1` a residual integrand keeps `sin^(-1)`, `cos^(-1)` or `sinh^(-1)` where

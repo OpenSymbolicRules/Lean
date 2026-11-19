@@ -572,8 +572,8 @@ The strengthened variants of refuted rules and the proof batches that follow
 are described in [Integration: strengthened variants and later proof
 batches](integration-proofs.md).
 
-Integration now exports 997 rules: 416 proved and 581 refuted over ℝ, 249
-proved (120 certified), 373 refuted and 375 unproved over ℂ.
+Integration now exports 1001 rules: 417 proved and 584 refuted over ℝ, 249
+proved (120 certified), 374 refuted and 378 unproved over ℂ.
 
 A numerical truth check of the remaining candidates (development tool,
 finite differences with linear residual antiderivatives) finds 69 that
