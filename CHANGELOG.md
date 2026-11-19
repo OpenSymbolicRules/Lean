@@ -43,6 +43,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- RUBI rules with exponentials written `E^u` are migrated: `E^u` reads as
+  `exp(u)` (`transc1#exp`). 14 are proved over ℝ and ℂ
+  (`OSR/IntegrationRec169.lean`: 6.1.12 #1, #2, #7, #8, #29, #30, #55, #56,
+  6.1.13 #1, #2 and 6.7.9 #91 to #94, which split `sinh` and `cosh` into
+  exponentials) and 10 are refuted over ℝ at degenerate coefficients
+  (`OSR/IntegrationRec168.lean`). The catalogue has 1099 rules (1206 RUBI
+  rules considered): 438 proved and 661 refuted over ℝ; 267 proved (130
+  certified), 376 refuted and 456 unproved over ℂ.
 - 279 more RUBI rules are reported in `Integration.notMigrated` (320 in all):
   in 147 the integrand raises an expression to an exponent with denominator 2,
   3, 4 or 6, and in 132 it contains a power `F^(…)` with a non-constant
@@ -225,7 +233,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   x^(-2n))^p` as `x^(-2np) (c + b xⁿ + a x^(2n))^p`, and the reductions
   1.2.1.2 #93, #94 and #95 with `m + 2p + 2 = 0` (`IntegrationRec119`). They
   are the first entries of `catalogPart7`. The catalogue has 603 rules (431
-  RUBI rules considered): 293 proved and 310 refuted over ℝ; 236 proved (CERT
+  RUBI rules considered): 293 proved and 310 refuted over ℝ; 236 proved (130
   certified), 317 refuted and 50 unproved over ℂ.
 - Seven more variants, proved over ℝ and ℂ: 1.3.1 #4 and 1.3.2 #1
   (`OSR/IntegrationRec116.lean`), whose reported numerical failures were an

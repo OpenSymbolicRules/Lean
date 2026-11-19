@@ -537,6 +537,16 @@ far whose integrand the fragment cannot interpret are now reported in
 depends on `x`. Exponentials written `E^u` are left for a translation of `E^u`
 into `transc1#exp`.
 
+That translation is now made: `E^u` reads as `exp(u)`, both in the Lean rules
+and in the faithfulness check (`Integration/scripts/v1_faithfulness.py`),
+since the v0.1 corpus writes every exponential so; a bare `E` is still left
+out. `OSR/IntegrationRec169.lean` proves over ℝ and ℂ the 14 rules that
+rewrite `sinh u` and `cosh u` as `(exp u ∓ exp(-u))/2` (6.1.12 #1, #2, #7, #8,
+#29, #30, #55, #56, 6.1.13 #1, #2 and 6.7.9 #91 to #94).
+`OSR/IntegrationRec168.lean` refutes 10 more over ℝ, all at degenerate
+coefficients where the result divides by zero (7.3.4 #33, #37, #39, 7.3.7
+#33, #37, #39, 6.7.8 #25, #26, 6.7.9 #4, 5.3.6 #13).
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.

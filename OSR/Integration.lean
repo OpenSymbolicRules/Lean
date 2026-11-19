@@ -52,6 +52,8 @@ import OSR.IntegrationRec164
 import OSR.IntegrationRec165
 import OSR.IntegrationRec166
 import OSR.IntegrationRec167
+import OSR.IntegrationRec168
+import OSR.IntegrationRec169
 import OSR.IntegrationRec116
 import OSR.IntegrationRec115
 import OSR.IntegrationRec114
@@ -173,7 +175,7 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec41 OSR.IntegrationRec42
   OSR.IntegrationRec43 OSR.IntegrationRec44
   OSR.IntegrationRec45 OSR.IntegrationRec46
-  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationRec53 OSR.IntegrationRec54 OSR.IntegrationRec55 OSR.IntegrationRec56 OSR.IntegrationRec57 OSR.IntegrationRec58 OSR.IntegrationRec59 OSR.IntegrationRec60 OSR.IntegrationRec61 OSR.IntegrationRec62 OSR.IntegrationRec63 OSR.IntegrationRec64 OSR.IntegrationRec65 OSR.IntegrationRec66 OSR.IntegrationNum1 OSR.IntegrationRec67 OSR.IntegrationRec68 OSR.IntegrationRec69 OSR.IntegrationRec70 OSR.IntegrationRec71 OSR.IntegrationRec72 OSR.IntegrationRec73 OSR.IntegrationRec74 OSR.IntegrationRec75 OSR.IntegrationRec76 OSR.IntegrationRec77 OSR.IntegrationRec78 OSR.IntegrationRec79 OSR.IntegrationRec80 OSR.IntegrationRec81 OSR.IntegrationRec82 OSR.IntegrationRec83 OSR.IntegrationNum1 OSR.IntegrationRec84 OSR.IntegrationRec85 OSR.IntegrationRec86 OSR.IntegrationRec87 OSR.IntegrationRec88 OSR.IntegrationRec89 OSR.IntegrationRec90 OSR.IntegrationRec91 OSR.IntegrationRec92 OSR.IntegrationRec93 OSR.IntegrationRec94 OSR.IntegrationRec95 OSR.IntegrationRec96 OSR.IntegrationRec97 OSR.IntegrationRec98 OSR.IntegrationRec99 OSR.IntegrationRec100 OSR.IntegrationRec101 OSR.IntegrationRec102 OSR.IntegrationRec103 OSR.IntegrationRec104 OSR.IntegrationRec105 OSR.IntegrationRec106 OSR.IntegrationRec107 OSR.IntegrationRec108 OSR.IntegrationRec109 OSR.IntegrationRec110 OSR.IntegrationRec111 OSR.IntegrationRec112 OSR.IntegrationRec113 OSR.IntegrationRec114 OSR.IntegrationRec115 OSR.IntegrationRec116 OSR.IntegrationRec117 OSR.IntegrationRec118 OSR.IntegrationRec119 OSR.IntegrationRec120 OSR.IntegrationRec121 OSR.IntegrationRec122 OSR.IntegrationRec123 OSR.IntegrationRec124 OSR.IntegrationRec125 OSR.IntegrationRec126 OSR.IntegrationRec127 OSR.IntegrationRec128 OSR.IntegrationRec129 OSR.IntegrationRec130 OSR.IntegrationRec131 OSR.IntegrationRec132 OSR.IntegrationRec133 OSR.IntegrationRec134 OSR.IntegrationRec135 OSR.IntegrationRec136 OSR.IntegrationRec137 OSR.IntegrationRec138 OSR.IntegrationRec139 OSR.IntegrationRec140 OSR.IntegrationRec141 OSR.IntegrationRec142 OSR.IntegrationRec143 OSR.IntegrationRec144 OSR.IntegrationRec145 OSR.IntegrationRec146 OSR.IntegrationRec147 OSR.IntegrationRec148 OSR.IntegrationRec149 OSR.IntegrationRec150 OSR.IntegrationRec151 OSR.IntegrationRec152 OSR.IntegrationRec153 OSR.IntegrationRec154 OSR.IntegrationRec155 OSR.IntegrationRec156 OSR.IntegrationRec157 OSR.IntegrationRec158 OSR.IntegrationRec159 OSR.IntegrationRec160 OSR.IntegrationRec161 OSR.IntegrationRec162 OSR.IntegrationRec163 OSR.IntegrationRec164 OSR.IntegrationRec165 OSR.IntegrationRec166 OSR.IntegrationRec167 OSR.IntegrationFindings Filter Topology
+  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationRec53 OSR.IntegrationRec54 OSR.IntegrationRec55 OSR.IntegrationRec56 OSR.IntegrationRec57 OSR.IntegrationRec58 OSR.IntegrationRec59 OSR.IntegrationRec60 OSR.IntegrationRec61 OSR.IntegrationRec62 OSR.IntegrationRec63 OSR.IntegrationRec64 OSR.IntegrationRec65 OSR.IntegrationRec66 OSR.IntegrationNum1 OSR.IntegrationRec67 OSR.IntegrationRec68 OSR.IntegrationRec69 OSR.IntegrationRec70 OSR.IntegrationRec71 OSR.IntegrationRec72 OSR.IntegrationRec73 OSR.IntegrationRec74 OSR.IntegrationRec75 OSR.IntegrationRec76 OSR.IntegrationRec77 OSR.IntegrationRec78 OSR.IntegrationRec79 OSR.IntegrationRec80 OSR.IntegrationRec81 OSR.IntegrationRec82 OSR.IntegrationRec83 OSR.IntegrationNum1 OSR.IntegrationRec84 OSR.IntegrationRec85 OSR.IntegrationRec86 OSR.IntegrationRec87 OSR.IntegrationRec88 OSR.IntegrationRec89 OSR.IntegrationRec90 OSR.IntegrationRec91 OSR.IntegrationRec92 OSR.IntegrationRec93 OSR.IntegrationRec94 OSR.IntegrationRec95 OSR.IntegrationRec96 OSR.IntegrationRec97 OSR.IntegrationRec98 OSR.IntegrationRec99 OSR.IntegrationRec100 OSR.IntegrationRec101 OSR.IntegrationRec102 OSR.IntegrationRec103 OSR.IntegrationRec104 OSR.IntegrationRec105 OSR.IntegrationRec106 OSR.IntegrationRec107 OSR.IntegrationRec108 OSR.IntegrationRec109 OSR.IntegrationRec110 OSR.IntegrationRec111 OSR.IntegrationRec112 OSR.IntegrationRec113 OSR.IntegrationRec114 OSR.IntegrationRec115 OSR.IntegrationRec116 OSR.IntegrationRec117 OSR.IntegrationRec118 OSR.IntegrationRec119 OSR.IntegrationRec120 OSR.IntegrationRec121 OSR.IntegrationRec122 OSR.IntegrationRec123 OSR.IntegrationRec124 OSR.IntegrationRec125 OSR.IntegrationRec126 OSR.IntegrationRec127 OSR.IntegrationRec128 OSR.IntegrationRec129 OSR.IntegrationRec130 OSR.IntegrationRec131 OSR.IntegrationRec132 OSR.IntegrationRec133 OSR.IntegrationRec134 OSR.IntegrationRec135 OSR.IntegrationRec136 OSR.IntegrationRec137 OSR.IntegrationRec138 OSR.IntegrationRec139 OSR.IntegrationRec140 OSR.IntegrationRec141 OSR.IntegrationRec142 OSR.IntegrationRec143 OSR.IntegrationRec144 OSR.IntegrationRec145 OSR.IntegrationRec146 OSR.IntegrationRec147 OSR.IntegrationRec148 OSR.IntegrationRec149 OSR.IntegrationRec150 OSR.IntegrationRec151 OSR.IntegrationRec152 OSR.IntegrationRec153 OSR.IntegrationRec154 OSR.IntegrationRec155 OSR.IntegrationRec156 OSR.IntegrationRec157 OSR.IntegrationRec158 OSR.IntegrationRec159 OSR.IntegrationRec160 OSR.IntegrationRec161 OSR.IntegrationRec162 OSR.IntegrationRec163 OSR.IntegrationRec164 OSR.IntegrationRec165 OSR.IntegrationRec166 OSR.IntegrationRec167 OSR.IntegrationRec168 OSR.IntegrationRec169 OSR.IntegrationFindings Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -10015,7 +10017,144 @@ def catalogPart11 : List CEntry := [
       "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
       recFinding,
       condFinding "EqQ[Add[e1, Multiply[-1, c, d1]], 0]; EqQ[Add[e2, Multiply[c, d2]], 0]; GtQ[d1, 0]; LtQ[d2, 0]; IGtQ[n, 0]",
-      optionalFinding "h., f., g., m., a., b., c., n., e1. and e2."] }
+      optionalFinding "h., f., g., m., a., b., c., n., e1. and e2."] },
+  { rule := rubi737r37, ruleDecl := ``rubi737r37, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi737r37_counterexample_real)],
+    findings := [
+      "counterexample: at m = 1 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi737r37_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; transc1#arctanh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; NeQ[Power[Add[c, Multiply[-1, d]], 2], 1]",
+      optionalFinding "e., f., m., c., d., a. and b."] },
+  { rule := rubi734mr33, ruleDecl := ``rubi734mr33, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi734mr33_counterexample_real)],
+    findings := [
+      "counterexample: at d = 1, m = 2 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi734mr33_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; transc1#arctanh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; EqQ[Power[Add[c, Multiply[-1, d]], 2], 1]",
+      optionalFinding "e., f., m., c., d., a. and b."] },
+  { rule := rubi737r39, ruleDecl := ``rubi737r39, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi737r39_counterexample_real)],
+    findings := [
+      "counterexample: at a = -1, m = 4 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi737r39_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; transc1#arctanh and transc1#coth have no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; NeQ[Power[Add[c, Multiply[-1, d]], 2], 1]",
+      optionalFinding "e., f., m., c., d., a. and b."] },
+  { rule := rubi734mr37, ruleDecl := ``rubi734mr37, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi734mr37_counterexample_real)],
+    findings := [
+      "counterexample: at a = 1/2, m = 1 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi734mr37_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; transc1#arctanh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; NeQ[Power[Add[c, Multiply[-1, d]], 2], 1]",
+      optionalFinding "e., f., m., c., d., a. and b."] },
+  { rule := rubi678r25, ruleDecl := ``rubi678r25, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi678r25_counterexample_real)],
+    findings := [
+      "counterexample: at c = 3, d = -1/2, e = -3, f = 1, g = 1, i = 3, r = 4 and the other metavariables 0 the conditions hold and the integrand is defined near x = 0, but the result is not defined at x = 0 (Lean theorem rubi678r25_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; the counterexample of the other domain was not established over ℂ.",
+      recFinding,
+      optionalFinding "i., r., h., e., f., g., m., q., d., a., b., c. and n."] },
+  { rule := rubi734mr39, ruleDecl := ``rubi734mr39, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi734mr39_counterexample_real)],
+    findings := [
+      "counterexample: at a = 2, m = 2 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi734mr39_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; transc1#arctanh and transc1#coth have no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; NeQ[Power[Add[c, Multiply[-1, d]], 2], 1]",
+      optionalFinding "e., f., m., c., d., a. and b."] },
+  { rule := rubi536r13, ruleDecl := ``rubi536r13, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi536r13_counterexample_real)],
+    findings := [
+      "counterexample: at c = 1/2 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi536r13_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; the counterexample of the other domain was not established over ℂ.",
+      condFinding "EqQ[d, Multiply[Power[a, 2], c]]",
+      optionalFinding "n., a. and d."] },
+  { rule := rubi679r4, ruleDecl := ``rubi679r4, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi679r4_counterexample_real)],
+    findings := [
+      "counterexample: at a = -2, b = -2, m = 1 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi679r4_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; the counterexample of the other domain was not established over ℂ.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; EqQ[Add[Power[a, 2], Multiply[-1, Power[b, 2]]], 0]",
+      optionalFinding "e., f., m., c., d. and b."] },
+  { rule := rubi678r26, ruleDecl := ``rubi678r26, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi678r26_counterexample_real)],
+    findings := [
+      "counterexample: at a = -3, c = 1/2, g = 1, h = -1, r = 2 and the other metavariables 0 the conditions hold and the integrand is defined near x = 0, but the result is not defined at x = 0 (Lean theorem rubi678r26_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; the counterexample of the other domain was not established over ℂ.",
+      recFinding,
+      optionalFinding "i., r., h., e., f., g., m., q., d., a., b., c. and n."] },
+  { rule := rubi737r33, ruleDecl := ``rubi737r33, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi737r33_counterexample_real)],
+    findings := [
+      "counterexample: at d = 1, m = 4 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi737r33_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; transc1#arctanh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; EqQ[Power[Add[c, Multiply[-1, d]], 2], 1]",
+      optionalFinding "e., f., m., c., d., a. and b."] },
+  { rule := rubi6112r1, ruleDecl := ``rubi6112r1,
+    proofs := [(.real, ``rubi6112r1_real), (.complex, ``rubi6112r1_complex)],
+    findings := [
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[n, 1]",
+      optionalFinding "c. and d."] },
+  { rule := rubi6112r2, ruleDecl := ``rubi6112r2,
+    proofs := [(.real, ``rubi6112r2_real), (.complex, ``rubi6112r2_complex)],
+    findings := [
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[n, 1]",
+      optionalFinding "c. and d."] },
+  { rule := rubi6112r29, ruleDecl := ``rubi6112r29,
+    proofs := [(.real, ``rubi6112r29_real), (.complex, ``rubi6112r29_complex)],
+    findings := [
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[n, 0]",
+      optionalFinding "e., m., c. and d."] },
+  { rule := rubi6112r30, ruleDecl := ``rubi6112r30,
+    proofs := [(.real, ``rubi6112r30_real), (.complex, ``rubi6112r30_complex)],
+    findings := [
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[n, 0]",
+      optionalFinding "e., m., c. and d."] },
+  { rule := rubi6112r55, ruleDecl := ``rubi6112r55,
+    proofs := [(.real, ``rubi6112r55_real), (.complex, ``rubi6112r55_complex)],
+    findings := [
+      recFinding,
+      optionalFinding "e., m., c. and d."] },
+  { rule := rubi6112r56, ruleDecl := ``rubi6112r56,
+    proofs := [(.real, ``rubi6112r56_real), (.complex, ``rubi6112r56_complex)],
+    findings := [
+      recFinding,
+      optionalFinding "e., m., c. and d."] },
+  { rule := rubi6112r7, ruleDecl := ``rubi6112r7,
+    proofs := [(.real, ``rubi6112r7_real), (.complex, ``rubi6112r7_complex)],
+    findings := [
+      recFinding,
+      optionalFinding "c. and d."] },
+  { rule := rubi6112r8, ruleDecl := ``rubi6112r8,
+    proofs := [(.real, ``rubi6112r8_real), (.complex, ``rubi6112r8_complex)],
+    findings := [
+      recFinding,
+      optionalFinding "c. and d."] },
+  { rule := rubi6113r1, ruleDecl := ``rubi6113r1,
+    proofs := [(.real, ``rubi6113r1_real), (.complex, ``rubi6113r1_complex)],
+    findings := [
+      recFinding,
+      optionalFinding "a., b. and c."] }
 ]
 
 theorem catalogPart11_wellFormed : ∀ e ∈ catalogPart11,
@@ -10027,11 +10166,46 @@ theorem catalogPart11_wellFormed : ∀ e ∈ catalogPart11,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+
+def catalogPart12 : List CEntry := [
+  { rule := rubi6113r2, ruleDecl := ``rubi6113r2,
+    proofs := [(.real, ``rubi6113r2_real), (.complex, ``rubi6113r2_complex)],
+    findings := [
+      recFinding,
+      optionalFinding "a., b. and c."] },
+  { rule := rubi679r91, ruleDecl := ``rubi679r91,
+    proofs := [(.real, ``rubi679r91_real), (.complex, ``rubi679r91_complex)],
+    findings := [
+      recFinding,
+      optionalFinding "d., a., b., c. and n."] },
+  { rule := rubi679r92, ruleDecl := ``rubi679r92,
+    proofs := [(.real, ``rubi679r92_real), (.complex, ``rubi679r92_complex)],
+    findings := [
+      recFinding,
+      optionalFinding "d., a., b., c. and n."] },
+  { rule := rubi679r93, ruleDecl := ``rubi679r93,
+    proofs := [(.real, ``rubi679r93_real), (.complex, ``rubi679r93_complex)],
+    findings := [
+      recFinding,
+      optionalFinding "e., m., d., a., b., c. and n."] },
+  { rule := rubi679r94, ruleDecl := ``rubi679r94,
+    proofs := [(.real, ``rubi679r94_real), (.complex, ``rubi679r94_complex)],
+    findings := [
+      recFinding,
+      optionalFinding "e., m., d., a., b., c. and n."] }
+]
+
+theorem catalogPart12_wellFormed : ∀ e ∈ catalogPart12,
+    (if e.rule.shape == .antiderivRec then e.rule.recOk else e.rule.wellFormed) = true := by
+  intro e he
+  simp only [catalogPart12, List.mem_cons, List.mem_nil_iff, or_false] at he
+  rcases he with rfl | rfl | rfl | rfl | rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=
-  catalogPart1 ++ catalogPart2 ++ catalogPart3 ++ catalogPart4 ++ catalogPart5 ++ catalogPart6 ++ catalogPart7 ++ catalogPart8 ++ catalogPart9 ++ catalogPart10 ++ catalogPart11
+  catalogPart1 ++ catalogPart2 ++ catalogPart3 ++ catalogPart4 ++ catalogPart5 ++ catalogPart6 ++ catalogPart7 ++ catalogPart8 ++ catalogPart9 ++ catalogPart10 ++ catalogPart11 ++ catalogPart12
 
 /-- The Integration catalogue: the verified rules, then the strengthened variants checked
 numerically (`OSR.IntegrationNum1`), unproved. -/
@@ -10044,7 +10218,7 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
     (if e.rule.shape == .antiderivRec then e.rule.recOk else e.rule.wellFormed) = true := by
   intro e he
   simp only [catalog, catalogVerified, List.mem_append] at he
-  rcases he with ((((((((((h | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h
+  rcases he with (((((((((((h | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h
   · exact catalogPart1_wellFormed e h
   · exact catalogPart2_wellFormed e h
   · exact catalogPart3_wellFormed e h
@@ -10056,6 +10230,7 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
   · exact catalogPart9_wellFormed e h
   · exact catalogPart10_wellFormed e h
   · exact catalogPart11_wellFormed e h
+  · exact catalogPart12_wellFormed e h
   · exact IntegrationNum1.entries_wellFormed e h
 
 end OSR.Integration
