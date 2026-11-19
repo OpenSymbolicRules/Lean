@@ -227,6 +227,9 @@ OSR/IntegrationRec172.lean: linear splits into residual integrals (5)
 OSR/IntegrationRec173.lean: refutations of rules with inert trig functions (51)
 OSR/IntegrationRec174.lean: refutations of rules with inert trig functions (66)
 OSR/IntegrationRec175.lean: refutations of rules with inert trig functions (68)
+OSR/IntegrationRec176.lean: refutations, trig signs decided at a point (20)
+OSR/IntegrationRec177.lean: refutations, trig signs decided at a point (49)
+OSR/IntegrationRec178.lean: refutations, trig signs decided at a point (45)
 OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (523)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),

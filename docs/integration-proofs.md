@@ -576,6 +576,18 @@ counterexample for 452, and 185 of them have a Lean proof that checks
 result is undefined at the point (mostly a logarithm or a power of a
 negative number), in 14 a residual integrand is.
 
+Of the 316 counterexamples whose Lean proof did not check (267 here, 49
+from the `Simp` batch), most failed on the sign of a trig function at the
+point (`sin 3 ≠ 0`, `0 < cos (1/2)`, `sin (2 w) ≠ 0` near `w = 2`) or on
+the integrality of a literal exponent. The generated tactics now try
+`Real.sin_pos_of_pos_of_lt_pi`, `Real.sin_neg_of_neg_of_neg_pi_lt` (also
+after a shift by `2π`), `Real.cos_pos_of_mem_Ioo` and
+`Real.cos_neg_of_pi_div_two_lt_of_lt` with `3 < π < 3.15`, unfold `csc` and
+`sec`, and give the integer of a literal exponent explicitly. 114 more
+refutations check (`OSR/IntegrationRec176.lean` to
+`OSR/IntegrationRec178.lean`); for most of the others the Lean evaluation
+shows that the sampled conditions do not hold, so they are left out.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.

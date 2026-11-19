@@ -43,6 +43,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- 114 more RUBI rules are refuted over ℝ (`OSR/IntegrationRec176.lean` to
+  `OSR/IntegrationRec178.lean`): counterexamples found earlier whose Lean
+  proof did not check now do, as the generated definedness tactics decide
+  the sign of `sin`, `cos`, `csc` and `sec` at a point or near it (bounds
+  `3 < π < 3.15`) and the integrality of literal exponents. The catalogue
+  has 1494 rules (1601 RUBI rules considered): 443 proved and 1051 refuted
+  over ℝ; 272 proved (135 certified), 376 refuted and 846 unproved over ℂ.
 - 185 more RUBI rules written with RUBI's inert trig functions `sin`, `cos`,
   `tan`, `cot`, `sec` and `csc` (read as `Sin`, …, `Csc`) are migrated and
   refuted over ℝ (`OSR/IntegrationRec173.lean` to
