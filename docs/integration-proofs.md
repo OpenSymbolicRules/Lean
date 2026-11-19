@@ -634,6 +634,11 @@ functions (closed by `ring`) and the algebraic identity. Of 56 candidates,
 square roots (`√a √b = √(a b)`), exponentials, or an `EqQ` condition in the
 algebra.
 
+With two more closing steps, `grind` (which uses the conditions, including
+`EqQ`, as ring equations) and an expansion of `sinh`, `cosh` and `tanh` into
+exponentials before `field_simp`, 14 of the remaining 45 check over ℝ and 11
+of them over ℂ (`OSR/IntegrationRec186.lean`), among them 6.7.9 #45 and #48.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.

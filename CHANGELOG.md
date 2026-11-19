@@ -52,6 +52,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- 14 more RUBI rules whose result is a sum of residual integrals are proved
+  over ℝ, 11 also over ℂ (`OSR/IntegrationRec186.lean`): 4.1.3.1 #36,
+  4.1.5 #27 and #28, 4.3.2.1 #10 and #49, 4.3.3.1 #24, 4.3.4.1 #7, #10 and
+  #11, 4.3.4.2 #20 and #21, 4.5.2.1 #11, and 6.7.9 #45 and #48 (`sinh` and
+  `cosh` times `tanh`, split into exponentials). The algebraic step now
+  also tries `grind`, which uses the `EqQ` conditions, and an expansion of
+  the hyperbolic functions into exponentials. The catalogue has 1599 rules
+  (1906 RUBI rules considered): 474 proved and 1125 refuted over ℝ; 286
+  proved (146 certified), 376 refuted and 937 unproved over ℂ.
 - 11 more RUBI rules whose result is a sum of terms `c ∫ H`, `c x` and `c`
   (`c` free of `x`) are proved over ℝ, five also over ℂ
   (`OSR/IntegrationRec185.lean`): 4.3.1.1 #12, 4.3.4.1 #8, 4.5.1.1 #7,
