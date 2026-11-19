@@ -43,6 +43,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Three more RUBI rules are migrated and refuted over ℝ
+  (`OSR/IntegrationRec165.lean`): 3.2.3 #9 splits
+  `log(e (f (a + b x)^p (c + d x)^q)^r)` into logarithms of factors that can be
+  negative where the integrand is defined; 3.4 #1 (at `d = e = 0`) and 3.5 #1
+  (at `n = 0`) leave a residual integrand with a zero divisor. The catalogue
+  has 1034 rules (862 RUBI rules considered): 424 proved and 610 refuted over
+  ℝ; 253 proved (120 certified), 376 refuted and 405 unproved over ℂ.
 - Nine more RUBI rules are migrated and refuted over ℝ
   (`OSR/IntegrationRec164.lean`): 1.1.1.4 #33, #35, 1.1.1.7 #9, #12, 1.1.3.3
   #27, 1.1.3.4 #49, 1.2.2.3 #41, 4.7.9 #83 and 7.3.4 #69 divide by a

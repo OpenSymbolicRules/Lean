@@ -519,6 +519,11 @@ not. `OSR/IntegrationRec164.lean` keeps the nine whose Lean refutation checks:
 1.1.1.4 #33, #35, 1.1.1.7 #9, #12, 1.1.3.3 #27, 1.1.3.4 #49, 1.2.2.3 #41,
 4.7.9 #83 and 7.3.4 #69.
 
+The same search over the remaining 41 translatable rules gives
+`OSR/IntegrationRec165.lean`: 3.2.3 #9, whose split of
+`log(e (f (a + b x)^p (c + d x)^q)^r)` into logarithms of the factors fails
+where a factor is negative, and 3.4 #1, 3.5 #1 at degenerate coefficients.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.
