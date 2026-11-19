@@ -604,6 +604,12 @@ only) leaves the integrand nowhere defined under that condition, so such a
 rule says nothing in the fragment: 200 of them are reported in
 `Integration.notMigrated` (520 entries).
 
+The linear-split template of `OSR/IntegrationRec172.lean` proves 11 more
+rules (`OSR/IntegrationRec181.lean`): over ℝ all of them, over ℂ the three
+without `sec`, `csc` or `arctanh` (4.1.2.1 #14, 4.3.2.1 #29, 4.3.4.1 #9).
+The closing step now also rewrites `tan` and `cot` as quotients of `sin` and
+`cos` before `field_simp`.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.

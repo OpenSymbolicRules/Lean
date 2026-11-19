@@ -43,6 +43,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- 11 more RUBI rules whose result is a combination of residual integrals
+  are proved over ℝ (`OSR/IntegrationRec181.lean`), three of them also over
+  ℂ: the partial fractions in `sin` and `tan` 4.1.2.1 #14 and 4.3.2.1 #29,
+  `(A + C tan²)/tan` (4.3.4.1 #9), the splits of `(a + b arccoth(c x)) u`
+  (7.3.1 #62, #159, #161, 7.3.4 #42, #139, #141) and of
+  `(c + d csc) √(a + b csc)` (4.5.2.1 #13, #19). The catalogue has 1517
+  rules (1824 RUBI rules considered): 454 proved and 1063 refuted over ℝ;
+  275 proved (138 certified), 376 refuted and 866 unproved over ℂ.
 - RUBI rules written with `Acoth[u]` are transcribed with `arctanh(u^-1)`
   (the same value; the fragment has no `transc1#arccoth`); 12 are refuted
   over ℝ (`OSR/IntegrationRec179.lean`, `OSR/IntegrationRec180.lean`). 200

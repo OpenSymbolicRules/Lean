@@ -196,5 +196,6 @@ import OSR.IntegrationRec177
 import OSR.IntegrationRec178
 import OSR.IntegrationRec179
 import OSR.IntegrationRec180
+import OSR.IntegrationRec181
 import OSR.Integration
 import OSR.Export
