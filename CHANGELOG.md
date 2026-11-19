@@ -43,6 +43,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Five RUBI rules whose result is a combination of residual integrals with
+  coefficients free of `x` are proved over ℝ and ℂ
+  (`OSR/IntegrationRec172.lean`): the partial fractions 1.1.1.2 #3,
+  1.2.1.2 #78 and #79, and 4.1.12 #3 and #4 (`sin` and `cos` of `c + u`).
+  The catalogue has 1195 rules (1302 RUBI rules considered): 443 proved and
+  752 refuted over ℝ; 272 proved (135 certified), 376 refuted and 547
+  unproved over ℂ.
 - 91 more RUBI rules are migrated and refuted over ℝ
   (`OSR/IntegrationRec170.lean`, `OSR/IntegrationRec171.lean`), found by the
   definedness search; 89 of them are written with `Simp[e]` or `Simp[e, x]`,

@@ -223,6 +223,7 @@ OSR/IntegrationRec168.lean: refutations of rules with E^u = exp u (10)
 OSR/IntegrationRec169.lean: sinh and cosh split into exponentials (14)
 OSR/IntegrationRec170.lean: refutations, mostly of rules written with Simp (46)
 OSR/IntegrationRec171.lean: refutations, mostly of rules written with Simp (45)
+OSR/IntegrationRec172.lean: linear splits into residual integrals (5)
 OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (523)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),

@@ -556,6 +556,17 @@ a counterexample for 140; 91 of them have a Lean proof that checks
 (`OSR/IntegrationRec170.lean`, `OSR/IntegrationRec171.lean`), the others
 are left out.
 
+Among the rules left, 50 have a result that is a combination of residual
+integrals with coefficients free of `x`. `OSR/IntegrationRec172.lean` proves
+five of them over ℝ and ℂ with one template: each residual integrand is
+defined wherever the integrand is (its denominators are factors of the
+integrand's), the derivative of the combination is the same combination of
+the residual integrands, and the identity closes by `field_simp` (the
+partial fractions 1.1.1.2 #3, 1.2.1.2 #78 and #79, with the condition
+`c d² - b d e + a e² ≠ 0` used through `mul_inv_cancel₀`) or by the addition
+theorem (4.1.12 #3 and #4, `sin(c + u)` and `cos(c + u)`). The others need
+symbolic exponents, square roots or exponential identities.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.
