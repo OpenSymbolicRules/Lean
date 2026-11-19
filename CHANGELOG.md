@@ -52,6 +52,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- 11 more RUBI rules whose result is a sum of terms `c ∫ H`, `c x` and `c`
+  (`c` free of `x`) are proved over ℝ, five also over ℂ
+  (`OSR/IntegrationRec185.lean`): 4.3.1.1 #12, 4.3.4.1 #8, 4.5.1.1 #7,
+  4.5.1.2 #51, 4.5.2.1 #12, 4.5.3.1 #10, 4.5.4.1 #18 and #19, and 5.3.4
+  #42, #139 and #141. The proof builds the derivative from the shape of the
+  result and matches it by `convert`. The catalogue has 1585 rules (1892
+  RUBI rules considered): 460 proved and 1125 refuted over ℝ; 275 proved
+  (135 certified), 376 refuted and 934 unproved over ℂ.
 - 65 more RUBI rules are refuted over ℝ: 42 with `Acoth` whose
   counterexample now checks, as the generated tactics bound `w⁻¹` near the
   point (`OSR/IntegrationRec182.lean`, `OSR/IntegrationRec183.lean`), and 23

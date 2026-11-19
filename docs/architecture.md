@@ -236,6 +236,7 @@ OSR/IntegrationRec181.lean: more linear splits into residual integrals (11)
 OSR/IntegrationRec182.lean: refutations of rules with Acoth (26)
 OSR/IntegrationRec183.lean: refutations of rules with Acoth (16)
 OSR/IntegrationRec184.lean: refutations of rules with Acot (23)
+OSR/IntegrationRec185.lean: sums of residual integrals, x and constants (11)
 OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (523)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),

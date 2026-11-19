@@ -624,6 +624,16 @@ Mathematica's definition of `ArcCot`; of the 66 rules this makes
 translatable, 28 have a counterexample and 23 check
 (`OSR/IntegrationRec184.lean`).
 
+`OSR/IntegrationRec185.lean` generalises the linear-split template to
+results that are sums of terms `c ∫ H`, `c x` and `c` with `c` free of `x`:
+the derivative is assembled from the result tree (`HasDerivAt.const_mul`,
+`hasDerivAt_id`, `hasDerivAt_const`, `HasDerivAt.add`) and matched to the
+evaluated result by `convert … using 1`, which leaves an equality of
+functions (closed by `ring`) and the algebraic identity. Of 56 candidates,
+11 check over ℝ and five of them over ℂ; the others need identities on
+square roots (`√a √b = √(a b)`), exponentials, or an `EqQ` condition in the
+algebra.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.
