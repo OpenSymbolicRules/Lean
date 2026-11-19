@@ -588,6 +588,22 @@ refutations check (`OSR/IntegrationRec176.lean` to
 `OSR/IntegrationRec178.lean`); for most of the others the Lean evaluation
 shows that the sampled conditions do not hold, so they are left out.
 
+`Acoth[u]` is now transcribed as `arctanh(u^-1)`, which has the same value
+over ℝ (`|u| > 1`) and on the principal complex branch; the fragment has no
+`transc1#arccoth`, and the faithfulness check reads `Acoth` the same way.
+Of the 150 rules this makes translatable, the definedness search finds a
+counterexample for 70 and 12 of them check in Lean
+(`OSR/IntegrationRec179.lean`, `OSR/IntegrationRec180.lean`). The 7.3.1 file
+`(a+b arctanh(c x^n))^p` shares its section number with
+`u (a+b arctanh(c x^n))^p`; its rules get the id prefix
+`integration.rubi_7_3_1_pow_`.
+
+A condition `Not[IntegerQ[e]]` has no v1 counterpart. When `e` is an
+exponent of the integrand, the fragment's `arith1#power` (integer exponents
+only) leaves the integrand nowhere defined under that condition, so such a
+rule says nothing in the fragment: 200 of them are reported in
+`Integration.notMigrated` (520 entries).
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.

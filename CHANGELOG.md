@@ -43,6 +43,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- RUBI rules written with `Acoth[u]` are transcribed with `arctanh(u^-1)`
+  (the same value; the fragment has no `transc1#arccoth`); 12 are refuted
+  over ℝ (`OSR/IntegrationRec179.lean`, `OSR/IntegrationRec180.lean`). 200
+  more RUBI rules are reported in `Integration.notMigrated` (520 in all):
+  their conditions require an exponent of the integrand not to be an
+  integer, so the integrand is nowhere defined in the fragment. The
+  catalogue has 1506 rules (1813 RUBI rules considered): 443 proved and 1063
+  refuted over ℝ; 272 proved (135 certified), 376 refuted and 858 unproved
+  over ℂ.
 - 114 more RUBI rules are refuted over ℝ (`OSR/IntegrationRec176.lean` to
   `OSR/IntegrationRec178.lean`): counterexamples found earlier whose Lean
   proof did not check now do, as the generated definedness tactics decide
