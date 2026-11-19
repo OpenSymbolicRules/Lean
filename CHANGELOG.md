@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- Eight RUBI rules were catalogued twice: 1.1.1.2 #3, 1.2.1.2 #78 and #79,
+  4.1.12 #3 and #4 (`OSR/IntegrationRec172.lean`), 3.4 #1 and 3.5 #1
+  (`OSR/IntegrationRec165.lean`) and 3.5 #2 (`OSR/IntegrationRec166.lean`)
+  were already in the catalogue under named ids (`integration.partial_fractions_linear`,
+  `integration.sin_add_square`, `integration.log_power_log`, …) whose legacy
+  id is written by interpolation, which the migration tooling did not read.
+  The second entries are removed (both copies had the same verdict); the
+  Lean theorems stay. A new `OSRTest` guard rejects two catalogue entries
+  with the same legacy id unless one is a strengthened variant.
 - The nine RUBI rules migrated in report `37faa87a…` declare exponent
   metavariables (`m`, `p`, `mn`, `mn2`) independent of x without the
   `independence:` finding that the Integration faithfulness check requires;
@@ -43,6 +52,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- 65 more RUBI rules are refuted over ℝ: 42 with `Acoth` whose
+  counterexample now checks, as the generated tactics bound `w⁻¹` near the
+  point (`OSR/IntegrationRec182.lean`, `OSR/IntegrationRec183.lean`), and 23
+  with `Acot[u]`, transcribed as `arctan(u^-1)` (`OSR/IntegrationRec184.lean`).
+  With the eight duplicates removed, the catalogue has 1574 rules (1881 RUBI
+  rules considered): 449 proved and 1125 refuted over ℝ; 270 proved (133
+  certified), 376 refuted and 928 unproved over ℂ.
 - 11 more RUBI rules whose result is a combination of residual integrals
   are proved over ℝ (`OSR/IntegrationRec181.lean`), three of them also over
   ℂ: the partial fractions in `sin` and `tan` 4.1.2.1 #14 and 4.3.2.1 #29,

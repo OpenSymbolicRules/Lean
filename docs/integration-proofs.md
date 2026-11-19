@@ -610,6 +610,20 @@ without `sec`, `csc` or `arctanh` (4.1.2.1 #14, 4.3.2.1 #29, 4.3.4.1 #9).
 The closing step now also rewrites `tan` and `cot` as quotients of `sin` and
 `cos` before `field_simp`.
 
+The five rules of `OSR/IntegrationRec172.lean`, and 3.4 #1, 3.5 #1 and
+3.5 #2 refuted earlier, turned out to be catalogued already under named ids
+whose legacy id is built by interpolation; their second entries are removed
+and an `OSRTest` guard now rejects such duplicates.
+
+Most of the `Acoth` counterexamples that did not check failed on the domain
+of `arctanh(u^-1)`, goals such as `w⁻¹ < 1` near `w = 2`; the generated
+tactics now close them by `nlinarith` with `w w⁻¹ = 1` and the sign of
+`w⁻¹`, and 42 more check (`OSR/IntegrationRec182.lean`,
+`OSR/IntegrationRec183.lean`). `Acot[u]` is transcribed as `arctan(u^-1)`,
+Mathematica's definition of `ArcCot`; of the 66 rules this makes
+translatable, 28 have a counterexample and 23 check
+(`OSR/IntegrationRec184.lean`).
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.
