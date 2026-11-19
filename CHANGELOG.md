@@ -52,6 +52,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- 10 more RUBI rules are refuted over ℝ (`OSR/IntegrationRec187.lean` to
+  `OSR/IntegrationRec189.lean`): seven earlier counterexamples whose Lean
+  proof now checks, as the generated tactics also try `grind`, and three
+  found by a second definedness search with another seed. The catalogue
+  has 1609 rules (1916 RUBI rules considered): 474 proved and 1135 refuted
+  over ℝ; 286 proved (146 certified), 376 refuted and 947 unproved over ℂ.
 - 14 more RUBI rules whose result is a sum of residual integrals are proved
   over ℝ, 11 also over ℂ (`OSR/IntegrationRec186.lean`): 4.1.3.1 #36,
   4.1.5 #27 and #28, 4.3.2.1 #10 and #49, 4.3.3.1 #24, 4.3.4.1 #7, #10 and

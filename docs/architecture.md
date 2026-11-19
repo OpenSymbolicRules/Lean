@@ -238,6 +238,9 @@ OSR/IntegrationRec183.lean: refutations of rules with Acoth (16)
 OSR/IntegrationRec184.lean: refutations of rules with Acot (23)
 OSR/IntegrationRec185.lean: sums of residual integrals, x and constants (11)
 OSR/IntegrationRec186.lean: sums of residual integrals, closed by grind (14)
+OSR/IntegrationRec187.lean: refutations checked with grind (3)
+OSR/IntegrationRec188.lean: refutations checked with grind (4)
+OSR/IntegrationRec189.lean: refutations from a second search (3)
 OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (523)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
