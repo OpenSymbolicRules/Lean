@@ -50,6 +50,7 @@ import OSR.IntegrationRec162
 import OSR.IntegrationRec163
 import OSR.IntegrationRec164
 import OSR.IntegrationRec165
+import OSR.IntegrationRec166
 import OSR.IntegrationRec116
 import OSR.IntegrationRec115
 import OSR.IntegrationRec114
@@ -171,7 +172,7 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec41 OSR.IntegrationRec42
   OSR.IntegrationRec43 OSR.IntegrationRec44
   OSR.IntegrationRec45 OSR.IntegrationRec46
-  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationRec53 OSR.IntegrationRec54 OSR.IntegrationRec55 OSR.IntegrationRec56 OSR.IntegrationRec57 OSR.IntegrationRec58 OSR.IntegrationRec59 OSR.IntegrationRec60 OSR.IntegrationRec61 OSR.IntegrationRec62 OSR.IntegrationRec63 OSR.IntegrationRec64 OSR.IntegrationRec65 OSR.IntegrationRec66 OSR.IntegrationNum1 OSR.IntegrationRec67 OSR.IntegrationRec68 OSR.IntegrationRec69 OSR.IntegrationRec70 OSR.IntegrationRec71 OSR.IntegrationRec72 OSR.IntegrationRec73 OSR.IntegrationRec74 OSR.IntegrationRec75 OSR.IntegrationRec76 OSR.IntegrationRec77 OSR.IntegrationRec78 OSR.IntegrationRec79 OSR.IntegrationRec80 OSR.IntegrationRec81 OSR.IntegrationRec82 OSR.IntegrationRec83 OSR.IntegrationNum1 OSR.IntegrationRec84 OSR.IntegrationRec85 OSR.IntegrationRec86 OSR.IntegrationRec87 OSR.IntegrationRec88 OSR.IntegrationRec89 OSR.IntegrationRec90 OSR.IntegrationRec91 OSR.IntegrationRec92 OSR.IntegrationRec93 OSR.IntegrationRec94 OSR.IntegrationRec95 OSR.IntegrationRec96 OSR.IntegrationRec97 OSR.IntegrationRec98 OSR.IntegrationRec99 OSR.IntegrationRec100 OSR.IntegrationRec101 OSR.IntegrationRec102 OSR.IntegrationRec103 OSR.IntegrationRec104 OSR.IntegrationRec105 OSR.IntegrationRec106 OSR.IntegrationRec107 OSR.IntegrationRec108 OSR.IntegrationRec109 OSR.IntegrationRec110 OSR.IntegrationRec111 OSR.IntegrationRec112 OSR.IntegrationRec113 OSR.IntegrationRec114 OSR.IntegrationRec115 OSR.IntegrationRec116 OSR.IntegrationRec117 OSR.IntegrationRec118 OSR.IntegrationRec119 OSR.IntegrationRec120 OSR.IntegrationRec121 OSR.IntegrationRec122 OSR.IntegrationRec123 OSR.IntegrationRec124 OSR.IntegrationRec125 OSR.IntegrationRec126 OSR.IntegrationRec127 OSR.IntegrationRec128 OSR.IntegrationRec129 OSR.IntegrationRec130 OSR.IntegrationRec131 OSR.IntegrationRec132 OSR.IntegrationRec133 OSR.IntegrationRec134 OSR.IntegrationRec135 OSR.IntegrationRec136 OSR.IntegrationRec137 OSR.IntegrationRec138 OSR.IntegrationRec139 OSR.IntegrationRec140 OSR.IntegrationRec141 OSR.IntegrationRec142 OSR.IntegrationRec143 OSR.IntegrationRec144 OSR.IntegrationRec145 OSR.IntegrationRec146 OSR.IntegrationRec147 OSR.IntegrationRec148 OSR.IntegrationRec149 OSR.IntegrationRec150 OSR.IntegrationRec151 OSR.IntegrationRec152 OSR.IntegrationRec153 OSR.IntegrationRec154 OSR.IntegrationRec155 OSR.IntegrationRec156 OSR.IntegrationRec157 OSR.IntegrationRec158 OSR.IntegrationRec159 OSR.IntegrationRec160 OSR.IntegrationRec161 OSR.IntegrationRec162 OSR.IntegrationRec163 OSR.IntegrationRec164 OSR.IntegrationRec165 OSR.IntegrationFindings Filter Topology
+  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationRec53 OSR.IntegrationRec54 OSR.IntegrationRec55 OSR.IntegrationRec56 OSR.IntegrationRec57 OSR.IntegrationRec58 OSR.IntegrationRec59 OSR.IntegrationRec60 OSR.IntegrationRec61 OSR.IntegrationRec62 OSR.IntegrationRec63 OSR.IntegrationRec64 OSR.IntegrationRec65 OSR.IntegrationRec66 OSR.IntegrationNum1 OSR.IntegrationRec67 OSR.IntegrationRec68 OSR.IntegrationRec69 OSR.IntegrationRec70 OSR.IntegrationRec71 OSR.IntegrationRec72 OSR.IntegrationRec73 OSR.IntegrationRec74 OSR.IntegrationRec75 OSR.IntegrationRec76 OSR.IntegrationRec77 OSR.IntegrationRec78 OSR.IntegrationRec79 OSR.IntegrationRec80 OSR.IntegrationRec81 OSR.IntegrationRec82 OSR.IntegrationRec83 OSR.IntegrationNum1 OSR.IntegrationRec84 OSR.IntegrationRec85 OSR.IntegrationRec86 OSR.IntegrationRec87 OSR.IntegrationRec88 OSR.IntegrationRec89 OSR.IntegrationRec90 OSR.IntegrationRec91 OSR.IntegrationRec92 OSR.IntegrationRec93 OSR.IntegrationRec94 OSR.IntegrationRec95 OSR.IntegrationRec96 OSR.IntegrationRec97 OSR.IntegrationRec98 OSR.IntegrationRec99 OSR.IntegrationRec100 OSR.IntegrationRec101 OSR.IntegrationRec102 OSR.IntegrationRec103 OSR.IntegrationRec104 OSR.IntegrationRec105 OSR.IntegrationRec106 OSR.IntegrationRec107 OSR.IntegrationRec108 OSR.IntegrationRec109 OSR.IntegrationRec110 OSR.IntegrationRec111 OSR.IntegrationRec112 OSR.IntegrationRec113 OSR.IntegrationRec114 OSR.IntegrationRec115 OSR.IntegrationRec116 OSR.IntegrationRec117 OSR.IntegrationRec118 OSR.IntegrationRec119 OSR.IntegrationRec120 OSR.IntegrationRec121 OSR.IntegrationRec122 OSR.IntegrationRec123 OSR.IntegrationRec124 OSR.IntegrationRec125 OSR.IntegrationRec126 OSR.IntegrationRec127 OSR.IntegrationRec128 OSR.IntegrationRec129 OSR.IntegrationRec130 OSR.IntegrationRec131 OSR.IntegrationRec132 OSR.IntegrationRec133 OSR.IntegrationRec134 OSR.IntegrationRec135 OSR.IntegrationRec136 OSR.IntegrationRec137 OSR.IntegrationRec138 OSR.IntegrationRec139 OSR.IntegrationRec140 OSR.IntegrationRec141 OSR.IntegrationRec142 OSR.IntegrationRec143 OSR.IntegrationRec144 OSR.IntegrationRec145 OSR.IntegrationRec146 OSR.IntegrationRec147 OSR.IntegrationRec148 OSR.IntegrationRec149 OSR.IntegrationRec150 OSR.IntegrationRec151 OSR.IntegrationRec152 OSR.IntegrationRec153 OSR.IntegrationRec154 OSR.IntegrationRec155 OSR.IntegrationRec156 OSR.IntegrationRec157 OSR.IntegrationRec158 OSR.IntegrationRec159 OSR.IntegrationRec160 OSR.IntegrationRec161 OSR.IntegrationRec162 OSR.IntegrationRec163 OSR.IntegrationRec164 OSR.IntegrationRec165 OSR.IntegrationRec166 OSR.IntegrationFindings Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -9118,7 +9119,335 @@ def catalogPart11 : List CEntry := [
       "counterexample: at c = 2, d = 1 and the other metavariables 0 the conditions hold and the integrand is defined everywhere, but the residual integrand 1 is not defined at x = 1 (Lean theorem rubi35r1_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
       "complex: not proved; the counterexample of the other domain was not established over ℂ.",
       recFinding,
-      optionalFinding "c., d., n. and p."] }
+      optionalFinding "c., d., n. and p."] },
+  { rule := rubi1214r74, ruleDecl := ``rubi1214r74, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1214r74_counterexample_real)],
+    findings := [
+      "counterexample: at a = 3, c = 2, d = -2, f = 4, g = 1/2 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi1214r74_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[e, f], Multiply[-1, d, g]], 0]; NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; NeQ[Add[Multiply[c, Power[d, 2]], Multiply[-1, b, d, e], Multiply[a, Power[e, 2]]], 0]",
+      optionalFinding "a., b., c., d., e., f. and g."] },
+  { rule := rubi1214r90, ruleDecl := ``rubi1214r90, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1214r90_counterexample_real)],
+    findings := [
+      "counterexample: at a = 1, c = 1, d = 1/2, f = 3, g = -1/2 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi1214r90_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[e, f], Multiply[-1, d, g]], 0]; NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; NeQ[Add[Multiply[c, Power[d, 2]], Multiply[-1, b, d, e], Multiply[a, Power[e, 2]]], 0]",
+      optionalFinding "f., g., d., e., a., b. and c."] },
+  { rule := rubi1214r75, ruleDecl := ``rubi1214r75, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1214r75_counterexample_real)],
+    findings := [
+      "counterexample: at c = 1, d = 1/2, e = 4, f = 4 and the other metavariables 0 the conditions hold and the integrand is defined near x = 0, but the residual integrand 1 is not defined at x = 0 (Lean theorem rubi1214r75_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[e, f], Multiply[-1, d, g]], 0]; NeQ[Add[Multiply[c, Power[d, 2]], Multiply[a, Power[e, 2]]], 0]",
+      optionalFinding "c., d., e., f. and g."] },
+  { rule := rubi1214r91, ruleDecl := ``rubi1214r91, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1214r91_counterexample_real)],
+    findings := [
+      "counterexample: at a = 3, c = 2, d = 1, f = 4, g = -1/2 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi1214r91_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[e, f], Multiply[-1, d, g]], 0]; NeQ[Add[Multiply[c, Power[d, 2]], Multiply[a, Power[e, 2]]], 0]",
+      optionalFinding "f., g., d., e. and c."] },
+  { rule := rubi1217r27, ruleDecl := ``rubi1217r27, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1217r27_counterexample_real)],
+    findings := [
+      "counterexample: at C = -1/2, a = 1/2, b = 4, d = 1, f = 3 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi1217r27_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; NeQ[Add[Power[e, 2], Multiply[-1, 4, d, f]], 0]",
+      optionalFinding "A., B., C., b., c., d., e. and f."] },
+  { rule := rubi1234r65, ruleDecl := ``rubi1234r65, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1234r65_counterexample_real)],
+    findings := [
+      "counterexample: at b = -3, d = 2, f = 2, m = 2, n = 1, n2 = 2, p = -2 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi1234r65_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; the counterexample of the other domain was not established over ℂ.",
+      "independence: m, n, n2, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; IGtQ[n, 0]; LtQ[p, -1]; GtQ[m, n]",
+      optionalFinding "f., m., a., b., c., n2., d. and e."] },
+  { rule := rubi1217r28, ruleDecl := ``rubi1217r28, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1217r28_counterexample_real)],
+    findings := [
+      "counterexample: at a = 1/2, b = 4, d = 4, e = 2, f = 2 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi1217r28_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; NeQ[Add[Power[e, 2], Multiply[-1, 4, d, f]], 0]",
+      optionalFinding "A., C., b., c., d., e. and f."] },
+  { rule := rubi1234r68, ruleDecl := ``rubi1234r68, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1234r68_counterexample_real)],
+    findings := [
+      "counterexample: at a = -3, d = 3, f = 4, m = 3, n = 1, n2 = 2, p = -3 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi1234r68_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; the counterexample of the other domain was not established over ℂ.",
+      "independence: m, n, n2, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; IGtQ[n, 0]; LtQ[p, -1]; GtQ[m, 0]",
+      optionalFinding "f., m., c., n2., d. and e."] },
+  { rule := rubi1117r10, ruleDecl := ``rubi1117r10, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1117r10_counterexample_real)],
+    findings := [
+      "counterexample: at A = 3, B = -2, c = 4, d = 1/2, e = 3, g = 3 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the residual integrand 2 is not defined at x = 1 (Lean theorem rubi1117r10_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[2, A, d, f], Multiply[-1, B, Add[Multiply[d, e], Multiply[c, f]]]], 0]",
+      optionalFinding "a., b., A., B., c., d., e., f., g. and h."] },
+  { rule := rubi1215r16, ruleDecl := ``rubi1215r16, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1215r16_counterexample_real)],
+    findings := [
+      "counterexample: at a = 3, c = 1/2, d = 4, e = 1/2 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi1215r16_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; NeQ[Add[Power[e, 2], Multiply[-1, 4, d, f]], 0]",
+      optionalFinding "b., c., e. and f."] },
+  { rule := rubi322r2, ruleDecl := ``rubi322r2, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi322r2_counterexample_real)],
+    findings := [
+      "counterexample: at A = 1, B = 1, a = 1/2, b = -2, c = 1, e = 1/2, m = 1, mn = -1, n = 1 and the other metavariables 0 the conditions hold and the integrand is defined near x = 0, but the result is not defined at x = 0 (Lean theorem rubi322r2_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; the counterexample of the other domain was not established over ℂ.",
+      "independence: mn is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[n, mn], 0]; IGtQ[n, 0]; NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; EqQ[Add[Multiply[b, f], Multiply[-1, a, g]], 0]; EqQ[Add[Multiply[d, h], Multiply[-1, c, i]], 0]; IGtQ[m, -2]",
+      optionalFinding "f., g., m., h., i., A., B., e., a., b., n., c. and d."] },
+  { rule := rubi1217r30, ruleDecl := ``rubi1217r30, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1217r30_counterexample_real)],
+    findings := [
+      "counterexample: at a = 1, e = 1/2 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi1217r30_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "NeQ[Add[Power[e, 2], Multiply[-1, 4, d, f]], 0]",
+      optionalFinding "A., C., c., d., e. and f."] },
+  { rule := rubi722r2, ruleDecl := ``rubi722r2, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi722r2_counterexample_real)],
+    findings := [
+      "counterexample: at c = 1, n = 1 and the other metavariables 0 the conditions hold and the integrand is defined near x = 2, but the result is not defined at x = 2 (Lean theorem rubi722r2_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; transc1#arccosh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[n, 0]; NeQ[m, -1]",
+      optionalFinding "d., m., a., b., c. and n."] },
+  { rule := rubi721r2, ruleDecl := ``rubi721r2, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi721r2_counterexample_real)],
+    findings := [
+      "counterexample: at a = -2, c = 4, n = -3 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi721r2_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; transc1#arccosh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "LtQ[n, -1]",
+      optionalFinding "a., b. and c."] },
+  { rule := rubi1113r37, ruleDecl := ``rubi1113r37, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1113r37_counterexample_real)],
+    findings := [
+      "counterexample: at b = -1/2, c = 4, d = -1, e = 3 and the other metavariables 0 the conditions hold and the integrand is defined near x = -1, but the residual integrand 1 is not defined at x = -1 (Lean theorem rubi1113r37_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[d, e], Multiply[-1, c, f]], 0]; GtQ[c, 0]; GtQ[e, 0]; LtQ[Multiply[-1, b, Power[d, -1]], 0]",
+      optionalFinding "f., b. and d."] },
+  { rule := rubi35r2, ruleDecl := ``rubi35r2, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi35r2_counterexample_real)],
+    findings := [
+      "counterexample: at c = 4, d = 3 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi35r2_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; the counterexample of the other domain was not established over ℂ.",
+      optionalFinding "a., b., c., d., n. and p."] },
+  { rule := rubi678r47, ruleDecl := ``rubi678r47, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi678r47_counterexample_real)],
+    findings := [
+      "counterexample: at b = -1 and the other metavariables 0 the conditions hold and the integrand is defined near x = -1, but the result is not defined at x = -1 (Lean theorem rubi678r47_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; the counterexample of the other domain was not established over ℂ.",
+      recFinding,
+      optionalFinding "a. and b."] },
+  { rule := rubi722r5, ruleDecl := ``rubi722r5, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi722r5_counterexample_real)],
+    findings := [
+      "counterexample: at a = 1, c = -3, m = 3, n = -3 and the other metavariables 0 the conditions hold and the integrand is defined near x = -1, but the result is not defined at x = -1 (Lean theorem rubi722r5_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; transc1#arccosh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; LtQ[n, -2]",
+      optionalFinding "m., a., b. and c."] },
+  { rule := rubi1132r45, ruleDecl := ``rubi1132r45, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1132r45_counterexample_real)],
+    findings := [
+      "counterexample: at a = 3, b = -1/2 and the other metavariables 0 the conditions hold and the integrand is defined near x = 0, but the result is not defined at x = 0 (Lean theorem rubi1132r45_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "GtQ[Multiply[-1, b, Power[a, -1]], 0]",
+      optionalFinding "b." false] },
+  { rule := rubi313r14, ruleDecl := ``rubi313r14, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi313r14_counterexample_real)],
+    findings := [
+      "counterexample: at c = 4, e1 = -1/2, e2 = -3 and the other metavariables 0 the conditions hold and the integrand is defined near x = -1, but the residual integrand 1 is not defined at x = -1 (Lean theorem rubi313r14_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[d2, e1], Multiply[d1, e2]], 0]",
+      optionalFinding "a., b., c., n., e1. and e2."] },
+  { rule := rubi678r48, ruleDecl := ``rubi678r48, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi678r48_counterexample_real)],
+    findings := [
+      "counterexample: at b = -1 and the other metavariables 0 the conditions hold and the integrand is defined near x = -1, but the result is not defined at x = -1 (Lean theorem rubi678r48_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; the counterexample of the other domain was not established over ℂ.",
+      recFinding,
+      optionalFinding "a. and b."] },
+  { rule := rubi731r93, ruleDecl := ``rubi731r93, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi731r93_counterexample_real)],
+    findings := [
+      "counterexample: at b = -1, f = -2, m = -3, p = 1 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi731r93_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; transc1#arctanh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; EqQ[Add[m, Multiply[2, q], 3], 0]; GtQ[p, 0]; NeQ[m, -1]",
+      optionalFinding "f., m., e., q., a., b., c. and p."] },
+  { rule := rubi725r2, ruleDecl := ``rubi725r2, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi725r2_counterexample_real)],
+    findings := [
+      "counterexample: at c = -3, n = 4 and the other metavariables 0 the conditions hold and the integrand is defined near x = -1, but the result is not defined at x = -1 (Lean theorem rubi725r2_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; transc1#arccosh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[n, 0]; NeQ[m, -1]",
+      optionalFinding "d., e., m., a., b., c. and n."] },
+  { rule := rubi1213r79, ruleDecl := ``rubi1213r79, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1213r79_counterexample_real)],
+    findings := [
+      "counterexample: at b = -3, e = -3 and the other metavariables 0 the conditions hold and the integrand is defined near x = -1, but the residual integrand 1 is not defined at x = -1 (Lean theorem rubi1213r79_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]",
+      optionalFinding "g., b. and c."] },
+  { rule := rubi33r17, ruleDecl := ``rubi33r17, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi33r17_counterexample_real)],
+    findings := [
+      "counterexample: at b = 3, c = 1/2, g1 = 1/2, g2 = 1 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the residual integrand 1 is not defined at x = 1 (Lean theorem rubi33r17_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[f2, g1], Multiply[f1, g2]], 0]",
+      optionalFinding "a., b., c., e., n., g1. and g2."] },
+  { rule := rubi1232r15, ruleDecl := ``rubi1232r15, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1232r15_counterexample_real)],
+    findings := [
+      "counterexample: at b = 4, d = 4, m = -3, n = 2, n2 = 4 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi1232r15_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; the counterexample of the other domain was not established over ℂ.",
+      "independence: m, n, n2 are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; IGtQ[n, 0]; LtQ[m, -1]; IntegerQ[p]",
+      optionalFinding "d., b., c. and n2."] },
+  { rule := rubi514r45, ruleDecl := ``rubi514r45, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi514r45_counterexample_real)],
+    findings := [
+      "counterexample: at c = -3, d = 1 and the other metavariables 0 the conditions hold and the integrand is defined near x = 0, but the result is not defined at x = 0 (Lean theorem rubi514r45_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; transc1#arcsin has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[Power[c, 2], d], e], 0]; NeQ[p, -1]",
+      optionalFinding "e., p., a., b. and c."] },
+  { rule := rubi678r49, ruleDecl := ``rubi678r49, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi678r49_counterexample_real)],
+    findings := [
+      "counterexample: at b = 3, m = -1 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi678r49_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; the counterexample of the other domain was not established over ℂ.",
+      recFinding,
+      condFinding "EqQ[m, Add[n, Multiply[-1, 1]]]",
+      optionalFinding "m., a., n. and b."] },
+  { rule := rubi724r42, ruleDecl := ``rubi724r42, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi724r42_counterexample_real)],
+    findings := [
+      "counterexample: at c = 1, d = 1 and the other metavariables 0 the conditions hold and the integrand is defined near x = 2, but the result is not defined at x = 2 (Lean theorem rubi724r42_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; transc1#arccosh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[Power[c, 2], d], e], 0]; NeQ[m, -1]; NeQ[m, -3]",
+      optionalFinding "f., m., e., a., b. and c."] },
+  { rule := rubi1213r80, ruleDecl := ``rubi1213r80, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1213r80_counterexample_real)],
+    findings := [
+      "counterexample: at c = 3, e = -2 and the other metavariables 0 the conditions hold and the integrand is defined near x = -1, but the residual integrand 1 is not defined at x = -1 (Lean theorem rubi1213r80_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      optionalFinding "g. and c."] },
+  { rule := rubi1216r29, ruleDecl := ``rubi1216r29, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1216r29_counterexample_real)],
+    findings := [
+      "counterexample: at a = -2, c = 4, d = 1/2, f = 3, h = 1 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi1216r29_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; NeQ[Add[Power[e, 2], Multiply[-1, 4, d, f]], 0]; EqQ[Add[Multiply[b, d], Multiply[-1, a, e]], 0]; NeQ[Add[Multiply[2, h, d], Multiply[-1, g, e]], 0]",
+      optionalFinding "h., b., c., e. and f."] },
+  { rule := rubi1227r13, ruleDecl := ``rubi1227r13, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1227r13_counterexample_real)],
+    findings := [
+      "counterexample: at a = 3, b = 1, e = -2 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the residual integrand 1 is not defined at x = 1 (Lean theorem rubi1227r13_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; NeQ[Add[Multiply[c, Power[d, 2]], Multiply[-1, b, d, e], Multiply[a, Power[e, 2]]], 0]; EqQ[Add[Multiply[c, Power[A, 2]], Multiply[-1, b, A, B], Multiply[a, Power[B, 2]]], 0]",
+      optionalFinding "B., e., b. and c."] },
+  { rule := rubi1234r62, ruleDecl := ``rubi1234r62, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1234r62_counterexample_real)],
+    findings := [
+      "counterexample: at a = -2, e = 1/2, f = 1, m = -2, n = 1, n2 = 2, p = 1 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi1234r62_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; the counterexample of the other domain was not established over ℂ.",
+      "independence: m, n, n2, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; IGtQ[n, 0]; GtQ[p, 0]; LtQ[m, Multiply[-1, n]]",
+      optionalFinding "f., c., n2., p., d. and e."] },
+  { rule := rubi1232r16, ruleDecl := ``rubi1232r16, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1232r16_counterexample_real)],
+    findings := [
+      "counterexample: at b = 4, d = 1/2, m = -3, n = 1, n2 = 2 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi1232r16_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; the counterexample of the other domain was not established over ℂ.",
+      "independence: m, n, n2 are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; IGtQ[n, 0]; LtQ[m, -1]",
+      optionalFinding "d., b., c. and n2."] },
+  { rule := rubi514r46, ruleDecl := ``rubi514r46, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi514r46_counterexample_real)],
+    findings := [
+      "counterexample: at c = -2, d = 2 and the other metavariables 0 the conditions hold and the integrand is defined near x = 0, but the result is not defined at x = 0 (Lean theorem rubi514r46_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; transc1#arccos has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[Power[c, 2], d], e], 0]; NeQ[p, -1]",
+      optionalFinding "e., p., a., b. and c."] },
+  { rule := rubi678r50, ruleDecl := ``rubi678r50, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi678r50_counterexample_real)],
+    findings := [
+      "counterexample: at b = 3, m = -1 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi678r50_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; the counterexample of the other domain was not established over ℂ.",
+      recFinding,
+      condFinding "EqQ[m, Add[n, Multiply[-1, 1]]]",
+      optionalFinding "m., a., n. and b."] },
+  { rule := rubi724r43, ruleDecl := ``rubi724r43, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi724r43_counterexample_real)],
+    findings := [
+      "counterexample: at c = 3, d = -1/2 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi724r43_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; transc1#arccosh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[Power[c, 2], d], e], 0]; NeQ[p, -1]",
+      optionalFinding "e., p., a., b. and c."] },
+  { rule := rubi1217r29, ruleDecl := ``rubi1217r29, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1217r29_counterexample_real)],
+    findings := [
+      "counterexample: at C = 4, a = 1, e = 2 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi1217r29_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "NeQ[Add[Power[e, 2], Multiply[-1, 4, d, f]], 0]",
+      optionalFinding "A., B., C., c., d., e. and f."] },
+  { rule := rubi1234r63, ruleDecl := ``rubi1234r63, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1234r63_counterexample_real)],
+    findings := [
+      "counterexample: at a = 1/2, c = -1/2, e = 1/2, f = 2, m = -1, n = 1, n2 = 2, p = 1 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi1234r63_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; the counterexample of the other domain was not established over ℂ.",
+      "independence: m, n, n2, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; IGtQ[n, 0]; GtQ[p, 0]; LtQ[m, 0]",
+      optionalFinding "f., a., b., c., n2., p., d. and e."] },
+  { rule := rubi734r73, ruleDecl := ``rubi734r73, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi734r73_counterexample_real)],
+    findings := [
+      "counterexample: at a = 2, b = -2, c = -1/2, f = -1/2, m = -3, p = 1 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the result is not defined at x = 1 (Lean theorem rubi734r73_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; transc1#arctanh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; EqQ[Add[m, Multiply[2, q], 3], 0]; GtQ[p, 0]; NeQ[m, -1]",
+      optionalFinding "f., m., e., q., a., b., c. and p."] }
 ]
 
 theorem catalogPart11_wellFormed : ∀ e ∈ catalogPart11,
@@ -9127,7 +9456,10 @@ theorem catalogPart11_wellFormed : ∀ e ∈ catalogPart11,
   simp only [catalogPart11, List.mem_cons, List.mem_nil_iff, or_false] at he
   rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=

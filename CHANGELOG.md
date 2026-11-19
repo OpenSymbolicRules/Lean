@@ -43,6 +43,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- 40 more RUBI rules are migrated and refuted over ℝ
+  (`OSR/IntegrationRec166.lean`), from a definedness search over the rules
+  not yet considered, now with assignments in halves and integrands defined
+  only near the point: the result or a residual integrand divides by a
+  coefficient (or takes a logarithm or an inverse function outside its
+  domain) that the conditions let vanish while the integrand is defined there.
+  They include 7.2.2 #2, #5, 7.2.1 #2, 7.2.4 #42, #43, 7.2.5 #2, 5.1.4 #45,
+  #46, 6.7.8 #47 to #50 and families of 1.1.1, 1.1.3, 1.2.1, 1.2.2, 1.2.3,
+  3.1.3, 3.2.2, 3.3, 3.5, 7.3.1 and 7.3.4. The catalogue has 1074 rules (902
+  RUBI rules considered): 424 proved and 650 refuted over ℝ; 253 proved (120
+  certified), 376 refuted and 445 unproved over ℂ.
 - Three more RUBI rules are migrated and refuted over ℝ
   (`OSR/IntegrationRec165.lean`): 3.2.3 #9 splits
   `log(e (f (a + b x)^p (c + d x)^q)^r)` into logarithms of factors that can be

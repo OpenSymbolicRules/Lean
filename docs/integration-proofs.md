@@ -524,6 +524,12 @@ The same search over the remaining 41 translatable rules gives
 `log(e (f (a + b x)^p (c + d x)^q)^r)` into logarithms of the factors fails
 where a factor is negative, and 3.4 #1, 3.5 #1 at degenerate coefficients.
 
+A wider search (assignments with halves, integrands required to be defined
+only on a neighbourhood of the point, which the Lean proofs establish on an
+interval of radius 1/16) gives `OSR/IntegrationRec166.lean`: 40 more
+refutations whose Lean proof checks, the rules with a condition on `x` left
+out.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.
