@@ -43,6 +43,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- 279 more RUBI rules are reported in `Integration.notMigrated` (320 in all):
+  in 147 the integrand raises an expression to an exponent with denominator 2,
+  3, 4 or 6, and in 132 it contains a power `F^(…)` with a non-constant
+  exponent; the fragment interprets `arith1#power` for integer exponents only,
+  so these integrands are nowhere (or, for `F^(…)`, only degenerately)
+  defined. Rules whose pattern contains `E` (exponentials written `E^u`) are
+  not reported yet. 7.2.5 #17 is migrated and refuted over ℝ
+  (`OSR/IntegrationRec167.lean`). The catalogue has 1075 rules (1182 RUBI
+  rules considered): 424 proved and 651 refuted over ℝ; 253 proved (120
+  certified), 376 refuted and 446 unproved over ℂ.
 - 40 more RUBI rules are migrated and refuted over ℝ
   (`OSR/IntegrationRec166.lean`), from a definedness search over the rules
   not yet considered, now with assignments in halves and integrands defined

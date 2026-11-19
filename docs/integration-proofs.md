@@ -530,6 +530,13 @@ interval of radius 1/16) gives `OSR/IntegrationRec166.lean`: 40 more
 refutations whose Lean proof checks, the rules with a condition on `x` left
 out.
 
+`OSR/IntegrationRec167.lean` refutes 7.2.5 #17. The rules not considered so
+far whose integrand the fragment cannot interpret are now reported in
+`Integration.notMigrated` (320 entries): 147 with an exponent of denominator
+2, 3, 4 or 6 (nowhere defined), and 132 with a power `F^(…)` whose exponent
+depends on `x`. Exponentials written `E^u` are left for a translation of `E^u`
+into `transc1#exp`.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.

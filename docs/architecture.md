@@ -218,6 +218,7 @@ OSR/IntegrationRec163.lean: two identities, three degenerate refutations
 OSR/IntegrationRec164.lean: degenerate-coefficient refutations (9)
 OSR/IntegrationRec165.lean: logarithm and degenerate refutations (3)
 OSR/IntegrationRec166.lean: refutations from a wider definedness search (40)
+OSR/IntegrationRec167.lean: one refutation (7.2.5 #17)
 OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (523)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
