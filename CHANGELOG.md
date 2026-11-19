@@ -23,6 +23,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `numerical:` findings now describe both passes.
 
 ### Changed
+- The Integration documentation page is split: the strengthened variants and
+  the later proof batches move to `docs/integration-proofs.md`, which keeps the
+  generated HTML pages under the Documenter size threshold.
 - `just check` can replay modules with `leanchecker` in parallel:
   `OSR_CHECK_JOBS=N` runs `N` replays at once (default 1). With 8 jobs the
   replay of the 175 modules takes about two minutes.
@@ -36,6 +39,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- 48 more RUBI rules are migrated and proved over ℝ, eight of them over ℂ
+  too (`OSR/IntegrationRec142.lean` to `IntegrationRec152`):
+  `(d₁ + e₁ x)^p (d₂ + e₂ x)^p = (d₁ d₂ + e₁ e₂ x²)^p` (7.2.3 #1, 7.2.4 #1);
+  the double-argument formula of sinh (6.7.9 #70); `(a + b x^n)^p =
+  x^(n p) (b + a x^(-n))^p` for negative `n` and `p` (6.1.11 #7, #8, #19, #20);
+  `log(f + g x²)` split into logarithms when `g = -c² f` (7.3.4 #136,
+  7.3.1 #156); `sec² u/(b + a sec² u + c tan² u)` with `cos 2u` (4.7.9 #72 to
+  #75); reductions of `trig^n/(a + b trig)` (4.7.9 #17 to #20, 6.7.9 #8, #16 to
+  #18); `tan² = sec² - 1` and its hyperbolic forms (4.7.6 #10 to #13, 6.7.6 #5,
+  #10 to #13); arctanh of `a + b f^(c + d x)` split into logarithms (7.3.4 #7,
+  #9, 7.3.7 #7, #9); a locally constant factor `√(a + b x²)/√(d + e x²)`
+  (5.3.7 #23, 7.3.4 #23, 7.3.7 #23); half-argument forms of `g (1 ± cosh u)`
+  (6.7.7 #24, #25, #30); and integration by parts of `x^m (a + b F(c x))^n` for
+  arcsin, arccos, arsinh and arcosh (5.1.1 #1, #2, 5.1.2 #5, #6, 7.1.1 #1,
+  7.1.2 #3, 7.2.1 #1, 7.2.2 #3). The catalogue has 968 rules (796 RUBI rules
+  considered): 392 proved and 576 refuted over ℝ; 248 proved (120 certified),
+  370 refuted and 350 unproved over ℂ.
 - Six more RUBI rules are migrated and proved over ℝ by splits with a shifted
   exponent: `1/(d + e x) = 1/d - e x/(d (d + e x))` for 7.3.4 #5, 7.3.1 #25 and
   5.3.4 #5 (`OSR/IntegrationRec140.lean`), and `d (d + e x²)^q = (d + e x²)^(q+1)

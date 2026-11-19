@@ -208,6 +208,7 @@ OSR/IntegrationRec136.lean, IntegrationRec137.lean: integration by parts of (a +
 OSR/IntegrationRec138.lean arctanh split into logarithms (2)
 OSR/IntegrationRec139.lean linear splits with integer exponents (8)
 OSR/IntegrationRec140.lean, IntegrationRec141.lean: splits with a shifted exponent (6)
+OSR/IntegrationRec142.lean … IntegrationRec152.lean: algebraic, trigonometric and by-parts identities (48)
 OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (523)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),

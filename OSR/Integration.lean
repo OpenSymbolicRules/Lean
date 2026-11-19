@@ -26,6 +26,17 @@ import OSR.IntegrationRec138
 import OSR.IntegrationRec139
 import OSR.IntegrationRec140
 import OSR.IntegrationRec141
+import OSR.IntegrationRec142
+import OSR.IntegrationRec143
+import OSR.IntegrationRec144
+import OSR.IntegrationRec145
+import OSR.IntegrationRec146
+import OSR.IntegrationRec147
+import OSR.IntegrationRec148
+import OSR.IntegrationRec149
+import OSR.IntegrationRec150
+import OSR.IntegrationRec151
+import OSR.IntegrationRec152
 import OSR.IntegrationRec116
 import OSR.IntegrationRec115
 import OSR.IntegrationRec114
@@ -147,7 +158,7 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec41 OSR.IntegrationRec42
   OSR.IntegrationRec43 OSR.IntegrationRec44
   OSR.IntegrationRec45 OSR.IntegrationRec46
-  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationRec53 OSR.IntegrationRec54 OSR.IntegrationRec55 OSR.IntegrationRec56 OSR.IntegrationRec57 OSR.IntegrationRec58 OSR.IntegrationRec59 OSR.IntegrationRec60 OSR.IntegrationRec61 OSR.IntegrationRec62 OSR.IntegrationRec63 OSR.IntegrationRec64 OSR.IntegrationRec65 OSR.IntegrationRec66 OSR.IntegrationNum1 OSR.IntegrationRec67 OSR.IntegrationRec68 OSR.IntegrationRec69 OSR.IntegrationRec70 OSR.IntegrationRec71 OSR.IntegrationRec72 OSR.IntegrationRec73 OSR.IntegrationRec74 OSR.IntegrationRec75 OSR.IntegrationRec76 OSR.IntegrationRec77 OSR.IntegrationRec78 OSR.IntegrationRec79 OSR.IntegrationRec80 OSR.IntegrationRec81 OSR.IntegrationRec82 OSR.IntegrationRec83 OSR.IntegrationNum1 OSR.IntegrationRec84 OSR.IntegrationRec85 OSR.IntegrationRec86 OSR.IntegrationRec87 OSR.IntegrationRec88 OSR.IntegrationRec89 OSR.IntegrationRec90 OSR.IntegrationRec91 OSR.IntegrationRec92 OSR.IntegrationRec93 OSR.IntegrationRec94 OSR.IntegrationRec95 OSR.IntegrationRec96 OSR.IntegrationRec97 OSR.IntegrationRec98 OSR.IntegrationRec99 OSR.IntegrationRec100 OSR.IntegrationRec101 OSR.IntegrationRec102 OSR.IntegrationRec103 OSR.IntegrationRec104 OSR.IntegrationRec105 OSR.IntegrationRec106 OSR.IntegrationRec107 OSR.IntegrationRec108 OSR.IntegrationRec109 OSR.IntegrationRec110 OSR.IntegrationRec111 OSR.IntegrationRec112 OSR.IntegrationRec113 OSR.IntegrationRec114 OSR.IntegrationRec115 OSR.IntegrationRec116 OSR.IntegrationRec117 OSR.IntegrationRec118 OSR.IntegrationRec119 OSR.IntegrationRec120 OSR.IntegrationRec121 OSR.IntegrationRec122 OSR.IntegrationRec123 OSR.IntegrationRec124 OSR.IntegrationRec125 OSR.IntegrationRec126 OSR.IntegrationRec127 OSR.IntegrationRec128 OSR.IntegrationRec129 OSR.IntegrationRec130 OSR.IntegrationRec131 OSR.IntegrationRec132 OSR.IntegrationRec133 OSR.IntegrationRec134 OSR.IntegrationRec135 OSR.IntegrationRec136 OSR.IntegrationRec137 OSR.IntegrationRec138 OSR.IntegrationRec139 OSR.IntegrationRec140 OSR.IntegrationRec141 OSR.IntegrationFindings Filter Topology
+  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationRec53 OSR.IntegrationRec54 OSR.IntegrationRec55 OSR.IntegrationRec56 OSR.IntegrationRec57 OSR.IntegrationRec58 OSR.IntegrationRec59 OSR.IntegrationRec60 OSR.IntegrationRec61 OSR.IntegrationRec62 OSR.IntegrationRec63 OSR.IntegrationRec64 OSR.IntegrationRec65 OSR.IntegrationRec66 OSR.IntegrationNum1 OSR.IntegrationRec67 OSR.IntegrationRec68 OSR.IntegrationRec69 OSR.IntegrationRec70 OSR.IntegrationRec71 OSR.IntegrationRec72 OSR.IntegrationRec73 OSR.IntegrationRec74 OSR.IntegrationRec75 OSR.IntegrationRec76 OSR.IntegrationRec77 OSR.IntegrationRec78 OSR.IntegrationRec79 OSR.IntegrationRec80 OSR.IntegrationRec81 OSR.IntegrationRec82 OSR.IntegrationRec83 OSR.IntegrationNum1 OSR.IntegrationRec84 OSR.IntegrationRec85 OSR.IntegrationRec86 OSR.IntegrationRec87 OSR.IntegrationRec88 OSR.IntegrationRec89 OSR.IntegrationRec90 OSR.IntegrationRec91 OSR.IntegrationRec92 OSR.IntegrationRec93 OSR.IntegrationRec94 OSR.IntegrationRec95 OSR.IntegrationRec96 OSR.IntegrationRec97 OSR.IntegrationRec98 OSR.IntegrationRec99 OSR.IntegrationRec100 OSR.IntegrationRec101 OSR.IntegrationRec102 OSR.IntegrationRec103 OSR.IntegrationRec104 OSR.IntegrationRec105 OSR.IntegrationRec106 OSR.IntegrationRec107 OSR.IntegrationRec108 OSR.IntegrationRec109 OSR.IntegrationRec110 OSR.IntegrationRec111 OSR.IntegrationRec112 OSR.IntegrationRec113 OSR.IntegrationRec114 OSR.IntegrationRec115 OSR.IntegrationRec116 OSR.IntegrationRec117 OSR.IntegrationRec118 OSR.IntegrationRec119 OSR.IntegrationRec120 OSR.IntegrationRec121 OSR.IntegrationRec122 OSR.IntegrationRec123 OSR.IntegrationRec124 OSR.IntegrationRec125 OSR.IntegrationRec126 OSR.IntegrationRec127 OSR.IntegrationRec128 OSR.IntegrationRec129 OSR.IntegrationRec130 OSR.IntegrationRec131 OSR.IntegrationRec132 OSR.IntegrationRec133 OSR.IntegrationRec134 OSR.IntegrationRec135 OSR.IntegrationRec136 OSR.IntegrationRec137 OSR.IntegrationRec138 OSR.IntegrationRec139 OSR.IntegrationRec140 OSR.IntegrationRec141 OSR.IntegrationRec142 OSR.IntegrationRec143 OSR.IntegrationRec144 OSR.IntegrationRec145 OSR.IntegrationRec146 OSR.IntegrationRec147 OSR.IntegrationRec148 OSR.IntegrationRec149 OSR.IntegrationRec150 OSR.IntegrationRec151 OSR.IntegrationRec152 OSR.IntegrationFindings Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -8145,7 +8156,412 @@ def catalogPart10 : List CEntry := [
       "independence: m, p, q are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       recFinding,
       condFinding "EqQ[e, Multiply[Power[c, 2], d]]; IntegersQ[p, Multiply[2, q]]; LtQ[q, -1]; ILtQ[m, 0]; NeQ[p, -1]",
-      optionalFinding "e., a., b., c. and p."] }
+      optionalFinding "e., a., b., c. and p."] },
+  { rule := rubi723r1, ruleDecl := ``rubi723r1,
+    proofs := [(.real, ``rubi723r1_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#arccosh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[d2, e1], Multiply[d1, e2]], 0]; IntegerQ[p]",
+      optionalFinding "e1., p., e2., a., b., c. and n."] },
+  { rule := rubi724r1, ruleDecl := ``rubi724r1,
+    proofs := [(.real, ``rubi724r1_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#arccosh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[d2, e1], Multiply[d1, e2]], 0]; IntegerQ[p]",
+      optionalFinding "f., m., e1., p., e2., a., b., c. and n."] },
+  { rule := rubi679r70, ruleDecl := ``rubi679r70,
+    proofs := [(.real, ``rubi679r70_real), (.complex, ``rubi679r70_complex)],
+    findings := [
+      recFinding,
+      optionalFinding "e., f., m., b., c., d. and n."] },
+  { rule := rubi6111r7, ruleDecl := ``rubi6111r7,
+    proofs := [(.real, ``rubi6111r7_real), (.complex, ``rubi6111r7_complex)],
+    findings := [
+      "independence: n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "ILtQ[p, 0]; ILtQ[n, 0]",
+      optionalFinding "b., c. and d."] },
+  { rule := rubi6111r8, ruleDecl := ``rubi6111r8,
+    proofs := [(.real, ``rubi6111r8_real), (.complex, ``rubi6111r8_complex)],
+    findings := [
+      "independence: n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "ILtQ[p, 0]; ILtQ[n, 0]",
+      optionalFinding "b., c. and d."] },
+  { rule := rubi6111r19, ruleDecl := ``rubi6111r19,
+    proofs := [(.real, ``rubi6111r19_real), (.complex, ``rubi6111r19_complex)],
+    findings := [
+      "independence: n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "ILtQ[p, 0]; ILtQ[n, 0]",
+      optionalFinding "m., b., c. and d."] },
+  { rule := rubi6111r20, ruleDecl := ``rubi6111r20,
+    proofs := [(.real, ``rubi6111r20_real), (.complex, ``rubi6111r20_complex)],
+    findings := [
+      "independence: n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "ILtQ[p, 0]; ILtQ[n, 0]",
+      optionalFinding "m., b., c. and d."] },
+  { rule := rubi734r136, ruleDecl := ``rubi734r136,
+    proofs := [(.real, ``rubi734r136_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#arctanh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[Power[c, 2], f], g], 0]",
+      optionalFinding "f., g. and c."] },
+  { rule := rubi731r156, ruleDecl := ``rubi731r156,
+    proofs := [(.real, ``rubi731r156_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#arctanh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[Power[c, 2], f], g], 0]",
+      optionalFinding "f., g. and c."] },
+  { rule := rubi479r72, ruleDecl := ``rubi479r72,
+    proofs := [(.real, ``rubi479r72_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#sec has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]",
+      optionalFinding "f., g., m., d., e. and c."] },
+  { rule := rubi479r73, ruleDecl := ``rubi479r73,
+    proofs := [(.real, ``rubi479r73_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#sec has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; NeQ[Add[a, b], 0]; NeQ[Add[a, c], 0]",
+      optionalFinding "f., g., m., d., e., b., a. and c."] },
+  { rule := rubi479r74, ruleDecl := ``rubi479r74,
+    proofs := [(.real, ``rubi479r74_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#csc has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]",
+      optionalFinding "f., g., m., d., e. and b."] },
+  { rule := rubi479r75, ruleDecl := ``rubi479r75,
+    proofs := [(.real, ``rubi479r75_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#csc has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; NeQ[Add[a, b], 0]; NeQ[Add[a, c], 0]",
+      optionalFinding "f., g., m., d., e., c., b. and a."] },
+  { rule := rubi479r17, ruleDecl := ``rubi479r17,
+    proofs := [(.real, ``rubi479r17_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#sec has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; EqQ[Add[Power[a, 2], Multiply[-1, Power[b, 2]]], 0]",
+      optionalFinding "e., f., m., c., d., n. and b."] },
+  { rule := rubi479r18, ruleDecl := ``rubi479r18,
+    proofs := [(.real, ``rubi479r18_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#csc has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; EqQ[Add[Power[a, 2], Multiply[-1, Power[b, 2]]], 0]",
+      optionalFinding "e., f., m., c., d., n. and b."] },
+  { rule := rubi479r19, ruleDecl := ``rubi479r19,
+    proofs := [(.real, ``rubi479r19_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#sec has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; NeQ[Add[Power[a, 2], Multiply[-1, Power[b, 2]]], 0]; IGtQ[n, 0]",
+      optionalFinding "e., f., m., c., d., n. and b."] },
+  { rule := rubi479r20, ruleDecl := ``rubi479r20,
+    proofs := [(.real, ``rubi479r20_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#csc has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; NeQ[Add[Power[a, 2], Multiply[-1, Power[b, 2]]], 0]; IGtQ[n, 0]",
+      optionalFinding "e., f., m., c., d., n. and b."] },
+  { rule := rubi679r8, ruleDecl := ``rubi679r8,
+    proofs := [(.real, ``rubi679r8_real), (.complex, ``rubi679r8_complex)],
+    findings := [
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[n, 1]; EqQ[Add[Power[a, 2], Multiply[-1, Power[b, 2]]], 0]",
+      optionalFinding "e., f., m., c., d. and b."] },
+  { rule := rubi679r16, ruleDecl := ``rubi679r16,
+    proofs := [(.real, ``rubi679r16_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#csch has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; EqQ[Add[Power[a, 2], Multiply[-1, Power[b, 2]]], 0]",
+      optionalFinding "e., f., m., c., d., n. and b."] },
+  { rule := rubi679r17, ruleDecl := ``rubi679r17,
+    proofs := [(.real, ``rubi679r17_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#sech has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; NeQ[Add[Power[a, 2], Power[b, 2]], 0]; IGtQ[n, 0]",
+      optionalFinding "e., f., m., c., d., n. and b."] },
+  { rule := rubi679r18, ruleDecl := ``rubi679r18,
+    proofs := [(.real, ``rubi679r18_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#csch has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; NeQ[Add[Power[a, 2], Multiply[-1, Power[b, 2]]], 0]; IGtQ[n, 0]",
+      optionalFinding "e., f., m., c., d., n. and b."] },
+  { rule := rubi476r10, ruleDecl := ``rubi476r10,
+    proofs := [(.real, ``rubi476r10_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#sec has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[Multiply[p, Power[2, -1]], 0]",
+      optionalFinding "c., d., m., a. and b."] },
+  { rule := rubi476r11, ruleDecl := ``rubi476r11,
+    proofs := [(.real, ``rubi476r11_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#sec has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[Multiply[p, Power[2, -1]], 0]",
+      optionalFinding "c., d., m., a., b. and n."] },
+  { rule := rubi476r12, ruleDecl := ``rubi476r12,
+    proofs := [(.real, ``rubi476r12_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#csc has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[Multiply[p, Power[2, -1]], 0]",
+      optionalFinding "c., d., m., a. and b."] },
+  { rule := rubi476r13, ruleDecl := ``rubi476r13,
+    proofs := [(.real, ``rubi476r13_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#csc has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[Multiply[p, Power[2, -1]], 0]",
+      optionalFinding "c., d., m., a., b. and n."] },
+  { rule := rubi676r5, ruleDecl := ``rubi676r5,
+    proofs := [(.real, ``rubi676r5_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#coth has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[n, 0]; IGtQ[p, 0]",
+      optionalFinding "c., d., m., a., b., n. and p."] },
+  { rule := rubi676r10, ruleDecl := ``rubi676r10,
+    proofs := [(.real, ``rubi676r10_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#sech has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[Multiply[p, Power[2, -1]], 0]",
+      optionalFinding "c., d., m., a. and b."] },
+  { rule := rubi676r11, ruleDecl := ``rubi676r11,
+    proofs := [(.real, ``rubi676r11_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#sech has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[Multiply[p, Power[2, -1]], 0]",
+      optionalFinding "c., d., m., a., b. and n."] },
+  { rule := rubi676r12, ruleDecl := ``rubi676r12,
+    proofs := [(.real, ``rubi676r12_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#coth and transc1#csch have no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[Multiply[p, Power[2, -1]], 0]",
+      optionalFinding "c., d., m., a. and b."] },
+  { rule := rubi676r13, ruleDecl := ``rubi676r13,
+    proofs := [(.real, ``rubi676r13_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#coth and transc1#csch have no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[Multiply[p, Power[2, -1]], 0]",
+      optionalFinding "c., d., m., a., b. and n."] },
+  { rule := rubi734mr7, ruleDecl := ``rubi734mr7,
+    proofs := [(.real, ``rubi734mr7_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#arctanh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      optionalFinding "a., b., c. and d."] },
+  { rule := rubi734mr9, ruleDecl := ``rubi734mr9,
+    proofs := [(.real, ``rubi734mr9_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#arctanh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]",
+      optionalFinding "m., a., b., c. and d."] },
+  { rule := rubi737r7, ruleDecl := ``rubi737r7,
+    proofs := [(.real, ``rubi737r7_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#arctanh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      optionalFinding "a., b., c. and d."] },
+  { rule := rubi737r9, ruleDecl := ``rubi737r9,
+    proofs := [(.real, ``rubi737r9_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#arctanh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]",
+      optionalFinding "m., a., b., c. and d."] },
+  { rule := rubi537r23, ruleDecl := ``rubi537r23,
+    proofs := [(.real, ``rubi537r23_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "EqQ[Add[b, Power[c, 2]], 0]; EqQ[Add[Multiply[b, d], Multiply[-1, a, e]], 0]",
+      optionalFinding "c., a., b., m., d. and e."] },
+  { rule := rubi734mr23, ruleDecl := ``rubi734mr23,
+    proofs := [(.real, ``rubi734mr23_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#arctanh and arith1#root have no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "EqQ[b, Power[c, 2]]; EqQ[Add[Multiply[b, d], Multiply[-1, a, e]], 0]",
+      optionalFinding "c., a., b., m., d. and e."] },
+  { rule := rubi737r23, ruleDecl := ``rubi737r23,
+    proofs := [(.real, ``rubi737r23_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#arctanh and arith1#root have no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "EqQ[b, Power[c, 2]]; EqQ[Add[Multiply[b, d], Multiply[-1, a, e]], 0]",
+      optionalFinding "c., a., b., m., d. and e."] },
+  { rule := rubi677r24, ruleDecl := ``rubi677r24,
+    proofs := [(.real, ``rubi677r24_real), (.complex, ``rubi677r24_complex)],
+    findings := [
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[f, Multiply[-1, g]], 0]; ILtQ[n, 0]",
+      optionalFinding "c., a., b., g., d., e. and n."] },
+  { rule := rubi677r25, ruleDecl := ``rubi677r25,
+    proofs := [(.real, ``rubi677r25_real), (.complex, ``rubi677r25_complex)],
+    findings := [
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[f, g], 0]; ILtQ[n, 0]",
+      optionalFinding "c., a., b., g., d., e. and n."] },
+  { rule := rubi677r30, ruleDecl := ``rubi677r30,
+    proofs := [(.real, ``rubi677r30_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; the proof uses the real interpretation and was not carried to ℂ.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[f, Multiply[-1, g]], 0]; IntegersQ[m, n]; EqQ[Add[m, n], 0]",
+      optionalFinding "c., a., b., d., e., m., g. and n."] },
+  { rule := rubi511r1, ruleDecl := ``rubi511r1,
+    proofs := [(.real, ``rubi511r1_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#arcsin has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "GtQ[n, 0]",
+      optionalFinding "a., b., c. and n."] },
+  { rule := rubi511r2, ruleDecl := ``rubi511r2,
+    proofs := [(.real, ``rubi511r2_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#arccos has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "GtQ[n, 0]",
+      optionalFinding "a., b., c. and n."] },
+  { rule := rubi711r1, ruleDecl := ``rubi711r1,
+    proofs := [(.real, ``rubi711r1_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#arcsinh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "GtQ[n, 0]",
+      optionalFinding "a., b., c. and n."] },
+  { rule := rubi721r1, ruleDecl := ``rubi721r1,
+    proofs := [(.real, ``rubi721r1_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#arccosh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "GtQ[n, 0]",
+      optionalFinding "a., b., c. and n."] },
+  { rule := rubi512r5, ruleDecl := ``rubi512r5,
+    proofs := [(.real, ``rubi512r5_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#arcsin has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; GtQ[n, 0]",
+      optionalFinding "m., a., b. and c."] },
+  { rule := rubi512r6, ruleDecl := ``rubi512r6,
+    proofs := [(.real, ``rubi512r6_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#arccos has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; GtQ[n, 0]",
+      optionalFinding "m., a., b. and c."] },
+  { rule := rubi712r3, ruleDecl := ``rubi712r3,
+    proofs := [(.real, ``rubi712r3_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#arcsinh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; GtQ[n, 0]",
+      optionalFinding "m., a., b. and c."] },
+  { rule := rubi722r3, ruleDecl := ``rubi722r3,
+    proofs := [(.real, ``rubi722r3_real)],
+    unproved := [.complex],
+    findings := [
+      "complex: not proved; transc1#arccosh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; GtQ[n, 0]",
+      optionalFinding "m., a., b. and c."] }
 ]
 
 theorem catalogPart10_wellFormed : ∀ e ∈ catalogPart10,
@@ -8153,7 +8569,11 @@ theorem catalogPart10_wellFormed : ∀ e ∈ catalogPart10,
   intro e he
   simp only [catalogPart10, List.mem_cons, List.mem_nil_iff, or_false] at he
   rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=
