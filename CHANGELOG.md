@@ -23,6 +23,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `numerical:` findings now describe both passes.
 
 ### Changed
+- The nine rules of `OSR/IntegrationRec155.lean` (6.7.7 #1 to #4, #7 and
+  4.7.7 #13, #14, #17, #18) carry a `domain:` finding: their proofs cover only
+  the case where `F^(c (a + b x))` is constant, the only one the fragment can
+  state (`b c = 0`).
 - The Integration documentation page is split: the strengthened variants and
   the later proof batches move to `docs/integration-proofs.md`, which keeps the
   generated HTML pages under the Documenter size threshold.
@@ -39,6 +43,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Eight more RUBI rules are migrated (`OSR/IntegrationRec157.lean`,
+  `IntegrationRec158`): 4.7.6 #4, #5 and 6.7.6 #4 are refuted over ℝ and ℂ (at
+  `n = 1` a residual integrand keeps `sin^(-1)`, `cos^(-1)` or `sinh^(-1)` where
+  the integrand is defined); 7.3.1 #1 and 7.3.4 #41, 7.3.7 #41
+  (`artanh(tan(a + b x))`) are proved by parts, and 6.7.9 #73 (also over ℂ) and
+  #75 with `2 (a + b cosh² u + c sinh² u) = 2a + b - c + (b + c) cosh 2u`. The
+  catalogue has 997 rules (825 RUBI rules considered): 416 proved and 581
+  refuted over ℝ; 249 proved (120 certified), 373 refuted and 375 unproved
+  over ℂ.
 - 21 more RUBI rules are migrated, 19 of them proved and two refuted over ℝ
   (`OSR/IntegrationRec153.lean` to `IntegrationRec156`): products
   `F(a + b x) G(c + d x)` with `b² = d²` by the addition formulas (6.7.9 #86 to

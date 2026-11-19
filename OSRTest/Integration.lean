@@ -13,10 +13,10 @@ private def t : Expr := .var "t"
 -- The twenty rules of the syntactic inventory (FreeQ or NeQ conditions,
 -- registered heads, no Int in the result) are migrated or reported, plus
 -- 110 rules with residual integrals and seven unmigrated ones.
-#guard Integration.catalogVerified.length + Integration.notMigrated.length == 1030
+#guard Integration.catalogVerified.length + Integration.notMigrated.length == 1038
 #guard Integration.notMigrated.length == 41
-#guard (Integration.catalogVerified.filter (·.rule.shape == .antiderivRec)).length == 868
-#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 912
+#guard (Integration.catalogVerified.filter (·.rule.shape == .antiderivRec)).length == 876
+#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 918
 -- RUBI rules with EqQ conditions are stated with relation1#eq (Cond.eq).
 #guard (Integration.catalogVerified.filter fun e =>
   e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 475
@@ -409,7 +409,8 @@ private def rules : List CRule :=
   "integration.rubi_7_3_4_r107", "integration.rubi_7_3_1_r127", "integration.rubi_7_3_4_r130", "integration.rubi_7_3_1_r150", "integration.rubi_7_3_7_r3", "integration.rubi_7_3_4_misc_r3", "integration.rubi_6_1_12_r19", "integration.rubi_6_1_12_r20",
   "integration.rubi_7_3_4_r5", "integration.rubi_7_3_1_r25", "integration.rubi_5_3_4_r5", "integration.rubi_7_3_4_r95", "integration.rubi_7_3_1_r115", "integration.rubi_5_3_4_r95",
   "integration.rubi_7_2_3_r1", "integration.rubi_7_2_4_r1", "integration.rubi_6_7_9_r70", "integration.rubi_6_1_11_r7", "integration.rubi_6_1_11_r8", "integration.rubi_6_1_11_r19", "integration.rubi_6_1_11_r20", "integration.rubi_7_3_4_r136", "integration.rubi_7_3_1_r156", "integration.rubi_4_7_9_r72", "integration.rubi_4_7_9_r73", "integration.rubi_4_7_9_r74", "integration.rubi_4_7_9_r75", "integration.rubi_4_7_9_r17", "integration.rubi_4_7_9_r18", "integration.rubi_4_7_9_r19", "integration.rubi_4_7_9_r20", "integration.rubi_6_7_9_r8", "integration.rubi_6_7_9_r16", "integration.rubi_6_7_9_r17", "integration.rubi_6_7_9_r18", "integration.rubi_4_7_6_r10", "integration.rubi_4_7_6_r11", "integration.rubi_4_7_6_r12", "integration.rubi_4_7_6_r13", "integration.rubi_6_7_6_r5", "integration.rubi_6_7_6_r10", "integration.rubi_6_7_6_r11", "integration.rubi_6_7_6_r12", "integration.rubi_6_7_6_r13", "integration.rubi_7_3_4_misc_r7", "integration.rubi_7_3_4_misc_r9", "integration.rubi_7_3_7_r7", "integration.rubi_7_3_7_r9", "integration.rubi_5_3_7_r23", "integration.rubi_7_3_4_misc_r23", "integration.rubi_7_3_7_r23", "integration.rubi_6_7_7_r24", "integration.rubi_6_7_7_r25", "integration.rubi_6_7_7_r30", "integration.rubi_5_1_1_r1", "integration.rubi_5_1_1_r2", "integration.rubi_7_1_1_r1", "integration.rubi_7_2_1_r1", "integration.rubi_5_1_2_r5", "integration.rubi_5_1_2_r6", "integration.rubi_7_1_2_r3", "integration.rubi_7_2_2_r3",
-  "integration.rubi_6_7_9_r86", "integration.rubi_6_7_9_r87", "integration.rubi_6_7_9_r88", "integration.rubi_6_7_9_r89", "integration.rubi_4_7_9_r96", "integration.rubi_4_7_9_r97", "integration.rubi_6_7_7_r1", "integration.rubi_6_7_7_r2", "integration.rubi_6_7_7_r3", "integration.rubi_6_7_7_r4", "integration.rubi_6_7_7_r7", "integration.rubi_4_7_7_r13", "integration.rubi_4_7_7_r14", "integration.rubi_4_7_7_r17", "integration.rubi_4_7_7_r18", "integration.rubi_6_7_8_r3", "integration.rubi_6_7_8_r4", "integration.rubi_6_7_8_r5", "integration.rubi_6_7_8_r6"]
+  "integration.rubi_6_7_9_r86", "integration.rubi_6_7_9_r87", "integration.rubi_6_7_9_r88", "integration.rubi_6_7_9_r89", "integration.rubi_4_7_9_r96", "integration.rubi_4_7_9_r97", "integration.rubi_6_7_7_r1", "integration.rubi_6_7_7_r2", "integration.rubi_6_7_7_r3", "integration.rubi_6_7_7_r4", "integration.rubi_6_7_7_r7", "integration.rubi_4_7_7_r13", "integration.rubi_4_7_7_r14", "integration.rubi_4_7_7_r17", "integration.rubi_4_7_7_r18", "integration.rubi_6_7_8_r3", "integration.rubi_6_7_8_r4", "integration.rubi_6_7_8_r5", "integration.rubi_6_7_8_r6",
+  "integration.rubi_7_3_1_r1", "integration.rubi_7_3_4_misc_r41", "integration.rubi_7_3_7_r41", "integration.rubi_6_7_9_r73", "integration.rubi_6_7_9_r75"]
 
 -- A conditional rule applies only when its conditions are decided: int(λt. t^m)
 -- stays (m ≠ -1 is undecided), int(λt. t^(-1)) stays (decided false),

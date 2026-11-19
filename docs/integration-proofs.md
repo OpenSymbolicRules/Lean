@@ -464,6 +464,24 @@ shifted exponent over ℝ: `1/(d + e x) = 1/d - e x/(d (d + e x))` with
 - 6.7.8 #3 to #6: with `θ = d (a + b log(c xⁿ))`, `x θ' = b d n` wherever the
   logarithm is defined (also for `n = 0`), and `cosh² θ - sinh² θ = 1`.
 
+The rules of `OSR/IntegrationRec155.lean` carry a `domain:` finding: the
+fragment interprets `F^(c (a + b x))` for integer exponents only, so their
+proofs cover only the constant power (`b c = 0`). 4.7.7 #1 and #2 and 2.3 #1
+and #8 stay among the rules not migrated.
+
+`OSR/IntegrationRec157.lean` and `IntegrationRec158` add eight rules:
+
+- 4.7.6 #4, #5 and 6.7.6 #4 are refuted over ℝ and ℂ: at `n = 1`, `p = 2` the
+  integrand `sin x tan² x` (resp. `cos x cot² x`, `sinh x tanh² x`) is defined
+  near `x = 0` (resp. `π/2`, `0`), but a residual integrand keeps
+  `sin^(-1) x` (resp. `cos^(-1) x`, `sinh^(-1) x`), not defined there. The
+  hyperbolic 6.7.6 #5 (`cosh^n coth^p`) is proved: `cosh` has no real zero.
+- 7.3.1 #1 by parts with `artanh' u = 1/(1 - u²)`; 7.3.4 #41 and 7.3.7 #41 by
+  parts with `d/dx artanh(tan u) = b sec(2u)`, where `|tan u| < 1` gives
+  `cos 2u > 0`.
+- 6.7.9 #73 (ℝ and ℂ) and #75: `2 (a + b cosh² u + c sinh² u) = 2a + b - c +
+  (b + c) cosh 2u`, multiplying by `cosh² u` for the sech/tanh form.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.
