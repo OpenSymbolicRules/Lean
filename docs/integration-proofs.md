@@ -510,6 +510,15 @@ sign of `x`); and 3.1.2 #12 at `x = 0` with `n = 0` (also over ℂ).
 `f = 0` and 1.2.1.6 #26 at `f = 0` (where `c e = b f` forces `c = 0`): the
 result divides by `d`, `f` or `2 f` while the integrand is defined.
 
+A definedness search over the 243 rules not yet considered whose result
+divides by a coefficient expression (rules with `E`, `ImaginaryI` or `Pi`, a
+generic factor, or exponential bases left out; non-integer exponents not
+counted as failures) finds integer assignments at which the conditions hold,
+the integrand is defined everywhere and the result or a residual integrand is
+not. `OSR/IntegrationRec164.lean` keeps the nine whose Lean refutation checks:
+1.1.1.4 #33, #35, 1.1.1.7 #9, #12, 1.1.3.3 #27, 1.1.3.4 #49, 1.2.2.3 #41,
+4.7.9 #83 and 7.3.4 #69.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.
