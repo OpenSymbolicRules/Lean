@@ -39,6 +39,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- 21 more RUBI rules are migrated, 19 of them proved and two refuted over ℝ
+  (`OSR/IntegrationRec153.lean` to `IntegrationRec156`): products
+  `F(a + b x) G(c + d x)` with `b² = d²` by the addition formulas (6.7.9 #86 to
+  #89, 4.7.9 #96, #97); 4.7.9 #94 and #95 refuted at `c - a = π`, where the
+  result's `csc π` is undefined; `F^(c (a + b x))` times sinh, cosh, sec or csc
+  powers, where definedness on a neighbourhood forces `b c = 0`
+  (`int_valued_const`) (6.7.7 #1 to #4, #7, 4.7.7 #13, #14, #17, #18); and
+  `sinh` and `cosh` of `d (a + b log(c xⁿ))` (6.7.8 #3 to #6). The catalogue has
+  989 rules (817 RUBI rules considered): 411 proved and 578 refuted over ℝ; 248
+  proved (120 certified), 370 refuted and 371 unproved over ℂ.
 - 48 more RUBI rules are migrated and proved over ℝ, eight of them over ℂ
   too (`OSR/IntegrationRec142.lean` to `IntegrationRec152`):
   `(d₁ + e₁ x)^p (d₂ + e₂ x)^p = (d₁ d₂ + e₁ e₂ x²)^p` (7.2.3 #1, 7.2.4 #1);

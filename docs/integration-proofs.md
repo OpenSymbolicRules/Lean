@@ -446,6 +446,24 @@ shifted exponent over ℝ: `1/(d + e x) = 1/d - e x/(d (d + e x))` with
   arcosh. An integrand defined on a neighbourhood of `x` keeps `c x` in the
   open domain (`strict_Icc`, `strict_Ici`), where these derivatives hold.
 
+`OSR/IntegrationRec153.lean` to `IntegrationRec156` add 21 rules over ℝ:
+
+- 6.7.9 #86 to #89 and 4.7.9 #96, #97: with `b² = d²`, `d = ± b`, so the two
+  arguments differ (or add up) by the constant `c - a` (or `a + c`), and the
+  addition formulas split `sech · sech`, `csch · csch`, `tanh · tanh`,
+  `coth · coth`, `tan · tan` and `cot · cot`; `b c - a d ≠ 0` keeps the
+  hyperbolic constants `csch(c - a)` defined.
+- 4.7.9 #94 and #95 are refuted: at `a = 0`, `b = d = 1`, `c = π` the
+  conditions hold and `sec x sec(x + π)` (resp. `csc x csc(x + π)`) is defined
+  near `x = 0` (resp. `x = 1`), but the result contains `csc π`.
+- 6.7.7 #1 to #4, #7 and 4.7.7 #13, #14, #17, #18: the fragment interprets
+  `F^(c (a + b x))` for integer exponents only, so an integrand defined on a
+  neighbourhood makes `c (a + b x)` an integer on an interval, hence `b c = 0`
+  (`int_valued_const`) and the power is constant; the rules reduce to the
+  reduction formulas of `sinh^n`, `cosh^n`, `sec^n` and `csc^n`.
+- 6.7.8 #3 to #6: with `θ = d (a + b log(c xⁿ))`, `x θ' = b d n` wherever the
+  logarithm is defined (also for `n = 0`), and `cosh² θ - sinh² θ = 1`.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.
