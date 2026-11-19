@@ -43,6 +43,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- 91 more RUBI rules are migrated and refuted over ℝ
+  (`OSR/IntegrationRec170.lean`, `OSR/IntegrationRec171.lean`), found by the
+  definedness search; 89 of them are written with `Simp[e]` or `Simp[e, x]`,
+  now read as `e` (`And`, `Not[EqQ]` and `Not[NeQ]` conditions are now
+  flattened too). The catalogue has 1190 rules
+  (1297 RUBI rules considered): 438 proved and 752 refuted over ℝ; 267
+  proved (130 certified), 376 refuted and 547 unproved over ℂ.
 - RUBI rules with exponentials written `E^u` are migrated: `E^u` reads as
   `exp(u)` (`transc1#exp`). 14 are proved over ℝ and ℂ
   (`OSR/IntegrationRec169.lean`: 6.1.12 #1, #2, #7, #8, #29, #30, #55, #56,

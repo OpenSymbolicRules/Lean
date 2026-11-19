@@ -547,6 +547,15 @@ rewrite `sinh u` and `cosh u` as `(exp u ∓ exp(-u))/2` (6.1.12 #1, #2, #7, #8,
 coefficients where the result divides by zero (7.3.4 #33, #37, #39, 7.3.7
 #33, #37, #39, 6.7.8 #25, #26, 6.7.9 #4, 5.3.6 #13).
 
+The transcription now also reads `Simp[e]` and `Simp[e, x]` as `e` (RUBI's
+algebraic normaliser does not change the value), flattens `And[…]`
+conditions, and reads `Not[EqQ[a, b]]` as `NeQ[a, b]` and `Not[NeQ[a, b]]`
+as `EqQ[a, b]`; the faithfulness check does the same. Of the 266 rules not
+considered so far that this makes translatable, the definedness search finds
+a counterexample for 140; 91 of them have a Lean proof that checks
+(`OSR/IntegrationRec170.lean`, `OSR/IntegrationRec171.lean`), the others
+are left out.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.
