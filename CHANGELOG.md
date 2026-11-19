@@ -43,6 +43,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Five more RUBI rules are migrated (`OSR/IntegrationRec163.lean`): 1.3.3 #24
+  (`√(e x (a x + b √(c + d x²)))` distributed) and 6.7.9 #76
+  (`csch² u/(c + b coth² u)` with `cosh 2u`) are proved over ℝ; 1.3.3 #36,
+  1.2.1.5 #17 and 1.2.1.6 #26 are refuted over ℝ where the conditions let the
+  divisor `d`, `f` or `2 f` of the result vanish while the integrand is
+  defined. The catalogue has 1022 rules (850 RUBI rules considered): 424 proved
+  and 598 refuted over ℝ; 253 proved (120 certified), 376 refuted and 393
+  unproved over ℂ.
 - Ten more RUBI rules are migrated and refuted (`OSR/IntegrationRec162.lean`),
   each at a single point the numerical sampling misses: 1.2.2.8 #1, #2 and
   1.3.3 #6 split `1/((d + e x) √Q)` with `(d² - e² x²)⁻¹`, undefined at

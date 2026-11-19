@@ -504,6 +504,12 @@ integrand is defined; 1.2.2.3 #47, #48, #51, #52 and 1.2.2.4 #71, #72 at
 `x = 0`, where `√(e + d/x²)` is not defined (elsewhere their prefactor is the
 sign of `x`); and 3.1.2 #12 at `x = 0` with `n = 0` (also over ℂ).
 
+`OSR/IntegrationRec163.lean` proves 1.3.3 #24 (the radicand `e x (a x + b
+√(c + d x²))` distributed) and 6.7.9 #76 (`2 (c sinh² u + b cosh² u) = b - c +
+(b + c) cosh 2u`) over ℝ, and refutes 1.3.3 #36 at `d = 0`, 1.2.1.5 #17 at
+`f = 0` and 1.2.1.6 #26 at `f = 0` (where `c e = b f` forces `c = 0`): the
+result divides by `d`, `f` or `2 f` while the integrand is defined.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.

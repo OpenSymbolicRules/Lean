@@ -214,6 +214,7 @@ OSR/IntegrationRec157.lean, IntegrationRec158.lean: refutations of 4.7.6 #4, #5,
 OSR/IntegrationRec159.lean, IntegrationRec160.lean: three refutations from a numerical pass; a linear split (1)
 OSR/IntegrationRec161.lean: integrations by parts (5), one refutation
 OSR/IntegrationRec162.lean: refutations at a single point (10)
+OSR/IntegrationRec163.lean: two identities, three degenerate refutations
 OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (523)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
