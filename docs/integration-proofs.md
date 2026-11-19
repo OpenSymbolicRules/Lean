@@ -567,6 +567,15 @@ partial fractions 1.1.1.2 #3, 1.2.1.2 #78 and #79, with the condition
 theorem (4.1.12 #3 and #4, `sin(c + u)` and `cos(c + u)`). The others need
 symbolic exponents, square roots or exponential identities.
 
+RUBI writes many trig rules with inert copies `sin`, `cos`, `tan`, `cot`,
+`sec` and `csc` of the trig functions; they have the same value and are now
+read as `Sin`, …, `Csc` by the transcription and the faithfulness check.
+That makes 583 more rules translatable; the definedness search finds a
+counterexample for 452, and 185 of them have a Lean proof that checks
+(`OSR/IntegrationRec173.lean` to `OSR/IntegrationRec175.lean`). In 171 the
+result is undefined at the point (mostly a logarithm or a power of a
+negative number), in 14 a residual integrand is.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.

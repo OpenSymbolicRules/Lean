@@ -43,6 +43,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- 185 more RUBI rules written with RUBI's inert trig functions `sin`, `cos`,
+  `tan`, `cot`, `sec` and `csc` (read as `Sin`, …, `Csc`) are migrated and
+  refuted over ℝ (`OSR/IntegrationRec173.lean` to
+  `OSR/IntegrationRec175.lean`; 148 from 4.1, 32 from 4.3), found by the
+  definedness search. The catalogue has 1380 rules (1487 RUBI rules
+  considered): 443 proved and 937 refuted over ℝ; 272 proved (135
+  certified), 376 refuted and 732 unproved over ℂ.
 - Five RUBI rules whose result is a combination of residual integrals with
   coefficients free of `x` are proved over ℝ and ℂ
   (`OSR/IntegrationRec172.lean`): the partial fractions 1.1.1.2 #3,
