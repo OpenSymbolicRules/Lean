@@ -46,6 +46,7 @@ import OSR.IntegrationRec158
 import OSR.IntegrationRec159
 import OSR.IntegrationRec160
 import OSR.IntegrationRec161
+import OSR.IntegrationRec162
 import OSR.IntegrationRec116
 import OSR.IntegrationRec115
 import OSR.IntegrationRec114
@@ -167,7 +168,7 @@ open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec41 OSR.IntegrationRec42
   OSR.IntegrationRec43 OSR.IntegrationRec44
   OSR.IntegrationRec45 OSR.IntegrationRec46
-  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationRec53 OSR.IntegrationRec54 OSR.IntegrationRec55 OSR.IntegrationRec56 OSR.IntegrationRec57 OSR.IntegrationRec58 OSR.IntegrationRec59 OSR.IntegrationRec60 OSR.IntegrationRec61 OSR.IntegrationRec62 OSR.IntegrationRec63 OSR.IntegrationRec64 OSR.IntegrationRec65 OSR.IntegrationRec66 OSR.IntegrationNum1 OSR.IntegrationRec67 OSR.IntegrationRec68 OSR.IntegrationRec69 OSR.IntegrationRec70 OSR.IntegrationRec71 OSR.IntegrationRec72 OSR.IntegrationRec73 OSR.IntegrationRec74 OSR.IntegrationRec75 OSR.IntegrationRec76 OSR.IntegrationRec77 OSR.IntegrationRec78 OSR.IntegrationRec79 OSR.IntegrationRec80 OSR.IntegrationRec81 OSR.IntegrationRec82 OSR.IntegrationRec83 OSR.IntegrationNum1 OSR.IntegrationRec84 OSR.IntegrationRec85 OSR.IntegrationRec86 OSR.IntegrationRec87 OSR.IntegrationRec88 OSR.IntegrationRec89 OSR.IntegrationRec90 OSR.IntegrationRec91 OSR.IntegrationRec92 OSR.IntegrationRec93 OSR.IntegrationRec94 OSR.IntegrationRec95 OSR.IntegrationRec96 OSR.IntegrationRec97 OSR.IntegrationRec98 OSR.IntegrationRec99 OSR.IntegrationRec100 OSR.IntegrationRec101 OSR.IntegrationRec102 OSR.IntegrationRec103 OSR.IntegrationRec104 OSR.IntegrationRec105 OSR.IntegrationRec106 OSR.IntegrationRec107 OSR.IntegrationRec108 OSR.IntegrationRec109 OSR.IntegrationRec110 OSR.IntegrationRec111 OSR.IntegrationRec112 OSR.IntegrationRec113 OSR.IntegrationRec114 OSR.IntegrationRec115 OSR.IntegrationRec116 OSR.IntegrationRec117 OSR.IntegrationRec118 OSR.IntegrationRec119 OSR.IntegrationRec120 OSR.IntegrationRec121 OSR.IntegrationRec122 OSR.IntegrationRec123 OSR.IntegrationRec124 OSR.IntegrationRec125 OSR.IntegrationRec126 OSR.IntegrationRec127 OSR.IntegrationRec128 OSR.IntegrationRec129 OSR.IntegrationRec130 OSR.IntegrationRec131 OSR.IntegrationRec132 OSR.IntegrationRec133 OSR.IntegrationRec134 OSR.IntegrationRec135 OSR.IntegrationRec136 OSR.IntegrationRec137 OSR.IntegrationRec138 OSR.IntegrationRec139 OSR.IntegrationRec140 OSR.IntegrationRec141 OSR.IntegrationRec142 OSR.IntegrationRec143 OSR.IntegrationRec144 OSR.IntegrationRec145 OSR.IntegrationRec146 OSR.IntegrationRec147 OSR.IntegrationRec148 OSR.IntegrationRec149 OSR.IntegrationRec150 OSR.IntegrationRec151 OSR.IntegrationRec152 OSR.IntegrationRec153 OSR.IntegrationRec154 OSR.IntegrationRec155 OSR.IntegrationRec156 OSR.IntegrationRec157 OSR.IntegrationRec158 OSR.IntegrationRec159 OSR.IntegrationRec160 OSR.IntegrationRec161 OSR.IntegrationFindings Filter Topology
+  OSR.IntegrationRec47 OSR.IntegrationRec48 OSR.IntegrationRec49 OSR.IntegrationNum1 OSR.IntegrationRec50 OSR.IntegrationRec51 OSR.IntegrationRec52 OSR.IntegrationRec53 OSR.IntegrationRec54 OSR.IntegrationRec55 OSR.IntegrationRec56 OSR.IntegrationRec57 OSR.IntegrationRec58 OSR.IntegrationRec59 OSR.IntegrationRec60 OSR.IntegrationRec61 OSR.IntegrationRec62 OSR.IntegrationRec63 OSR.IntegrationRec64 OSR.IntegrationRec65 OSR.IntegrationRec66 OSR.IntegrationNum1 OSR.IntegrationRec67 OSR.IntegrationRec68 OSR.IntegrationRec69 OSR.IntegrationRec70 OSR.IntegrationRec71 OSR.IntegrationRec72 OSR.IntegrationRec73 OSR.IntegrationRec74 OSR.IntegrationRec75 OSR.IntegrationRec76 OSR.IntegrationRec77 OSR.IntegrationRec78 OSR.IntegrationRec79 OSR.IntegrationRec80 OSR.IntegrationRec81 OSR.IntegrationRec82 OSR.IntegrationRec83 OSR.IntegrationNum1 OSR.IntegrationRec84 OSR.IntegrationRec85 OSR.IntegrationRec86 OSR.IntegrationRec87 OSR.IntegrationRec88 OSR.IntegrationRec89 OSR.IntegrationRec90 OSR.IntegrationRec91 OSR.IntegrationRec92 OSR.IntegrationRec93 OSR.IntegrationRec94 OSR.IntegrationRec95 OSR.IntegrationRec96 OSR.IntegrationRec97 OSR.IntegrationRec98 OSR.IntegrationRec99 OSR.IntegrationRec100 OSR.IntegrationRec101 OSR.IntegrationRec102 OSR.IntegrationRec103 OSR.IntegrationRec104 OSR.IntegrationRec105 OSR.IntegrationRec106 OSR.IntegrationRec107 OSR.IntegrationRec108 OSR.IntegrationRec109 OSR.IntegrationRec110 OSR.IntegrationRec111 OSR.IntegrationRec112 OSR.IntegrationRec113 OSR.IntegrationRec114 OSR.IntegrationRec115 OSR.IntegrationRec116 OSR.IntegrationRec117 OSR.IntegrationRec118 OSR.IntegrationRec119 OSR.IntegrationRec120 OSR.IntegrationRec121 OSR.IntegrationRec122 OSR.IntegrationRec123 OSR.IntegrationRec124 OSR.IntegrationRec125 OSR.IntegrationRec126 OSR.IntegrationRec127 OSR.IntegrationRec128 OSR.IntegrationRec129 OSR.IntegrationRec130 OSR.IntegrationRec131 OSR.IntegrationRec132 OSR.IntegrationRec133 OSR.IntegrationRec134 OSR.IntegrationRec135 OSR.IntegrationRec136 OSR.IntegrationRec137 OSR.IntegrationRec138 OSR.IntegrationRec139 OSR.IntegrationRec140 OSR.IntegrationRec141 OSR.IntegrationRec142 OSR.IntegrationRec143 OSR.IntegrationRec144 OSR.IntegrationRec145 OSR.IntegrationRec146 OSR.IntegrationRec147 OSR.IntegrationRec148 OSR.IntegrationRec149 OSR.IntegrationRec150 OSR.IntegrationRec151 OSR.IntegrationRec152 OSR.IntegrationRec153 OSR.IntegrationRec154 OSR.IntegrationRec155 OSR.IntegrationRec156 OSR.IntegrationRec157 OSR.IntegrationRec158 OSR.IntegrationRec159 OSR.IntegrationRec160 OSR.IntegrationRec161 OSR.IntegrationRec162 OSR.IntegrationFindings Filter Topology
 
 private abbrev x : Expr := .var "x"
 private abbrev v (n : String) : Expr := .var n
@@ -8904,14 +8905,92 @@ def catalogPart11 : List CEntry := [
       "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
       recFinding,
       condFinding "NeQ[Add[Multiply[e, f], Multiply[-1, d, g]], 0]; GtQ[p, 0]",
-      optionalFinding "a., b., c., e., n., f. and g."] }
+      optionalFinding "a., b., c., e., n., f. and g."] },
+  { rule := rubi1228r1, ruleDecl := ``rubi1228r1, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1228r1_counterexample_real)],
+    findings := [
+      "counterexample: at a = d = e = 1 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the residual integrand 1/((d² - e² x²) √(a + b x² + c x⁴)) is not defined at x = 1 (Lean theorem rubi1228r1_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      optionalFinding "e., b. and c."] },
+  { rule := rubi1228r2, ruleDecl := ``rubi1228r2, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1228r2_counterexample_real)],
+    findings := [
+      "counterexample: at a = d = e = 1 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the residual integrand 1/((d² - e² x²) √(a + c x⁴)) is not defined at x = 1 (Lean theorem rubi1228r2_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      optionalFinding "e. and c."] },
+  { rule := rubi133r6, ruleDecl := ``rubi133r6, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi133r6_counterexample_real)],
+    findings := [
+      "counterexample: at a = b = c = e = 1 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the residual integrand 1/((a² - b² x²) √(c + d x²) √(e + f x²)) is not defined at x = 1 (Lean theorem rubi133r6_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      optionalFinding "b., d. and f."] },
+  { rule := rubi1223r47, ruleDecl := ``rubi1223r47, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1223r47_counterexample_real)],
+    findings := [
+      "counterexample: at a = b = d = 1, e = -1 and the other metavariables 0 the conditions hold and the integrand is defined near x = 0, but the residual integrand, which contains √(e + d/x²), is not defined at x = 0 (Lean theorem rubi1223r47_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; NeQ[Add[Multiply[c, Power[d, 2]], Multiply[-1, b, d, e], Multiply[a, Power[e, 2]]], 0]",
+      optionalFinding "e., b. and c."] },
+  { rule := rubi1223r48, ruleDecl := ``rubi1223r48, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1223r48_counterexample_real)],
+    findings := [
+      "counterexample: at a = d = e = 1 and the other metavariables 0 the conditions hold and the integrand is defined near x = 0, but the residual integrand, which contains √(e + d/x²), is not defined at x = 0 (Lean theorem rubi1223r48_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[c, Power[d, 2]], Multiply[a, Power[e, 2]]], 0]",
+      optionalFinding "e. and c."] },
+  { rule := rubi1223r51, ruleDecl := ``rubi1223r51, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1223r51_counterexample_real)],
+    findings := [
+      "counterexample: at a = b = d = 1, e = -1 and the other metavariables 0 the conditions hold and the integrand is defined near x = 0, but the residual integrand, which contains √(e + d/x²), is not defined at x = 0 (Lean theorem rubi1223r51_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; NeQ[Add[Multiply[c, Power[d, 2]], Multiply[-1, b, d, e], Multiply[a, Power[e, 2]]], 0]",
+      optionalFinding "b., c. and e."] },
+  { rule := rubi1223r52, ruleDecl := ``rubi1223r52, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1223r52_counterexample_real)],
+    findings := [
+      "counterexample: at a = d = e = 1 and the other metavariables 0 the conditions hold and the integrand is defined near x = 0, but the residual integrand, which contains √(e + d/x²), is not defined at x = 0 (Lean theorem rubi1223r52_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[c, Power[d, 2]], Multiply[a, Power[e, 2]]], 0]",
+      optionalFinding "c. and e."] },
+  { rule := rubi1224r71, ruleDecl := ``rubi1224r71, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1224r71_counterexample_real)],
+    findings := [
+      "counterexample: at a = b = d = 1 and the other metavariables 0 the conditions hold and the integrand is defined near x = 0, but the residual integrand, which contains √(e + d/x²), is not defined at x = 0 (Lean theorem rubi1224r71_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; IntegerQ[Multiply[m, Power[2, -1]]]",
+      optionalFinding "e., b. and c."] },
+  { rule := rubi1224r72, ruleDecl := ``rubi1224r72, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi1224r72_counterexample_real)],
+    findings := [
+      "counterexample: at a = d = 1 and the other metavariables 0 the conditions hold and the integrand is defined near x = 0, but the residual integrand, which contains √(e + d/x²), is not defined at x = 0 (Lean theorem rubi1224r72_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      "complex: not proved; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IntegerQ[Multiply[m, Power[2, -1]]]",
+      optionalFinding "e. and c."] },
+  { rule := rubi312r12, ruleDecl := ``rubi312r12, proofs := [],
+    counterexamples := [(.real, ``rubi312r12_counterexample_real), (.complex, ``rubi312r12_counterexample_complex)],
+    findings := [
+      "counterexample: at c = d1 = d2 = m1 = q1 = 1 and the other metavariables 0 (so n = p = 0) the conditions hold and the integrand x is defined everywhere, but the result contains (x^(m1 q1 + m2 q2))^(-1), not defined at x = 0, over ℝ and over ℂ (Lean theorems rubi312r12_counterexample_real and rubi312r12_counterexample_complex). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
+      recFinding,
+      optionalFinding "d1., d2., a., b., c., n. and p."] }
 ]
 
 theorem catalogPart11_wellFormed : ∀ e ∈ catalogPart11,
     (if e.rule.shape == .antiderivRec then e.rule.recOk else e.rule.wellFormed) = true := by
   intro e he
   simp only [catalogPart11, List.mem_cons, List.mem_nil_iff, or_false] at he
-  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=

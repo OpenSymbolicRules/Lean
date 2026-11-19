@@ -497,6 +497,13 @@ rules of 2.2 and 2.3 (which, like 4.7.7 #1 and #2, stay out of the fragment):
 `θ = log(c (d + e x)ⁿ)`, as for 6.7.8), and refutes 5.3.5 #7 over ℝ and ℂ at
 `f = 0`.
 
+`OSR/IntegrationRec162.lean` refutes ten rules the numerical pass judged true,
+at points it does not sample: 1.2.2.8 #1, #2 and 1.3.3 #6 at `d = e x`, where
+the residual integrands have `(d² - e² x²)⁻¹` (resp. `(a² - b² x²)⁻¹`) and the
+integrand is defined; 1.2.2.3 #47, #48, #51, #52 and 1.2.2.4 #71, #72 at
+`x = 0`, where `√(e + d/x²)` is not defined (elsewhere their prefactor is the
+sign of `x`); and 3.1.2 #12 at `x = 0` with `n = 0` (also over ℂ).
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.
