@@ -691,6 +691,16 @@ on at least 30 points and are distributed unproved in
 had too few points and 102 fail (64 on the value, 38 on definedness), so the
 rule needs more than a non-degeneracy condition.
 
+The float check turned out to report rounding errors as failures: near a
+pole, for large values, and when an equality condition is solved only
+approximately. The check now also computes the derivative of the result
+symbolically (each residual integral `Φ(g)` contributing `H(g) g'`) and
+compares it with the integrand to 50 digits, at rational assignments with the
+equality conditions solved exactly. It confirms the 604 variants already
+distributed and accepts 184 more (788 in all); 6 candidates are false, and the
+others are left out until their definedness failures (78) or sample sizes
+(51) are settled.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.

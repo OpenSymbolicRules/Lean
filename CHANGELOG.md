@@ -52,6 +52,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- 184 more strengthened variants are distributed unproved
+  (`OSR/IntegrationNum1.lean`, 788 in all). Their numerical check now also
+  computes the derivative of the result symbolically and compares it with the
+  integrand to 50 digits at rational assignments, with equality conditions
+  solved exactly: the float check had reported rounding errors near poles
+  and for large values as failures. The 604 variants of the previous report
+  are confirmed. The catalogue has 2836 rules: 474 proved, 1574 refuted and
+  788 unproved over ℝ; 286 proved (146 certified), 376 refuted and 2174
+  unproved over ℂ.
 - 604 strengthened variants of refuted RUBI rules are distributed unproved
   (`OSR/IntegrationNum1.lean`, Specification V1-R-005e), each with a
   `numerical:` finding. A variant appends `c ≠ 0` for each `x`-free base `c`
