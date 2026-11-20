@@ -34,14 +34,20 @@ inductive Cond where
   | eq (a b : Expr)
   /-- The expression is defined and an integer (`set1#in` with `setname1#Z`). -/
   | int (a : Expr)
+  /-- The two expressions are defined and the first is greater than or equal to
+  the second (`relation1#geq`; RUBI's `GeQ`, `LeQ`, `Not[LtQ]`, `Not[GtQ]`). -/
+  | ge (a b : Expr)
+  /-- One of the two conditions holds (`logic1#or`; RUBI's `Or`). -/
+  | or (c d : Cond)
   deriving DecidableEq, Repr, Inhabited, BEq
 
 namespace Cond
 
 /-- Variables occurring in a condition. -/
 def vars : Cond → List String
-  | .ne a b | .gt a b | .eq a b => (a.vars ++ b.vars).eraseDups
+  | .ne a b | .gt a b | .eq a b | .ge a b => (a.vars ++ b.vars).eraseDups
   | .int a => a.vars
+  | .or c d => (c.vars ++ d.vars).eraseDups
 
 /-- OpenMath symbols occurring in a condition (`relation1#neq` included). -/
 def symbols : Cond → List OMSymbol
@@ -49,6 +55,8 @@ def symbols : Cond → List OMSymbol
   | .gt a b => (⟨"relation1", "gt"⟩ :: a.symbols ++ b.symbols).eraseDups
   | .eq a b => (⟨"relation1", "eq"⟩ :: a.symbols ++ b.symbols).eraseDups
   | .int a => (⟨"set1", "in"⟩ :: ⟨"setname1", "Z"⟩ :: a.symbols).eraseDups
+  | .ge a b => (⟨"relation1", "geq"⟩ :: a.symbols ++ b.symbols).eraseDups
+  | .or c d => (⟨"logic1", "or"⟩ :: c.symbols ++ d.symbols).eraseDups
 
 variable {α : Type} [Field α]
 
@@ -58,6 +66,9 @@ def Holds (I : Interp α) (env : String → α) : Cond → Prop
   | .gt a b => Defined I env a ∧ Defined I env b ∧ I.lt (eval I env b) (eval I env a)
   | .eq a b => Defined I env a ∧ Defined I env b ∧ eval I env a = eval I env b
   | .int a => Defined I env a ∧ ∃ n, I.toInt? (eval I env a) = some n
+  | .ge a b => Defined I env a ∧ Defined I env b ∧
+      (I.lt (eval I env b) (eval I env a) ∨ eval I env a = eval I env b)
+  | .or c d => c.Holds I env ∨ d.Holds I env
 
 end Cond
 

@@ -241,6 +241,8 @@ OSR/IntegrationRec186.lean: sums of residual integrals, closed by grind (14)
 OSR/IntegrationRec187.lean: refutations checked with grind (3)
 OSR/IntegrationRec188.lean: refutations checked with grind (4)
 OSR/IntegrationRec189.lean: refutations from a second search (3)
+OSR/IntegrationRec190.lean: refutations of rules with ≥ / ≤ conditions (42)
+OSR/IntegrationRec191.lean: refutations of rules with ≥ / ≤ conditions (35)
 OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (523)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
@@ -341,7 +343,12 @@ an exponent equals, and the power is defined only when there is one (and the
 base is nonzero for a negative exponent).  An integer-valued rule variable is
 an ordinary variable with the condition `p ∈ ℤ`.  The conditions only have a real meaning: `Interp` carries an
 order, and the registry gives `relation1#gt` no complex mapping, so a rule
-with such a condition is stated over ℝ only.  Conditional rules are never
+with such a condition is stated over ℝ only.  `Cond.ge` (`relation1#geq`,
+real only like `gt`) and `Cond.or` (binary `logic1#or`, which holds when one
+side holds and is mapped over ℝ, ℂ and the Booleans) state RUBI's `GeQ`,
+`LeQ`, `Not[LtQ]`, `Not[GtQ]` and `Or`; `Cond.decide?` decides an `or` when
+one side is decided true or both false, and its soundness proof covers both.
+Conditional rules are never
 applied by the reference engine, so engine soundness (`RulesSound`) only
 needs the unconditional ones.
 

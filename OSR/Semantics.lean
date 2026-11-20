@@ -104,6 +104,15 @@ theorem setname1_Z_cmp {α : Type} [Field α] (v : α) :
 /-- `relation1#gt` CMP: `a > b ∧ b > c → a > c` (real). -/
 theorem real_gt_cmp (a b c : ℝ) (h₁ : a > b) (h₂ : b > c) : a > c := lt_trans h₂ h₁
 
+/-- `relation1#geq` CMP: `a ≥ b ∧ b ≥ c → a ≥ c` (real). -/
+theorem real_geq_cmp (a b c : ℝ) (h₁ : a ≥ b) (h₂ : b ≥ c) : a ≥ c := le_trans h₂ h₁
+
+/-- `logic1#or` CMP 1 for conditions (propositions): `x ∨ ¬x`. -/
+theorem prop_or_cmp1 (p : Prop) : p ∨ ¬p := Classical.em p
+
+/-- `logic1#or` CMP 2 for conditions (propositions): `¬(a ∧ b) = ¬a ∨ ¬b`. -/
+theorem prop_or_cmp2 (a b : Prop) : ¬(a ∧ b) ↔ (¬a ∨ ¬b) := not_and_or
+
 /-- `arith1#power` CMP 2 for integer exponents and a nonzero base. -/
 theorem zpow_cmp2 {α : Type} [Field α] (x : α) (hx : x ≠ 0) (n : ℤ) :
     x ^ n = x * x ^ (n - 1) := by
@@ -284,7 +293,14 @@ def entries : List SymbolEntry := [
         justification := "Two-valued Boolean function on Lean's Bool.",
         obligations := [
           { cmp := "for all x | x or not(x) = true", theoremName := ``OSR.Logic.or_cmp1 },
-          { cmp := "for all a,b | not(a and b)= (not(a) or not(b))", theoremName := ``OSR.Logic.or_cmp2 }] }] },
+          { cmp := "for all a,b | not(a and b)= (not(a) or not(b))", theoremName := ``OSR.Logic.or_cmp2 }] }] ++
+      [Domain.real, Domain.complex].map fun d =>
+      { domain := d, leanConst := ``Or, assurance := .formallyRelated,
+        definedness := "both conditions stated",
+        justification := "Disjunction of two OSR conditions (propositions), as RUBI's Or.",
+        obligations := [
+          { cmp := "for all x | x or not(x) = true", theoremName := ``prop_or_cmp1 },
+          { cmp := "for all a,b | not(a and b)= (not(a) or not(b))", theoremName := ``prop_or_cmp2 }] } },
   { symbol := ⟨"logic1", "not"⟩, arity := 1,
     interpretations := [
       { domain := .boolean, leanConst := ``not, assurance := .formallyRelated,
@@ -563,7 +579,14 @@ def entries : List SymbolEntry := [
       { domain := .real, leanConst := ``GT.gt, assurance := .formallyRelated,
         definedness := "both operands defined",
         justification := "The order of the reals; OSR conditions additionally require both operands to be defined.",
-        obligations := [{ cmp := "a>b and b>c implies a>c", theoremName := ``real_gt_cmp }] }] }
+        obligations := [{ cmp := "a>b and b>c implies a>c", theoremName := ``real_gt_cmp }] }] },
+  { symbol := ⟨"relation1", "geq"⟩, arity := 2,
+    fragment := "conditions only; no complex interpretation (ℂ is not ordered)",
+    interpretations := [
+      { domain := .real, leanConst := ``GE.ge, assurance := .formallyRelated,
+        definedness := "both operands defined",
+        justification := "The order of the reals; OSR conditions additionally require both operands to be defined.",
+        obligations := [{ cmp := "a>=b and b>=c implies a>=c", theoremName := ``real_geq_cmp }] }] }
 ]
 
 /-- Look up the entry of an OpenMath symbol.  Unknown symbols return `none`

@@ -75,6 +75,8 @@ def condJson : Cond → Json
   | .gt a b => Expr.omaJson ⟨"relation1", "gt"⟩ [a.toOMJson, b.toOMJson]
   | .eq a b => Expr.omaJson ⟨"relation1", "eq"⟩ [a.toOMJson, b.toOMJson]
   | .int a => Expr.omaJson ⟨"set1", "in"⟩ [a.toOMJson, Expr.omsJson ⟨"setname1", "Z"⟩]
+  | .ge a b => Expr.omaJson ⟨"relation1", "geq"⟩ [a.toOMJson, b.toOMJson]
+  | .or c d => Expr.omaJson ⟨"logic1", "or"⟩ [condJson c, condJson d]
 
 /-- Provenance as JSON. -/
 def provenanceJson (p : Provenance) : Json :=

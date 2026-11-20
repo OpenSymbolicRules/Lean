@@ -122,6 +122,13 @@ def Cond.decide? : Cond → Option Bool
   | .gt a b => do return decide ((← b.ratEval?) < (← a.ratEval?))
   | .eq a b => do return decide ((← a.ratEval?) = (← b.ratEval?))
   | .int a => do return decide ((← a.ratEval?).den = 1)
+  | .ge a b => do return decide ((← b.ratEval?) ≤ (← a.ratEval?))
+  | .or c d =>
+    match c.decide?, d.decide? with
+    | some true, _ => some true
+    | _, some true => some true
+    | some false, some false => some false
+    | _, _ => none
 
 /-- **Soundness of the decision.**  A condition decided `true` holds, in every
 interpretation of characteristic zero whose order on rational values is the
@@ -161,6 +168,24 @@ theorem Cond.decide?_sound {α : Type} [Field α] [CharZero α] (I : Interp α)
     refine ⟨hda, q.num, ?_⟩
     rw [hva, rat_cast_of_den_one hden]
     exact I.toInt?_cast _
+  | .ge a b, h => by
+    simp only [Cond.decide?, Option.bind_eq_bind, Option.bind_eq_some_iff, Option.pure_def,
+      Option.some.injEq, decide_eq_true_eq] at h
+    obtain ⟨r, hr, q, hq, hle⟩ := h
+    obtain ⟨hdb, hvb⟩ := Expr.ratEval?_sound I env b r hr
+    obtain ⟨hda, hva⟩ := Expr.ratEval?_sound I env a q hq
+    refine ⟨hda, hdb, ?_⟩
+    rw [hva, hvb]
+    rcases lt_or_eq_of_le hle with hlt' | heq
+    · exact Or.inl ((hlt r q).2 hlt')
+    · exact Or.inr (by rw [heq])
+  | .or c d, h => by
+    have hc := Cond.decide?_sound I hlt env c
+    have hd := Cond.decide?_sound I hlt env d
+    simp only [Cond.decide?] at h
+    revert h
+    rcases hdc : c.decide? with _ | _ | _ <;> rcases hdd : d.decide? with _ | _ | _ <;>
+      simp_all [Cond.Holds]
 
 theorem Interp.real_lt_rat : ∀ q r : ℚ, Interp.real.lt (q : ℝ) (r : ℝ) ↔ q < r := by
   intro q r; simp only [Interp.real]; exact_mod_cast Iff.rfl
@@ -176,6 +201,8 @@ def Cond.subst (σ : Subst) : Cond → Cond
   | .gt a b => .gt (a.subst σ) (b.subst σ)
   | .eq a b => .eq (a.subst σ) (b.subst σ)
   | .int a => .int (a.subst σ)
+  | .ge a b => .ge (a.subst σ) (b.subst σ)
+  | .or c d => .or (c.subst σ) (d.subst σ)
 
 /-- A substituted condition that holds gives the condition under the
 assignment induced by the substitution. -/
@@ -193,5 +220,12 @@ theorem Cond.holds_subst {α : Type} [Field α] (I : Interp α) (env : String �
   | .int a, ⟨ha, n, hn⟩ => by
     refine ⟨((defined_subst I env σ a).1 ha).1, n, ?_⟩
     rwa [eval_subst] at hn
+  | .ge a b, ⟨ha, hb, hv⟩ => by
+    refine ⟨((defined_subst I env σ a).1 ha).1, ((defined_subst I env σ b).1 hb).1, ?_⟩
+    rwa [eval_subst, eval_subst] at hv
+  | .or c d, h => by
+    rcases h with h | h
+    · exact Or.inl (Cond.holds_subst I env σ c h)
+    · exact Or.inr (Cond.holds_subst I env σ d h)
 
 end OSR

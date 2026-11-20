@@ -52,6 +52,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Conditions `Cond.ge` (`relation1#geq`, both operands defined and the first
+  greater than or equal to the second; real only, like `relation1#gt`) and
+  `Cond.or` (binary `logic1#or`, which holds when one side holds), with
+  their decision (`Cond.decide?`, proved sound), substitution, export and
+  registry entries (`relation1#geq` with its CMP over ℝ; `logic1#or` now also
+  interpreted over ℝ and ℂ as the disjunction of conditions, with its two
+  CMPs). RUBI's `GeQ`, `LeQ`, `Not[LtQ]`, `Not[GtQ]` and `Or` conditions can
+  now be stated.
+- 77 RUBI rules with such conditions (all with `relation1#geq`) are migrated
+  and refuted over ℝ (`OSR/IntegrationRec190.lean`,
+  `OSR/IntegrationRec191.lean`), found by the definedness search over the
+  145 rules the new conditions make translatable. The catalogue has 1686
+  rules (1993 RUBI rules considered): 474 proved and 1212 refuted over ℝ;
+  286 proved (146 certified), 376 refuted and 1024 unproved over ℂ.
 - 10 more RUBI rules are refuted over ℝ (`OSR/IntegrationRec187.lean` to
   `OSR/IntegrationRec189.lean`): seven earlier counterexamples whose Lean
   proof now checks, as the generated tactics also try `grind`, and three

@@ -646,6 +646,14 @@ random seed over the 581 translatable rules without a counterexample finds
 three more (`OSR/IntegrationRec189.lean`); the search space is close to
 exhausted for these rules.
 
+OSR v1 conditions now include `relation1#geq` and binary `logic1#or`, so
+RUBI's `GeQ`, `LeQ`, `Not[LtQ]`, `Not[GtQ]` and `Or` can be stated. Of the 145
+rules this makes translatable, the definedness search finds a
+counterexample for 99 and 77 of them check in Lean
+(`OSR/IntegrationRec190.lean`, `OSR/IntegrationRec191.lean`), all with a
+`relation1#geq` condition; the counterexamples of the rules with `Or` did
+not check yet.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.

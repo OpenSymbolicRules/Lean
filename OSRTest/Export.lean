@@ -42,7 +42,7 @@ private def render (e : Expr) : String := (Expr.toOMJson e).compress
 #guard Expr.allSymbols.all fun s => (Registry.lookup s).isSome
 
 -- Each symbol has exactly one registry entry.  Every entry covers ℝ, and every
--- entry except `relation1#gt` (ℂ is not ordered) covers ℂ.
+-- entry except `relation1#gt` and `relation1#geq` (ℂ is not ordered) covers ℂ.
 #guard Registry.entries.all fun e =>
   (Registry.entries.filter (·.symbol == e.symbol)).length == 1
 #guard Registry.entries.all fun e =>
@@ -50,10 +50,17 @@ private def render (e : Expr) : String := (Expr.toOMJson e).compress
 -- Symbols without a complex interpretation are not certified over ℂ.
 #guard Registry.mappingAssurance [⟨"transc1", "sec"⟩] .complex == .unsupported
 #guard Registry.mappingAssurance [⟨"arith1", "root"⟩] .complex == .unsupported
--- The logic1 symbols are interpreted in the Boolean domain only.
+-- The logic1 symbols are interpreted in the Boolean domain only, except
+-- logic1#or, which also joins conditions over ℝ and ℂ.
 #guard Registry.entries.all fun e =>
-  e.symbol.cd != "logic1" || ((e.interpretation? .boolean).isSome && (e.interpretation? .real).isNone)
+  e.symbol.cd != "logic1" || e.symbol == ⟨"logic1", "or"⟩ ||
+    ((e.interpretation? .boolean).isSome && (e.interpretation? .real).isNone)
+#guard [Domain.boolean, .real, .complex].all fun d =>
+  Registry.mappingAssurance [⟨"logic1", "or"⟩] d == .formallyRelated
 #guard Registry.mappingAssurance [⟨"relation1", "gt"⟩] .complex == .unsupported
+-- relation1#geq, like gt, has no complex interpretation.
+#guard Registry.mappingAssurance [⟨"relation1", "geq"⟩] .real == .formallyRelated
+#guard Registry.mappingAssurance [⟨"relation1", "geq"⟩] .complex == .unsupported
 
 -- Symbols of an expression are collected without duplicates, in first-use order.
 #guard (Expr.symbols (.app2 .add (.pow (.app1 .sin (.var "x")) (.int 2))
