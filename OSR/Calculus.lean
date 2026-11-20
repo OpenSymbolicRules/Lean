@@ -126,8 +126,8 @@ def CRule.wellFormed (r : CRule) : Bool :=
 mention the bound variable, and only antiderivative rules have conditions. -/
 def CRule.conditionsOk (r : CRule) : Bool :=
   r.conditions.all (fun c => c.vars.all (· ∈ r.independent)) &&
-    (r.shape == .antideriv || r.shape == .antiderivRec || r.shape == .antiderivSubst ||
-      r.conditions.isEmpty)
+    (r.shape == .deriv || r.shape == .antideriv || r.shape == .antiderivRec ||
+      r.shape == .antiderivSubst || r.conditions.isEmpty)
 
 /-- The hole variables of the residual integrals. -/
 def CRule.holes (r : CRule) : List String := r.integrals.map (·.1)
@@ -166,6 +166,19 @@ def DerivHolds (I : Interp 𝕜) (x : String) (F G : Expr) : Prop :=
       Defined I (Function.update env x t) G ∧
         HasDerivAt (fun v => eval I (Function.update env x v) F)
           (eval I (Function.update env x t) G) t
+
+/-- `DerivHolds` under conditions on the metavariables (a strengthened
+derivative rule): for every assignment satisfying them. -/
+def DerivHoldsUnder (I : Interp 𝕜) (x : String) (cs : List Cond) (F G : Expr) : Prop :=
+  ∀ env : String → 𝕜, (∀ c ∈ cs, c.Holds I env) → ∀ t : 𝕜,
+    (∀ᶠ v in 𝓝 t, Defined I (Function.update env x v) F) →
+      Defined I (Function.update env x t) G ∧
+        HasDerivAt (fun v => eval I (Function.update env x v) F)
+          (eval I (Function.update env x t) G) t
+
+theorem derivHoldsUnder_nil {I : Interp 𝕜} {x : String} {F G : Expr} :
+    DerivHoldsUnder I x [] F G ↔ DerivHolds I x F G :=
+  ⟨fun h env t => h env (by simp) t, fun h env _ t => h env t⟩
 
 /-- `limit(a, both_sides, λx. F) = L` in the interpretation `I`. -/
 def LimitHolds (I : Interp 𝕜) (x : String) (a F L : Expr) : Prop :=
@@ -325,7 +338,7 @@ end Statements
 /-- The certified statement of a calculus rule in a domain. -/
 def CRule.Holds (r : CRule) : Domain → Prop
   | .real => match r.shape with
-    | .deriv => DerivHolds Interp.real r.x r.body r.result
+    | .deriv => DerivHoldsUnder Interp.real r.x r.conditions r.body r.result
     | .limit => LimitHolds Interp.real r.x r.point r.body r.result
     | .antideriv => AntiderivHoldsUnder Interp.real r.x r.conditions r.body r.result
     | .antiderivRec =>
@@ -333,7 +346,7 @@ def CRule.Holds (r : CRule) : Domain → Prop
     | .antiderivSubst =>
       AntiderivSubstHolds Interp.real r.x r.conditions r.body r.result r.integrals r.substs
   | .complex => match r.shape with
-    | .deriv => DerivHolds Interp.complex r.x r.body r.result
+    | .deriv => DerivHoldsUnder Interp.complex r.x r.conditions r.body r.result
     | .limit => LimitHolds Interp.complex r.x r.point r.body r.result
     | .antideriv => AntiderivHoldsUnder Interp.complex r.x r.conditions r.body r.result
     | .antiderivRec =>
@@ -525,6 +538,14 @@ def derivPow : CRule where
   independent := ["n"]; priority := 80
   description := "Power rule"; provenance := migrated (basic 2)
 
+/-- The strengthened power rule: `derivPow` with the condition `n ≠ 0`
+(Specification V1-R-005e), which excludes the counterexample. -/
+def derivPowNonzero : CRule where
+  id := "calculus.derivative.power_nonzero"; legacyId := some (basic 2); shape := .deriv; x := "x"
+  body := .pow x (.var "n"); result := mul (.var "n") (.pow x (add (.var "n") (.int (-1))))
+  independent := ["n"]; conditions := [.ne (.var "n") (.int 0)]; priority := 80
+  description := "Power rule, n ≠ 0"; provenance := migrated (basic 2)
+
 /-- v0.1 rules outside the fragment, with the reason. -/
 def notMigrated : List (String × String) :=
   ([1, 2, 3].map fun n =>
@@ -578,8 +599,8 @@ local macro "deriv_intro" r:ident i:ident : tactic => do
   let t := Lean.mkIdent `t
   let env := Lean.mkIdent `env
   `(tactic|
-    (simp only [CRule.Holds, $r:ident, DerivHolds]
-     intro $env:ident $t:ident $hF:ident
+    (simp only [CRule.Holds, $r:ident, DerivHoldsUnder]
+     intro $env:ident _ $t:ident $hF:ident
      simp only [Defined, eval, $i:ident, Function.update_self, intValue?_intCast] at $hF:ident ⊢
      simp only [Int.cast_one, Int.cast_neg, Int.cast_ofNat, zpow_ofNat, Option.some.injEq,
        exists_eq_left', Int.reduceLT, false_implies, true_and, and_true] at $hF:ident ⊢))
@@ -949,23 +970,69 @@ theorem limitConst_complex : limitConst.Holds .complex := by
   exact ⟨trivial, tendsto_const_nhds⟩
 
 theorem derivConst_real : derivConst.Holds .real := by
-  simp only [CRule.Holds, derivConst, DerivHolds]
-  intro env t _
+  simp only [CRule.Holds, derivConst, DerivHoldsUnder]
+  intro env _ t _
   simp only [Defined, eval, Function.update_apply, show ("c" : String) ≠ "x" by decide, ite_false,
     Int.cast_zero]
   exact ⟨trivial, hasDerivAt_const t _⟩
 
 theorem derivConst_complex : derivConst.Holds .complex := by
-  simp only [CRule.Holds, derivConst, DerivHolds]
-  intro env t _
+  simp only [CRule.Holds, derivConst, DerivHoldsUnder]
+  intro env _ t _
   simp only [Defined, eval, Function.update_apply, show ("c" : String) ≠ "x" by decide, ite_false,
     Int.cast_zero]
   exact ⟨trivial, hasDerivAt_const t _⟩
 
+theorem derivPowNonzero_real : derivPowNonzero.Holds .real := by
+  simp only [CRule.Holds, derivPowNonzero, DerivHoldsUnder]
+  intro env hc t hF
+  simp only [List.mem_cons, List.not_mem_nil, or_false, forall_eq, Cond.Holds, Defined, eval,
+    Interp.real] at hc
+  have hF0 := hF.self_of_nhds
+  simp only [Defined, eval, Interp.real, Function.update_apply, show ("n" : String) ≠ "x" by decide,
+    ite_false, ite_true] at hF0 ⊢
+  obtain ⟨-, -, k, hk, hkt⟩ := hF0
+  obtain ⟨-, -, hn⟩ := hc
+  have hnk : env "n" = (k : ℝ) := (intValue?_eq _ _).1 hk
+  have hk0 : k ≠ 0 := by
+    rintro rfl; apply hn; simp [hnk]
+  have hk1 : intValue? (env "n" + ((-1 : ℤ) : ℝ)) = some (k - 1) :=
+    (intValue?_eq _ _).2 (by rw [hnk]; push_cast; ring)
+  refine ⟨⟨trivial, trivial, ⟨trivial, trivial⟩, k - 1, hk1, fun h => hkt (by omega)⟩, ?_⟩
+  simp only [hk, hk1]
+  rw [hnk]
+  exact hasDerivAt_zpow k t (by
+    by_cases h0 : 0 ≤ k
+    · exact Or.inr h0
+    · exact Or.inl (hkt (by omega)))
+
+theorem derivPowNonzero_complex : derivPowNonzero.Holds .complex := by
+  simp only [CRule.Holds, derivPowNonzero, DerivHoldsUnder]
+  intro env hc t hF
+  simp only [List.mem_cons, List.not_mem_nil, or_false, forall_eq, Cond.Holds, Defined, eval,
+    Interp.complex] at hc
+  have hF0 := hF.self_of_nhds
+  simp only [Defined, eval, Interp.complex, Function.update_apply, show ("n" : String) ≠ "x" by decide,
+    ite_false, ite_true] at hF0 ⊢
+  obtain ⟨-, -, k, hk, hkt⟩ := hF0
+  obtain ⟨-, -, hn⟩ := hc
+  have hnk : env "n" = (k : ℂ) := (intValue?_eq _ _).1 hk
+  have hk0 : k ≠ 0 := by
+    rintro rfl; apply hn; simp [hnk]
+  have hk1 : intValue? (env "n" + ((-1 : ℤ) : ℂ)) = some (k - 1) :=
+    (intValue?_eq _ _).2 (by rw [hnk]; push_cast; ring)
+  refine ⟨⟨trivial, trivial, ⟨trivial, trivial⟩, k - 1, hk1, fun h => hkt (by omega)⟩, ?_⟩
+  simp only [hk, hk1]
+  rw [hnk]
+  exact hasDerivAt_zpow k t (by
+    by_cases h0 : 0 ≤ k
+    · exact Or.inr h0
+    · exact Or.inl (hkt (by omega)))
+
 /-- **Counterexample.**  The v0.1 power rule is false at `n = 0`, `x = 0`:
 `x^0` is defined around `0`, but `0 · x^(-1)` is undefined at `0`. -/
 theorem derivPow_counterexample : ¬ derivPow.Holds .real := by
-  simp only [CRule.Holds, derivPow, DerivHolds]
+  simp only [CRule.Holds, derivPow, DerivHoldsUnder]
   intro h
   have hdef : ∀ v : ℝ, Defined Interp.real (Function.update (fun _ => (0 : ℝ)) "x" v)
       (.pow x (.var "n")) := by
@@ -973,7 +1040,7 @@ theorem derivPow_counterexample : ¬ derivPow.Holds .real := by
     simp only [Defined, eval, Interp.real, Function.update_apply,
       show ("n" : String) ≠ "x" by decide, ite_false]
     exact ⟨trivial, trivial, 0, by simpa using intValue?_intCast (α := ℝ) 0, by omega⟩
-  obtain ⟨hG, -⟩ := h (fun _ => 0) 0 (Filter.Eventually.of_forall hdef)
+  obtain ⟨hG, -⟩ := h (fun _ => 0) (by simp) 0 (Filter.Eventually.of_forall hdef)
   simp only [Defined, eval, Interp.real, Function.update_apply,
     show ("n" : String) ≠ "x" by decide, ite_false, ite_true] at hG
   obtain ⟨-, -, -, k, hk, hne⟩ := hG
@@ -1010,7 +1077,10 @@ def catalog : List CEntry := [
     proofs := [(.real, ``derivConst_real), (.complex, ``derivConst_complex)] },
   { rule := derivPow, ruleDecl := ``derivPow, proofs := [], unproved := [.complex],
     counterexamples := [(.real, ``derivPow_counterexample)],
-    findings := ["counterexample: at n = 0 and x = 0, x^0 is defined around 0 but n * x^(n - 1) = 0 * x^(-1) is undefined at 0, so the v0.1 rule, whose only condition is FreeQ, fails there (Lean theorem derivPow_counterexample). It would hold with the condition n ≠ 0."] },
+    findings := ["counterexample: at n = 0 and x = 0, x^0 is defined around 0 but n * x^(n - 1) = 0 * x^(-1) is undefined at 0, so the v0.1 rule, whose only condition is FreeQ, fails there (Lean theorem derivPow_counterexample). The strengthened variant calculus.derivative.power_nonzero, with the condition n ≠ 0, is proved."] },
+  { rule := derivPowNonzero, ruleDecl := ``derivPowNonzero,
+    proofs := [(.real, ``derivPowNonzero_real), (.complex, ``derivPowNonzero_complex)],
+    findings := ["strengthened: the condition n ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not the v0.1 rule as stated: it excludes the degenerate case of the counterexample to calculus.derivative.power, which stays refuted."] },
   { rule := limitSinDiv, ruleDecl := ``limitSinDiv,
     proofs := [(.real, ``limitSinDiv_real), (.complex, ``limitSinDiv_complex)] },
   { rule := limitTanDiv, ruleDecl := ``limitTanDiv,
@@ -1098,7 +1168,8 @@ def CRule.apply? (r : CRule) : CTerm → Option CTerm
   | .diff y e =>
     if r.shape = .deriv then
       match matchAux r.body e [(r.x, .var y)] with
-      | some σ => if r.indepOk σ y then some (.lam y (r.result.subst σ)) else none
+      | some σ =>
+        if r.indepOk σ y && r.conditionsDecided σ then some (.lam y (r.result.subst σ)) else none
       | none => none
     else none
   | .limit a y e =>
@@ -1330,6 +1401,40 @@ theorem deriv_instance {𝕜 : Type} [NontriviallyNormedField 𝕜] (I : Interp 
   rw [hfun]
   exact hD
 
+/-- `deriv_instance` for a rule with conditions, given that they hold for
+every assignment of the instance. -/
+theorem deriv_instance_under {𝕜 : Type} [NontriviallyNormedField 𝕜] (I : Interp 𝕜) (r : CRule)
+    (hw : r.wellFormed = true) (hr : DerivHoldsUnder I r.x r.conditions r.body r.result) {y : String} {e : Expr}
+    {σ : Subst} (hm : matchAux r.body e [(r.x, .var y)] = some σ)
+    (hi : r.indepOk σ y = true)
+    (hdec : ∀ env : String → 𝕜, ∀ c ∈ r.conditions, c.Holds I (σ.env I env)) :
+    DerivHolds I y e (r.result.subst σ) := by
+  obtain ⟨hb, hres⟩ := indep_vars hw hi
+  have hσ := matched_find hm
+  have he : r.body.subst σ = e := (matchAux_spec r.body e _ σ hm).2 σ (Subst.Extends.refl σ)
+  have hrv : ∀ n ∈ r.result.varList, n ≠ r.x → n ∈ r.body.varList := by
+    simp only [CRule.wellFormed, Bool.and_eq_true, List.all_eq_true, decide_eq_true_eq] at hw
+    intro n hn hnx; exact (hw.1.1.2 n hn).resolve_left hnx
+  intro env t hF
+  have hF' : ∀ᶠ v in 𝓝 t, Defined I (Function.update (σ.env I env) r.x v) r.body := by
+    filter_upwards [hF] with v hv
+    rw [← he] at hv
+    exact ((eval_rename I hσ hb env v).2.1 hv).1
+  have himg : ∀ n ∈ r.body.varList, n ≠ r.x → Defined I env (σ.apply n) := by
+    have ht := hF.self_of_nhds
+    rw [← he] at ht
+    exact ((eval_rename I hσ hb env t).2.1 ht).2
+  obtain ⟨hG, hD⟩ := hr (σ.env I env) (hdec env) t hF'
+  refine ⟨(eval_rename I hσ hres env t).2.2 ⟨hG, fun n hn hnx => himg n (hrv n hn hnx) hnx⟩, ?_⟩
+  rw [(eval_rename I hσ hres env t).1]
+  have hfun : (fun v => eval I (Function.update env y v) e) =
+      fun v => eval I (Function.update (σ.env I env) r.x v) r.body := by
+    funext v
+    rw [← he]
+    exact (eval_rename I hσ hb env v).1
+  rw [hfun]
+  exact hD
+
 /-- **Instantiation soundness for limits.** -/
 theorem limit_instance {𝕜 : Type} [NontriviallyNormedField 𝕜] (I : Interp 𝕜) (r : CRule)
     (hw : r.wellFormed = true) (hr : LimitHolds I r.x r.point r.body r.result) {y : String}
@@ -1457,7 +1562,7 @@ def Correct {𝕜 : Type} [NontriviallyNormedField 𝕜] (I : Interp 𝕜) : CTe
 /-- The statement of a rule in an interpretation. -/
 def CRule.HoldsIn {𝕜 : Type} [NontriviallyNormedField 𝕜] (r : CRule) (I : Interp 𝕜) : Prop :=
   match r.shape with
-  | .deriv => DerivHolds I r.x r.body r.result
+  | .deriv => DerivHoldsUnder I r.x r.conditions r.body r.result
   | .limit => LimitHolds I r.x r.point r.body r.result
   | .antideriv => AntiderivHoldsUnder I r.x r.conditions r.body r.result
   | .antiderivRec => AntiderivRecHolds I r.x r.conditions r.body r.result r.integrals
@@ -1485,7 +1590,11 @@ theorem apply?_sound {𝕜 : Type} [NontriviallyNormedField 𝕜] [CharZero 𝕜
           simp only [Option.some.injEq] at h
           subst h
           simp only [CRule.HoldsIn, hs] at hr
-          exact ⟨rfl, deriv_instance I r hw hr hm hi⟩
+          simp only [Bool.and_eq_true] at hi
+          refine ⟨rfl, deriv_instance_under I r hw hr hm hi.1 fun env c hc => ?_⟩
+          have hd := hi.2
+          simp only [CRule.conditionsDecided, List.all_eq_true, beq_iff_eq] at hd
+          exact Cond.holds_subst I env σ c (Cond.decide?_sound I hlt env _ (hd c hc))
         · cases h
       · cases h
     · cases h
@@ -1539,7 +1648,7 @@ theorem holds_complex {r : CRule} (h : r.Holds .complex) : r.HoldsIn Interp.comp
 theorem catalog_wellFormed : ∀ e ∈ catalog, e.rule.wellFormed = true := by
   intro e he
   simp only [catalog, List.mem_cons, List.mem_nil_iff, or_false] at he
-  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 end OSR.Calculus
 

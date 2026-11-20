@@ -11,7 +11,7 @@ open OSR OSR.Calculus
 private def t : Expr := .var "t"
 
 -- Every v0.1 rule is migrated or reported.
-#guard Calculus.catalog.length + Calculus.notMigrated.length == 32
+#guard Calculus.catalog.length + Calculus.notMigrated.length == 33
 #guard Calculus.notMigrated.length == 3
 #guard Calculus.notMigrated.all fun (_, reason) =>
   reason == "requires differentiability assumptions for the operands; the v0.1 rule has no such conditions, and its osr#Apply application is outside OSR v1"
@@ -60,8 +60,10 @@ private def rules : List CRule :=
 #guard (rewrite rules (.limit (.int 1) "t" (.app2 .div (.app1 .sin t) t))).isNone
 #guard (rewrite rules (.lam "t" (.app1 .cos t))).isNone
 
--- Rules apply once: their results are lambdas or values.
-#guard (Calculus.catalog.filter fun e => (e.proofs.lookup .real).isSome).all fun e =>
+-- Rules apply once: their results are lambdas or values (unconditional rules;
+-- a conditional rule applies only when its conditions are decided).
+#guard (Calculus.catalog.filter fun e => (e.proofs.lookup .real).isSome &&
+    e.rule.conditions.isEmpty).all fun e =>
   let r := e.rule
   let input := match r.shape with
     | .deriv => CTerm.diff r.x r.body
@@ -75,6 +77,13 @@ private def rules : List CRule :=
 #guard match derivSin.patternOM with
   | .oma h [.ombind b ["x"] _] => h == diffSymbol && b == lambdaSymbol
   | _ => false
+
+-- The strengthened power rule applies when n is decided nonzero: d/dt t³ = 3 t^(3 - 1);
+-- not to t⁰ (n = 0 decided false) nor to tⁿ (undecided).
+#guard (rewrite rules (.diff "t" (.pow t (.int 3)))).map (·.2) ==
+  some (.lam "t" (.app2 .mul (.int 3) (.pow t (.app2 .add (.int 3) (.int (-1))))))
+#guard (rewrite rules (.diff "t" (.pow t (.int 0)))).isNone
+#guard (rewrite rules (.diff "t" (.pow t (.var "n")))).isNone
 
 -- Every rule but the refuted power rule is proved over ℝ.
 #guard rules.length + 1 == Calculus.catalog.length

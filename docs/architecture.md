@@ -419,7 +419,9 @@ A third shape, `int(λx. F) ⟶ λx. G` (`calculus1#int`), states antiderivative
 `AntiderivHolds` says that wherever `F` is defined on a neighbourhood of `t`,
 `G` is defined on a neighbourhood of `t` and `v ↦ G[x := v]` has derivative
 `F[x := t]` at `t`; `AntiderivHoldsUnder` adds conditions on the
-metavariables; the rewriter applies a conditional rule only when its
+metavariables, and `DerivHoldsUnder` does the same for derivative rules (the
+strengthened power rule `calculus.derivative.power_nonzero`, `n ≠ 0`); the
+rewriter applies a conditional rule only when its
 substituted conditions are closed and decided true by exact rational
 arithmetic (`OSR/Decide.lean`, `CRule.conditionsDecided`; `apply?_sound`
 then requires characteristic zero and the rational order).  A fourth

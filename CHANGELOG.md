@@ -52,6 +52,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Derivative rules may have conditions (`DerivHoldsUnder`; `conditionsOk`
+  accepts them, `apply?` applies a conditional derivative rule only when its
+  conditions are decided true, and `apply?_sound` covers it through
+  `deriv_instance_under`). The strengthened power rule
+  `calculus.derivative.power_nonzero` (`n ≠ 0`) is proved over ℝ and ℂ;
+  `calculus.derivative.power` stays refuted. The reference rewriter now
+  rewrites `diff(λt. t³)` to `λt. 3 t^(3 - 1)`.
 - Shape `antiderivSubst` and field `CRule.substs` for residual integrals
   evaluated at an expression of the bound variable, `int(λx. H)(g)` (v0.1
   `Subst[Int[H, x], x, g]`, V1-E-002b): statement `AntiderivSubstHolds`

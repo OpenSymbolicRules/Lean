@@ -18,7 +18,7 @@ Status: **pilot** (`1.0.0-alpha.1` format).  Five rule sets are migrated:
 | Trigonometry | 13 | 13 / 13 | 13 / 12 | 0 |
 | Algebra | 20 | 20 / 20 | 18 / 18 | 0 |
 | Logic (domain 𝔹) | 39 | 39 / 39 in 𝔹 | — | 0 |
-| Calculus | 29 | 28 / 28 (+1 counterexample) | 16 / 16 | 3 |
+| Calculus | 30 | 29 / 29 (+1 counterexample) | 17 / 17 | 3 |
 | Integration (RUBI, 2355 considered, 213 strengthened variants) | 2048 | 474 / 474 (+1574 counterexamples) | 286 / 146 (+376 counterexamples, 1386 unproved) | 520 |
 
 `tan(arctan z) = z` over ℂ is proved but not certified, because the mapping of
