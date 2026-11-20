@@ -13,7 +13,7 @@ private def t : Expr := .var "t"
 -- The twenty rules of the syntactic inventory (FreeQ or NeQ conditions,
 -- registered heads, no Int in the result) are migrated or reported, plus
 -- 110 rules with residual integrals and seven unmigrated ones.
-#guard Integration.catalogVerified.length + Integration.notMigrated.length == 2239
+#guard Integration.catalogVerified.length + Integration.notMigrated.length == 2293
 #guard Integration.notMigrated.length == 520
 -- A RUBI rule is catalogued once; only a strengthened variant (a finding that
 -- starts with "strengthened:") shares the legacy id of the rule it corrects.
@@ -21,11 +21,11 @@ private def t : Expr := .var "t"
   let ls := (Integration.catalogVerified.filter fun e =>
       !e.findings.any (·.startsWith "strengthened:")).filterMap (·.rule.legacyId)
   ls.eraseDups.length == ls.length
-#guard (Integration.catalogVerified.filter (·.rule.shape == .antiderivRec)).length == 1536
-#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 1580
+#guard (Integration.catalogVerified.filter (·.rule.shape == .antiderivRec)).length == 1590
+#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 1634
 -- RUBI rules with EqQ conditions are stated with relation1#eq (Cond.eq).
 #guard (Integration.catalogVerified.filter fun e =>
-  e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 801
+  e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 823
 
 -- RUBI 4.16.1: the new degenerate-coefficient cases are refuted in both
 -- domains, with no proof or unresolved domain accidentally attached.

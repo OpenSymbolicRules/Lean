@@ -657,6 +657,15 @@ rules with `Or` (each disjunct one v1 condition) are translatable, the
 search finds a counterexample for 61, and 33 check
 (`OSR/IntegrationRec192.lean`).
 
+Compound conditions are now put in conjunctive normal form before they are
+stated: `And` flattens, `Or` distributes over `And`, `Not` moves inward (De
+Morgan; the negation of a comparison is the opposite comparison, `Not[IntegerQ]`
+has no counterpart), with at most 16 clauses. The transcription
+(`handoff/gen_lean_rule.py`) and the faithfulness check share the same
+function, so they read the conditions identically. This makes 113 more rules
+translatable; the search finds a counterexample for 75 and 54 check
+(`OSR/IntegrationRec193.lean`).
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.

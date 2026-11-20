@@ -244,6 +244,7 @@ OSR/IntegrationRec189.lean: refutations from a second search (3)
 OSR/IntegrationRec190.lean: refutations of rules with ≥ / ≤ conditions (42)
 OSR/IntegrationRec191.lean: refutations of rules with ≥ / ≤ conditions (35)
 OSR/IntegrationRec192.lean: refutations of rules with Or conditions (33)
+OSR/IntegrationRec193.lean: refutations of rules with compound conditions (54)
 OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (523)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
