@@ -60,6 +60,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   interpreted over ℝ and ℂ as the disjunction of conditions, with its two
   CMPs). RUBI's `GeQ`, `LeQ`, `Not[LtQ]`, `Not[GtQ]` and `Or` conditions can
   now be stated.
+- 33 RUBI rules with `Or` conditions (`logic1#or`) are migrated and refuted
+  over ℝ (`OSR/IntegrationRec192.lean`); the migration tooling had read the
+  disjuncts of `Or` as expressions, so these rules were not translated
+  before. The catalogue has 1719 rules (2026 RUBI rules considered): 474
+  proved and 1245 refuted over ℝ; 286 proved (146 certified), 376 refuted
+  and 1057 unproved over ℂ.
 - 77 RUBI rules with such conditions (all with `relation1#geq`) are migrated
   and refuted over ℝ (`OSR/IntegrationRec190.lean`,
   `OSR/IntegrationRec191.lean`), found by the definedness search over the

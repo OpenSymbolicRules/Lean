@@ -651,8 +651,11 @@ RUBI's `GeQ`, `LeQ`, `Not[LtQ]`, `Not[GtQ]` and `Or` can be stated. Of the 145
 rules this makes translatable, the definedness search finds a
 counterexample for 99 and 77 of them check in Lean
 (`OSR/IntegrationRec190.lean`, `OSR/IntegrationRec191.lean`), all with a
-`relation1#geq` condition; the counterexamples of the rules with `Or` did
-not check yet.
+`relation1#geq` condition. The rules with `Or` were not among them: the
+inventory read the disjuncts of `Or` as expressions. With that fixed, 82
+rules with `Or` (each disjunct one v1 condition) are translatable, the
+search finds a counterexample for 61, and 33 check
+(`OSR/IntegrationRec192.lean`).
 
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
