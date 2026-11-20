@@ -1839,7 +1839,7 @@ set_option maxRecDepth 4096 in
 set_option maxHeartbeats 8000000 in
 /-- Every entry is well formed: recursive rules by `recOk`, the others by `wellFormed`. -/
 theorem entries_wellFormed : ∀ e ∈ entries,
-    (if e.rule.shape == .antiderivRec then e.rule.recOk else e.rule.wellFormed) = true := by
+    (if e.rule.shape == .antiderivRec || e.rule.shape == .antiderivSubst then e.rule.recOk else e.rule.wellFormed) = true := by
   intro e he
   simp [entries] at he
 

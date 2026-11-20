@@ -245,6 +245,9 @@ OSR/IntegrationRec190.lean: refutations of rules with ≥ / ≤ conditions (42)
 OSR/IntegrationRec191.lean: refutations of rules with ≥ / ≤ conditions (35)
 OSR/IntegrationRec192.lean: refutations of rules with Or conditions (33)
 OSR/IntegrationRec193.lean: refutations of rules with compound conditions (54)
+OSR/IntegrationRec194.lean: refutations of rules with Subst (88)
+OSR/IntegrationRec195.lean: refutations of rules with Subst (93)
+OSR/IntegrationRec196.lean: refutations of rules with Subst (94)
 OSR/Integration.lean   RUBI antiderivative rules (13) and the Integration catalogue (523)
 OSR/Export.lean        pure JSON rendering
 scripts/Export.lean    audit (types, axioms, registry, termination proofs),
@@ -422,7 +425,14 @@ arithmetic (`OSR/Decide.lean`, `CRule.conditionsDecided`; `apply?_sound`
 then requires characteristic zero and the rational order).  A fourth
 shape, `antiderivRec`, has residual integrals in its result
 (`AntiderivRecHolds`, exported with `OMObj.omapp` as `int(λx. H)(x)`); the
-rewriter does not apply it either.
+rewriter does not apply it either.  A fifth, `antiderivSubst`, also lists
+substitutions (`CRule.substs`): a hole `h` with `g` stands for
+`int(λx. H)(g)`, v0.1 `Subst[Int[H, x], x, g]`.  `AntiderivSubstHolds`
+reads it at `substAt` (`g` at the point), requires `g` defined near the point
+and `H` near `g(t)`, and quantifies over functions with derivative `H(g(t))`
+at `g(t)`; the result reads them composed with `g` (`substEnv`), so a proof
+uses the chain rule.  `not_antiderivSubstHolds_integrand` and
+`not_antiderivSubstHolds_result` refute it.
 `antideriv_instance` is its instantiation theorem.  The
 Calculus set has no rule of this shape; the RUBI rules are in
 `OSR/Integration.lean`, see [Integration](integration.md).

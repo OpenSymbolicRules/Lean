@@ -66,7 +66,7 @@ private def rules : List CRule :=
   let input := match r.shape with
     | .deriv => CTerm.diff r.x r.body
     | .limit => CTerm.limit r.point r.x r.body
-    | .antideriv | .antiderivRec => CTerm.integral r.x r.body
+    | .antideriv | .antiderivRec | .antiderivSubst => CTerm.integral r.x r.body
   match rewrite rules input with
   | some (_, out) => (rewrite rules out).isNone
   | none => false
@@ -87,5 +87,55 @@ private def rules : List CRule :=
 #guard (rewrite rules (.diff "t" (.app1 .arctanh t))).isSome
 #guard (rewrite rules (.diff "t" (.app1 .arcsin t))).map (·.2) ==
   some (.lam "t" (.app2 .div (.int 1) (.app2 .root (.app2 .sub (.int 1) (.pow t (.int 2))) (.int 2))))
+
+-- A rule with a substitution (`antiderivSubst`, v0.1 `Subst`):
+-- ∫ 2x cos(x²) dx = int(λx. cos x)(x²), an antiderivative of cos read at x².
+private def substTest : CRule where
+  id := "test.subst"; shape := .antiderivSubst; x := "x"
+  body := .app2 .mul (.app2 .mul (.int 2) (.var "x")) (.app1 .cos (.pow (.var "x") (.int 2)))
+  result := .var "I1"
+  integrals := [("I1", .app1 .cos (.var "x"))]
+  substs := [("I1", .pow (.var "x") (.int 2))]
+  priority := 0; description := "test"; provenance := { method := .derived, sources := [] }
+
+#guard substTest.recOk && substTest.conditionsOk
+-- The hole is exported as int(λx. cos x)(x²): its argument is the power, not x.
+#guard (substTest.replacementOM.toJson.compress.splitOn "\"power\"").length == 2
+-- Substitutions belong to antiderivSubst only, and only on holes.
+#guard !{ substTest with shape := .antiderivRec }.recOk
+#guard !{ substTest with substs := [("J", .var "x")] }.recOk
+
+open Filter in
+theorem substTest_real : substTest.Holds .real := by
+  show AntiderivSubstHolds Interp.real "x" [] substTest.body substTest.result
+    substTest.integrals substTest.substs
+  intro env _ t _
+  have i2 : intValue? (2 : ℝ) = some 2 := (intValue?_eq _ _).2 (by norm_num)
+  have i2' : intValue? ((2 : ℤ) : ℝ) = some 2 := (intValue?_eq _ _).2 (by norm_num)
+  refine ⟨fun i hi => ?_, fun Φ hΦ => ⟨?_, ?_⟩⟩
+  · simp only [substTest, List.mem_cons, List.not_mem_nil, or_false] at hi
+    subst hi
+    exact ⟨Eventually.of_forall fun v g hg => by
+        simp [substTest] at hg; subst hg; simp [Defined, eval, Interp.real, i2, i2'],
+      Eventually.of_forall fun u => by simp [Defined, eval, Interp.real]⟩
+  · exact Eventually.of_forall fun v => by simp [substTest, Defined]
+  · simp only [substTest, List.mem_cons, List.not_mem_nil, or_false, forall_eq] at hΦ
+    have key : ∀ v : ℝ, substAt Interp.real env [("I1", .pow (.var "x") (.int 2))] "x" "I1" v =
+        v ^ 2 := fun v => by
+      simp [substAt, List.lookup, eval, Interp.real, i2, i2', zpow_ofNat]
+    rw [key t] at hΦ
+    have hv : eval Interp.real (Function.update env "x" (t ^ 2)) (.app1 .cos (.var "x")) =
+        Real.cos (t ^ 2) := by simp [eval, Interp.real]
+    rw [hv] at hΦ
+    have h2 : HasDerivAt (fun v : ℝ => v ^ 2) (2 * t) t := by
+      simpa using hasDerivAt_pow 2 t
+    have hc := HasDerivAt.comp (h := fun v : ℝ => v ^ 2) t hΦ h2
+    convert hc using 1
+    · funext v
+      simp only [substEnv, eval, substTest, List.map, List.mem_cons, List.not_mem_nil, or_false,
+        Function.update_apply]
+      simp [key v]
+    · simp [substTest, eval, Interp.real, i2, i2']
+      ring
 
 end OSRTest.Calculus

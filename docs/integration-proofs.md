@@ -666,6 +666,15 @@ function, so they read the conditions identically. This makes 113 more rules
 translatable; the search finds a counterexample for 75 and 54 check
 (`OSR/IntegrationRec193.lean`).
 
+RUBI writes many results with `Subst[Int[H, x], x, g]`, an antiderivative of
+`H` evaluated at `g`. OSR v1 now states such residual integrals as
+`int(λx. H)(g)` (shape `antiderivSubst`, `AntiderivSubstHolds`), and the
+transcription and the faithfulness check read `Subst` so. Of the 427 rules
+this makes translatable, the definedness search (with `H` evaluated at
+`g(t)`) finds a counterexample for 326 and 275 check in Lean
+(`OSR/IntegrationRec194.lean` to `OSR/IntegrationRec196.lean`): 183 where a
+residual integrand is undefined at its substitution, 92 where the result is.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.

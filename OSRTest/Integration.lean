@@ -13,7 +13,7 @@ private def t : Expr := .var "t"
 -- The twenty rules of the syntactic inventory (FreeQ or NeQ conditions,
 -- registered heads, no Int in the result) are migrated or reported, plus
 -- 110 rules with residual integrals and seven unmigrated ones.
-#guard Integration.catalogVerified.length + Integration.notMigrated.length == 2293
+#guard Integration.catalogVerified.length + Integration.notMigrated.length == 2568
 #guard Integration.notMigrated.length == 520
 -- A RUBI rule is catalogued once; only a strengthened variant (a finding that
 -- starts with "strengthened:") shares the legacy id of the rule it corrects.
@@ -22,10 +22,10 @@ private def t : Expr := .var "t"
       !e.findings.any (·.startsWith "strengthened:")).filterMap (·.rule.legacyId)
   ls.eraseDups.length == ls.length
 #guard (Integration.catalogVerified.filter (·.rule.shape == .antiderivRec)).length == 1590
-#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 1634
+#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 1880
 -- RUBI rules with EqQ conditions are stated with relation1#eq (Cond.eq).
 #guard (Integration.catalogVerified.filter fun e =>
-  e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 823
+  e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 976
 
 -- RUBI 4.16.1: the new degenerate-coefficient cases are refuted in both
 -- domains, with no proof or unresolved domain accidentally attached.
@@ -222,9 +222,11 @@ private def strengthenedRealIds : List String := [
   | none => false
   | some id => Integration.notMigrated.all fun entry => entry.1 != id
 #guard Integration.catalog.all fun e =>
-  if e.rule.shape == .antiderivRec then e.rule.recOk else e.rule.wellFormed
+  if e.rule.shape == .antiderivRec || e.rule.shape == .antiderivSubst then e.rule.recOk
+  else e.rule.wellFormed
 #guard Integration.catalog.all (·.rule.recOk)
-#guard Integration.catalog.all fun e => e.rule.shape == .antideriv || e.rule.shape == .antiderivRec
+#guard Integration.catalog.all fun e => e.rule.shape == .antideriv ||
+  e.rule.shape == .antiderivRec || e.rule.shape == .antiderivSubst
 #guard Integration.catalog.all (·.rule.conditionsOk)
 #guard Calculus.catalog.all (·.rule.conditionsOk)
 

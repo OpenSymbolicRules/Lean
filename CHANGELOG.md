@@ -52,6 +52,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Shape `antiderivSubst` and field `CRule.substs` for residual integrals
+  evaluated at an expression of the bound variable, `int(λx. H)(g)` (v0.1
+  `Subst[Int[H, x], x, g]`, V1-E-002b): statement `AntiderivSubstHolds`
+  (helpers `substAt`, `substEnv`), refutation lemmas
+  `not_antiderivSubstHolds_integrand` and `not_antiderivSubstHolds_result`,
+  `recOk` checks of the substitutions, and export of the hole at `g`. A test
+  rule (∫ 2x cos(x²) dx = int(λx. cos x)(x²)) is proved over ℝ by the chain
+  rule (`OSRTest/Calculus.lean`).
+- 275 RUBI rules written with `Subst` are migrated (shape `antiderivSubst`)
+  and refuted over ℝ (`OSR/IntegrationRec194.lean` to
+  `OSR/IntegrationRec196.lean`), at degenerate coefficients where the result
+  or a residual integrand at its substitution is undefined. The catalogue
+  has 2048 rules (2355 RUBI rules considered): 474 proved and 1574 refuted
+  over ℝ; 286 proved (146 certified), 376 refuted and 1386 unproved over ℂ.
 - Conditions `Cond.ge` (`relation1#geq`, both operands defined and the first
   greater than or equal to the second; real only, like `relation1#gt`) and
   `Cond.or` (binary `logic1#or`, which holds when one side holds), with

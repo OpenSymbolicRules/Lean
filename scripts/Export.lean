@@ -662,7 +662,7 @@ unsafe def auditCalcEntry (e : Calculus.CEntry) : MetaM (List Verification) := d
   let r ← evalCRule e.ruleDecl
   unless r == e.rule do
     throwError "{e.rule.id}: catalogue rule differs from declaration {e.ruleDecl}"
-  unless e.rule.shape == .antiderivRec || e.rule.wellFormed do
+  unless e.rule.shape == .antiderivRec || e.rule.shape == .antiderivSubst || e.rule.wellFormed do
     throwError "{e.rule.id}: ill-formed calculus rule"
   unless e.rule.recOk do
     throwError "{e.rule.id}: ill-formed residual integrals"
@@ -736,14 +736,14 @@ def calcSeeds : List (String × Calculus.CTerm) :=
     (s!"pattern.{r.id}", match r.shape with
       | .deriv => Calculus.CTerm.diff r.x r.body
       | .limit => Calculus.CTerm.limit r.point r.x r.body
-      | .antideriv | .antiderivRec => Calculus.CTerm.integral r.x r.body)) ++
+      | .antideriv | .antiderivRec | .antiderivSubst => Calculus.CTerm.integral r.x r.body)) ++
   (Calculus.catalog.map fun e =>
     let r := e.rule
     let σ : Subst := [(r.x, .var "t")]
     (s!"renamed.{r.id}", match r.shape with
       | .deriv => Calculus.CTerm.diff "t" (r.body.subst σ)
       | .limit => Calculus.CTerm.limit r.point "t" (r.body.subst σ)
-      | .antideriv | .antiderivRec => Calculus.CTerm.integral "t" (r.body.subst σ))) ++
+      | .antideriv | .antiderivRec | .antiderivSubst => Calculus.CTerm.integral "t" (r.body.subst σ))) ++
   [("independent.constant_body", .diff "t" (.app1 .sin (.var "u"))),
    ("independent.limit_of_constant", .limit (.int 1) "t" (.app1 .sin (.var "u"))),
    ("independent.body_mentions_bound", .diff "t" (.app2 .mul tvar (.var "u"))),
@@ -835,7 +835,8 @@ def calcRuleJson (b : BuildInfo) (e : Calculus.CEntry) (vs : List Verification) 
     ("id", jstr r.id),
     ("description", jstr r.description),
     ("variables", Json.arr ((r.x :: (r.body.vars ++ r.point.vars ++
-      r.result.vars.filter (· ∉ r.holes) ++ (r.integrals.map (·.2.vars)).flatten)).eraseDups.map
+      r.result.vars.filter (· ∉ r.holes) ++ (r.integrals.map (·.2.vars)).flatten ++
+        (r.substs.map (·.2.vars)).flatten)).eraseDups.map
       omv).toArray),
     ("pattern", r.patternOM.toJson),
     ("replacement", r.replacementOM.toJson),
