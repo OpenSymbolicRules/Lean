@@ -198,11 +198,11 @@ private def strengthenedRealIds : List String := [
   ids.length == (strengthenedIds ++ strengthenedRealIds).length &&
     (strengthenedIds ++ strengthenedRealIds).all ids.contains
 
--- Strengthened variants checked numerically (OSR.IntegrationNum1; all are now
--- proved, so the list is empty) are distributed unproved: no proof and no counterexample, both domains unproved,
+-- Strengthened variants checked numerically (OSR.IntegrationNum1) are
+-- distributed unproved: no proof and no counterexample, both domains unproved,
 -- a strengthened: and a numerical: finding, and the pattern, replacement and
 -- prefix conditions of the refuted rule they correct.
-#guard IntegrationNum1.entries.length == 0
+#guard IntegrationNum1.entries.length == 604
 #guard IntegrationNum1.entries.all fun v =>
   v.proofs.isEmpty && v.counterexamples.isEmpty && v.unproved == [.real, .complex] &&
   v.findings.any (·.startsWith "strengthened:") && v.findings.any (·.startsWith "numerical:") &&
@@ -211,7 +211,7 @@ private def strengthenedRealIds : List String := [
   | some o =>
     o.rule.legacyId == v.rule.legacyId && o.proofs.isEmpty &&
     o.rule.body == v.rule.body && o.rule.result == v.rule.result &&
-    o.rule.integrals == v.rule.integrals &&
+    o.rule.integrals == v.rule.integrals && o.rule.substs == v.rule.substs &&
     o.rule.conditions.length < v.rule.conditions.length &&
     v.rule.conditions.take o.rule.conditions.length == o.rule.conditions
 

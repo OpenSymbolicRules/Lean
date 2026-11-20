@@ -52,6 +52,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- 604 strengthened variants of refuted RUBI rules are distributed unproved
+  (`OSR/IntegrationNum1.lean`, Specification V1-R-005e), each with a
+  `numerical:` finding. A variant appends `c ≠ 0` for each `x`-free base `c`
+  raised to a negative power that vanishes at the counterexample (one
+  condition for most, two for a few); the definedness search finds no
+  counterexample to it, and an adversarial numerical check over ℝ (each
+  metavariable 0 with probability 0.4, plus the real zeros of the bases
+  raised to a negative power) finds no failure on at least 30 points. The
+  refuted rules stay refuted as stated. The catalogue has 2652 rules:
+  474 proved, 1574 refuted and 604 unproved over ℝ; 286 proved (146
+  certified), 376 refuted and 1990 unproved over ℂ.
 - Derivative rules may have conditions (`DerivHoldsUnder`; `conditionsOk`
   accepts them, `apply?` applies a conditional derivative rule only when its
   conditions are decided true, and `apply?_sound` covers it through

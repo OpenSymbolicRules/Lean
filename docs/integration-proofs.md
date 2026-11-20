@@ -675,6 +675,22 @@ this makes translatable, the definedness search (with `H` evaluated at
 (`OSR/IntegrationRec194.lean` to `OSR/IntegrationRec196.lean`): 183 where a
 residual integrand is undefined at its substitution, 92 where the result is.
 
+Most refutations are degenerate cases: the counterexample sets a coefficient
+to zero where the result divides by it. For each refuted rule without a
+variant, the bases `c` free of `x` raised to a negative power that vanish at
+the counterexample give conditions `c ≠ 0`; the definedness search is run
+again on the strengthened rule, and a condition is added for a new
+degenerate counterexample (at most three rounds). Of 1361 refutations, 923
+have such a variant with no counterexample left (one condition for 886, two
+for 37). Each is then checked numerically over ℝ, adversarially (each
+metavariable 0 with probability 0.4) and at the real zeros of the bases
+raised to a negative power, comparing the derivative of the result, with the
+residual integrals linearised, with the integrand: 604 pass with no failure
+on at least 30 points and are distributed unproved in
+`OSR/IntegrationNum1.lean`, with the evidence in a `numerical:` finding; 217
+had too few points and 102 fail (64 on the value, 38 on definedness), so the
+rule needs more than a non-degeneracy condition.
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.
