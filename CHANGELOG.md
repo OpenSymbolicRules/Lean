@@ -52,6 +52,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- 39 more strengthened variants are distributed unproved (827 in all):
+  24 whose definedness failures came from the approximate solution of an
+  equality condition (a value of about 2·10⁻⁷ instead of 0, an exponent
+  2.999999999999999 instead of 3), and 15 whose exact check reached ten
+  points with more samples. The catalogue has 2875 rules: 474 proved, 1574
+  refuted and 827 unproved over ℝ; 286 proved (146 certified), 376 refuted
+  and 2213 unproved over ℂ.
 - 184 more strengthened variants are distributed unproved
   (`OSR/IntegrationNum1.lean`, 788 in all). Their numerical check now also
   computes the derivative of the result symbolically and compares it with the

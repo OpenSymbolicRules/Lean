@@ -10,7 +10,7 @@ that the RUBI rule leaves to rule order or evaluation, and carries a
 ℝ).  No proof is claimed; the catalogue marks both domains as unproved.
 The refutations of the rules as stated are kept.  Proved variants move to
 the `IntegrationRec*` modules; the first 120 are all proved and their rule
-definitions stay here.  The 788 entries now listed are variants derived from
+definitions stay here.  The 827 entries now listed are variants derived from
 the counterexamples of later refutations: each condition is `c ≠ 0` for an
 `x`-free base `c` raised to a negative power that vanishes at the
 counterexample.
@@ -620,6 +620,23 @@ def rubi1135r8Nondeg : CRule where
   description := "RUBI 1.1.3.5 #8"
   provenance := migrated "rubi:1 Algebraic functions/1.1 Binomial products/1.1.3 General/1.1.3.5 (a+b x^n)^p (c+d x^n)^q (e+f x^n)^r:8" "1 Algebraic functions/1.1 Binomial products/1.1.3 General/1.1.3.5 (a+b x^n)^p (c+d x^n)^q (e+f x^n)^r.m#8"
 
+/-- integration.rubi_1_1_3_6_r10 with non-degeneracy conditions (numerically checked) -/
+def rubi1136r10Nondeg : CRule where
+  id := "integration.rubi_1_1_3_6_r10_nondegenerate"; legacyId := some "rubi:1 Algebraic functions/1.1 Binomial products/1.1.3 General/1.1.3.6 (g x)^m (a+b x^n)^p (c+d x^n)^q (e+f x^n)^r:10"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "g") (.var "x")) (.var "m")) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.pow (.var "x") (.var "n")))) (.var "p"))) (.pow (.app2 .add (.var "c") (.app2 .mul (.var "d") (.pow (.var "x") (.var "n")))) (.var "q"))) (.app2 .add (.var "e") (.app2 .mul (.var "f") (.pow (.var "x") (.var "n")))))
+  result := (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.var "g") (.app2 .add (.var "n") (.app2 .mul (.int (-1)) (.int 1)))) (.app2 .add (.app2 .mul (.var "b") (.var "e")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "a")) (.var "f")))) (.pow (.app2 .mul (.var "g") (.var "x")) (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.int (-1)) (.var "n"))) (.int 1)))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.pow (.var "x") (.var "n")))) (.app2 .add (.var "p") (.int 1)))) (.pow (.app2 .add (.var "c") (.app2 .mul (.var "d") (.pow (.var "x") (.var "n")))) (.app2 .add (.var "q") (.int 1)))) (.pow (.app2 .mul (.app2 .mul (.app2 .mul (.var "b") (.var "n")) (.app2 .add (.app2 .mul (.var "b") (.var "c")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "a")) (.var "d")))) (.app2 .add (.var "p") (.int 1))) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.pow (.var "g") (.var "n"))) (.pow (.app2 .mul (.app2 .mul (.app2 .mul (.var "b") (.var "n")) (.app2 .add (.app2 .mul (.var "b") (.var "c")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "a")) (.var "d")))) (.app2 .add (.var "p") (.int 1))) (.int (-1)))) (.var "I1")))
+  integrals := [("I1", (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "g") (.var "x")) (.app2 .add (.var "m") (.app2 .mul (.int (-1)) (.var "n")))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.pow (.var "x") (.var "n")))) (.app2 .add (.var "p") (.int 1)))) (.pow (.app2 .add (.var "c") (.app2 .mul (.var "d") (.pow (.var "x") (.var "n")))) (.var "q"))) (.app2 .add (.app2 .mul (.app2 .mul (.var "c") (.app2 .add (.app2 .mul (.var "b") (.var "e")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "a")) (.var "f")))) (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.int (-1)) (.var "n"))) (.int 1))) (.app2 .mul (.app2 .add (.app2 .mul (.app2 .mul (.var "d") (.app2 .add (.app2 .mul (.var "b") (.var "e")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "a")) (.var "f")))) (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.var "n") (.var "q"))) (.int 1))) (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.var "b")) (.var "n")) (.app2 .add (.app2 .mul (.var "c") (.var "f")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "d")) (.var "e")))) (.app2 .add (.var "p") (.int 1)))) (.pow (.var "x") (.var "n"))))))]
+  independent := ["a", "b", "c", "d", "e", "f", "g", "q", "m", "n", "p"]
+  conditions := [.int (.var "n"),
+    .gt (.var "n") (.int 0),
+    .gt (.int (-1)) (.var "p"),
+    .gt (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.int (-1)) (.var "n"))) (.int 1)) (.int 0),
+    .ne (.app2 .mul (.app2 .mul (.app2 .mul (.var "b") (.var "n")) (.app2 .add (.app2 .mul (.var "b") (.var "c")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "a")) (.var "d")))) (.app2 .add (.var "p") (.int 1))) (.int 0)]
+  priority := 12182
+  description := "RUBI 1.1.3.6 #10"
+  provenance := migrated "rubi:1 Algebraic functions/1.1 Binomial products/1.1.3 General/1.1.3.6 (g x)^m (a+b x^n)^p (c+d x^n)^q (e+f x^n)^r:10" "1 Algebraic functions/1.1 Binomial products/1.1.3 General/1.1.3.6 (g x)^m (a+b x^n)^p (c+d x^n)^q (e+f x^n)^r.m#10"
+
 /-- integration.rubi_1_1_3_6_r11 with non-degeneracy conditions (numerically checked) -/
 def rubi1136r11Nondeg : CRule where
   id := "integration.rubi_1_1_3_6_r11_nondegenerate"; legacyId := some "rubi:1 Algebraic functions/1.1 Binomial products/1.1.3 General/1.1.3.6 (g x)^m (a+b x^n)^p (c+d x^n)^q (e+f x^n)^r:11"
@@ -865,6 +882,23 @@ def rubi1212r59Nondeg : CRule where
   priority := 4110
   description := "RUBI 1.2.1.2 #59"
   provenance := migrated "rubi:1 Algebraic functions/1.2 Trinomial products/1.2.1 Quadratic/1.2.1.2 (d+e x)^m (a+b x+c x^2)^p:59" "1 Algebraic functions/1.2 Trinomial products/1.2.1 Quadratic/1.2.1.2 (d+e x)^m (a+b x+c x^2)^p.m#59"
+
+/-- integration.rubi_1_2_1_2_r62 with non-degeneracy conditions (numerically checked) -/
+def rubi1212r62Nondeg : CRule where
+  id := "integration.rubi_1_2_1_2_r62_nondegenerate"; legacyId := some "rubi:1 Algebraic functions/1.2 Trinomial products/1.2.1 Quadratic/1.2.1.2 (d+e x)^m (a+b x+c x^2)^p:62"
+  shape := .antiderivSubst; x := "x"
+  body := (.app2 .mul (.int 1) (.pow (.app2 .mul (.app2 .root (.app2 .add (.var "d") (.app2 .mul (.var "e") (.var "x"))) (.int 2)) (.app2 .root (.app2 .add (.app2 .add (.var "a") (.app2 .mul (.var "b") (.var "x"))) (.app2 .mul (.var "c") (.pow (.var "x") (.int 2)))) (.int 2))) (.int (-1))))
+  result := (.app2 .mul (.app2 .mul (.app2 .mul (.int 4) (.pow (.var "e") (.int (-1)))) (.app2 .root (.app2 .mul (.app2 .mul (.int (-1)) (.var "c")) (.pow (.app2 .add (.pow (.var "b") (.int 2)) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.int 4)) (.var "a")) (.var "c"))) (.int (-1)))) (.int 2))) (.var "I1"))
+  integrals := [("I1", (.app2 .mul (.int 1) (.pow (.app2 .root (.app2 .add (.int 1) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.pow (.var "b") (.int 2))) (.pow (.var "x") (.int 4))) (.pow (.app2 .mul (.pow (.var "d") (.int 2)) (.app2 .add (.pow (.var "b") (.int 2)) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.int 4)) (.var "a")) (.var "c")))) (.int (-1))))) (.int 2)) (.int (-1)))))]
+  substs := [("I1", (.app2 .root (.app2 .add (.var "d") (.app2 .mul (.var "e") (.var "x"))) (.int 2)))]
+  independent := ["a", "b", "c", "d", "e"]
+  conditions := [.ne (.app2 .add (.pow (.var "b") (.int 2)) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.int 4)) (.var "a")) (.var "c"))) (.int 0),
+    .eq (.app2 .add (.app2 .mul (.app2 .mul (.int 2) (.var "c")) (.var "d")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "b")) (.var "e"))) (.int 0),
+    .gt (.int 0) (.app2 .mul (.var "c") (.pow (.app2 .add (.pow (.var "b") (.int 2)) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.int 4)) (.var "a")) (.var "c"))) (.int (-1)))),
+    .ne (.app2 .mul (.pow (.var "d") (.int 2)) (.app2 .add (.pow (.var "b") (.int 2)) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.int 4)) (.var "a")) (.var "c")))) (.int 0)]
+  priority := 19078
+  description := "RUBI 1.2.1.2 #62"
+  provenance := migrated "rubi:1 Algebraic functions/1.2 Trinomial products/1.2.1 Quadratic/1.2.1.2 (d+e x)^m (a+b x+c x^2)^p:62" "1 Algebraic functions/1.2 Trinomial products/1.2.1 Quadratic/1.2.1.2 (d+e x)^m (a+b x+c x^2)^p.m#62"
 
 /-- integration.rubi_1_2_1_2_r63 with non-degeneracy conditions (numerically checked) -/
 def rubi1212r63Nondeg : CRule where
@@ -1602,6 +1636,25 @@ def rubi1224r70Nondeg : CRule where
   description := "RUBI 1.2.2.4 #70"
   provenance := migrated "rubi:1 Algebraic functions/1.2 Trinomial products/1.2.2 Quartic/1.2.2.4 (f x)^m (d+e x^2)^q (a+b x^2+c x^4)^p:70" "1 Algebraic functions/1.2 Trinomial products/1.2.2 Quartic/1.2.2.4 (f x)^m (d+e x^2)^q (a+b x^2+c x^4)^p.m#70"
 
+/-- integration.rubi_1_2_3_2_r13 with non-degeneracy conditions (numerically checked) -/
+def rubi1232r13Nondeg : CRule where
+  id := "integration.rubi_1_2_3_2_r13_nondegenerate"; legacyId := some "rubi:1 Algebraic functions/1.2 Trinomial products/1.2.3 General/1.2.3.2 (d x)^m (a+b x^n+c x^(2 n))^p:13"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.pow (.app2 .mul (.var "d") (.var "x")) (.var "m")) (.pow (.app2 .add (.app2 .add (.var "a") (.app2 .mul (.var "b") (.pow (.var "x") (.var "n")))) (.app2 .mul (.var "c") (.pow (.var "x") (.var "n2")))) (.var "p")))
+  result := (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.pow (.app2 .mul (.var "d") (.var "x")) (.app2 .add (.var "m") (.int 1)))) (.app2 .add (.app2 .add (.pow (.var "b") (.int 2)) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.int 2)) (.var "a")) (.var "c"))) (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.pow (.var "x") (.var "n"))))) (.pow (.app2 .add (.app2 .add (.var "a") (.app2 .mul (.var "b") (.pow (.var "x") (.var "n")))) (.app2 .mul (.var "c") (.pow (.var "x") (.app2 .mul (.int 2) (.var "n"))))) (.app2 .add (.var "p") (.int 1)))) (.pow (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.var "a") (.var "d")) (.var "n")) (.app2 .add (.var "p") (.int 1))) (.app2 .add (.pow (.var "b") (.int 2)) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.int 4)) (.var "a")) (.var "c")))) (.int (-1)))) (.app2 .mul (.app2 .mul (.int 1) (.pow (.app2 .mul (.app2 .mul (.app2 .mul (.var "a") (.var "n")) (.app2 .add (.var "p") (.int 1))) (.app2 .add (.pow (.var "b") (.int 2)) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.int 4)) (.var "a")) (.var "c")))) (.int (-1)))) (.var "I1")))
+  integrals := [("I1", (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "d") (.var "x")) (.var "m")) (.pow (.app2 .add (.app2 .add (.var "a") (.app2 .mul (.var "b") (.pow (.var "x") (.var "n")))) (.app2 .mul (.var "c") (.pow (.var "x") (.app2 .mul (.int 2) (.var "n"))))) (.app2 .add (.var "p") (.int 1)))) (.app2 .add (.app2 .add (.app2 .mul (.pow (.var "b") (.int 2)) (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.var "n") (.app2 .add (.var "p") (.int 1)))) (.int 1))) (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.int 2)) (.var "a")) (.var "c")) (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.app2 .mul (.int 2) (.var "n")) (.app2 .add (.var "p") (.int 1)))) (.int 1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.var "n") (.app2 .add (.app2 .mul (.int 2) (.var "p")) (.int 3)))) (.int 1))) (.pow (.var "x") (.var "n"))))))]
+  independent := ["a", "b", "c", "d", "m", "n", "n2", "p"]
+  conditions := [.eq (.var "n2") (.app2 .mul (.int 2) (.var "n")),
+    .ne (.app2 .add (.pow (.var "b") (.int 2)) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.int 4)) (.var "a")) (.var "c"))) (.int 0),
+    .int (.var "n"),
+    .gt (.var "n") (.int 0),
+    .int (.var "p"),
+    .gt (.int (-1)) (.var "p"),
+    .ne (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.var "a") (.var "d")) (.var "n")) (.app2 .add (.var "p") (.int 1))) (.app2 .add (.pow (.var "b") (.int 2)) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.int 4)) (.var "a")) (.var "c")))) (.int 0)]
+  priority := 12188
+  description := "RUBI 1.2.3.2 #13"
+  provenance := migrated "rubi:1 Algebraic functions/1.2 Trinomial products/1.2.3 General/1.2.3.2 (d x)^m (a+b x^n+c x^(2 n))^p:13" "1 Algebraic functions/1.2 Trinomial products/1.2.3 General/1.2.3.2 (d x)^m (a+b x^n+c x^(2 n))^p.m#13"
+
 /-- integration.rubi_1_2_3_2_r16 with non-degeneracy conditions (numerically checked) -/
 def rubi1232r16Nondeg : CRule where
   id := "integration.rubi_1_2_3_2_r16_nondegenerate"; legacyId := some "rubi:1 Algebraic functions/1.2 Trinomial products/1.2.3 General/1.2.3.2 (d x)^m (a+b x^n+c x^(2 n))^p:16"
@@ -1743,6 +1796,26 @@ def rubi1234r31Nondeg : CRule where
   description := "RUBI 1.2.3.4 #31"
   provenance := migrated "rubi:1 Algebraic functions/1.2 Trinomial products/1.2.3 General/1.2.3.4 (f x)^m (d+e x^n)^q (a+b x^n+c x^(2 n))^p:31" "1 Algebraic functions/1.2 Trinomial products/1.2.3 General/1.2.3.4 (f x)^m (d+e x^n)^q (a+b x^n+c x^(2 n))^p.m#31"
 
+/-- integration.rubi_1_2_3_4_r32 with non-degeneracy conditions (numerically checked) -/
+def rubi1234r32Nondeg : CRule where
+  id := "integration.rubi_1_2_3_4_r32_nondegenerate"; legacyId := some "rubi:1 Algebraic functions/1.2 Trinomial products/1.2.3 General/1.2.3.4 (f x)^m (d+e x^n)^q (a+b x^n+c x^(2 n))^p:32"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.var "m")) (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.var "n"))))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "c") (.pow (.var "x") (.var "n2")))) (.var "p")))
+  result := (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.app2 .add (.var "m") (.int 1))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "c") (.pow (.var "x") (.app2 .mul (.int 2) (.var "n"))))) (.var "p"))) (.app2 .add (.app2 .mul (.app2 .mul (.var "c") (.var "d")) (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.var "n") (.app2 .add (.app2 .mul (.int 2) (.var "p")) (.int 1)))) (.int 1))) (.app2 .mul (.app2 .mul (.app2 .mul (.var "c") (.var "e")) (.app2 .add (.app2 .add (.app2 .mul (.app2 .mul (.int 2) (.var "n")) (.var "p")) (.var "m")) (.int 1))) (.pow (.var "x") (.var "n"))))) (.pow (.app2 .mul (.app2 .mul (.app2 .mul (.var "c") (.var "f")) (.app2 .add (.app2 .add (.app2 .mul (.app2 .mul (.int 2) (.var "n")) (.var "p")) (.var "m")) (.int 1))) (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.var "n") (.app2 .add (.app2 .mul (.int 2) (.var "p")) (.int 1)))) (.int 1))) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.int 2) (.var "a")) (.var "n")) (.var "p")) (.pow (.app2 .mul (.app2 .add (.app2 .add (.app2 .mul (.app2 .mul (.int 2) (.var "n")) (.var "p")) (.var "m")) (.int 1)) (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.var "n") (.app2 .add (.app2 .mul (.int 2) (.var "p")) (.int 1)))) (.int 1))) (.int (-1)))) (.var "I1")))
+  integrals := [("I1", (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.var "m")) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "c") (.pow (.var "x") (.app2 .mul (.int 2) (.var "n"))))) (.app2 .add (.var "p") (.app2 .mul (.int (-1)) (.int 1))))) (.app2 .add (.app2 .mul (.var "d") (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.var "n") (.app2 .add (.app2 .mul (.int 2) (.var "p")) (.int 1)))) (.int 1))) (.app2 .mul (.app2 .mul (.var "e") (.app2 .add (.app2 .add (.app2 .mul (.app2 .mul (.int 2) (.var "n")) (.var "p")) (.var "m")) (.int 1))) (.pow (.var "x") (.var "n"))))))]
+  independent := ["a", "c", "d", "e", "f", "m", "n", "n2", "p"]
+  conditions := [.eq (.var "n2") (.app2 .mul (.int 2) (.var "n")),
+    .int (.var "n"),
+    .gt (.var "n") (.int 0),
+    .gt (.var "p") (.int 0),
+    .ne (.app2 .add (.app2 .add (.app2 .mul (.app2 .mul (.int 2) (.var "n")) (.var "p")) (.var "m")) (.int 1)) (.int 0),
+    .ne (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.var "n") (.app2 .add (.app2 .mul (.int 2) (.var "p")) (.int 1)))) (.int 1)) (.int 0),
+    .int (.var "p"),
+    .ne (.app2 .mul (.app2 .mul (.app2 .mul (.var "c") (.var "f")) (.app2 .add (.app2 .add (.app2 .mul (.app2 .mul (.int 2) (.var "n")) (.var "p")) (.var "m")) (.int 1))) (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.var "n") (.app2 .add (.app2 .mul (.int 2) (.var "p")) (.int 1)))) (.int 1))) (.int 0)]
+  priority := 12147
+  description := "RUBI 1.2.3.4 #32"
+  provenance := migrated "rubi:1 Algebraic functions/1.2 Trinomial products/1.2.3 General/1.2.3.4 (f x)^m (d+e x^n)^q (a+b x^n+c x^(2 n))^p:32" "1 Algebraic functions/1.2 Trinomial products/1.2.3 General/1.2.3.4 (f x)^m (d+e x^n)^q (a+b x^n+c x^(2 n))^p.m#32"
+
 /-- integration.rubi_1_2_3_4_r35 with non-degeneracy conditions (numerically checked) -/
 def rubi1234r35Nondeg : CRule where
   id := "integration.rubi_1_2_3_4_r35_nondegenerate"; legacyId := some "rubi:1 Algebraic functions/1.2 Trinomial products/1.2.3 General/1.2.3.4 (f x)^m (d+e x^n)^q (a+b x^n+c x^(2 n))^p:35"
@@ -1779,6 +1852,26 @@ def rubi1234r36Nondeg : CRule where
   priority := 12112
   description := "RUBI 1.2.3.4 #36"
   provenance := migrated "rubi:1 Algebraic functions/1.2 Trinomial products/1.2.3 General/1.2.3.4 (f x)^m (d+e x^n)^q (a+b x^n+c x^(2 n))^p:36" "1 Algebraic functions/1.2 Trinomial products/1.2.3 General/1.2.3.4 (f x)^m (d+e x^n)^q (a+b x^n+c x^(2 n))^p.m#36"
+
+/-- integration.rubi_1_2_3_4_r37 with non-degeneracy conditions (numerically checked) -/
+def rubi1234r37Nondeg : CRule where
+  id := "integration.rubi_1_2_3_4_r37_nondegenerate"; legacyId := some "rubi:1 Algebraic functions/1.2 Trinomial products/1.2.3 General/1.2.3.4 (f x)^m (d+e x^n)^q (a+b x^n+c x^(2 n))^p:37"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.var "m")) (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.var "n"))))) (.pow (.app2 .add (.app2 .add (.var "a") (.app2 .mul (.var "b") (.pow (.var "x") (.var "n")))) (.app2 .mul (.var "c") (.pow (.var "x") (.var "n2")))) (.var "p")))
+  result := (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.var "e") (.pow (.var "f") (.app2 .add (.var "n") (.app2 .mul (.int (-1)) (.int 1))))) (.pow (.app2 .mul (.var "f") (.var "x")) (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.int (-1)) (.var "n"))) (.int 1)))) (.pow (.app2 .add (.app2 .add (.var "a") (.app2 .mul (.var "b") (.pow (.var "x") (.var "n")))) (.app2 .mul (.var "c") (.pow (.var "x") (.app2 .mul (.int 2) (.var "n"))))) (.app2 .add (.var "p") (.int 1)))) (.pow (.app2 .mul (.var "c") (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.var "n") (.app2 .add (.app2 .mul (.int 2) (.var "p")) (.int 1)))) (.int 1))) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.pow (.var "f") (.var "n"))) (.pow (.app2 .mul (.var "c") (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.var "n") (.app2 .add (.app2 .mul (.int 2) (.var "p")) (.int 1)))) (.int 1))) (.int (-1)))) (.var "I1")))
+  integrals := [("I1", (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.app2 .add (.var "m") (.app2 .mul (.int (-1)) (.var "n")))) (.pow (.app2 .add (.app2 .add (.var "a") (.app2 .mul (.var "b") (.pow (.var "x") (.var "n")))) (.app2 .mul (.var "c") (.pow (.var "x") (.app2 .mul (.int 2) (.var "n"))))) (.var "p"))) (.app2 .add (.app2 .mul (.app2 .mul (.var "a") (.var "e")) (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.int (-1)) (.var "n"))) (.int 1))) (.app2 .mul (.app2 .add (.app2 .mul (.app2 .mul (.var "b") (.var "e")) (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.var "n") (.var "p"))) (.int 1))) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.var "c")) (.var "d")) (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.var "n") (.app2 .add (.app2 .mul (.int 2) (.var "p")) (.int 1)))) (.int 1)))) (.pow (.var "x") (.var "n"))))))]
+  independent := ["a", "b", "c", "d", "e", "f", "p", "m", "n", "n2"]
+  conditions := [.eq (.var "n2") (.app2 .mul (.int 2) (.var "n")),
+    .ne (.app2 .add (.pow (.var "b") (.int 2)) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.int 4)) (.var "a")) (.var "c"))) (.int 0),
+    .int (.var "n"),
+    .gt (.var "n") (.int 0),
+    .gt (.var "m") (.app2 .add (.var "n") (.app2 .mul (.int (-1)) (.int 1))),
+    .ne (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.var "n") (.app2 .add (.app2 .mul (.int 2) (.var "p")) (.int 1)))) (.int 1)) (.int 0),
+    .int (.var "p"),
+    .ne (.app2 .mul (.var "c") (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.var "n") (.app2 .add (.app2 .mul (.int 2) (.var "p")) (.int 1)))) (.int 1))) (.int 0)]
+  priority := 12133
+  description := "RUBI 1.2.3.4 #37"
+  provenance := migrated "rubi:1 Algebraic functions/1.2 Trinomial products/1.2.3 General/1.2.3.4 (f x)^m (d+e x^n)^q (a+b x^n+c x^(2 n))^p:37" "1 Algebraic functions/1.2 Trinomial products/1.2.3 General/1.2.3.4 (f x)^m (d+e x^n)^q (a+b x^n+c x^(2 n))^p.m#37"
 
 /-- integration.rubi_1_2_3_4_r39 with non-degeneracy conditions (numerically checked) -/
 def rubi1234r39Nondeg : CRule where
@@ -1913,6 +2006,23 @@ def rubi1236r4Nondeg : CRule where
   priority := 5430
   description := "RUBI 1.2.3.6 #4"
   provenance := migrated "rubi:1 Algebraic functions/1.2 Trinomial products/1.2.3 General/1.2.3.6 P(x) (d x)^m (a+b x^n+c x^(2 n))^p:4" "1 Algebraic functions/1.2 Trinomial products/1.2.3 General/1.2.3.6 P(x) (d x)^m (a+b x^n+c x^(2 n))^p.m#4"
+
+/-- integration.rubi_1_3_1_r1 with non-degeneracy conditions (numerically checked) -/
+def rubi131r1Nondeg : CRule where
+  id := "integration.rubi_1_3_1_r1_nondegenerate"; legacyId := some "rubi:1 Algebraic functions/1.3 Miscellaneous/1.3.1 P(x)^p:1"
+  shape := .antiderivSubst; x := "x"
+  body := (.pow (.app2 .add (.app2 .add (.app2 .add (.var "a") (.app2 .mul (.var "b") (.var "x"))) (.app2 .mul (.var "c") (.pow (.var "x") (.int 2)))) (.app2 .mul (.var "d") (.pow (.var "x") (.int 3)))) (.var "p"))
+  result := (.app2 .mul (.app2 .mul (.int 1) (.pow (.pow (.int 3) (.var "p")) (.int (-1)))) (.var "I1"))
+  integrals := [("I1", (.pow (.app2 .add (.app2 .mul (.app2 .add (.app2 .mul (.app2 .mul (.int 3) (.var "a")) (.var "c")) (.app2 .mul (.int (-1)) (.pow (.var "b") (.int 2)))) (.pow (.var "c") (.int (-1)))) (.app2 .mul (.app2 .mul (.pow (.var "c") (.int 2)) (.pow (.var "x") (.int 3))) (.pow (.var "b") (.int (-1))))) (.var "p")))]
+  substs := [("I1", (.app2 .add (.app2 .mul (.var "c") (.pow (.app2 .mul (.int 3) (.var "d")) (.int (-1)))) (.var "x")))]
+  independent := ["a", "b", "c", "d", "p"]
+  conditions := [.int (.var "p"),
+    .gt (.var "p") (.int 0),
+    .eq (.app2 .add (.pow (.var "c") (.int 2)) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.int 3)) (.var "b")) (.var "d"))) (.int 0),
+    .ne (.var "c") (.int 0)]
+  priority := 19009
+  description := "RUBI 1.3.1 #1"
+  provenance := migrated "rubi:1 Algebraic functions/1.3 Miscellaneous/1.3.1 P(x)^p:1" "1 Algebraic functions/1.3 Miscellaneous/1.3.1 P(x)^p.m#1"
 
 /-- integration.rubi_1_3_3_r23 with non-degeneracy conditions (numerically checked) -/
 def rubi133r23Nondeg : CRule where
@@ -2253,6 +2363,67 @@ def rubi322r2Nondeg : CRule where
   description := "RUBI 3.2.2 #2"
   provenance := migrated "rubi:3 Logarithms/3.2.2 (f+g x)^m (h+i x)^q (A+B log(e ((a+b x) over (c+d x))^n))^p:2" "3 Logarithms/3.2.2 (f+g x)^m (h+i x)^q (A+B log(e ((a+b x) over (c+d x))^n))^p.m#2"
 
+/-- integration.rubi_3_2_2_r3 with non-degeneracy conditions (numerically checked) -/
+def rubi322r3Nondeg : CRule where
+  id := "integration.rubi_3_2_2_r3_nondegenerate"; legacyId := some "rubi:3 Logarithms/3.2.2 (f+g x)^m (h+i x)^q (A+B log(e ((a+b x) over (c+d x))^n))^p:3"
+  shape := .antiderivSubst; x := "x"
+  body := (.app2 .mul (.app2 .mul (.pow (.app2 .add (.var "f") (.app2 .mul (.var "g") (.var "x"))) (.var "m")) (.pow (.app2 .add (.var "h") (.app2 .mul (.var "i") (.var "x"))) (.var "q"))) (.pow (.app2 .add (.var "A") (.app2 .mul (.var "B") (.app1 .ln (.app2 .mul (.var "e") (.pow (.app2 .mul (.app2 .add (.var "a") (.app2 .mul (.var "b") (.var "x"))) (.pow (.app2 .add (.var "c") (.app2 .mul (.var "d") (.var "x"))) (.int (-1)))) (.var "n")))))) (.var "p")))
+  result := (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.app2 .add (.app2 .mul (.var "b") (.var "c")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "a")) (.var "d"))) (.app2 .add (.app2 .add (.var "m") (.var "q")) (.int 1))) (.pow (.app2 .mul (.var "g") (.pow (.var "b") (.int (-1)))) (.var "m"))) (.pow (.app2 .mul (.var "i") (.pow (.var "d") (.int (-1)))) (.var "q"))) (.var "I1"))
+  integrals := [("I1", (.app2 .mul (.app2 .mul (.pow (.var "x") (.var "m")) (.pow (.app2 .add (.var "A") (.app2 .mul (.var "B") (.app1 .ln (.app2 .mul (.var "e") (.pow (.var "x") (.var "n")))))) (.var "p"))) (.pow (.pow (.app2 .add (.var "b") (.app2 .mul (.app2 .mul (.int (-1)) (.var "d")) (.var "x"))) (.app2 .add (.app2 .add (.var "m") (.var "q")) (.int 2))) (.int (-1)))))]
+  substs := [("I1", (.app2 .mul (.app2 .add (.var "a") (.app2 .mul (.var "b") (.var "x"))) (.pow (.app2 .add (.var "c") (.app2 .mul (.var "d") (.var "x"))) (.int (-1)))))]
+  independent := ["a", "b", "c", "d", "e", "f", "g", "h", "i", "A", "B", "n", "p", "m", "q"]
+  conditions := [.ne (.app2 .add (.app2 .mul (.var "b") (.var "c")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "a")) (.var "d"))) (.int 0),
+    .eq (.app2 .add (.app2 .mul (.var "b") (.var "f")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "a")) (.var "g"))) (.int 0),
+    .eq (.app2 .add (.app2 .mul (.var "d") (.var "h")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "c")) (.var "i"))) (.int 0),
+    .int (.var "m"),
+    .int (.var "q"),
+    .ne (.var "b") (.int 0),
+    .ne (.var "d") (.int 0)]
+  priority := 19065
+  description := "RUBI 3.2.2 #3"
+  provenance := migrated "rubi:3 Logarithms/3.2.2 (f+g x)^m (h+i x)^q (A+B log(e ((a+b x) over (c+d x))^n))^p:3" "3 Logarithms/3.2.2 (f+g x)^m (h+i x)^q (A+B log(e ((a+b x) over (c+d x))^n))^p.m#3"
+
+/-- integration.rubi_3_2_2_r4 with non-degeneracy conditions (numerically checked) -/
+def rubi322r4Nondeg : CRule where
+  id := "integration.rubi_3_2_2_r4_nondegenerate"; legacyId := some "rubi:3 Logarithms/3.2.2 (f+g x)^m (h+i x)^q (A+B log(e ((a+b x) over (c+d x))^n))^p:4"
+  shape := .antiderivSubst; x := "x"
+  body := (.app2 .mul (.app2 .mul (.pow (.app2 .add (.var "f") (.app2 .mul (.var "g") (.var "x"))) (.var "m")) (.pow (.app2 .add (.var "h") (.app2 .mul (.var "i") (.var "x"))) (.var "q"))) (.pow (.app2 .add (.var "A") (.app2 .mul (.var "B") (.app1 .ln (.app2 .mul (.app2 .mul (.var "e") (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.var "x"))) (.var "n"))) (.pow (.app2 .add (.var "c") (.app2 .mul (.var "d") (.var "x"))) (.var "mn")))))) (.var "p")))
+  result := (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.app2 .add (.app2 .mul (.var "b") (.var "c")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "a")) (.var "d"))) (.app2 .add (.app2 .add (.var "m") (.var "q")) (.int 1))) (.pow (.app2 .mul (.var "g") (.pow (.var "b") (.int (-1)))) (.var "m"))) (.pow (.app2 .mul (.var "i") (.pow (.var "d") (.int (-1)))) (.var "q"))) (.var "I1"))
+  integrals := [("I1", (.app2 .mul (.app2 .mul (.pow (.var "x") (.var "m")) (.pow (.app2 .add (.var "A") (.app2 .mul (.var "B") (.app1 .ln (.app2 .mul (.var "e") (.pow (.var "x") (.var "n")))))) (.var "p"))) (.pow (.pow (.app2 .add (.var "b") (.app2 .mul (.app2 .mul (.int (-1)) (.var "d")) (.var "x"))) (.app2 .add (.app2 .add (.var "m") (.var "q")) (.int 2))) (.int (-1)))))]
+  substs := [("I1", (.app2 .mul (.app2 .add (.var "a") (.app2 .mul (.var "b") (.var "x"))) (.pow (.app2 .add (.var "c") (.app2 .mul (.var "d") (.var "x"))) (.int (-1)))))]
+  independent := ["a", "b", "c", "d", "e", "f", "g", "h", "i", "A", "B", "n", "p", "m", "mn", "q"]
+  conditions := [.eq (.app2 .add (.var "n") (.var "mn")) (.int 0),
+    .int (.var "n"),
+    .gt (.var "n") (.int 0),
+    .ne (.app2 .add (.app2 .mul (.var "b") (.var "c")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "a")) (.var "d"))) (.int 0),
+    .eq (.app2 .add (.app2 .mul (.var "b") (.var "f")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "a")) (.var "g"))) (.int 0),
+    .eq (.app2 .add (.app2 .mul (.var "d") (.var "h")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "c")) (.var "i"))) (.int 0),
+    .int (.var "m"),
+    .int (.var "q"),
+    .ne (.var "d") (.int 0)]
+  priority := 19000
+  description := "RUBI 3.2.2 #4"
+  provenance := migrated "rubi:3 Logarithms/3.2.2 (f+g x)^m (h+i x)^q (A+B log(e ((a+b x) over (c+d x))^n))^p:4" "3 Logarithms/3.2.2 (f+g x)^m (h+i x)^q (A+B log(e ((a+b x) over (c+d x))^n))^p.m#4"
+
+/-- integration.rubi_3_2_2_r5 with non-degeneracy conditions (numerically checked) -/
+def rubi322r5Nondeg : CRule where
+  id := "integration.rubi_3_2_2_r5_nondegenerate"; legacyId := some "rubi:3 Logarithms/3.2.2 (f+g x)^m (h+i x)^q (A+B log(e ((a+b x) over (c+d x))^n))^p:5"
+  shape := .antiderivSubst; x := "x"
+  body := (.app2 .mul (.app2 .mul (.pow (.app2 .add (.var "f") (.app2 .mul (.var "g") (.var "x"))) (.var "m")) (.pow (.app2 .add (.var "h") (.app2 .mul (.var "i") (.var "x"))) (.var "q"))) (.pow (.app2 .add (.var "A") (.app2 .mul (.var "B") (.app1 .ln (.app2 .mul (.var "e") (.pow (.app2 .mul (.app2 .add (.var "a") (.app2 .mul (.var "b") (.var "x"))) (.pow (.app2 .add (.var "c") (.app2 .mul (.var "d") (.var "x"))) (.int (-1)))) (.var "n")))))) (.var "p")))
+  result := (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.var "d") (.int 2)) (.pow (.app2 .mul (.app2 .mul (.var "g") (.app2 .add (.var "a") (.app2 .mul (.var "b") (.var "x")))) (.pow (.var "b") (.int (-1)))) (.var "m"))) (.pow (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.var "i") (.int 2)) (.app2 .add (.app2 .mul (.var "b") (.var "c")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "a")) (.var "d")))) (.pow (.app2 .mul (.app2 .mul (.var "i") (.app2 .add (.var "c") (.app2 .mul (.var "d") (.var "x")))) (.pow (.var "d") (.int (-1)))) (.var "m"))) (.pow (.app2 .mul (.app2 .add (.var "a") (.app2 .mul (.var "b") (.var "x"))) (.pow (.app2 .add (.var "c") (.app2 .mul (.var "d") (.var "x"))) (.int (-1)))) (.var "m"))) (.int (-1)))) (.var "I1"))
+  integrals := [("I1", (.app2 .mul (.pow (.var "x") (.var "m")) (.pow (.app2 .add (.var "A") (.app2 .mul (.var "B") (.app1 .ln (.app2 .mul (.var "e") (.pow (.var "x") (.var "n")))))) (.var "p"))))]
+  substs := [("I1", (.app2 .mul (.app2 .add (.var "a") (.app2 .mul (.var "b") (.var "x"))) (.pow (.app2 .add (.var "c") (.app2 .mul (.var "d") (.var "x"))) (.int (-1)))))]
+  independent := ["a", "b", "c", "d", "e", "f", "g", "h", "i", "A", "B", "m", "n", "p", "q"]
+  conditions := [.ne (.app2 .add (.app2 .mul (.var "b") (.var "c")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "a")) (.var "d"))) (.int 0),
+    .eq (.app2 .add (.app2 .mul (.var "b") (.var "f")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "a")) (.var "g"))) (.int 0),
+    .eq (.app2 .add (.app2 .mul (.var "d") (.var "h")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "c")) (.var "i"))) (.int 0),
+    .eq (.app2 .add (.app2 .add (.var "m") (.var "q")) (.int 2)) (.int 0),
+    .ne (.var "b") (.int 0),
+    .ne (.var "d") (.int 0)]
+  priority := 19642
+  description := "RUBI 3.2.2 #5"
+  provenance := migrated "rubi:3 Logarithms/3.2.2 (f+g x)^m (h+i x)^q (A+B log(e ((a+b x) over (c+d x))^n))^p:5" "3 Logarithms/3.2.2 (f+g x)^m (h+i x)^q (A+B log(e ((a+b x) over (c+d x))^n))^p.m#5"
+
 /-- integration.rubi_3_2_2_r7 with non-degeneracy conditions (numerically checked) -/
 def rubi322r7Nondeg : CRule where
   id := "integration.rubi_3_2_2_r7_nondegenerate"; legacyId := some "rubi:3 Logarithms/3.2.2 (f+g x)^m (h+i x)^q (A+B log(e ((a+b x) over (c+d x))^n))^p:7"
@@ -2272,6 +2443,29 @@ def rubi322r7Nondeg : CRule where
   priority := 19322
   description := "RUBI 3.2.2 #7"
   provenance := migrated "rubi:3 Logarithms/3.2.2 (f+g x)^m (h+i x)^q (A+B log(e ((a+b x) over (c+d x))^n))^p:7" "3 Logarithms/3.2.2 (f+g x)^m (h+i x)^q (A+B log(e ((a+b x) over (c+d x))^n))^p.m#7"
+
+/-- integration.rubi_3_2_2_r8 with non-degeneracy conditions (numerically checked) -/
+def rubi322r8Nondeg : CRule where
+  id := "integration.rubi_3_2_2_r8_nondegenerate"; legacyId := some "rubi:3 Logarithms/3.2.2 (f+g x)^m (h+i x)^q (A+B log(e ((a+b x) over (c+d x))^n))^p:8"
+  shape := .antiderivSubst; x := "x"
+  body := (.app2 .mul (.app2 .mul (.pow (.app2 .add (.var "f") (.app2 .mul (.var "g") (.var "x"))) (.var "m")) (.pow (.app2 .add (.var "h") (.app2 .mul (.var "i") (.var "x"))) (.var "q"))) (.pow (.app2 .add (.var "A") (.app2 .mul (.var "B") (.app1 .ln (.app2 .mul (.app2 .mul (.var "e") (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.var "x"))) (.var "n"))) (.pow (.app2 .add (.var "c") (.app2 .mul (.var "d") (.var "x"))) (.var "mn")))))) (.var "p")))
+  result := (.app2 .mul (.app2 .mul (.pow (.app2 .add (.app2 .mul (.var "b") (.var "c")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "a")) (.var "d"))) (.app2 .add (.var "q") (.int 1))) (.pow (.app2 .mul (.var "i") (.pow (.var "d") (.int (-1)))) (.var "q"))) (.var "I1"))
+  integrals := [("I1", (.app2 .mul (.app2 .mul (.pow (.app2 .add (.app2 .add (.app2 .mul (.var "b") (.var "f")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "a")) (.var "g"))) (.app2 .mul (.app2 .mul (.int (-1)) (.app2 .add (.app2 .mul (.var "d") (.var "f")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "c")) (.var "g")))) (.var "x"))) (.var "m")) (.pow (.app2 .add (.var "A") (.app2 .mul (.var "B") (.app1 .ln (.app2 .mul (.var "e") (.pow (.var "x") (.var "n")))))) (.var "p"))) (.pow (.pow (.app2 .add (.var "b") (.app2 .mul (.app2 .mul (.int (-1)) (.var "d")) (.var "x"))) (.app2 .add (.app2 .add (.var "m") (.var "q")) (.int 2))) (.int (-1)))))]
+  substs := [("I1", (.app2 .mul (.app2 .add (.var "a") (.app2 .mul (.var "b") (.var "x"))) (.pow (.app2 .add (.var "c") (.app2 .mul (.var "d") (.var "x"))) (.int (-1)))))]
+  independent := ["a", "b", "c", "d", "e", "f", "g", "h", "i", "A", "B", "n", "m", "mn", "p", "q"]
+  conditions := [.eq (.app2 .add (.var "n") (.var "mn")) (.int 0),
+    .int (.var "n"),
+    .gt (.var "n") (.int 0),
+    .ne (.app2 .add (.app2 .mul (.var "b") (.var "c")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "a")) (.var "d"))) (.int 0),
+    .int (.var "m"),
+    .int (.var "q"),
+    .int (.var "p"),
+    .gt (.var "p") (.int 0),
+    .eq (.app2 .add (.app2 .mul (.var "d") (.var "h")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "c")) (.var "i"))) (.int 0),
+    .ne (.var "d") (.int 0)]
+  priority := 19066
+  description := "RUBI 3.2.2 #8"
+  provenance := migrated "rubi:3 Logarithms/3.2.2 (f+g x)^m (h+i x)^q (A+B log(e ((a+b x) over (c+d x))^n))^p:8" "3 Logarithms/3.2.2 (f+g x)^m (h+i x)^q (A+B log(e ((a+b x) over (c+d x))^n))^p.m#8"
 
 /-- integration.rubi_3_2_3_r11 with non-degeneracy conditions (numerically checked) -/
 def rubi323r11Nondeg : CRule where
@@ -2302,6 +2496,22 @@ def rubi33r1Nondeg : CRule where
   priority := 19003
   description := "RUBI 3.3 #1"
   provenance := migrated "rubi:3 Logarithms/3.3 u (a+b log(c (d+e x)^n))^p:1" "3 Logarithms/3.3 u (a+b log(c (d+e x)^n))^p.m#1"
+
+/-- integration.rubi_3_3_r14 with non-degeneracy conditions (numerically checked) -/
+def rubi33r14Nondeg : CRule where
+  id := "integration.rubi_3_3_r14_nondegenerate"; legacyId := some "rubi:3 Logarithms/3.3 u (a+b log(c (d+e x)^n))^p:14"
+  shape := .antiderivSubst; x := "x"
+  body := (.app2 .mul (.app1 .ln (.app2 .mul (.var "c") (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.var "x"))) (.int (-1))))) (.pow (.app2 .add (.var "f") (.app2 .mul (.var "g") (.pow (.var "x") (.int 2)))) (.int (-1))))
+  result := (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.var "e")) (.pow (.var "g") (.int (-1)))) (.var "I1"))
+  integrals := [("I1", (.app2 .mul (.app1 .ln (.app2 .mul (.app2 .mul (.int 2) (.var "d")) (.var "x"))) (.pow (.app2 .add (.int 1) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.int 2)) (.var "d")) (.var "x"))) (.int (-1)))))]
+  substs := [("I1", (.app2 .mul (.int 1) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.var "x"))) (.int (-1)))))]
+  independent := ["c", "d", "e", "f", "g"]
+  conditions := [.eq (.var "c") (.app2 .mul (.int 2) (.var "d")),
+    .eq (.app2 .add (.app2 .mul (.pow (.var "e") (.int 2)) (.var "f")) (.app2 .mul (.pow (.var "d") (.int 2)) (.var "g"))) (.int 0),
+    .ne (.var "g") (.int 0)]
+  priority := 19324
+  description := "RUBI 3.3 #14"
+  provenance := migrated "rubi:3 Logarithms/3.3 u (a+b log(c (d+e x)^n))^p:14" "3 Logarithms/3.3 u (a+b log(c (d+e x)^n))^p.m#14"
 
 /-- integration.rubi_3_3_r2 with non-degeneracy conditions (numerically checked) -/
 def rubi33r2Nondeg : CRule where
@@ -3166,6 +3376,28 @@ def rubi4121r28Nondeg : CRule where
   priority := 17814
   description := "RUBI 4.1.2.1 #28"
   provenance := migrated "rubi:4 Trig functions/4.1 Sine/4.1.2.1 (a+b sin)^m (c+d sin)^n:28" "4 Trig functions/4.1 Sine/4.1.2.1 (a+b sin)^m (c+d sin)^n.m#28"
+
+/-- integration.rubi_4_1_2_1_r29 with non-degeneracy conditions (numerically checked) -/
+def rubi4121r29Nondeg : CRule where
+  id := "integration.rubi_4_1_2_1_r29_nondegenerate"; legacyId := some "rubi:4 Trig functions/4.1 Sine/4.1.2.1 (a+b sin)^m (c+d sin)^n:29"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .sin (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x")))))) (.var "m")) (.pow (.app2 .add (.var "c") (.app2 .mul (.var "d") (.app1 .sin (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x")))))) (.var "n")))
+  result := (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.pow (.var "b") (.int 2))) (.app2 .add (.app2 .mul (.var "b") (.var "c")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "a")) (.var "d")))) (.app1 .cos (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x"))))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .sin (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x")))))) (.app2 .add (.var "m") (.app2 .mul (.int (-1)) (.int 2))))) (.pow (.app2 .add (.var "c") (.app2 .mul (.var "d") (.app1 .sin (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x")))))) (.app2 .add (.var "n") (.int 1)))) (.pow (.app2 .mul (.app2 .mul (.app2 .mul (.var "d") (.var "f")) (.app2 .add (.var "n") (.int 1))) (.app2 .add (.app2 .mul (.var "b") (.var "c")) (.app2 .mul (.var "a") (.var "d")))) (.int (-1)))) (.app2 .mul (.app2 .mul (.pow (.var "b") (.int 2)) (.pow (.app2 .mul (.app2 .mul (.var "d") (.app2 .add (.var "n") (.int 1))) (.app2 .add (.app2 .mul (.var "b") (.var "c")) (.app2 .mul (.var "a") (.var "d")))) (.int (-1)))) (.var "I1")))
+  integrals := [("I1", (.app2 .mul (.app2 .mul (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .sin (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x")))))) (.app2 .add (.var "m") (.app2 .mul (.int (-1)) (.int 2)))) (.pow (.app2 .add (.var "c") (.app2 .mul (.var "d") (.app1 .sin (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x")))))) (.app2 .add (.var "n") (.int 1)))) (.app2 .add (.app2 .add (.app2 .mul (.app2 .mul (.var "a") (.var "c")) (.app2 .add (.var "m") (.app2 .mul (.int (-1)) (.int 2)))) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.var "b")) (.var "d")) (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.app2 .mul (.int (-1)) (.int 2)) (.var "n"))) (.app2 .mul (.int (-1)) (.int 4))))) (.app2 .mul (.app2 .mul (.int (-1)) (.app2 .add (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.app2 .add (.var "m") (.app2 .mul (.int (-1)) (.int 1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.var "a")) (.var "d")) (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.int 2) (.var "n"))) (.int 1))))) (.app1 .sin (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x"))))))))]
+  independent := ["a", "b", "c", "d", "e", "f", "m", "n"]
+  conditions := [.ne (.app2 .add (.app2 .mul (.var "b") (.var "c")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "a")) (.var "d"))) (.int 0),
+    .eq (.app2 .add (.pow (.var "a") (.int 2)) (.app2 .mul (.int (-1)) (.pow (.var "b") (.int 2)))) (.int 0),
+    .ne (.app2 .add (.pow (.var "c") (.int 2)) (.app2 .mul (.int (-1)) (.pow (.var "d") (.int 2)))) (.int 0),
+    .gt (.var "m") (.int 1),
+    .gt (.int (-1)) (.var "n"),
+    .or (.or (.int (.app2 .mul (.int 2) (.var "m"))) (.int (.app2 .add (.var "m") (.app2 .mul (.int 1) (.pow (.int 2) (.int (-1))))))) (.int (.var "m")),
+    .or (.or (.int (.app2 .mul (.int 2) (.var "m"))) (.int (.app2 .add (.var "m") (.app2 .mul (.int 1) (.pow (.int 2) (.int (-1))))))) (.eq (.var "c") (.int 0)),
+    .or (.or (.int (.app2 .mul (.int 2) (.var "n"))) (.int (.app2 .add (.var "m") (.app2 .mul (.int 1) (.pow (.int 2) (.int (-1))))))) (.int (.var "m")),
+    .or (.or (.int (.app2 .mul (.int 2) (.var "n"))) (.int (.app2 .add (.var "m") (.app2 .mul (.int 1) (.pow (.int 2) (.int (-1))))))) (.eq (.var "c") (.int 0)),
+    .ne (.app2 .mul (.app2 .mul (.app2 .mul (.var "d") (.var "f")) (.app2 .add (.var "n") (.int 1))) (.app2 .add (.app2 .mul (.var "b") (.var "c")) (.app2 .mul (.var "a") (.var "d")))) (.int 0)]
+  priority := 18622
+  description := "RUBI 4.1.2.1 #29"
+  provenance := migrated "rubi:4 Trig functions/4.1 Sine/4.1.2.1 (a+b sin)^m (c+d sin)^n:29" "4 Trig functions/4.1 Sine/4.1.2.1 (a+b sin)^m (c+d sin)^n.m#29"
 
 /-- integration.rubi_4_1_2_1_r30 with non-degeneracy conditions (numerically checked) -/
 def rubi4121r30Nondeg : CRule where
@@ -4150,6 +4382,24 @@ def rubi4142r15Nondeg : CRule where
   priority := 18339
   description := "RUBI 4.1.4.2 #15"
   provenance := migrated "rubi:4 Trig functions/4.1 Sine/4.1.4.2 (a+b sin)^m (c+d sin)^n (A+B sin+C sin^2):15" "4 Trig functions/4.1 Sine/4.1.4.2 (a+b sin)^m (c+d sin)^n (A+B sin+C sin^2).m#15"
+
+/-- integration.rubi_4_1_4_2_r16 with non-degeneracy conditions (numerically checked) -/
+def rubi4142r16Nondeg : CRule where
+  id := "integration.rubi_4_1_4_2_r16_nondegenerate"; legacyId := some "rubi:4 Trig functions/4.1 Sine/4.1.4.2 (a+b sin)^m (c+d sin)^n (A+B sin+C sin^2):16"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.app2 .mul (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .sin (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x")))))) (.var "m")) (.pow (.app2 .add (.var "c") (.app2 .mul (.var "d") (.app1 .sin (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x")))))) (.var "n"))) (.app2 .add (.var "A") (.app2 .mul (.var "C") (.pow (.app1 .sin (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x")))) (.int 2)))))
+  result := (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.app2 .add (.app2 .mul (.pow (.var "c") (.int 2)) (.var "C")) (.app2 .mul (.var "A") (.pow (.var "d") (.int 2))))) (.app1 .cos (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x"))))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .sin (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x")))))) (.var "m"))) (.pow (.app2 .add (.var "c") (.app2 .mul (.var "d") (.app1 .sin (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x")))))) (.app2 .add (.var "n") (.int 1)))) (.pow (.app2 .mul (.app2 .mul (.app2 .mul (.var "d") (.var "f")) (.app2 .add (.var "n") (.int 1))) (.app2 .add (.pow (.var "c") (.int 2)) (.app2 .mul (.int (-1)) (.pow (.var "d") (.int 2))))) (.int (-1)))) (.app2 .mul (.app2 .mul (.int 1) (.pow (.app2 .mul (.app2 .mul (.app2 .mul (.var "b") (.var "d")) (.app2 .add (.var "n") (.int 1))) (.app2 .add (.pow (.var "c") (.int 2)) (.app2 .mul (.int (-1)) (.pow (.var "d") (.int 2))))) (.int (-1)))) (.var "I1")))
+  integrals := [("I1", (.app2 .mul (.app2 .mul (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .sin (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x")))))) (.var "m")) (.pow (.app2 .add (.var "c") (.app2 .mul (.var "d") (.app1 .sin (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x")))))) (.app2 .add (.var "n") (.int 1)))) (.app2 .add (.app2 .add (.app2 .mul (.app2 .mul (.var "A") (.var "d")) (.app2 .add (.app2 .mul (.app2 .mul (.var "a") (.var "d")) (.var "m")) (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.app2 .add (.var "n") (.int 1))))) (.app2 .mul (.app2 .mul (.var "c") (.var "C")) (.app2 .add (.app2 .mul (.app2 .mul (.var "a") (.var "c")) (.var "m")) (.app2 .mul (.app2 .mul (.var "b") (.var "d")) (.app2 .add (.var "n") (.int 1)))))) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.var "b")) (.app2 .add (.app2 .mul (.app2 .mul (.var "A") (.pow (.var "d") (.int 2))) (.app2 .add (.app2 .add (.var "m") (.var "n")) (.int 2))) (.app2 .mul (.var "C") (.app2 .add (.app2 .mul (.pow (.var "c") (.int 2)) (.app2 .add (.var "m") (.int 1))) (.app2 .mul (.pow (.var "d") (.int 2)) (.app2 .add (.var "n") (.int 1))))))) (.app1 .sin (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x"))))))))]
+  independent := ["a", "b", "c", "d", "e", "f", "A", "C", "m", "n"]
+  conditions := [.ne (.app2 .add (.app2 .mul (.var "b") (.var "c")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "a")) (.var "d"))) (.int 0),
+    .eq (.app2 .add (.pow (.var "a") (.int 2)) (.app2 .mul (.int (-1)) (.pow (.var "b") (.int 2)))) (.int 0),
+    .ne (.app2 .add (.pow (.var "c") (.int 2)) (.app2 .mul (.int (-1)) (.pow (.var "d") (.int 2)))) (.int 0),
+    .ge (.var "m") (.app2 .mul (.int (-1)) (.pow (.int 2) (.int (-1)))),
+    .or (.gt (.int (-1)) (.var "n")) (.eq (.app2 .add (.app2 .add (.var "m") (.var "n")) (.int 2)) (.int 0)),
+    .ne (.app2 .mul (.app2 .mul (.app2 .mul (.var "d") (.var "f")) (.app2 .add (.var "n") (.int 1))) (.app2 .add (.pow (.var "c") (.int 2)) (.app2 .mul (.int (-1)) (.pow (.var "d") (.int 2))))) (.int 0)]
+  priority := 18329
+  description := "RUBI 4.1.4.2 #16"
+  provenance := migrated "rubi:4 Trig functions/4.1 Sine/4.1.4.2 (a+b sin)^m (c+d sin)^n (A+B sin+C sin^2):16" "4 Trig functions/4.1 Sine/4.1.4.2 (a+b sin)^m (c+d sin)^n (A+B sin+C sin^2).m#16"
 
 /-- integration.rubi_4_1_4_2_r17 with non-degeneracy conditions (numerically checked) -/
 def rubi4142r17Nondeg : CRule where
@@ -6630,6 +6880,23 @@ def rubi4531r15Nondeg : CRule where
   description := "RUBI 4.5.3.1 #15"
   provenance := migrated "rubi:4 Trig functions/4.5 Secant/4.5.3.1 (a+b sec)^m (d sec)^n (A+B sec):15" "4 Trig functions/4.5 Secant/4.5.3.1 (a+b sec)^m (d sec)^n (A+B sec).m#15"
 
+/-- integration.rubi_4_5_3_1_r18 with non-degeneracy conditions (numerically checked) -/
+def rubi4531r18Nondeg : CRule where
+  id := "integration.rubi_4_5_3_1_r18_nondegenerate"; legacyId := some "rubi:4 Trig functions/4.5 Secant/4.5.3.1 (a+b sec)^m (d sec)^n (A+B sec):18"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.app2 .mul (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .csc (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x")))))) (.var "m")) (.pow (.app2 .mul (.var "d") (.app1 .csc (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x"))))) (.var "n"))) (.app2 .add (.var "A") (.app2 .mul (.var "B") (.app1 .csc (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x")))))))
+  result := (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.var "A") (.app1 .cot (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x"))))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .csc (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x")))))) (.var "m"))) (.pow (.app2 .mul (.var "d") (.app1 .csc (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x"))))) (.var "n"))) (.pow (.app2 .mul (.var "f") (.var "n")) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.app2 .add (.app2 .mul (.app2 .mul (.var "a") (.var "A")) (.var "m")) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.var "b")) (.var "B")) (.var "n")))) (.pow (.app2 .mul (.app2 .mul (.var "b") (.var "d")) (.var "n")) (.int (-1)))) (.var "I1")))
+  integrals := [("I1", (.app2 .mul (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .csc (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x")))))) (.var "m")) (.pow (.app2 .mul (.var "d") (.app1 .csc (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x"))))) (.app2 .add (.var "n") (.int 1)))))]
+  independent := ["a", "b", "d", "e", "f", "A", "B", "m", "n"]
+  conditions := [.ne (.app2 .add (.app2 .mul (.var "A") (.var "b")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "a")) (.var "B"))) (.int 0),
+    .eq (.app2 .add (.pow (.var "a") (.int 2)) (.app2 .mul (.int (-1)) (.pow (.var "b") (.int 2)))) (.int 0),
+    .eq (.app2 .add (.app2 .add (.var "m") (.var "n")) (.int 1)) (.int 0),
+    .gt (.var "m") (.int (-1)),
+    .ne (.app2 .mul (.var "f") (.var "n")) (.int 0)]
+  priority := 18663
+  description := "RUBI 4.5.3.1 #18"
+  provenance := migrated "rubi:4 Trig functions/4.5 Secant/4.5.3.1 (a+b sec)^m (d sec)^n (A+B sec):18" "4 Trig functions/4.5 Secant/4.5.3.1 (a+b sec)^m (d sec)^n (A+B sec).m#18"
+
 /-- integration.rubi_4_5_3_1_r2 with non-degeneracy conditions (numerically checked) -/
 def rubi4531r2Nondeg : CRule where
   id := "integration.rubi_4_5_3_1_r2_nondegenerate"; legacyId := some "rubi:4 Trig functions/4.5 Secant/4.5.3.1 (a+b sec)^m (d sec)^n (A+B sec):2"
@@ -6644,6 +6911,23 @@ def rubi4531r2Nondeg : CRule where
   priority := 18648
   description := "RUBI 4.5.3.1 #2"
   provenance := migrated "rubi:4 Trig functions/4.5 Secant/4.5.3.1 (a+b sec)^m (d sec)^n (A+B sec):2" "4 Trig functions/4.5 Secant/4.5.3.1 (a+b sec)^m (d sec)^n (A+B sec).m#2"
+
+/-- integration.rubi_4_5_3_1_r22 with non-degeneracy conditions (numerically checked) -/
+def rubi4531r22Nondeg : CRule where
+  id := "integration.rubi_4_5_3_1_r22_nondegenerate"; legacyId := some "rubi:4 Trig functions/4.5 Secant/4.5.3.1 (a+b sec)^m (d sec)^n (A+B sec):22"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.app2 .mul (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .csc (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x")))))) (.var "m")) (.pow (.app2 .mul (.var "d") (.app1 .csc (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x"))))) (.var "n"))) (.app2 .add (.var "A") (.app2 .mul (.var "B") (.app1 .csc (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x")))))))
+  result := (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.var "a") (.var "A")) (.app1 .cot (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x"))))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .csc (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x")))))) (.app2 .add (.var "m") (.app2 .mul (.int (-1)) (.int 1))))) (.pow (.app2 .mul (.var "d") (.app1 .csc (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x"))))) (.var "n"))) (.pow (.app2 .mul (.var "f") (.var "n")) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.var "b")) (.pow (.app2 .mul (.app2 .mul (.var "a") (.var "d")) (.var "n")) (.int (-1)))) (.var "I1")))
+  integrals := [("I1", (.app2 .mul (.app2 .mul (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .csc (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x")))))) (.app2 .add (.var "m") (.app2 .mul (.int (-1)) (.int 1)))) (.pow (.app2 .mul (.var "d") (.app1 .csc (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x"))))) (.app2 .add (.var "n") (.int 1)))) (.app2 .add (.app2 .add (.app2 .mul (.app2 .mul (.var "a") (.var "A")) (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.int (-1)) (.var "n"))) (.app2 .mul (.int (-1)) (.int 1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.var "b")) (.var "B")) (.var "n"))) (.app2 .mul (.app2 .mul (.int (-1)) (.app2 .add (.app2 .mul (.app2 .mul (.var "a") (.var "B")) (.var "n")) (.app2 .mul (.app2 .mul (.var "A") (.var "b")) (.app2 .add (.var "m") (.var "n"))))) (.app1 .csc (.app2 .add (.var "e") (.app2 .mul (.var "f") (.var "x"))))))))]
+  independent := ["a", "b", "d", "e", "f", "A", "B", "m", "n"]
+  conditions := [.ne (.app2 .add (.app2 .mul (.var "A") (.var "b")) (.app2 .mul (.app2 .mul (.int (-1)) (.var "a")) (.var "B"))) (.int 0),
+    .eq (.app2 .add (.pow (.var "a") (.int 2)) (.app2 .mul (.int (-1)) (.pow (.var "b") (.int 2)))) (.int 0),
+    .gt (.var "m") (.app2 .mul (.int 1) (.pow (.int 2) (.int (-1)))),
+    .gt (.int (-1)) (.var "n"),
+    .ne (.app2 .mul (.var "f") (.var "n")) (.int 0)]
+  priority := 13560
+  description := "RUBI 4.5.3.1 #22"
+  provenance := migrated "rubi:4 Trig functions/4.5 Secant/4.5.3.1 (a+b sec)^m (d sec)^n (A+B sec):22" "4 Trig functions/4.5 Secant/4.5.3.1 (a+b sec)^m (d sec)^n (A+B sec).m#22"
 
 /-- integration.rubi_4_5_3_1_r23 with non-degeneracy conditions (numerically checked) -/
 def rubi4531r23Nondeg : CRule where
@@ -8334,6 +8618,54 @@ def rubi514r2Nondeg : CRule where
   description := "RUBI 5.1.4 #2"
   provenance := migrated "rubi:5 Inverse trig functions/5.1 Inverse sine/5.1.4 (f x)^m (d+e x^2)^p (a+b arcsin(c x))^n:2" "5 Inverse trig functions/5.1 Inverse sine/5.1.4 (f x)^m (d+e x^2)^p (a+b arcsin(c x))^n.m#2"
 
+/-- integration.rubi_5_1_4_r29 with non-degeneracy conditions (numerically checked) -/
+def rubi514r29Nondeg : CRule where
+  id := "integration.rubi_5_1_4_r29_nondegenerate"; legacyId := some "rubi:5 Inverse trig functions/5.1 Inverse sine/5.1.4 (f x)^m (d+e x^2)^p (a+b arcsin(c x))^n:29"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.var "m")) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "p"))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arcsin (.app2 .mul (.var "c") (.var "x"))))) (.var "n")))
+  result := (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.var "m")) (.app2 .root (.app2 .add (.int 1) (.app2 .mul (.app2 .mul (.int (-1)) (.pow (.var "c") (.int 2))) (.pow (.var "x") (.int 2)))) (.int 2))) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "p"))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arcsin (.app2 .mul (.var "c") (.var "x"))))) (.app2 .add (.var "n") (.int 1)))) (.pow (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.app2 .add (.var "n") (.int 1))) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.var "f")) (.var "m")) (.pow (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.app2 .add (.var "n") (.int 1))) (.int (-1)))) (.app2 .mul (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "p")) (.pow (.pow (.app2 .add (.int 1) (.app2 .mul (.app2 .mul (.int (-1)) (.pow (.var "c") (.int 2))) (.pow (.var "x") (.int 2)))) (.var "p")) (.int (-1))))) (.var "I1")))
+  integrals := [("I1", (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.app2 .add (.var "m") (.app2 .mul (.int (-1)) (.int 1)))) (.pow (.app2 .add (.int 1) (.app2 .mul (.app2 .mul (.int (-1)) (.pow (.var "c") (.int 2))) (.pow (.var "x") (.int 2)))) (.app2 .add (.var "p") (.app2 .mul (.app2 .mul (.int (-1)) (.int 1)) (.pow (.int 2) (.int (-1))))))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arcsin (.app2 .mul (.var "c") (.var "x"))))) (.app2 .add (.var "n") (.int 1)))))]
+  independent := ["a", "b", "c", "d", "e", "f", "m", "p", "n"]
+  conditions := [.eq (.app2 .add (.app2 .mul (.pow (.var "c") (.int 2)) (.var "d")) (.var "e")) (.int 0),
+    .gt (.int (-1)) (.var "n"),
+    .eq (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.int 2) (.var "p"))) (.int 1)) (.int 0),
+    .ne (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.app2 .add (.var "n") (.int 1))) (.int 0)]
+  priority := 12312
+  description := "RUBI 5.1.4 #29"
+  provenance := migrated "rubi:5 Inverse trig functions/5.1 Inverse sine/5.1.4 (f x)^m (d+e x^2)^p (a+b arcsin(c x))^n:29" "5 Inverse trig functions/5.1 Inverse sine/5.1.4 (f x)^m (d+e x^2)^p (a+b arcsin(c x))^n.m#29"
+
+/-- integration.rubi_5_1_4_r3 with non-degeneracy conditions (numerically checked) -/
+def rubi514r3Nondeg : CRule where
+  id := "integration.rubi_5_1_4_r3_nondegenerate"; legacyId := some "rubi:5 Inverse trig functions/5.1 Inverse sine/5.1.4 (f x)^m (d+e x^2)^p (a+b arcsin(c x))^n:3"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.app2 .mul (.var "x") (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "p"))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arcsin (.app2 .mul (.var "c") (.var "x"))))) (.var "n")))
+  result := (.app2 .add (.app2 .mul (.app2 .mul (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.app2 .add (.var "p") (.int 1))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arcsin (.app2 .mul (.var "c") (.var "x"))))) (.var "n"))) (.pow (.app2 .mul (.app2 .mul (.int 2) (.var "e")) (.app2 .add (.var "p") (.int 1))) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.var "b") (.var "n")) (.pow (.app2 .mul (.app2 .mul (.int 2) (.var "c")) (.app2 .add (.var "p") (.int 1))) (.int (-1)))) (.app2 .mul (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "p")) (.pow (.pow (.app2 .add (.int 1) (.app2 .mul (.app2 .mul (.int (-1)) (.pow (.var "c") (.int 2))) (.pow (.var "x") (.int 2)))) (.var "p")) (.int (-1))))) (.var "I1")))
+  integrals := [("I1", (.app2 .mul (.pow (.app2 .add (.int 1) (.app2 .mul (.app2 .mul (.int (-1)) (.pow (.var "c") (.int 2))) (.pow (.var "x") (.int 2)))) (.app2 .add (.var "p") (.app2 .mul (.int 1) (.pow (.int 2) (.int (-1)))))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arcsin (.app2 .mul (.var "c") (.var "x"))))) (.app2 .add (.var "n") (.app2 .mul (.int (-1)) (.int 1))))))]
+  independent := ["a", "b", "c", "d", "e", "p", "n"]
+  conditions := [.eq (.app2 .add (.app2 .mul (.pow (.var "c") (.int 2)) (.var "d")) (.var "e")) (.int 0),
+    .gt (.var "n") (.int 0),
+    .ne (.var "p") (.int (-1)),
+    .ne (.app2 .mul (.app2 .mul (.int 2) (.var "e")) (.app2 .add (.var "p") (.int 1))) (.int 0)]
+  priority := 12340
+  description := "RUBI 5.1.4 #3"
+  provenance := migrated "rubi:5 Inverse trig functions/5.1 Inverse sine/5.1.4 (f x)^m (d+e x^2)^p (a+b arcsin(c x))^n:3" "5 Inverse trig functions/5.1 Inverse sine/5.1.4 (f x)^m (d+e x^2)^p (a+b arcsin(c x))^n.m#3"
+
+/-- integration.rubi_5_1_4_r30 with non-degeneracy conditions (numerically checked) -/
+def rubi514r30Nondeg : CRule where
+  id := "integration.rubi_5_1_4_r30_nondegenerate"; legacyId := some "rubi:5 Inverse trig functions/5.1 Inverse sine/5.1.4 (f x)^m (d+e x^2)^p (a+b arcsin(c x))^n:30"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.var "m")) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "p"))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arccos (.app2 .mul (.var "c") (.var "x"))))) (.var "n")))
+  result := (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.pow (.app2 .mul (.var "f") (.var "x")) (.var "m"))) (.app2 .root (.app2 .add (.int 1) (.app2 .mul (.app2 .mul (.int (-1)) (.pow (.var "c") (.int 2))) (.pow (.var "x") (.int 2)))) (.int 2))) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "p"))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arccos (.app2 .mul (.var "c") (.var "x"))))) (.app2 .add (.var "n") (.int 1)))) (.pow (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.app2 .add (.var "n") (.int 1))) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.var "f") (.var "m")) (.pow (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.app2 .add (.var "n") (.int 1))) (.int (-1)))) (.app2 .mul (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "p")) (.pow (.pow (.app2 .add (.int 1) (.app2 .mul (.app2 .mul (.int (-1)) (.pow (.var "c") (.int 2))) (.pow (.var "x") (.int 2)))) (.var "p")) (.int (-1))))) (.var "I1")))
+  integrals := [("I1", (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.app2 .add (.var "m") (.app2 .mul (.int (-1)) (.int 1)))) (.pow (.app2 .add (.int 1) (.app2 .mul (.app2 .mul (.int (-1)) (.pow (.var "c") (.int 2))) (.pow (.var "x") (.int 2)))) (.app2 .add (.var "p") (.app2 .mul (.app2 .mul (.int (-1)) (.int 1)) (.pow (.int 2) (.int (-1))))))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arccos (.app2 .mul (.var "c") (.var "x"))))) (.app2 .add (.var "n") (.int 1)))))]
+  independent := ["a", "b", "c", "d", "e", "f", "m", "p", "n"]
+  conditions := [.eq (.app2 .add (.app2 .mul (.pow (.var "c") (.int 2)) (.var "d")) (.var "e")) (.int 0),
+    .gt (.int (-1)) (.var "n"),
+    .eq (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.int 2) (.var "p"))) (.int 1)) (.int 0),
+    .ne (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.app2 .add (.var "n") (.int 1))) (.int 0)]
+  priority := 12321
+  description := "RUBI 5.1.4 #30"
+  provenance := migrated "rubi:5 Inverse trig functions/5.1 Inverse sine/5.1.4 (f x)^m (d+e x^2)^p (a+b arcsin(c x))^n:30" "5 Inverse trig functions/5.1 Inverse sine/5.1.4 (f x)^m (d+e x^2)^p (a+b arcsin(c x))^n.m#30"
+
 /-- integration.rubi_5_1_4_r33 with non-degeneracy conditions (numerically checked) -/
 def rubi514r33Nondeg : CRule where
   id := "integration.rubi_5_1_4_r33_nondegenerate"; legacyId := some "rubi:5 Inverse trig functions/5.1 Inverse sine/5.1.4 (f x)^m (d+e x^2)^p (a+b arcsin(c x))^n:33"
@@ -8387,6 +8719,22 @@ def rubi514r36Nondeg : CRule where
   priority := 19600
   description := "RUBI 5.1.4 #36"
   provenance := migrated "rubi:5 Inverse trig functions/5.1 Inverse sine/5.1.4 (f x)^m (d+e x^2)^p (a+b arcsin(c x))^n:36" "5 Inverse trig functions/5.1 Inverse sine/5.1.4 (f x)^m (d+e x^2)^p (a+b arcsin(c x))^n.m#36"
+
+/-- integration.rubi_5_1_4_r4 with non-degeneracy conditions (numerically checked) -/
+def rubi514r4Nondeg : CRule where
+  id := "integration.rubi_5_1_4_r4_nondegenerate"; legacyId := some "rubi:5 Inverse trig functions/5.1 Inverse sine/5.1.4 (f x)^m (d+e x^2)^p (a+b arcsin(c x))^n:4"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.app2 .mul (.var "x") (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "p"))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arccos (.app2 .mul (.var "c") (.var "x"))))) (.var "n")))
+  result := (.app2 .add (.app2 .mul (.app2 .mul (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.app2 .add (.var "p") (.int 1))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arccos (.app2 .mul (.var "c") (.var "x"))))) (.var "n"))) (.pow (.app2 .mul (.app2 .mul (.int 2) (.var "e")) (.app2 .add (.var "p") (.int 1))) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.var "b")) (.var "n")) (.pow (.app2 .mul (.app2 .mul (.int 2) (.var "c")) (.app2 .add (.var "p") (.int 1))) (.int (-1)))) (.app2 .mul (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "p")) (.pow (.pow (.app2 .add (.int 1) (.app2 .mul (.app2 .mul (.int (-1)) (.pow (.var "c") (.int 2))) (.pow (.var "x") (.int 2)))) (.var "p")) (.int (-1))))) (.var "I1")))
+  integrals := [("I1", (.app2 .mul (.pow (.app2 .add (.int 1) (.app2 .mul (.app2 .mul (.int (-1)) (.pow (.var "c") (.int 2))) (.pow (.var "x") (.int 2)))) (.app2 .add (.var "p") (.app2 .mul (.int 1) (.pow (.int 2) (.int (-1)))))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arccos (.app2 .mul (.var "c") (.var "x"))))) (.app2 .add (.var "n") (.app2 .mul (.int (-1)) (.int 1))))))]
+  independent := ["a", "b", "c", "d", "e", "p", "n"]
+  conditions := [.eq (.app2 .add (.app2 .mul (.pow (.var "c") (.int 2)) (.var "d")) (.var "e")) (.int 0),
+    .gt (.var "n") (.int 0),
+    .ne (.var "p") (.int (-1)),
+    .ne (.app2 .mul (.app2 .mul (.int 2) (.var "e")) (.app2 .add (.var "p") (.int 1))) (.int 0)]
+  priority := 12330
+  description := "RUBI 5.1.4 #4"
+  provenance := migrated "rubi:5 Inverse trig functions/5.1 Inverse sine/5.1.4 (f x)^m (d+e x^2)^p (a+b arcsin(c x))^n:4" "5 Inverse trig functions/5.1 Inverse sine/5.1.4 (f x)^m (d+e x^2)^p (a+b arcsin(c x))^n.m#4"
 
 /-- integration.rubi_5_1_4_r41 with non-degeneracy conditions (numerically checked) -/
 def rubi514r41Nondeg : CRule where
@@ -8455,6 +8803,40 @@ def rubi514r46Nondeg : CRule where
   priority := 11984
   description := "RUBI 5.1.4 #46"
   provenance := migrated "rubi:5 Inverse trig functions/5.1 Inverse sine/5.1.4 (f x)^m (d+e x^2)^p (a+b arcsin(c x))^n:46" "5 Inverse trig functions/5.1 Inverse sine/5.1.4 (f x)^m (d+e x^2)^p (a+b arcsin(c x))^n.m#46"
+
+/-- integration.rubi_5_1_4_r7 with non-degeneracy conditions (numerically checked) -/
+def rubi514r7Nondeg : CRule where
+  id := "integration.rubi_5_1_4_r7_nondegenerate"; legacyId := some "rubi:5 Inverse trig functions/5.1 Inverse sine/5.1.4 (f x)^m (d+e x^2)^p (a+b arcsin(c x))^n:7"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.var "m")) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "p"))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arcsin (.app2 .mul (.var "c") (.var "x"))))) (.var "n")))
+  result := (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.app2 .add (.var "m") (.int 1))) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.app2 .add (.var "p") (.int 1)))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arcsin (.app2 .mul (.var "c") (.var "x"))))) (.var "n"))) (.pow (.app2 .mul (.app2 .mul (.var "d") (.var "f")) (.app2 .add (.var "m") (.int 1))) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.var "b")) (.var "c")) (.var "n")) (.pow (.app2 .mul (.var "f") (.app2 .add (.var "m") (.int 1))) (.int (-1)))) (.app2 .mul (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "p")) (.pow (.pow (.app2 .add (.int 1) (.app2 .mul (.app2 .mul (.int (-1)) (.pow (.var "c") (.int 2))) (.pow (.var "x") (.int 2)))) (.var "p")) (.int (-1))))) (.var "I1")))
+  integrals := [("I1", (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.app2 .add (.var "m") (.int 1))) (.pow (.app2 .add (.int 1) (.app2 .mul (.app2 .mul (.int (-1)) (.pow (.var "c") (.int 2))) (.pow (.var "x") (.int 2)))) (.app2 .add (.var "p") (.app2 .mul (.int 1) (.pow (.int 2) (.int (-1))))))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arcsin (.app2 .mul (.var "c") (.var "x"))))) (.app2 .add (.var "n") (.app2 .mul (.int (-1)) (.int 1))))))]
+  independent := ["a", "b", "c", "d", "e", "f", "m", "p", "n"]
+  conditions := [.eq (.app2 .add (.app2 .mul (.pow (.var "c") (.int 2)) (.var "d")) (.var "e")) (.int 0),
+    .gt (.var "n") (.int 0),
+    .eq (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.int 2) (.var "p"))) (.int 3)) (.int 0),
+    .ne (.var "m") (.int (-1)),
+    .ne (.app2 .mul (.app2 .mul (.var "d") (.var "f")) (.app2 .add (.var "m") (.int 1))) (.int 0)]
+  priority := 12300
+  description := "RUBI 5.1.4 #7"
+  provenance := migrated "rubi:5 Inverse trig functions/5.1 Inverse sine/5.1.4 (f x)^m (d+e x^2)^p (a+b arcsin(c x))^n:7" "5 Inverse trig functions/5.1 Inverse sine/5.1.4 (f x)^m (d+e x^2)^p (a+b arcsin(c x))^n.m#7"
+
+/-- integration.rubi_5_1_4_r8 with non-degeneracy conditions (numerically checked) -/
+def rubi514r8Nondeg : CRule where
+  id := "integration.rubi_5_1_4_r8_nondegenerate"; legacyId := some "rubi:5 Inverse trig functions/5.1 Inverse sine/5.1.4 (f x)^m (d+e x^2)^p (a+b arcsin(c x))^n:8"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.var "m")) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "p"))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arccos (.app2 .mul (.var "c") (.var "x"))))) (.var "n")))
+  result := (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.app2 .add (.var "m") (.int 1))) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.app2 .add (.var "p") (.int 1)))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arccos (.app2 .mul (.var "c") (.var "x"))))) (.var "n"))) (.pow (.app2 .mul (.app2 .mul (.var "d") (.var "f")) (.app2 .add (.var "m") (.int 1))) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.var "n")) (.pow (.app2 .mul (.var "f") (.app2 .add (.var "m") (.int 1))) (.int (-1)))) (.app2 .mul (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "p")) (.pow (.pow (.app2 .add (.int 1) (.app2 .mul (.app2 .mul (.int (-1)) (.pow (.var "c") (.int 2))) (.pow (.var "x") (.int 2)))) (.var "p")) (.int (-1))))) (.var "I1")))
+  integrals := [("I1", (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.app2 .add (.var "m") (.int 1))) (.pow (.app2 .add (.int 1) (.app2 .mul (.app2 .mul (.int (-1)) (.pow (.var "c") (.int 2))) (.pow (.var "x") (.int 2)))) (.app2 .add (.var "p") (.app2 .mul (.int 1) (.pow (.int 2) (.int (-1))))))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arccos (.app2 .mul (.var "c") (.var "x"))))) (.app2 .add (.var "n") (.app2 .mul (.int (-1)) (.int 1))))))]
+  independent := ["a", "b", "c", "d", "e", "f", "m", "p", "n"]
+  conditions := [.eq (.app2 .add (.app2 .mul (.pow (.var "c") (.int 2)) (.var "d")) (.var "e")) (.int 0),
+    .gt (.var "n") (.int 0),
+    .eq (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.int 2) (.var "p"))) (.int 3)) (.int 0),
+    .ne (.var "m") (.int (-1)),
+    .ne (.app2 .mul (.app2 .mul (.var "d") (.var "f")) (.app2 .add (.var "m") (.int 1))) (.int 0)]
+  priority := 12310
+  description := "RUBI 5.1.4 #8"
+  provenance := migrated "rubi:5 Inverse trig functions/5.1 Inverse sine/5.1.4 (f x)^m (d+e x^2)^p (a+b arcsin(c x))^n:8" "5 Inverse trig functions/5.1 Inverse sine/5.1.4 (f x)^m (d+e x^2)^p (a+b arcsin(c x))^n.m#8"
 
 /-- integration.rubi_5_1_5_r3 with non-degeneracy conditions (numerically checked) -/
 def rubi515r3Nondeg : CRule where
@@ -8949,6 +9331,22 @@ def rubi534r60Nondeg : CRule where
   priority := 15602
   description := "RUBI 5.3.4 #60"
   provenance := migrated "rubi:5 Inverse trig functions/5.3 Inverse tangent/5.3.4 u (a+b arctan(c x))^p:60" "5 Inverse trig functions/5.3 Inverse tangent/5.3.4 u (a+b arctan(c x))^p.m#60"
+
+/-- integration.rubi_5_3_4_r62 with non-degeneracy conditions (numerically checked) -/
+def rubi534r62Nondeg : CRule where
+  id := "integration.rubi_5_3_4_r62_nondegenerate"; legacyId := some "rubi:5 Inverse trig functions/5.3 Inverse tangent/5.3.4 u (a+b arctan(c x))^p:62"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.app2 .mul (.var "x") (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctan (.pow (.app2 .mul (.var "c") (.var "x")) (.int (-1)))))) (.var "p"))) (.pow (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.int 2)) (.int (-1))))
+  result := (.app2 .add (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.var "x")) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctan (.pow (.app2 .mul (.var "c") (.var "x")) (.int (-1)))))) (.app2 .add (.var "p") (.int 1)))) (.pow (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.var "d")) (.app2 .add (.var "p") (.int 1))) (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2))))) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.app2 .add (.int 1) (.app2 .mul (.app2 .mul (.int (-1)) (.pow (.var "c") (.int 2))) (.pow (.var "x") (.int 2))))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctan (.pow (.app2 .mul (.var "c") (.var "x")) (.int (-1)))))) (.app2 .add (.var "p") (.int 2)))) (.pow (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.var "b") (.int 2)) (.var "e")) (.app2 .add (.var "p") (.int 1))) (.app2 .add (.var "p") (.int 2))) (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2))))) (.int (-1))))) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.int 4)) (.pow (.app2 .mul (.app2 .mul (.pow (.var "b") (.int 2)) (.app2 .add (.var "p") (.int 1))) (.app2 .add (.var "p") (.int 2))) (.int (-1)))) (.var "I1")))
+  integrals := [("I1", (.app2 .mul (.app2 .mul (.var "x") (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctan (.pow (.app2 .mul (.var "c") (.var "x")) (.int (-1)))))) (.app2 .add (.var "p") (.int 2)))) (.pow (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.int 2)) (.int (-1)))))]
+  independent := ["a", "b", "c", "d", "e", "p"]
+  conditions := [.eq (.var "e") (.app2 .mul (.pow (.var "c") (.int 2)) (.var "d")),
+    .gt (.int (-1)) (.var "p"),
+    .ne (.var "p") (.int (-2)),
+    .ne (.app2 .mul (.app2 .mul (.pow (.var "b") (.int 2)) (.app2 .add (.var "p") (.int 1))) (.app2 .add (.var "p") (.int 2))) (.int 0)]
+  priority := 15609
+  description := "RUBI 5.3.4 #62"
+  provenance := migrated "rubi:5 Inverse trig functions/5.3 Inverse tangent/5.3.4 u (a+b arctan(c x))^p:62" "5 Inverse trig functions/5.3 Inverse tangent/5.3.4 u (a+b arctan(c x))^p.m#62"
 
 /-- integration.rubi_5_3_4_r63 with non-degeneracy conditions (numerically checked) -/
 def rubi534r63Nondeg : CRule where
@@ -10629,6 +11027,22 @@ def rubi714r1Nondeg : CRule where
   description := "RUBI 7.1.4 #1"
   provenance := migrated "rubi:7 Inverse hyperbolic functions/7.1 Inverse hyperbolic sine/7.1.4 (f x)^m (d+e x^2)^p (a+b arcsinh(c x))^n:1" "7 Inverse hyperbolic functions/7.1 Inverse hyperbolic sine/7.1.4 (f x)^m (d+e x^2)^p (a+b arcsinh(c x))^n.m#1"
 
+/-- integration.rubi_7_1_4_r15 with non-degeneracy conditions (numerically checked) -/
+def rubi714r15Nondeg : CRule where
+  id := "integration.rubi_7_1_4_r15_nondegenerate"; legacyId := some "rubi:7 Inverse hyperbolic functions/7.1 Inverse hyperbolic sine/7.1.4 (f x)^m (d+e x^2)^p (a+b arcsinh(c x))^n:15"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.var "m")) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "p"))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arcsinh (.app2 .mul (.var "c") (.var "x"))))) (.var "n")))
+  result := (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.var "m")) (.app2 .root (.app2 .add (.int 1) (.app2 .mul (.pow (.var "c") (.int 2)) (.pow (.var "x") (.int 2)))) (.int 2))) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "p"))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arcsinh (.app2 .mul (.var "c") (.var "x"))))) (.app2 .add (.var "n") (.int 1)))) (.pow (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.app2 .add (.var "n") (.int 1))) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.var "f")) (.var "m")) (.pow (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.app2 .add (.var "n") (.int 1))) (.int (-1)))) (.app2 .mul (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "p")) (.pow (.pow (.app2 .add (.int 1) (.app2 .mul (.pow (.var "c") (.int 2)) (.pow (.var "x") (.int 2)))) (.var "p")) (.int (-1))))) (.var "I1")))
+  integrals := [("I1", (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.app2 .add (.var "m") (.app2 .mul (.int (-1)) (.int 1)))) (.pow (.app2 .add (.int 1) (.app2 .mul (.pow (.var "c") (.int 2)) (.pow (.var "x") (.int 2)))) (.app2 .add (.var "p") (.app2 .mul (.app2 .mul (.int (-1)) (.int 1)) (.pow (.int 2) (.int (-1))))))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arcsinh (.app2 .mul (.var "c") (.var "x"))))) (.app2 .add (.var "n") (.int 1)))))]
+  independent := ["a", "b", "c", "d", "e", "f", "m", "p", "n"]
+  conditions := [.eq (.var "e") (.app2 .mul (.pow (.var "c") (.int 2)) (.var "d")),
+    .gt (.int (-1)) (.var "n"),
+    .eq (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.int 2) (.var "p"))) (.int 1)) (.int 0),
+    .ne (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.app2 .add (.var "n") (.int 1))) (.int 0)]
+  priority := 12304
+  description := "RUBI 7.1.4 #15"
+  provenance := migrated "rubi:7 Inverse hyperbolic functions/7.1 Inverse hyperbolic sine/7.1.4 (f x)^m (d+e x^2)^p (a+b arcsinh(c x))^n:15" "7 Inverse hyperbolic functions/7.1 Inverse hyperbolic sine/7.1.4 (f x)^m (d+e x^2)^p (a+b arcsinh(c x))^n.m#15"
+
 /-- integration.rubi_7_1_4_r17 with non-degeneracy conditions (numerically checked) -/
 def rubi714r17Nondeg : CRule where
   id := "integration.rubi_7_1_4_r17_nondegenerate"; legacyId := some "rubi:7 Inverse hyperbolic functions/7.1 Inverse hyperbolic sine/7.1.4 (f x)^m (d+e x^2)^p (a+b arcsinh(c x))^n:17"
@@ -10680,6 +11094,24 @@ def rubi714r23Nondeg : CRule where
   priority := 9925
   description := "RUBI 7.1.4 #23"
   provenance := migrated "rubi:7 Inverse hyperbolic functions/7.1 Inverse hyperbolic sine/7.1.4 (f x)^m (d+e x^2)^p (a+b arcsinh(c x))^n:23" "7 Inverse hyperbolic functions/7.1 Inverse hyperbolic sine/7.1.4 (f x)^m (d+e x^2)^p (a+b arcsinh(c x))^n.m#23"
+
+/-- integration.rubi_7_1_5_r11 with non-degeneracy conditions (numerically checked) -/
+def rubi715r11Nondeg : CRule where
+  id := "integration.rubi_7_1_5_r11_nondegenerate"; legacyId := some "rubi:7 Inverse hyperbolic functions/7.1 Inverse hyperbolic sine/7.1.5 u (a+b arcsinh(c x))^n:11"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.app2 .mul (.pow (.app2 .add (.var "f") (.app2 .mul (.var "g") (.var "x"))) (.var "m")) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arcsinh (.app2 .mul (.var "c") (.var "x"))))) (.var "n"))) (.pow (.app2 .root (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.int 2)) (.int (-1))))
+  result := (.app2 .add (.app2 .mul (.app2 .mul (.pow (.app2 .add (.var "f") (.app2 .mul (.var "g") (.var "x"))) (.var "m")) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arcsinh (.app2 .mul (.var "c") (.var "x"))))) (.app2 .add (.var "n") (.int 1)))) (.pow (.app2 .mul (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.app2 .root (.var "d") (.int 2))) (.app2 .add (.var "n") (.int 1))) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.var "g")) (.var "m")) (.pow (.app2 .mul (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.app2 .root (.var "d") (.int 2))) (.app2 .add (.var "n") (.int 1))) (.int (-1)))) (.var "I1")))
+  integrals := [("I1", (.app2 .mul (.pow (.app2 .add (.var "f") (.app2 .mul (.var "g") (.var "x"))) (.app2 .add (.var "m") (.app2 .mul (.int (-1)) (.int 1)))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arcsinh (.app2 .mul (.var "c") (.var "x"))))) (.app2 .add (.var "n") (.int 1)))))]
+  independent := ["a", "b", "c", "d", "e", "f", "g", "m", "n"]
+  conditions := [.eq (.var "e") (.app2 .mul (.pow (.var "c") (.int 2)) (.var "d")),
+    .int (.var "m"),
+    .gt (.var "m") (.int 0),
+    .gt (.var "d") (.int 0),
+    .gt (.int (-1)) (.var "n"),
+    .ne (.app2 .mul (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.app2 .root (.var "d") (.int 2))) (.app2 .add (.var "n") (.int 1))) (.int 0)]
+  priority := 9926
+  description := "RUBI 7.1.5 #11"
+  provenance := migrated "rubi:7 Inverse hyperbolic functions/7.1 Inverse hyperbolic sine/7.1.5 u (a+b arcsinh(c x))^n:11" "7 Inverse hyperbolic functions/7.1 Inverse hyperbolic sine/7.1.5 u (a+b arcsinh(c x))^n.m#11"
 
 /-- integration.rubi_7_1_5_r2 with non-degeneracy conditions (numerically checked) -/
 def rubi715r2Nondeg : CRule where
@@ -10804,6 +11236,23 @@ def rubi722r2Nondeg : CRule where
   description := "RUBI 7.2.2 #2"
   provenance := migrated "rubi:7 Inverse hyperbolic functions/7.2 Inverse hyperbolic cosine/7.2.2 (d x)^m (a+b arccosh(c x))^n:2" "7 Inverse hyperbolic functions/7.2 Inverse hyperbolic cosine/7.2.2 (d x)^m (a+b arccosh(c x))^n.m#2"
 
+/-- integration.rubi_7_2_2_r5 with non-degeneracy conditions (numerically checked) -/
+def rubi722r5Nondeg : CRule where
+  id := "integration.rubi_7_2_2_r5_nondegenerate"; legacyId := some "rubi:7 Inverse hyperbolic functions/7.2 Inverse hyperbolic cosine/7.2.2 (d x)^m (a+b arccosh(c x))^n:5"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.pow (.var "x") (.var "m")) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arccosh (.app2 .mul (.var "c") (.var "x"))))) (.var "n")))
+  result := (.app2 .add (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.var "x") (.var "m")) (.app2 .root (.app2 .add (.int 1) (.app2 .mul (.var "c") (.var "x"))) (.int 2))) (.app2 .root (.app2 .add (.int (-1)) (.app2 .mul (.var "c") (.var "x"))) (.int 2))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arccosh (.app2 .mul (.var "c") (.var "x"))))) (.app2 .add (.var "n") (.int 1)))) (.pow (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.app2 .add (.var "n") (.int 1))) (.int (-1)))) (.app2 .mul (.app2 .mul (.var "m") (.pow (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.app2 .add (.var "n") (.int 1))) (.int (-1)))) (.var "I1"))) (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.var "c")) (.app2 .add (.var "m") (.int 1))) (.pow (.app2 .mul (.var "b") (.app2 .add (.var "n") (.int 1))) (.int (-1)))) (.var "I2")))
+  integrals := [("I1", (.app2 .mul (.app2 .mul (.pow (.var "x") (.app2 .add (.var "m") (.app2 .mul (.int (-1)) (.int 1)))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arccosh (.app2 .mul (.var "c") (.var "x"))))) (.app2 .add (.var "n") (.int 1)))) (.pow (.app2 .mul (.app2 .root (.app2 .add (.int 1) (.app2 .mul (.var "c") (.var "x"))) (.int 2)) (.app2 .root (.app2 .add (.int (-1)) (.app2 .mul (.var "c") (.var "x"))) (.int 2))) (.int (-1))))),
+    ("I2", (.app2 .mul (.app2 .mul (.pow (.var "x") (.app2 .add (.var "m") (.int 1))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arccosh (.app2 .mul (.var "c") (.var "x"))))) (.app2 .add (.var "n") (.int 1)))) (.pow (.app2 .mul (.app2 .root (.app2 .add (.int 1) (.app2 .mul (.var "c") (.var "x"))) (.int 2)) (.app2 .root (.app2 .add (.int (-1)) (.app2 .mul (.var "c") (.var "x"))) (.int 2))) (.int (-1)))))]
+  independent := ["a", "b", "c", "m", "n"]
+  conditions := [.int (.var "m"),
+    .gt (.var "m") (.int 0),
+    .gt (.int (-2)) (.var "n"),
+    .ne (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.app2 .add (.var "n") (.int 1))) (.int 0)]
+  priority := 11962
+  description := "RUBI 7.2.2 #5"
+  provenance := migrated "rubi:7 Inverse hyperbolic functions/7.2 Inverse hyperbolic cosine/7.2.2 (d x)^m (a+b arccosh(c x))^n:5" "7 Inverse hyperbolic functions/7.2 Inverse hyperbolic cosine/7.2.2 (d x)^m (a+b arccosh(c x))^n.m#5"
+
 /-- integration.rubi_7_2_2_r6 with non-degeneracy conditions (numerically checked) -/
 def rubi722r6Nondeg : CRule where
   id := "integration.rubi_7_2_2_r6_nondegenerate"; legacyId := some "rubi:7 Inverse hyperbolic functions/7.2 Inverse hyperbolic cosine/7.2.2 (d x)^m (a+b arccosh(c x))^n:6"
@@ -10867,6 +11316,41 @@ def rubi723r5Nondeg : CRule where
   description := "RUBI 7.2.3 #5"
   provenance := migrated "rubi:7 Inverse hyperbolic functions/7.2 Inverse hyperbolic cosine/7.2.3 (d+e x^2)^p (a+b arccosh(c x))^n:5" "7 Inverse hyperbolic functions/7.2 Inverse hyperbolic cosine/7.2.3 (d+e x^2)^p (a+b arccosh(c x))^n.m#5"
 
+/-- integration.rubi_7_2_4_r19 with non-degeneracy conditions (numerically checked) -/
+def rubi724r19Nondeg : CRule where
+  id := "integration.rubi_7_2_4_r19_nondegenerate"; legacyId := some "rubi:7 Inverse hyperbolic functions/7.2 Inverse hyperbolic cosine/7.2.4 (f x)^m (d+e x^2)^p (a+b arccosh(c x))^n:19"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.var "m")) (.pow (.app2 .add (.var "d1") (.app2 .mul (.var "e1") (.var "x"))) (.var "p"))) (.pow (.app2 .add (.var "d2") (.app2 .mul (.var "e2") (.var "x"))) (.var "p"))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arccosh (.app2 .mul (.var "c") (.var "x"))))) (.var "n")))
+  result := (.app2 .add (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.app2 .add (.var "m") (.int 1))) (.pow (.app2 .add (.var "d1") (.app2 .mul (.var "e1") (.var "x"))) (.app2 .add (.var "p") (.int 1)))) (.pow (.app2 .add (.var "d2") (.app2 .mul (.var "e2") (.var "x"))) (.app2 .add (.var "p") (.int 1)))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arccosh (.app2 .mul (.var "c") (.var "x"))))) (.var "n"))) (.pow (.app2 .mul (.app2 .mul (.app2 .mul (.var "d1") (.var "d2")) (.var "f")) (.app2 .add (.var "m") (.int 1))) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.var "c") (.int 2)) (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.int 2) (.var "p"))) (.int 3))) (.pow (.app2 .mul (.pow (.var "f") (.int 2)) (.app2 .add (.var "m") (.int 1))) (.int (-1)))) (.var "I1"))) (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.var "n")) (.pow (.app2 .mul (.var "f") (.app2 .add (.var "m") (.int 1))) (.int (-1)))) (.app2 .mul (.pow (.app2 .add (.var "d1") (.app2 .mul (.var "e1") (.var "x"))) (.var "p")) (.pow (.pow (.app2 .add (.int 1) (.app2 .mul (.var "c") (.var "x"))) (.var "p")) (.int (-1))))) (.app2 .mul (.pow (.app2 .add (.var "d2") (.app2 .mul (.var "e2") (.var "x"))) (.var "p")) (.pow (.pow (.app2 .add (.int (-1)) (.app2 .mul (.var "c") (.var "x"))) (.var "p")) (.int (-1))))) (.var "I2")))
+  integrals := [("I1", (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.app2 .add (.var "m") (.int 2))) (.pow (.app2 .add (.var "d1") (.app2 .mul (.var "e1") (.var "x"))) (.var "p"))) (.pow (.app2 .add (.var "d2") (.app2 .mul (.var "e2") (.var "x"))) (.var "p"))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arccosh (.app2 .mul (.var "c") (.var "x"))))) (.var "n")))),
+    ("I2", (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.app2 .add (.var "m") (.int 1))) (.pow (.app2 .add (.int 1) (.app2 .mul (.var "c") (.var "x"))) (.app2 .add (.var "p") (.app2 .mul (.int 1) (.pow (.int 2) (.int (-1))))))) (.pow (.app2 .add (.int (-1)) (.app2 .mul (.var "c") (.var "x"))) (.app2 .add (.var "p") (.app2 .mul (.int 1) (.pow (.int 2) (.int (-1))))))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arccosh (.app2 .mul (.var "c") (.var "x"))))) (.app2 .add (.var "n") (.app2 .mul (.int (-1)) (.int 1))))))]
+  independent := ["a", "b", "c", "d1", "e1", "d2", "e2", "f", "p", "m", "n"]
+  conditions := [.eq (.var "e1") (.app2 .mul (.var "c") (.var "d1")),
+    .eq (.var "e2") (.app2 .mul (.app2 .mul (.int (-1)) (.var "c")) (.var "d2")),
+    .gt (.var "n") (.int 0),
+    .int (.var "m"),
+    .gt (.int (-1)) (.var "m"),
+    .ne (.app2 .mul (.app2 .mul (.app2 .mul (.var "d1") (.var "d2")) (.var "f")) (.app2 .add (.var "m") (.int 1))) (.int 0)]
+  priority := 12349
+  description := "RUBI 7.2.4 #19"
+  provenance := migrated "rubi:7 Inverse hyperbolic functions/7.2 Inverse hyperbolic cosine/7.2.4 (f x)^m (d+e x^2)^p (a+b arccosh(c x))^n:19" "7 Inverse hyperbolic functions/7.2 Inverse hyperbolic cosine/7.2.4 (f x)^m (d+e x^2)^p (a+b arccosh(c x))^n.m#19"
+
+/-- integration.rubi_7_2_4_r3 with non-degeneracy conditions (numerically checked) -/
+def rubi724r3Nondeg : CRule where
+  id := "integration.rubi_7_2_4_r3_nondegenerate"; legacyId := some "rubi:7 Inverse hyperbolic functions/7.2 Inverse hyperbolic cosine/7.2.4 (f x)^m (d+e x^2)^p (a+b arccosh(c x))^n:3"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.app2 .mul (.var "x") (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "p"))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arccosh (.app2 .mul (.var "c") (.var "x"))))) (.var "n")))
+  result := (.app2 .add (.app2 .mul (.app2 .mul (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.app2 .add (.var "p") (.int 1))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arccosh (.app2 .mul (.var "c") (.var "x"))))) (.var "n"))) (.pow (.app2 .mul (.app2 .mul (.int 2) (.var "e")) (.app2 .add (.var "p") (.int 1))) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.var "b")) (.var "n")) (.pow (.app2 .mul (.app2 .mul (.int 2) (.var "c")) (.app2 .add (.var "p") (.int 1))) (.int (-1)))) (.app2 .mul (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "p")) (.pow (.app2 .mul (.pow (.app2 .add (.int 1) (.app2 .mul (.var "c") (.var "x"))) (.var "p")) (.pow (.app2 .add (.int (-1)) (.app2 .mul (.var "c") (.var "x"))) (.var "p"))) (.int (-1))))) (.var "I1")))
+  integrals := [("I1", (.app2 .mul (.app2 .mul (.pow (.app2 .add (.int 1) (.app2 .mul (.var "c") (.var "x"))) (.app2 .add (.var "p") (.app2 .mul (.int 1) (.pow (.int 2) (.int (-1)))))) (.pow (.app2 .add (.int (-1)) (.app2 .mul (.var "c") (.var "x"))) (.app2 .add (.var "p") (.app2 .mul (.int 1) (.pow (.int 2) (.int (-1))))))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arccosh (.app2 .mul (.var "c") (.var "x"))))) (.app2 .add (.var "n") (.app2 .mul (.int (-1)) (.int 1))))))]
+  independent := ["a", "b", "c", "d", "e", "p", "n"]
+  conditions := [.eq (.app2 .add (.app2 .mul (.pow (.var "c") (.int 2)) (.var "d")) (.var "e")) (.int 0),
+    .gt (.var "n") (.int 0),
+    .ne (.var "p") (.int (-1)),
+    .ne (.app2 .mul (.app2 .mul (.int 2) (.var "e")) (.app2 .add (.var "p") (.int 1))) (.int 0)]
+  priority := 12326
+  description := "RUBI 7.2.4 #3"
+  provenance := migrated "rubi:7 Inverse hyperbolic functions/7.2 Inverse hyperbolic cosine/7.2.4 (f x)^m (d+e x^2)^p (a+b arccosh(c x))^n:3" "7 Inverse hyperbolic functions/7.2 Inverse hyperbolic cosine/7.2.4 (f x)^m (d+e x^2)^p (a+b arccosh(c x))^n.m#3"
+
 /-- integration.rubi_7_2_4_r38 with non-degeneracy conditions (numerically checked) -/
 def rubi724r38Nondeg : CRule where
   id := "integration.rubi_7_2_4_r38_nondegenerate"; legacyId := some "rubi:7 Inverse hyperbolic functions/7.2 Inverse hyperbolic cosine/7.2.4 (f x)^m (d+e x^2)^p (a+b arccosh(c x))^n:38"
@@ -10885,6 +11369,23 @@ def rubi724r38Nondeg : CRule where
   priority := 19387
   description := "RUBI 7.2.4 #38"
   provenance := migrated "rubi:7 Inverse hyperbolic functions/7.2 Inverse hyperbolic cosine/7.2.4 (f x)^m (d+e x^2)^p (a+b arccosh(c x))^n:38" "7 Inverse hyperbolic functions/7.2 Inverse hyperbolic cosine/7.2.4 (f x)^m (d+e x^2)^p (a+b arccosh(c x))^n.m#38"
+
+/-- integration.rubi_7_2_4_r4 with non-degeneracy conditions (numerically checked) -/
+def rubi724r4Nondeg : CRule where
+  id := "integration.rubi_7_2_4_r4_nondegenerate"; legacyId := some "rubi:7 Inverse hyperbolic functions/7.2 Inverse hyperbolic cosine/7.2.4 (f x)^m (d+e x^2)^p (a+b arccosh(c x))^n:4"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.app2 .mul (.app2 .mul (.var "x") (.pow (.app2 .add (.var "d1") (.app2 .mul (.var "e1") (.var "x"))) (.var "p"))) (.pow (.app2 .add (.var "d2") (.app2 .mul (.var "e2") (.var "x"))) (.var "p"))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arccosh (.app2 .mul (.var "c") (.var "x"))))) (.var "n")))
+  result := (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.app2 .add (.var "d1") (.app2 .mul (.var "e1") (.var "x"))) (.app2 .add (.var "p") (.int 1))) (.pow (.app2 .add (.var "d2") (.app2 .mul (.var "e2") (.var "x"))) (.app2 .add (.var "p") (.int 1)))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arccosh (.app2 .mul (.var "c") (.var "x"))))) (.var "n"))) (.pow (.app2 .mul (.app2 .mul (.app2 .mul (.int 2) (.var "e1")) (.var "e2")) (.app2 .add (.var "p") (.int 1))) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.var "b")) (.var "n")) (.pow (.app2 .mul (.app2 .mul (.int 2) (.var "c")) (.app2 .add (.var "p") (.int 1))) (.int (-1)))) (.app2 .mul (.pow (.app2 .add (.var "d1") (.app2 .mul (.var "e1") (.var "x"))) (.var "p")) (.pow (.pow (.app2 .add (.int 1) (.app2 .mul (.var "c") (.var "x"))) (.var "p")) (.int (-1))))) (.app2 .mul (.pow (.app2 .add (.var "d2") (.app2 .mul (.var "e2") (.var "x"))) (.var "p")) (.pow (.pow (.app2 .add (.int (-1)) (.app2 .mul (.var "c") (.var "x"))) (.var "p")) (.int (-1))))) (.var "I1")))
+  integrals := [("I1", (.app2 .mul (.app2 .mul (.pow (.app2 .add (.int 1) (.app2 .mul (.var "c") (.var "x"))) (.app2 .add (.var "p") (.app2 .mul (.int 1) (.pow (.int 2) (.int (-1)))))) (.pow (.app2 .add (.int (-1)) (.app2 .mul (.var "c") (.var "x"))) (.app2 .add (.var "p") (.app2 .mul (.int 1) (.pow (.int 2) (.int (-1))))))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arccosh (.app2 .mul (.var "c") (.var "x"))))) (.app2 .add (.var "n") (.app2 .mul (.int (-1)) (.int 1))))))]
+  independent := ["a", "b", "c", "d1", "e1", "d2", "e2", "p", "n"]
+  conditions := [.eq (.var "e1") (.app2 .mul (.var "c") (.var "d1")),
+    .eq (.var "e2") (.app2 .mul (.app2 .mul (.int (-1)) (.var "c")) (.var "d2")),
+    .gt (.var "n") (.int 0),
+    .ne (.var "p") (.int (-1)),
+    .ne (.app2 .mul (.app2 .mul (.app2 .mul (.int 2) (.var "e1")) (.var "e2")) (.app2 .add (.var "p") (.int 1))) (.int 0)]
+  priority := 12348
+  description := "RUBI 7.2.4 #4"
+  provenance := migrated "rubi:7 Inverse hyperbolic functions/7.2 Inverse hyperbolic cosine/7.2.4 (f x)^m (d+e x^2)^p (a+b arccosh(c x))^n:4" "7 Inverse hyperbolic functions/7.2 Inverse hyperbolic cosine/7.2.4 (f x)^m (d+e x^2)^p (a+b arccosh(c x))^n.m#4"
 
 /-- integration.rubi_7_2_4_r42 with non-degeneracy conditions (numerically checked) -/
 def rubi724r42Nondeg : CRule where
@@ -10916,6 +11417,23 @@ def rubi724r43Nondeg : CRule where
   priority := 11986
   description := "RUBI 7.2.4 #43"
   provenance := migrated "rubi:7 Inverse hyperbolic functions/7.2 Inverse hyperbolic cosine/7.2.4 (f x)^m (d+e x^2)^p (a+b arccosh(c x))^n:43" "7 Inverse hyperbolic functions/7.2 Inverse hyperbolic cosine/7.2.4 (f x)^m (d+e x^2)^p (a+b arccosh(c x))^n.m#43"
+
+/-- integration.rubi_7_2_4_r6 with non-degeneracy conditions (numerically checked) -/
+def rubi724r6Nondeg : CRule where
+  id := "integration.rubi_7_2_4_r6_nondegenerate"; legacyId := some "rubi:7 Inverse hyperbolic functions/7.2 Inverse hyperbolic cosine/7.2.4 (f x)^m (d+e x^2)^p (a+b arccosh(c x))^n:6"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.var "m")) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "p"))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arccosh (.app2 .mul (.var "c") (.var "x"))))) (.var "n")))
+  result := (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.app2 .add (.var "m") (.int 1))) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.app2 .add (.var "p") (.int 1)))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arccosh (.app2 .mul (.var "c") (.var "x"))))) (.var "n"))) (.pow (.app2 .mul (.app2 .mul (.var "d") (.var "f")) (.app2 .add (.var "m") (.int 1))) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.var "n")) (.pow (.app2 .mul (.var "f") (.app2 .add (.var "m") (.int 1))) (.int (-1)))) (.app2 .mul (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "p")) (.pow (.app2 .mul (.pow (.app2 .add (.int 1) (.app2 .mul (.var "c") (.var "x"))) (.var "p")) (.pow (.app2 .add (.int (-1)) (.app2 .mul (.var "c") (.var "x"))) (.var "p"))) (.int (-1))))) (.var "I1")))
+  integrals := [("I1", (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.app2 .mul (.var "f") (.var "x")) (.app2 .add (.var "m") (.int 1))) (.pow (.app2 .add (.int 1) (.app2 .mul (.var "c") (.var "x"))) (.app2 .add (.var "p") (.app2 .mul (.int 1) (.pow (.int 2) (.int (-1))))))) (.pow (.app2 .add (.int (-1)) (.app2 .mul (.var "c") (.var "x"))) (.app2 .add (.var "p") (.app2 .mul (.int 1) (.pow (.int 2) (.int (-1))))))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arccosh (.app2 .mul (.var "c") (.var "x"))))) (.app2 .add (.var "n") (.app2 .mul (.int (-1)) (.int 1))))))]
+  independent := ["a", "b", "c", "d", "e", "f", "m", "p", "n"]
+  conditions := [.eq (.app2 .add (.app2 .mul (.pow (.var "c") (.int 2)) (.var "d")) (.var "e")) (.int 0),
+    .gt (.var "n") (.int 0),
+    .eq (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.int 2) (.var "p"))) (.int 3)) (.int 0),
+    .ne (.var "m") (.int (-1)),
+    .ne (.app2 .mul (.app2 .mul (.var "d") (.var "f")) (.app2 .add (.var "m") (.int 1))) (.int 0)]
+  priority := 12337
+  description := "RUBI 7.2.4 #6"
+  provenance := migrated "rubi:7 Inverse hyperbolic functions/7.2 Inverse hyperbolic cosine/7.2.4 (f x)^m (d+e x^2)^p (a+b arccosh(c x))^n:6" "7 Inverse hyperbolic functions/7.2 Inverse hyperbolic cosine/7.2.4 (f x)^m (d+e x^2)^p (a+b arccosh(c x))^n.m#6"
 
 /-- integration.rubi_7_2_5_r2 with non-degeneracy conditions (numerically checked) -/
 def rubi725r2Nondeg : CRule where
@@ -11011,6 +11529,25 @@ def rubi731r101Nondeg : CRule where
   description := "RUBI 7.3.1 #101"
   provenance := migrated "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.1 u (a+b arctanh(c x^n))^p:101" "7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.1 u (a+b arctanh(c x^n))^p.m#101"
 
+/-- integration.rubi_7_3_1_r118 with non-degeneracy conditions (numerically checked) -/
+def rubi731r118Nondeg : CRule where
+  id := "integration.rubi_7_3_1_r118_nondegenerate"; legacyId := some "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.1 u (a+b arctanh(c x^n))^p:118"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.app2 .mul (.pow (.var "x") (.var "m")) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "q"))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.pow (.app2 .mul (.var "c") (.var "x")) (.int (-1)))))) (.var "p")))
+  result := (.app2 .add (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.var "x") (.var "m")) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.app2 .add (.var "q") (.int 1)))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.pow (.app2 .mul (.var "c") (.var "x")) (.int (-1)))))) (.app2 .add (.var "p") (.int 1)))) (.pow (.app2 .mul (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.var "d")) (.app2 .add (.var "p") (.int 1))) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.var "m")) (.pow (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.app2 .add (.var "p") (.int 1))) (.int (-1)))) (.var "I1"))) (.app2 .mul (.app2 .mul (.app2 .mul (.var "c") (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.int 2) (.var "q"))) (.int 2))) (.pow (.app2 .mul (.var "b") (.app2 .add (.var "p") (.int 1))) (.int (-1)))) (.var "I2")))
+  integrals := [("I1", (.app2 .mul (.app2 .mul (.pow (.var "x") (.app2 .add (.var "m") (.app2 .mul (.int (-1)) (.int 1)))) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "q"))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.pow (.app2 .mul (.var "c") (.var "x")) (.int (-1)))))) (.app2 .add (.var "p") (.int 1))))),
+    ("I2", (.app2 .mul (.app2 .mul (.pow (.var "x") (.app2 .add (.var "m") (.int 1))) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "q"))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.pow (.app2 .mul (.var "c") (.var "x")) (.int (-1)))))) (.app2 .add (.var "p") (.int 1)))))]
+  independent := ["a", "b", "c", "d", "e", "m", "p", "q"]
+  conditions := [.eq (.app2 .add (.app2 .mul (.pow (.var "c") (.int 2)) (.var "d")) (.var "e")) (.int 0),
+    .int (.var "m"),
+    .gt (.int (-1)) (.var "q"),
+    .gt (.int (-1)) (.var "p"),
+    .ne (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.int 2) (.var "q"))) (.int 2)) (.int 0),
+    .ne (.app2 .mul (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.var "d")) (.app2 .add (.var "p") (.int 1))) (.int 0)]
+  priority := 15417
+  description := "RUBI 7.3.1 #118"
+  provenance := migrated "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.1 u (a+b arctanh(c x^n))^p:118" "7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.1 u (a+b arctanh(c x^n))^p.m#118"
+
 /-- integration.rubi_7_3_1_r123 with non-degeneracy conditions (numerically checked) -/
 def rubi731r123Nondeg : CRule where
   id := "integration.rubi_7_3_1_r123_nondegenerate"; legacyId := some "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.1 u (a+b arctanh(c x^n))^p:123"
@@ -11038,6 +11575,23 @@ def rubi731r124Nondeg : CRule where
   priority := 15227
   description := "RUBI 7.3.1 #124"
   provenance := migrated "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.1 u (a+b arctanh(c x^n))^p:124" "7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.1 u (a+b arctanh(c x^n))^p.m#124"
+
+/-- integration.rubi_7_3_1_r136 with non-degeneracy conditions (numerically checked) -/
+def rubi731r136Nondeg : CRule where
+  id := "integration.rubi_7_3_1_r136_nondegenerate"; legacyId := some "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.1 u (a+b arctanh(c x^n))^p:136"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.app2 .mul (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.pow (.app2 .mul (.var "c") (.var "x")) (.int (-1)))))) (.var "p")) (.app1 .ln (.app2 .add (.var "f") (.app2 .mul (.var "g") (.var "x"))))) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.int (-1))))
+  result := (.app2 .add (.app2 .mul (.app2 .mul (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.pow (.app2 .mul (.var "c") (.var "x")) (.int (-1)))))) (.app2 .add (.var "p") (.int 1))) (.app1 .ln (.app2 .add (.var "f") (.app2 .mul (.var "g") (.var "x"))))) (.pow (.app2 .mul (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.var "d")) (.app2 .add (.var "p") (.int 1))) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.var "g")) (.pow (.app2 .mul (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.var "d")) (.app2 .add (.var "p") (.int 1))) (.int (-1)))) (.var "I1")))
+  integrals := [("I1", (.app2 .mul (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.pow (.app2 .mul (.var "c") (.var "x")) (.int (-1)))))) (.app2 .add (.var "p") (.int 1))) (.pow (.app2 .add (.var "f") (.app2 .mul (.var "g") (.var "x"))) (.int (-1)))))]
+  independent := ["a", "b", "c", "d", "e", "f", "g", "p"]
+  conditions := [.int (.var "p"),
+    .gt (.var "p") (.int 0),
+    .eq (.app2 .add (.app2 .mul (.pow (.var "c") (.int 2)) (.var "d")) (.var "e")) (.int 0),
+    .eq (.app2 .add (.app2 .mul (.pow (.var "c") (.int 2)) (.pow (.var "f") (.int 2))) (.app2 .mul (.int (-1)) (.pow (.var "g") (.int 2)))) (.int 0),
+    .ne (.app2 .mul (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.var "d")) (.app2 .add (.var "p") (.int 1))) (.int 0)]
+  priority := 15204
+  description := "RUBI 7.3.1 #136"
+  provenance := migrated "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.1 u (a+b arctanh(c x^n))^p:136" "7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.1 u (a+b arctanh(c x^n))^p.m#136"
 
 /-- integration.rubi_7_3_1_r164 with non-degeneracy conditions (numerically checked) -/
 def rubi731r164Nondeg : CRule where
@@ -11192,6 +11746,24 @@ def rubi731r36Nondeg : CRule where
   description := "RUBI 7.3.1 #36"
   provenance := migrated "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.1 u (a+b arctanh(c x^n))^p:36" "7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.1 u (a+b arctanh(c x^n))^p.m#36"
 
+/-- integration.rubi_7_3_1_r39 with non-degeneracy conditions (numerically checked) -/
+def rubi731r39Nondeg : CRule where
+  id := "integration.rubi_7_3_1_r39_nondegenerate"; legacyId := some "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.1 u (a+b arctanh(c x^n))^p:39"
+  shape := .antiderivSubst; x := "x"
+  body := (.app2 .mul (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.app2 .mul (.var "c") (.var "x"))))) (.var "p")) (.pow (.app2 .root (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.int 2)) (.int (-1))))
+  result := (.app2 .mul (.app2 .mul (.int 1) (.pow (.app2 .mul (.var "c") (.app2 .root (.var "d") (.int 2))) (.int (-1)))) (.var "I1"))
+  integrals := [("I1", (.app2 .mul (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.var "x"))) (.var "p")) (.app1 .sech (.var "x"))))]
+  substs := [("I1", (.app1 .arctanh (.app2 .mul (.var "c") (.var "x"))))]
+  independent := ["a", "b", "c", "d", "e", "p"]
+  conditions := [.eq (.app2 .add (.app2 .mul (.pow (.var "c") (.int 2)) (.var "d")) (.var "e")) (.int 0),
+    .int (.var "p"),
+    .gt (.var "p") (.int 0),
+    .gt (.var "d") (.int 0),
+    .ne (.app2 .mul (.var "c") (.app2 .root (.var "d") (.int 2))) (.int 0)]
+  priority := 19312
+  description := "RUBI 7.3.1 #39"
+  provenance := migrated "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.1 u (a+b arctanh(c x^n))^p:39" "7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.1 u (a+b arctanh(c x^n))^p.m#39"
+
 /-- integration.rubi_7_3_1_r43 with non-degeneracy conditions (numerically checked) -/
 def rubi731r43Nondeg : CRule where
   id := "integration.rubi_7_3_1_r43_nondegenerate"; legacyId := some "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.1 u (a+b arctanh(c x^n))^p:43"
@@ -11237,6 +11809,24 @@ def rubi731r47Nondeg : CRule where
   priority := 10012
   description := "RUBI 7.3.1 #47"
   provenance := migrated "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.1 u (a+b arctanh(c x^n))^p:47" "7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.1 u (a+b arctanh(c x^n))^p.m#47"
+
+/-- integration.rubi_7_3_1_r51 with non-degeneracy conditions (numerically checked) -/
+def rubi731r51Nondeg : CRule where
+  id := "integration.rubi_7_3_1_r51_nondegenerate"; legacyId := some "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.1 u (a+b arctanh(c x^n))^p:51"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "q")) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.app2 .mul (.var "c") (.var "x"))))) (.var "p")))
+  result := (.app2 .add (.app2 .add (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.var "b")) (.var "p")) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.app2 .add (.var "q") (.int 1)))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.app2 .mul (.var "c") (.var "x"))))) (.app2 .add (.var "p") (.app2 .mul (.int (-1)) (.int 1))))) (.pow (.app2 .mul (.app2 .mul (.app2 .mul (.int 4) (.var "c")) (.var "d")) (.pow (.app2 .add (.var "q") (.int 1)) (.int 2))) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.var "x")) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.app2 .add (.var "q") (.int 1)))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.app2 .mul (.var "c") (.var "x"))))) (.var "p"))) (.pow (.app2 .mul (.app2 .mul (.int 2) (.var "d")) (.app2 .add (.var "q") (.int 1))) (.int (-1))))) (.app2 .mul (.app2 .mul (.app2 .add (.app2 .mul (.int 2) (.var "q")) (.int 3)) (.pow (.app2 .mul (.app2 .mul (.int 2) (.var "d")) (.app2 .add (.var "q") (.int 1))) (.int (-1)))) (.var "I1"))) (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.var "b") (.int 2)) (.var "p")) (.app2 .add (.var "p") (.app2 .mul (.int (-1)) (.int 1)))) (.pow (.app2 .mul (.int 4) (.pow (.app2 .add (.var "q") (.int 1)) (.int 2))) (.int (-1)))) (.var "I2")))
+  integrals := [("I1", (.app2 .mul (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.app2 .add (.var "q") (.int 1))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.app2 .mul (.var "c") (.var "x"))))) (.var "p")))),
+    ("I2", (.app2 .mul (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "q")) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.app2 .mul (.var "c") (.var "x"))))) (.app2 .add (.var "p") (.app2 .mul (.int (-1)) (.int 2))))))]
+  independent := ["a", "b", "c", "d", "e", "p", "q"]
+  conditions := [.eq (.app2 .add (.app2 .mul (.pow (.var "c") (.int 2)) (.var "d")) (.var "e")) (.int 0),
+    .gt (.int (-1)) (.var "q"),
+    .gt (.var "p") (.int 1),
+    .ne (.var "q") (.app2 .mul (.int (-3)) (.pow (.int 2) (.int (-1)))),
+    .ne (.app2 .mul (.app2 .mul (.app2 .mul (.int 4) (.var "c")) (.var "d")) (.pow (.app2 .add (.var "q") (.int 1)) (.int 2))) (.int 0)]
+  priority := 10014
+  description := "RUBI 7.3.1 #51"
+  provenance := migrated "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.1 u (a+b arctanh(c x^n))^p:51" "7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.1 u (a+b arctanh(c x^n))^p.m#51"
 
 /-- integration.rubi_7_3_1_r65 with non-degeneracy conditions (numerically checked) -/
 def rubi731r65Nondeg : CRule where
@@ -11429,6 +12019,22 @@ def rubi731r80Nondeg : CRule where
   priority := 15226
   description := "RUBI 7.3.1 #80"
   provenance := migrated "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.1 u (a+b arctanh(c x^n))^p:80" "7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.1 u (a+b arctanh(c x^n))^p.m#80"
+
+/-- integration.rubi_7_3_1_r82 with non-degeneracy conditions (numerically checked) -/
+def rubi731r82Nondeg : CRule where
+  id := "integration.rubi_7_3_1_r82_nondegenerate"; legacyId := some "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.1 u (a+b arctanh(c x^n))^p:82"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.app2 .mul (.var "x") (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.pow (.app2 .mul (.var "c") (.var "x")) (.int (-1)))))) (.var "p"))) (.pow (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.int 2)) (.int (-1))))
+  result := (.app2 .add (.app2 .add (.app2 .mul (.app2 .mul (.var "x") (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.pow (.app2 .mul (.var "c") (.var "x")) (.int (-1)))))) (.app2 .add (.var "p") (.int 1)))) (.pow (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.var "d")) (.app2 .add (.var "p") (.int 1))) (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2))))) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .add (.int 1) (.app2 .mul (.pow (.var "c") (.int 2)) (.pow (.var "x") (.int 2)))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.pow (.app2 .mul (.var "c") (.var "x")) (.int (-1)))))) (.app2 .add (.var "p") (.int 2)))) (.pow (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.var "b") (.int 2)) (.var "e")) (.app2 .add (.var "p") (.int 1))) (.app2 .add (.var "p") (.int 2))) (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2))))) (.int (-1))))) (.app2 .mul (.app2 .mul (.int 4) (.pow (.app2 .mul (.app2 .mul (.pow (.var "b") (.int 2)) (.app2 .add (.var "p") (.int 1))) (.app2 .add (.var "p") (.int 2))) (.int (-1)))) (.var "I1")))
+  integrals := [("I1", (.app2 .mul (.app2 .mul (.var "x") (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.pow (.app2 .mul (.var "c") (.var "x")) (.int (-1)))))) (.app2 .add (.var "p") (.int 2)))) (.pow (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.int 2)) (.int (-1)))))]
+  independent := ["a", "b", "c", "d", "e", "p"]
+  conditions := [.eq (.app2 .add (.app2 .mul (.pow (.var "c") (.int 2)) (.var "d")) (.var "e")) (.int 0),
+    .gt (.int (-1)) (.var "p"),
+    .ne (.var "p") (.int (-2)),
+    .ne (.app2 .mul (.app2 .mul (.pow (.var "b") (.int 2)) (.app2 .add (.var "p") (.int 1))) (.app2 .add (.var "p") (.int 2))) (.int 0)]
+  priority := 15214
+  description := "RUBI 7.3.1 #82"
+  provenance := migrated "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.1 u (a+b arctanh(c x^n))^p:82" "7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.1 u (a+b arctanh(c x^n))^p.m#82"
 
 /-- integration.rubi_7_3_1_r83 with non-degeneracy conditions (numerically checked) -/
 def rubi731r83Nondeg : CRule where
@@ -12005,6 +12611,23 @@ def rubi734r11Nondeg : CRule where
   description := "RUBI 7.3.4 #11"
   provenance := migrated "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.4 u (a+b arctanh(c x))^p:11" "7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.4 u (a+b arctanh(c x))^p.m#11"
 
+/-- integration.rubi_7_3_4_r116 with non-degeneracy conditions (numerically checked) -/
+def rubi734r116Nondeg : CRule where
+  id := "integration.rubi_7_3_4_r116_nondegenerate"; legacyId := some "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.4 u (a+b arctanh(c x))^p:116"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.app2 .mul (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.pow (.app2 .mul (.var "c") (.var "x")) (.int (-1)))))) (.var "p")) (.app1 .ln (.app2 .add (.var "f") (.app2 .mul (.var "g") (.var "x"))))) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.int (-1))))
+  result := (.app2 .add (.app2 .mul (.app2 .mul (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.pow (.app2 .mul (.var "c") (.var "x")) (.int (-1)))))) (.app2 .add (.var "p") (.int 1))) (.app1 .ln (.app2 .add (.var "f") (.app2 .mul (.var "g") (.var "x"))))) (.pow (.app2 .mul (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.var "d")) (.app2 .add (.var "p") (.int 1))) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.var "g")) (.pow (.app2 .mul (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.var "d")) (.app2 .add (.var "p") (.int 1))) (.int (-1)))) (.var "I1")))
+  integrals := [("I1", (.app2 .mul (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.pow (.app2 .mul (.var "c") (.var "x")) (.int (-1)))))) (.app2 .add (.var "p") (.int 1))) (.pow (.app2 .add (.var "f") (.app2 .mul (.var "g") (.var "x"))) (.int (-1)))))]
+  independent := ["a", "b", "c", "d", "e", "f", "g", "p"]
+  conditions := [.int (.var "p"),
+    .gt (.var "p") (.int 0),
+    .eq (.app2 .add (.app2 .mul (.pow (.var "c") (.int 2)) (.var "d")) (.var "e")) (.int 0),
+    .eq (.app2 .add (.app2 .mul (.pow (.var "c") (.int 2)) (.pow (.var "f") (.int 2))) (.app2 .mul (.int (-1)) (.pow (.var "g") (.int 2)))) (.int 0),
+    .ne (.app2 .mul (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.var "d")) (.app2 .add (.var "p") (.int 1))) (.int 0)]
+  priority := 15223
+  description := "RUBI 7.3.4 #116"
+  provenance := migrated "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.4 u (a+b arctanh(c x))^p:116" "7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.4 u (a+b arctanh(c x))^p.m#116"
+
 /-- integration.rubi_7_3_4_r144 with non-degeneracy conditions (numerically checked) -/
 def rubi734r144Nondeg : CRule where
   id := "integration.rubi_7_3_4_r144_nondegenerate"; legacyId := some "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.4 u (a+b arctanh(c x))^p:144"
@@ -12047,6 +12670,24 @@ def rubi734r16Nondeg : CRule where
   priority := 15206
   description := "RUBI 7.3.4 #16"
   provenance := migrated "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.4 u (a+b arctanh(c x))^p:16" "7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.4 u (a+b arctanh(c x))^p.m#16"
+
+/-- integration.rubi_7_3_4_r19 with non-degeneracy conditions (numerically checked) -/
+def rubi734r19Nondeg : CRule where
+  id := "integration.rubi_7_3_4_r19_nondegenerate"; legacyId := some "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.4 u (a+b arctanh(c x))^p:19"
+  shape := .antiderivSubst; x := "x"
+  body := (.app2 .mul (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.app2 .mul (.var "c") (.var "x"))))) (.var "p")) (.pow (.app2 .root (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.int 2)) (.int (-1))))
+  result := (.app2 .mul (.app2 .mul (.int 1) (.pow (.app2 .mul (.var "c") (.app2 .root (.var "d") (.int 2))) (.int (-1)))) (.var "I1"))
+  integrals := [("I1", (.app2 .mul (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.var "x"))) (.var "p")) (.app1 .sech (.var "x"))))]
+  substs := [("I1", (.app1 .arctanh (.app2 .mul (.var "c") (.var "x"))))]
+  independent := ["a", "b", "c", "d", "e", "p"]
+  conditions := [.eq (.app2 .add (.app2 .mul (.pow (.var "c") (.int 2)) (.var "d")) (.var "e")) (.int 0),
+    .int (.var "p"),
+    .gt (.var "p") (.int 0),
+    .gt (.var "d") (.int 0),
+    .ne (.app2 .mul (.var "c") (.app2 .root (.var "d") (.int 2))) (.int 0)]
+  priority := 19637
+  description := "RUBI 7.3.4 #19"
+  provenance := migrated "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.4 u (a+b arctanh(c x))^p:19" "7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.4 u (a+b arctanh(c x))^p.m#19"
 
 /-- integration.rubi_7_3_4_r23 with non-degeneracy conditions (numerically checked) -/
 def rubi734r23Nondeg : CRule where
@@ -12093,6 +12734,24 @@ def rubi734r27Nondeg : CRule where
   priority := 10114
   description := "RUBI 7.3.4 #27"
   provenance := migrated "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.4 u (a+b arctanh(c x))^p:27" "7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.4 u (a+b arctanh(c x))^p.m#27"
+
+/-- integration.rubi_7_3_4_r31 with non-degeneracy conditions (numerically checked) -/
+def rubi734r31Nondeg : CRule where
+  id := "integration.rubi_7_3_4_r31_nondegenerate"; legacyId := some "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.4 u (a+b arctanh(c x))^p:31"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "q")) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.app2 .mul (.var "c") (.var "x"))))) (.var "p")))
+  result := (.app2 .add (.app2 .add (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.var "b")) (.var "p")) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.app2 .add (.var "q") (.int 1)))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.app2 .mul (.var "c") (.var "x"))))) (.app2 .add (.var "p") (.app2 .mul (.int (-1)) (.int 1))))) (.pow (.app2 .mul (.app2 .mul (.app2 .mul (.int 4) (.var "c")) (.var "d")) (.pow (.app2 .add (.var "q") (.int 1)) (.int 2))) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.var "x")) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.app2 .add (.var "q") (.int 1)))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.app2 .mul (.var "c") (.var "x"))))) (.var "p"))) (.pow (.app2 .mul (.app2 .mul (.int 2) (.var "d")) (.app2 .add (.var "q") (.int 1))) (.int (-1))))) (.app2 .mul (.app2 .mul (.app2 .add (.app2 .mul (.int 2) (.var "q")) (.int 3)) (.pow (.app2 .mul (.app2 .mul (.int 2) (.var "d")) (.app2 .add (.var "q") (.int 1))) (.int (-1)))) (.var "I1"))) (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.var "b") (.int 2)) (.var "p")) (.app2 .add (.var "p") (.app2 .mul (.int (-1)) (.int 1)))) (.pow (.app2 .mul (.int 4) (.pow (.app2 .add (.var "q") (.int 1)) (.int 2))) (.int (-1)))) (.var "I2")))
+  integrals := [("I1", (.app2 .mul (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.app2 .add (.var "q") (.int 1))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.app2 .mul (.var "c") (.var "x"))))) (.var "p")))),
+    ("I2", (.app2 .mul (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "q")) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.app2 .mul (.var "c") (.var "x"))))) (.app2 .add (.var "p") (.app2 .mul (.int (-1)) (.int 2))))))]
+  independent := ["a", "b", "c", "d", "e", "p", "q"]
+  conditions := [.eq (.app2 .add (.app2 .mul (.pow (.var "c") (.int 2)) (.var "d")) (.var "e")) (.int 0),
+    .gt (.int (-1)) (.var "q"),
+    .gt (.var "p") (.int 1),
+    .ne (.var "q") (.app2 .mul (.int (-3)) (.pow (.int 2) (.int (-1)))),
+    .ne (.app2 .mul (.app2 .mul (.app2 .mul (.int 4) (.var "c")) (.var "d")) (.pow (.app2 .add (.var "q") (.int 1)) (.int 2))) (.int 0)]
+  priority := 10116
+  description := "RUBI 7.3.4 #31"
+  provenance := migrated "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.4 u (a+b arctanh(c x))^p:31" "7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.4 u (a+b arctanh(c x))^p.m#31"
 
 /-- integration.rubi_7_3_4_r45 with non-degeneracy conditions (numerically checked) -/
 def rubi734r45Nondeg : CRule where
@@ -12252,6 +12911,22 @@ def rubi734r60Nondeg : CRule where
   description := "RUBI 7.3.4 #60"
   provenance := migrated "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.4 u (a+b arctanh(c x))^p:60" "7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.4 u (a+b arctanh(c x))^p.m#60"
 
+/-- integration.rubi_7_3_4_r62 with non-degeneracy conditions (numerically checked) -/
+def rubi734r62Nondeg : CRule where
+  id := "integration.rubi_7_3_4_r62_nondegenerate"; legacyId := some "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.4 u (a+b arctanh(c x))^p:62"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.app2 .mul (.var "x") (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.pow (.app2 .mul (.var "c") (.var "x")) (.int (-1)))))) (.var "p"))) (.pow (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.int 2)) (.int (-1))))
+  result := (.app2 .add (.app2 .add (.app2 .mul (.app2 .mul (.var "x") (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.pow (.app2 .mul (.var "c") (.var "x")) (.int (-1)))))) (.app2 .add (.var "p") (.int 1)))) (.pow (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.var "d")) (.app2 .add (.var "p") (.int 1))) (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2))))) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .add (.int 1) (.app2 .mul (.pow (.var "c") (.int 2)) (.pow (.var "x") (.int 2)))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.pow (.app2 .mul (.var "c") (.var "x")) (.int (-1)))))) (.app2 .add (.var "p") (.int 2)))) (.pow (.app2 .mul (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.var "b") (.int 2)) (.var "e")) (.app2 .add (.var "p") (.int 1))) (.app2 .add (.var "p") (.int 2))) (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2))))) (.int (-1))))) (.app2 .mul (.app2 .mul (.int 4) (.pow (.app2 .mul (.app2 .mul (.pow (.var "b") (.int 2)) (.app2 .add (.var "p") (.int 1))) (.app2 .add (.var "p") (.int 2))) (.int (-1)))) (.var "I1")))
+  integrals := [("I1", (.app2 .mul (.app2 .mul (.var "x") (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.pow (.app2 .mul (.var "c") (.var "x")) (.int (-1)))))) (.app2 .add (.var "p") (.int 2)))) (.pow (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.int 2)) (.int (-1)))))]
+  independent := ["a", "b", "c", "d", "e", "p"]
+  conditions := [.eq (.app2 .add (.app2 .mul (.pow (.var "c") (.int 2)) (.var "d")) (.var "e")) (.int 0),
+    .gt (.int (-1)) (.var "p"),
+    .ne (.var "p") (.int (-2)),
+    .ne (.app2 .mul (.app2 .mul (.pow (.var "b") (.int 2)) (.app2 .add (.var "p") (.int 1))) (.app2 .add (.var "p") (.int 2))) (.int 0)]
+  priority := 15403
+  description := "RUBI 7.3.4 #62"
+  provenance := migrated "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.4 u (a+b arctanh(c x))^p:62" "7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.4 u (a+b arctanh(c x))^p.m#62"
+
 /-- integration.rubi_7_3_4_r63 with non-degeneracy conditions (numerically checked) -/
 def rubi734r63Nondeg : CRule where
   id := "integration.rubi_7_3_4_r63_nondegenerate"; legacyId := some "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.4 u (a+b arctanh(c x))^p:63"
@@ -12380,6 +13055,25 @@ def rubi734r9Nondeg : CRule where
   priority := 10131
   description := "RUBI 7.3.4 #9"
   provenance := migrated "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.4 u (a+b arctanh(c x))^p:9" "7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.4 u (a+b arctanh(c x))^p.m#9"
+
+/-- integration.rubi_7_3_4_r98 with non-degeneracy conditions (numerically checked) -/
+def rubi734r98Nondeg : CRule where
+  id := "integration.rubi_7_3_4_r98_nondegenerate"; legacyId := some "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.4 u (a+b arctanh(c x))^p:98"
+  shape := .antiderivRec; x := "x"
+  body := (.app2 .mul (.app2 .mul (.pow (.var "x") (.var "m")) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "q"))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.pow (.app2 .mul (.var "c") (.var "x")) (.int (-1)))))) (.var "p")))
+  result := (.app2 .add (.app2 .add (.app2 .mul (.app2 .mul (.app2 .mul (.pow (.var "x") (.var "m")) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.app2 .add (.var "q") (.int 1)))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.pow (.app2 .mul (.var "c") (.var "x")) (.int (-1)))))) (.app2 .add (.var "p") (.int 1)))) (.pow (.app2 .mul (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.var "d")) (.app2 .add (.var "p") (.int 1))) (.int (-1)))) (.app2 .mul (.app2 .mul (.app2 .mul (.int (-1)) (.var "m")) (.pow (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.app2 .add (.var "p") (.int 1))) (.int (-1)))) (.var "I1"))) (.app2 .mul (.app2 .mul (.app2 .mul (.var "c") (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.int 2) (.var "q"))) (.int 2))) (.pow (.app2 .mul (.var "b") (.app2 .add (.var "p") (.int 1))) (.int (-1)))) (.var "I2")))
+  integrals := [("I1", (.app2 .mul (.app2 .mul (.pow (.var "x") (.app2 .add (.var "m") (.app2 .mul (.int (-1)) (.int 1)))) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "q"))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.pow (.app2 .mul (.var "c") (.var "x")) (.int (-1)))))) (.app2 .add (.var "p") (.int 1))))),
+    ("I2", (.app2 .mul (.app2 .mul (.pow (.var "x") (.app2 .add (.var "m") (.int 1))) (.pow (.app2 .add (.var "d") (.app2 .mul (.var "e") (.pow (.var "x") (.int 2)))) (.var "q"))) (.pow (.app2 .add (.var "a") (.app2 .mul (.var "b") (.app1 .arctanh (.pow (.app2 .mul (.var "c") (.var "x")) (.int (-1)))))) (.app2 .add (.var "p") (.int 1)))))]
+  independent := ["a", "b", "c", "d", "e", "m", "p", "q"]
+  conditions := [.eq (.app2 .add (.app2 .mul (.pow (.var "c") (.int 2)) (.var "d")) (.var "e")) (.int 0),
+    .int (.var "m"),
+    .gt (.int (-1)) (.var "q"),
+    .gt (.int (-1)) (.var "p"),
+    .ne (.app2 .add (.app2 .add (.var "m") (.app2 .mul (.int 2) (.var "q"))) (.int 2)) (.int 0),
+    .ne (.app2 .mul (.app2 .mul (.app2 .mul (.var "b") (.var "c")) (.var "d")) (.app2 .add (.var "p") (.int 1))) (.int 0)]
+  priority := 15413
+  description := "RUBI 7.3.4 #98"
+  provenance := migrated "rubi:7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.4 u (a+b arctanh(c x))^p:98" "7 Inverse hyperbolic functions/7.3 Inverse hyperbolic tangent/7.3.4 u (a+b arctanh(c x))^p.m#98"
 
 /-- integration.rubi_7_3_5_r1 with non-degeneracy conditions (numerically checked) -/
 def rubi735r1Nondeg : CRule where
@@ -14757,6 +15451,15 @@ def entriesPart1 : List CEntry := [
       recFinding,
       condFinding "GtQ[q, 0]; NeQ[Add[Multiply[n, Add[p, q, 1]], 1], 0]",
       optionalFinding "b., p., d., q. and f."] },
+  { rule := rubi1136r10Nondeg, ruleDecl := ``rubi1136r10Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition b*n*(b*c + -1*a*d)*(p + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_1_3_6_r10, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 24 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 10 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: m, n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[n, 0]; LtQ[p, -1]; GtQ[Add[m, Multiply[-1, n], 1], 0]",
+      optionalFinding "g., m., b., d. and f."] },
   { rule := rubi1136r11Nondeg, ruleDecl := ``rubi1136r11Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -14889,6 +15592,14 @@ def entriesPart1 : List CEntry := [
       "independence: m, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       recFinding,
       condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; EqQ[Add[Multiply[2, c, d], Multiply[-1, b, e]], 0]; NeQ[Add[m, Multiply[2, p], 3], 0]; LtQ[p, -1]; GtQ[m, 1]; IntegerQ[Multiply[2, p]]",
+      optionalFinding "e., a., b. and c."] },
+  { rule := rubi1212r62Nondeg, ruleDecl := ``rubi1212r62Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition d^2*(b^2 + -1*4*a*c) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_2_r62, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 21 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 43 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      recFinding,
+      condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; EqQ[Add[Multiply[2, c, d], Multiply[-1, b, e]], 0]; LtQ[Multiply[c, Power[Add[Power[b, 2], Multiply[-1, 4, a, c]], -1]], 0]",
       optionalFinding "e., a., b. and c."] },
   { rule := rubi1212r63Nondeg, ruleDecl := ``rubi1212r63Nondeg, proofs := [],
     unproved := [.real, .complex],
@@ -15274,6 +15985,15 @@ def entriesPart1 : List CEntry := [
       recFinding,
       condFinding "ILtQ[Multiply[m, Power[2, -1]], 0]",
       optionalFinding "e. and c."] },
+  { rule := rubi1232r13Nondeg, ruleDecl := ``rubi1232r13Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition a*d*n*(p + 1)*(b^2 + -1*4*a*c) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_3_2_r13, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 88 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 23 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: n, n2, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; IGtQ[n, 0]; ILtQ[p, -1]",
+      optionalFinding "d., m., b., c. and n2."] },
   { rule := rubi1232r16Nondeg, ruleDecl := ``rubi1232r16Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -15291,7 +16011,18 @@ def entriesPart1 : List CEntry := [
       "independence: n2, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       recFinding,
       condFinding "EqQ[n2, Multiply[2, n]]; NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; EqQ[Add[Multiply[c, Power[d, 2]], Multiply[-1, b, d, e], Multiply[a, Power[e, 2]]], 0]; IntegerQ[p]",
-      optionalFinding "e., q., b., c. and p."] },
+      optionalFinding "e., q., b., c. and p."] }
+]
+
+set_option maxRecDepth 8192 in
+set_option maxHeartbeats 8000000 in
+theorem entriesPart1_wellFormed : ∀ e ∈ entriesPart1,
+    (if e.rule.shape == .antiderivRec || e.rule.shape == .antiderivSubst then e.rule.recOk else e.rule.wellFormed) = true := by
+  intro e he
+  simp only [entriesPart1, List.mem_cons, List.mem_nil_iff, or_false] at he
+  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+
+def entriesPart2 : List CEntry := [
   { rule := rubi1233r17Nondeg, ruleDecl := ``rubi1233r17Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -15318,18 +16049,7 @@ def entriesPart1 : List CEntry := [
       "independence: n2, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       recFinding,
       condFinding "EqQ[n2, Multiply[2, n]]; NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; ILtQ[p, -1]",
-      optionalFinding "e., b. and c."] }
-]
-
-set_option maxRecDepth 8192 in
-set_option maxHeartbeats 8000000 in
-theorem entriesPart1_wellFormed : ∀ e ∈ entriesPart1,
-    (if e.rule.shape == .antiderivRec || e.rule.shape == .antiderivSubst then e.rule.recOk else e.rule.wellFormed) = true := by
-  intro e he
-  simp only [entriesPart1, List.mem_cons, List.mem_nil_iff, or_false] at he
-  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
-
-def entriesPart2 : List CEntry := [
+      optionalFinding "e., b. and c."] },
   { rule := rubi1233r51Nondeg, ruleDecl := ``rubi1233r51Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -15357,6 +16077,15 @@ def entriesPart2 : List CEntry := [
       recFinding,
       condFinding "EqQ[n2, Multiply[2, n]]; NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; IGtQ[n, 0]; GtQ[p, 0]; NeQ[Add[Multiply[2, n, p], m, 1], 0]; NeQ[Add[m, Multiply[n, Add[Multiply[2, p], 1]], 1], 0]; IntegerQ[p]",
       optionalFinding "f., m., e., b., c. and p."] },
+  { rule := rubi1234r32Nondeg, ruleDecl := ``rubi1234r32Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition c*f*(2*n*p + m + 1)*(m + n*(2*p + 1) + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_3_4_r32, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 80 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 28 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: n, n2, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; IGtQ[n, 0]; GtQ[p, 0]; NeQ[Add[Multiply[2, n, p], m, 1], 0]; NeQ[Add[m, Multiply[n, Add[Multiply[2, p], 1]], 1], 0]; IntegerQ[p]",
+      optionalFinding "f., m., e., c. and p."] },
   { rule := rubi1234r35Nondeg, ruleDecl := ``rubi1234r35Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -15375,6 +16104,15 @@ def entriesPart2 : List CEntry := [
       recFinding,
       condFinding "EqQ[n2, Multiply[2, n]]; IGtQ[n, 0]; LtQ[p, -1]; IntegerQ[p]",
       optionalFinding "f., m., e. and c."] },
+  { rule := rubi1234r37Nondeg, ruleDecl := ``rubi1234r37Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition c*(m + n*(2*p + 1) + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_3_4_r37, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 160 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 15 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: m, n, n2 are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[n2, Multiply[2, n]]; NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]; IGtQ[n, 0]; GtQ[m, Add[n, Multiply[-1, 1]]]; NeQ[Add[m, Multiply[n, Add[Multiply[2, p], 1]], 1], 0]; IntegerQ[p]",
+      optionalFinding "f., m., e., b. and c."] },
   { rule := rubi1234r39Nondeg, ruleDecl := ``rubi1234r39Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -15447,6 +16185,15 @@ def entriesPart2 : List CEntry := [
       recFinding,
       condFinding "EqQ[n2, Multiply[2, n]]; EqQ[Add[m, Multiply[n, Add[p, 1]], 1], 0]; EqQ[Add[Multiply[c, d], Multiply[a, f]], 0]; NeQ[m, -1]",
       optionalFinding "g., m., f., n2., b., n., c. and p."] },
+  { rule := rubi131r1Nondeg, ruleDecl := ``rubi131r1Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition c ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_3_1_r1, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 8 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 40 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[p, 0]; EqQ[Add[Power[c, 2], Multiply[-1, 3, b, d]], 0]",
+      optionalFinding "a., b., c. and d."] },
   { rule := rubi133r23Nondeg, ruleDecl := ``rubi133r23Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -15613,6 +16360,32 @@ def entriesPart2 : List CEntry := [
       recFinding,
       condFinding "EqQ[Add[n, mn], 0]; IGtQ[n, 0]; NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; EqQ[Add[Multiply[b, f], Multiply[-1, a, g]], 0]; EqQ[Add[Multiply[d, h], Multiply[-1, c, i]], 0]; IGtQ[m, -2]",
       optionalFinding "f., g., m., h., i., A., B., e., a., b., n., c. and d."] },
+  { rule := rubi322r3Nondeg, ruleDecl := ``rubi322r3Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the conditions b ≠ 0 and d ≠ 0 (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_3_2_2_r3, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 18 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 42 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: m, q are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; EqQ[Add[Multiply[b, f], Multiply[-1, a, g]], 0]; EqQ[Add[Multiply[d, h], Multiply[-1, c, i]], 0]; IntegersQ[m, q]",
+      optionalFinding "f., g., m., h., i., q., A., B., e., a., b., c., d., n. and p."] },
+  { rule := rubi322r4Nondeg, ruleDecl := ``rubi322r4Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition d ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_3_2_2_r4, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 9 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 20 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: m, mn, q are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[n, mn], 0]; IGtQ[n, 0]; NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; EqQ[Add[Multiply[b, f], Multiply[-1, a, g]], 0]; EqQ[Add[Multiply[d, h], Multiply[-1, c, i]], 0]; IntegersQ[m, q]",
+      optionalFinding "f., g., m., h., i., q., A., B., e., a., b., n., c., d. and p."] },
+  { rule := rubi322r5Nondeg, ruleDecl := ``rubi322r5Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the conditions b ≠ 0 and d ≠ 0 (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_3_2_2_r5, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 16 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 43 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; EqQ[Add[Multiply[b, f], Multiply[-1, a, g]], 0]; EqQ[Add[Multiply[d, h], Multiply[-1, c, i]], 0]; EqQ[Add[m, q, 2], 0]",
+      optionalFinding "f., g., m., h., i., q., A., B., e., a., b., c., d., n. and p."] },
   { rule := rubi322r7Nondeg, ruleDecl := ``rubi322r7Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -15622,6 +16395,15 @@ def entriesPart2 : List CEntry := [
       recFinding,
       condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; IntegersQ[m, q]; IGtQ[p, 0]; EqQ[Add[Multiply[d, h], Multiply[-1, c, i]], 0]",
       optionalFinding "f., g., m., h., i., q., A., B., e., a., b., c., d., n. and p."] },
+  { rule := rubi322r8Nondeg, ruleDecl := ``rubi322r8Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition d ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_3_2_2_r8, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 46 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 31 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: m, mn, p, q are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[n, mn], 0]; IGtQ[n, 0]; NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; IntegersQ[m, q]; IGtQ[p, 0]; EqQ[Add[Multiply[d, h], Multiply[-1, c, i]], 0]",
+      optionalFinding "f., g., m., h., i., q., A., B., e., a., b., n., c., d. and p."] },
   { rule := rubi323r11Nondeg, ruleDecl := ``rubi323r11Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -15637,6 +16419,14 @@ def entriesPart2 : List CEntry := [
       "numerical: checked over ℝ only, with no failure at 2770 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 42 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
       recFinding,
       optionalFinding "a., b., c., e., n. and p."] },
+  { rule := rubi33r14Nondeg, ruleDecl := ``rubi33r14Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition g ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_3_3_r14, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 65 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 40 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      recFinding,
+      condFinding "EqQ[c, Multiply[2, d]]; EqQ[Add[Multiply[Power[e, 2], f], Multiply[Power[d, 2], g]], 0]",
+      optionalFinding "c., e. and g."] },
   { rule := rubi33r2Nondeg, ruleDecl := ``rubi33r2Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -16078,7 +16868,18 @@ def entriesPart2 : List CEntry := [
       "numerical: checked over ℝ only, with no failure at 504 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 40 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
       recFinding,
       condFinding "EqQ[Add[Power[a, 2], Multiply[-1, Power[b, 2]]], 0]; Not[LtQ[m, Multiply[-1, Power[2, -1]]]]",
-      optionalFinding "e., f. and b."] },
+      optionalFinding "e., f. and b."] }
+]
+
+set_option maxRecDepth 8192 in
+set_option maxHeartbeats 8000000 in
+theorem entriesPart2_wellFormed : ∀ e ∈ entriesPart2,
+    (if e.rule.shape == .antiderivRec || e.rule.shape == .antiderivSubst then e.rule.recOk else e.rule.wellFormed) = true := by
+  intro e he
+  simp only [entriesPart2, List.mem_cons, List.mem_nil_iff, or_false] at he
+  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+
+def entriesPart3 : List CEntry := [
   { rule := rubi4121r27Nondeg, ruleDecl := ``rubi4121r27Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -16096,6 +16897,15 @@ def entriesPart2 : List CEntry := [
       recFinding,
       condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; EqQ[Add[Power[a, 2], Multiply[-1, Power[b, 2]]], 0]; Not[LtQ[m, -1]]",
       optionalFinding "b., e., f. and d."] },
+  { rule := rubi4121r29Nondeg, ruleDecl := ``rubi4121r29Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition d*f*(n + 1)*(b*c + a*d) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_1_2_1_r29, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 80 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 10 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; EqQ[Add[Power[a, 2], Multiply[-1, Power[b, 2]]], 0]; NeQ[Add[Power[c, 2], Multiply[-1, Power[d, 2]]], 0]; GtQ[m, 1]; LtQ[n, -1]; Or[Or[IntegersQ[Multiply[2, m], Multiply[2, n]], IntegerQ[Add[m, Multiply[1, Power[2, -1]]]]], And[IntegerQ[m], EqQ[c, 0]]]",
+      optionalFinding "b., e., f., c. and d."] },
   { rule := rubi4121r30Nondeg, ruleDecl := ``rubi4121r30Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -16170,18 +16980,7 @@ def entriesPart2 : List CEntry := [
       "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       recFinding,
       condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; NeQ[Add[Power[a, 2], Multiply[-1, Power[b, 2]]], 0]; NeQ[Add[Power[c, 2], Multiply[-1, Power[d, 2]]], 0]; GtQ[m, 2]; LtQ[n, -1]; Or[IntegerQ[m], IntegersQ[Multiply[2, m], Multiply[2, n]]]",
-      optionalFinding "a., b., e., f., c. and d."] }
-]
-
-set_option maxRecDepth 8192 in
-set_option maxHeartbeats 8000000 in
-theorem entriesPart2_wellFormed : ∀ e ∈ entriesPart2,
-    (if e.rule.shape == .antiderivRec || e.rule.shape == .antiderivSubst then e.rule.recOk else e.rule.wellFormed) = true := by
-  intro e he
-  simp only [entriesPart2, List.mem_cons, List.mem_nil_iff, or_false] at he
-  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
-
-def entriesPart3 : List CEntry := [
+      optionalFinding "a., b., e., f., c. and d."] },
   { rule := rubi4121r89Nondeg, ruleDecl := ``rubi4121r89Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -16612,6 +17411,15 @@ def entriesPart3 : List CEntry := [
       recFinding,
       condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; EqQ[Add[Power[a, 2], Multiply[-1, Power[b, 2]]], 0]; NeQ[Add[Power[c, 2], Multiply[-1, Power[d, 2]]], 0]; Not[LtQ[m, Multiply[-1, Power[2, -1]]]]; Or[LtQ[n, -1], EqQ[Add[m, n, 2], 0]]",
       optionalFinding "b., e., f., m., c., d., A., B. and C."] },
+  { rule := rubi4142r16Nondeg, ruleDecl := ``rubi4142r16Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition d*f*(n + 1)*(c^2 + -1*d^2) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_1_4_2_r16, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 24 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 25 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; EqQ[Add[Power[a, 2], Multiply[-1, Power[b, 2]]], 0]; NeQ[Add[Power[c, 2], Multiply[-1, Power[d, 2]]], 0]; Not[LtQ[m, Multiply[-1, Power[2, -1]]]]; Or[LtQ[n, -1], EqQ[Add[m, n, 2], 0]]",
+      optionalFinding "b., e., f., m., c., d., A. and C."] },
   { rule := rubi4142r17Nondeg, ruleDecl := ``rubi4142r17Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -16908,7 +17716,18 @@ def entriesPart3 : List CEntry := [
       "strengthened: the condition a*e*(n + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_1_6_r25, which stays refuted.",
       "numerical: checked over ℝ only, with no failure at 192 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 40 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
       condFinding "NeQ[n, -1]; EqQ[Add[Power[a, 2], Multiply[-1, Power[b, 2]], Multiply[-1, Power[c, 2]]], 0]; EqQ[Add[Multiply[c, C, n], Multiply[a, A, Add[n, 1]]], 0]",
-      optionalFinding "A., C., d., e., b., c. and n."] },
+      optionalFinding "A., C., d., e., b., c. and n."] }
+]
+
+set_option maxRecDepth 8192 in
+set_option maxHeartbeats 8000000 in
+theorem entriesPart3_wellFormed : ∀ e ∈ entriesPart3,
+    (if e.rule.shape == .antiderivRec || e.rule.shape == .antiderivSubst then e.rule.recOk else e.rule.wellFormed) = true := by
+  intro e he
+  simp only [entriesPart3, List.mem_cons, List.mem_nil_iff, or_false] at he
+  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+
+def entriesPart4 : List CEntry := [
   { rule := rubi416r26Nondeg, ruleDecl := ``rubi416r26Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -17018,18 +17837,7 @@ def entriesPart3 : List CEntry := [
       "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
       recFinding,
       condFinding "EqQ[Add[Power[a, 2], Multiply[-1, Power[b, 2]], Multiply[-1, Power[c, 2]]], 0]; LtQ[n, -1]",
-      optionalFinding "b., d., e. and c."] }
-]
-
-set_option maxRecDepth 8192 in
-set_option maxHeartbeats 8000000 in
-theorem entriesPart3_wellFormed : ∀ e ∈ entriesPart3,
-    (if e.rule.shape == .antiderivRec || e.rule.shape == .antiderivSubst then e.rule.recOk else e.rule.wellFormed) = true := by
-  intro e he
-  simp only [entriesPart3, List.mem_cons, List.mem_nil_iff, or_false] at he
-  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
-
-def entriesPart4 : List CEntry := [
+      optionalFinding "b., d., e. and c."] },
   { rule := rubi416r9Nondeg, ruleDecl := ``rubi416r9Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -17757,7 +18565,18 @@ def entriesPart4 : List CEntry := [
       "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
       recFinding,
       condFinding "EqQ[Add[Power[a, 2], Multiply[-1, Power[b, 2]]], 0]; GtQ[m, Multiply[1, Power[2, -1]]]; IntegerQ[Multiply[2, m]]",
-      optionalFinding "e., f. and b."] },
+      optionalFinding "e., f. and b."] }
+]
+
+set_option maxRecDepth 8192 in
+set_option maxHeartbeats 8000000 in
+theorem entriesPart4_wellFormed : ∀ e ∈ entriesPart4,
+    (if e.rule.shape == .antiderivRec || e.rule.shape == .antiderivSubst then e.rule.recOk else e.rule.wellFormed) = true := by
+  intro e he
+  simp only [entriesPart4, List.mem_cons, List.mem_nil_iff, or_false] at he
+  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+
+def entriesPart5 : List CEntry := [
   { rule := rubi4512r75Nondeg, ruleDecl := ``rubi4512r75Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -17872,18 +18691,7 @@ def entriesPart4 : List CEntry := [
       "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       recFinding,
       condFinding "IntegerQ[n]; GeQ[Add[m, Multiply[-1, n]], 0]; NeQ[p, 1]",
-      optionalFinding "m., a., b. and n."] }
-]
-
-set_option maxRecDepth 8192 in
-set_option maxHeartbeats 8000000 in
-theorem entriesPart4_wellFormed : ∀ e ∈ entriesPart4,
-    (if e.rule.shape == .antiderivRec || e.rule.shape == .antiderivSubst then e.rule.recOk else e.rule.wellFormed) = true := by
-  intro e he
-  simp only [entriesPart4, List.mem_cons, List.mem_nil_iff, or_false] at he
-  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
-
-def entriesPart5 : List CEntry := [
+      optionalFinding "m., a., b. and n."] },
   { rule := rubi4521r17Nondeg, ruleDecl := ``rubi4521r17Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -17966,6 +18774,14 @@ def entriesPart5 : List CEntry := [
       recFinding,
       condFinding "NeQ[Add[Multiply[A, b], Multiply[-1, a, B]], 0]; Not[LtQ[m, -1]]",
       optionalFinding "e., f., b. and B."] },
+  { rule := rubi4531r18Nondeg, ruleDecl := ``rubi4531r18Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition f*n ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_5_3_1_r18, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 80 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 40 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[A, b], Multiply[-1, a, B]], 0]; EqQ[Add[Power[a, 2], Multiply[-1, Power[b, 2]]], 0]; EqQ[Add[m, n, 1], 0]; Not[LeQ[m, -1]]",
+      optionalFinding "b., e., f., d. and B."] },
   { rule := rubi4531r2Nondeg, ruleDecl := ``rubi4531r2Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -17975,6 +18791,15 @@ def entriesPart5 : List CEntry := [
       recFinding,
       condFinding "NeQ[Add[Multiply[A, b], Multiply[-1, a, B]], 0]; Not[LeQ[n, -1]]",
       optionalFinding "b., e., f., d., n. and B."] },
+  { rule := rubi4531r22Nondeg, ruleDecl := ``rubi4531r22Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition f*n ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_5_3_1_r22, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 16 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 18 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[A, b], Multiply[-1, a, B]], 0]; EqQ[Add[Power[a, 2], Multiply[-1, Power[b, 2]]], 0]; GtQ[m, Multiply[1, Power[2, -1]]]; LtQ[n, -1]",
+      optionalFinding "b., e., f., d. and B."] },
   { rule := rubi4531r23Nondeg, ruleDecl := ``rubi4531r23Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -18609,7 +19434,18 @@ def entriesPart5 : List CEntry := [
       "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
       recFinding,
       condFinding "IGtQ[m, 0]; NeQ[n, -1]",
-      optionalFinding "c., d., m., a., b. and n."] },
+      optionalFinding "c., d., m., a., b. and n."] }
+]
+
+set_option maxRecDepth 8192 in
+set_option maxHeartbeats 8000000 in
+theorem entriesPart5_wellFormed : ∀ e ∈ entriesPart5,
+    (if e.rule.shape == .antiderivRec || e.rule.shape == .antiderivSubst then e.rule.recOk else e.rule.wellFormed) = true := by
+  intro e he
+  simp only [entriesPart5, List.mem_cons, List.mem_nil_iff, or_false] at he
+  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+
+def entriesPart6 : List CEntry := [
   { rule := rubi476r9Nondeg, ruleDecl := ``rubi476r9Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -18743,18 +19579,7 @@ def entriesPart5 : List CEntry := [
       "numerical: checked over ℝ only, with no failure at 510 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 40 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
       recFinding,
       condFinding "EqQ[Add[Multiply[a, A], Multiply[-1, b, B]], 0]",
-      optionalFinding "e., f., B., c., d. and b."] }
-]
-
-set_option maxRecDepth 8192 in
-set_option maxHeartbeats 8000000 in
-theorem entriesPart5_wellFormed : ∀ e ∈ entriesPart5,
-    (if e.rule.shape == .antiderivRec || e.rule.shape == .antiderivSubst then e.rule.recOk else e.rule.wellFormed) = true := by
-  intro e he
-  simp only [entriesPart5, List.mem_cons, List.mem_nil_iff, or_false] at he
-  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
-
-def entriesPart6 : List CEntry := [
+      optionalFinding "e., f., B., c., d. and b."] },
   { rule := rubi479r77Nondeg, ruleDecl := ``rubi479r77Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -18907,6 +19732,33 @@ def entriesPart6 : List CEntry := [
       recFinding,
       condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; IGtQ[n, 0]",
       optionalFinding "a., b., c., n. and e."] },
+  { rule := rubi514r29Nondeg, ruleDecl := ``rubi514r29Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition b*c*(n + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_5_1_4_r29, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 0 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 17 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; LtQ[n, -1]; EqQ[Add[m, Multiply[2, p], 1], 0]",
+      optionalFinding "f., m., e., p., a., b. and c."] },
+  { rule := rubi514r3Nondeg, ruleDecl := ``rubi514r3Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition 2*e*(p + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_5_1_4_r3, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 0 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 40 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; GtQ[n, 0]; NeQ[p, -1]",
+      optionalFinding "e., p., a., b., c. and n."] },
+  { rule := rubi514r30Nondeg, ruleDecl := ``rubi514r30Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition b*c*(n + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_5_1_4_r30, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 0 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 17 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; LtQ[n, -1]; EqQ[Add[m, Multiply[2, p], 1], 0]",
+      optionalFinding "f., m., e., p., a., b. and c."] },
   { rule := rubi514r33Nondeg, ruleDecl := ``rubi514r33Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -18934,6 +19786,15 @@ def entriesPart6 : List CEntry := [
       recFinding,
       condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; IGtQ[n, 0]; IntegerQ[m]",
       optionalFinding "a., b., c., n. and e."] },
+  { rule := rubi514r4Nondeg, ruleDecl := ``rubi514r4Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition 2*e*(p + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_5_1_4_r4, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 0 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 40 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; GtQ[n, 0]; NeQ[p, -1]",
+      optionalFinding "e., p., a., b., c. and n."] },
   { rule := rubi514r41Nondeg, ruleDecl := ``rubi514r41Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -18968,6 +19829,24 @@ def entriesPart6 : List CEntry := [
       recFinding,
       condFinding "NeQ[Add[Multiply[Power[c, 2], d], e], 0]; NeQ[p, -1]",
       optionalFinding "e., p., a., b. and c."] },
+  { rule := rubi514r7Nondeg, ruleDecl := ``rubi514r7Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition d*f*(m + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_5_1_4_r7, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 0 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 40 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; GtQ[n, 0]; EqQ[Add[m, Multiply[2, p], 3], 0]; NeQ[m, -1]",
+      optionalFinding "f., e., a., b., c. and n."] },
+  { rule := rubi514r8Nondeg, ruleDecl := ``rubi514r8Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition d*f*(m + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_5_1_4_r8, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 0 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 42 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; GtQ[n, 0]; EqQ[Add[m, Multiply[2, p], 3], 0]; NeQ[m, -1]",
+      optionalFinding "f., e., a., b., c. and n."] },
   { rule := rubi515r3Nondeg, ruleDecl := ``rubi515r3Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -19237,6 +20116,15 @@ def entriesPart6 : List CEntry := [
       recFinding,
       condFinding "EqQ[e, Multiply[Power[c, 2], d]]; GtQ[p, 0]; NeQ[q, -1]",
       optionalFinding "e., q., a., b., c. and p."] },
+  { rule := rubi534r62Nondeg, ruleDecl := ``rubi534r62Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition b^2*(p + 1)*(p + 2) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_5_3_4_r62, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 8 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 30 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[e, Multiply[Power[c, 2], d]]; LtQ[p, -1]; NeQ[p, -2]",
+      optionalFinding "a., b., c. and e."] },
   { rule := rubi534r63Nondeg, ruleDecl := ``rubi534r63Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -19417,7 +20305,18 @@ def entriesPart6 : List CEntry := [
       "numerical: checked over ℝ only, with no failure at 656 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 42 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
       recFinding,
       condFinding "EqQ[Add[b, Power[c, 2]], 0]; NeQ[m, -1]",
-      optionalFinding "d., m., c., a. and b."] },
+      optionalFinding "d., m., c., a. and b."] }
+]
+
+set_option maxRecDepth 8192 in
+set_option maxHeartbeats 8000000 in
+theorem entriesPart6_wellFormed : ∀ e ∈ entriesPart6,
+    (if e.rule.shape == .antiderivRec || e.rule.shape == .antiderivSubst then e.rule.recOk else e.rule.wellFormed) = true := by
+  intro e he
+  simp only [entriesPart6, List.mem_cons, List.mem_nil_iff, or_false] at he
+  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+
+def entriesPart7 : List CEntry := [
   { rule := rubi537r18Nondeg, ruleDecl := ``rubi537r18Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -19606,18 +20505,7 @@ def entriesPart6 : List CEntry := [
       "numerical: checked over ℝ only, with no failure at 10872 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 40 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
       recFinding,
       condFinding "NeQ[Add[Multiply[b, e], Multiply[-1, 2, c, d]], 0]",
-      optionalFinding "d., e., a., b. and c."] }
-]
-
-set_option maxRecDepth 8192 in
-set_option maxHeartbeats 8000000 in
-theorem entriesPart6_wellFormed : ∀ e ∈ entriesPart6,
-    (if e.rule.shape == .antiderivRec || e.rule.shape == .antiderivSubst then e.rule.recOk else e.rule.wellFormed) = true := by
-  intro e he
-  simp only [entriesPart6, List.mem_cons, List.mem_nil_iff, or_false] at he
-  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
-
-def entriesPart7 : List CEntry := [
+      optionalFinding "d., e., a., b. and c."] },
   { rule := rubi6312r3Nondeg, ruleDecl := ``rubi6312r3Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -20136,6 +21024,15 @@ def entriesPart7 : List CEntry := [
       recFinding,
       condFinding "EqQ[e, Multiply[Power[c, 2], d]]; IGtQ[n, 0]",
       optionalFinding "a., b., c., n. and e."] },
+  { rule := rubi714r15Nondeg, ruleDecl := ``rubi714r15Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition b*c*(n + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_7_1_4_r15, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 0 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 20 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[e, Multiply[Power[c, 2], d]]; LtQ[n, -1]; EqQ[Add[m, Multiply[2, p], 1], 0]",
+      optionalFinding "f., m., e., p., a., b. and c."] },
   { rule := rubi714r17Nondeg, ruleDecl := ``rubi714r17Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -20162,6 +21059,15 @@ def entriesPart7 : List CEntry := [
       recFinding,
       condFinding "NeQ[e, Multiply[Power[c, 2], d]]; NeQ[p, -1]",
       optionalFinding "e., p., a., b. and c."] },
+  { rule := rubi715r11Nondeg, ruleDecl := ``rubi715r11Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition b*c*Sqrt[d]*(n + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_7_1_5_r11, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 40 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 15 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[e, Multiply[Power[c, 2], d]]; IGtQ[m, 0]; GtQ[d, 0]; LtQ[n, -1]",
+      optionalFinding "g., m., a., b., c. and e."] },
   { rule := rubi715r2Nondeg, ruleDecl := ``rubi715r2Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -20228,6 +21134,15 @@ def entriesPart7 : List CEntry := [
       recFinding,
       condFinding "IGtQ[n, 0]; NeQ[m, -1]",
       optionalFinding "d., m., a., b., c. and n."] },
+  { rule := rubi722r5Nondeg, ruleDecl := ``rubi722r5Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition b*c*(n + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_7_2_2_r5, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 18 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 10 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; LtQ[n, -2]",
+      optionalFinding "m., a., b. and c."] },
   { rule := rubi722r6Nondeg, ruleDecl := ``rubi722r6Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -20259,7 +21174,36 @@ def entriesPart7 : List CEntry := [
       "strengthened: the condition b*c*(n + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_7_2_3_r5, which stays refuted.",
       "numerical: checked over ℝ only, with no failure at 7 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 40 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
       condFinding "EqQ[e1, Multiply[c, d1]]; EqQ[e2, Multiply[-1, c, d2]]; NeQ[n, -1]",
-      optionalFinding "a., b., c., n., e1. and e2."] },
+      optionalFinding "a., b., c., n., e1. and e2."] }
+]
+
+set_option maxRecDepth 8192 in
+set_option maxHeartbeats 8000000 in
+theorem entriesPart7_wellFormed : ∀ e ∈ entriesPart7,
+    (if e.rule.shape == .antiderivRec || e.rule.shape == .antiderivSubst then e.rule.recOk else e.rule.wellFormed) = true := by
+  intro e he
+  simp only [entriesPart7, List.mem_cons, List.mem_nil_iff, or_false] at he
+  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+
+def entriesPart8 : List CEntry := [
+  { rule := rubi724r19Nondeg, ruleDecl := ``rubi724r19Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition d1*d2*f*(m + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_7_2_4_r19, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 0 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 15 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[e1, Multiply[c, d1]]; EqQ[e2, Multiply[-1, c, d2]]; GtQ[n, 0]; ILtQ[m, -1]",
+      optionalFinding "f., e1., e2., a., b., c. and n."] },
+  { rule := rubi724r3Nondeg, ruleDecl := ``rubi724r3Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition 2*e*(p + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_7_2_4_r3, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 0 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 42 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; GtQ[n, 0]; NeQ[p, -1]",
+      optionalFinding "e., p., a., b., c. and n."] },
   { rule := rubi724r38Nondeg, ruleDecl := ``rubi724r38Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -20269,6 +21213,15 @@ def entriesPart7 : List CEntry := [
       recFinding,
       condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; IGtQ[Add[Multiply[2, p], 2], 0]; IGtQ[m, 0]",
       optionalFinding "m., e., p., a., b., c. and n."] },
+  { rule := rubi724r4Nondeg, ruleDecl := ``rubi724r4Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition 2*e1*e2*(p + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_7_2_4_r4, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 0 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 41 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[e1, Multiply[c, d1]]; EqQ[e2, Multiply[-1, c, d2]]; GtQ[n, 0]; NeQ[p, -1]",
+      optionalFinding "e1., e2., a., b., c. and n."] },
   { rule := rubi724r42Nondeg, ruleDecl := ``rubi724r42Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -20285,6 +21238,15 @@ def entriesPart7 : List CEntry := [
       recFinding,
       condFinding "NeQ[Add[Multiply[Power[c, 2], d], e], 0]; NeQ[p, -1]",
       optionalFinding "e., p., a., b. and c."] },
+  { rule := rubi724r6Nondeg, ruleDecl := ``rubi724r6Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition d*f*(m + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_7_2_4_r6, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 0 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 44 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; GtQ[n, 0]; EqQ[Add[m, Multiply[2, p], 3], 0]; NeQ[m, -1]",
+      optionalFinding "f., e., p., a., b., c. and n."] },
   { rule := rubi725r2Nondeg, ruleDecl := ``rubi725r2Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -20335,6 +21297,15 @@ def entriesPart7 : List CEntry := [
       recFinding,
       condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; GtQ[p, 0]; GtQ[m, 1]",
       optionalFinding "f., a., b., c., p. and e."] },
+  { rule := rubi731r118Nondeg, ruleDecl := ``rubi731r118Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition b*c*d*(p + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_7_3_1_r118, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 14 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 16 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: m, p, q are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; IntegerQ[m]; LtQ[q, -1]; LtQ[p, -1]; NeQ[Add[m, Multiply[2, q], 2], 0]",
+      optionalFinding "m., e., a., b., c. and p."] },
   { rule := rubi731r123Nondeg, ruleDecl := ``rubi731r123Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -20351,6 +21322,15 @@ def entriesPart7 : List CEntry := [
       recFinding,
       condFinding "NeQ[q, -1]",
       optionalFinding "d., e., q., a., b. and c."] },
+  { rule := rubi731r136Nondeg, ruleDecl := ``rubi731r136Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition b*c*d*(p + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_7_3_1_r136, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 198 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 23 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[p, 0]; EqQ[Add[Multiply[Power[c, 2], d], e], 0]; EqQ[Add[Multiply[Power[c, 2], Power[f, 2]], Multiply[-1, Power[g, 2]]], 0]",
+      optionalFinding "a., b., c., p., g. and e."] },
   { rule := rubi731r164Nondeg, ruleDecl := ``rubi731r164Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -20434,6 +21414,15 @@ def entriesPart7 : List CEntry := [
       "numerical: checked over ℝ only, with no failure at 56 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 42 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
       condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; NeQ[p, -1]",
       optionalFinding "a., b., c., p. and e."] },
+  { rule := rubi731r39Nondeg, ruleDecl := ``rubi731r39Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition c*Sqrt[d] ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_7_3_1_r39, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 94 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 41 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; IGtQ[p, 0]; GtQ[d, 0]",
+      optionalFinding "a., b., c., p. and e."] },
   { rule := rubi731r43Nondeg, ruleDecl := ``rubi731r43Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -20461,6 +21450,15 @@ def entriesPart7 : List CEntry := [
       recFinding,
       condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; LtQ[q, -1]; NeQ[q, Multiply[-3, Power[2, -1]]]",
       optionalFinding "e., a., b. and c."] },
+  { rule := rubi731r51Nondeg, ruleDecl := ``rubi731r51Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition 4*c*d*(q + 1)^2 ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_7_3_1_r51, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 52 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 22 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: p, q are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; LtQ[q, -1]; GtQ[p, 1]; NeQ[q, Multiply[-3, Power[2, -1]]]",
+      optionalFinding "e., a., b. and c."] },
   { rule := rubi731r65Nondeg, ruleDecl := ``rubi731r65Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -20469,18 +21467,7 @@ def entriesPart7 : List CEntry := [
       "independence: m, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       recFinding,
       condFinding "GtQ[p, 0]; GtQ[m, 1]",
-      optionalFinding "f., a., b., c., p. and e."] }
-]
-
-set_option maxRecDepth 8192 in
-set_option maxHeartbeats 8000000 in
-theorem entriesPart7_wellFormed : ∀ e ∈ entriesPart7,
-    (if e.rule.shape == .antiderivRec || e.rule.shape == .antiderivSubst then e.rule.recOk else e.rule.wellFormed) = true := by
-  intro e he
-  simp only [entriesPart7, List.mem_cons, List.mem_nil_iff, or_false] at he
-  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
-
-def entriesPart8 : List CEntry := [
+      optionalFinding "f., a., b., c., p. and e."] },
   { rule := rubi731r66Nondeg, ruleDecl := ``rubi731r66Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -20580,6 +21567,15 @@ def entriesPart8 : List CEntry := [
       recFinding,
       condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; GtQ[p, 0]; NeQ[q, -1]",
       optionalFinding "e., q., a., b., c. and p."] },
+  { rule := rubi731r82Nondeg, ruleDecl := ``rubi731r82Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition b^2*(p + 1)*(p + 2) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_7_3_1_r82, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 57 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 21 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; LtQ[p, -1]; NeQ[p, -2]",
+      optionalFinding "a., b., c. and e."] },
   { rule := rubi731r83Nondeg, ruleDecl := ``rubi731r83Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -20895,6 +21891,15 @@ def entriesPart8 : List CEntry := [
       recFinding,
       condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; GtQ[q, 0]; GtQ[p, 1]",
       optionalFinding "e., q., a., b. and c."] },
+  { rule := rubi734r116Nondeg, ruleDecl := ``rubi734r116Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition b*c*d*(p + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_7_3_4_r116, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 198 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 23 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[p, 0]; EqQ[Add[Multiply[Power[c, 2], d], e], 0]; EqQ[Add[Multiply[Power[c, 2], Power[f, 2]], Multiply[-1, Power[g, 2]]], 0]",
+      optionalFinding "a., b., c., p., g. and e."] },
   { rule := rubi734r144Nondeg, ruleDecl := ``rubi734r144Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -20916,6 +21921,15 @@ def entriesPart8 : List CEntry := [
       "strengthened: the condition b*c*d*(p + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_7_3_4_r16, which stays refuted.",
       "numerical: checked over ℝ only, with no failure at 56 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 42 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
       condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; NeQ[p, -1]",
+      optionalFinding "a., b., c., p. and e."] },
+  { rule := rubi734r19Nondeg, ruleDecl := ``rubi734r19Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition c*Sqrt[d] ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_7_3_4_r19, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 94 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 41 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; IGtQ[p, 0]; GtQ[d, 0]",
       optionalFinding "a., b., c., p. and e."] },
   { rule := rubi734r23Nondeg, ruleDecl := ``rubi734r23Nondeg, proofs := [],
     unproved := [.real, .complex],
@@ -20943,6 +21957,15 @@ def entriesPart8 : List CEntry := [
       "independence: q is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
       recFinding,
       condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; LtQ[q, -1]; NeQ[q, Multiply[-3, Power[2, -1]]]",
+      optionalFinding "e., a., b. and c."] },
+  { rule := rubi734r31Nondeg, ruleDecl := ``rubi734r31Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition 4*c*d*(q + 1)^2 ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_7_3_4_r31, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 52 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 22 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: p, q are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; LtQ[q, -1]; GtQ[p, 1]; NeQ[q, Multiply[-3, Power[2, -1]]]",
       optionalFinding "e., a., b. and c."] },
   { rule := rubi734r45Nondeg, ruleDecl := ``rubi734r45Nondeg, proofs := [],
     unproved := [.real, .complex],
@@ -21033,7 +22056,27 @@ def entriesPart8 : List CEntry := [
       "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
       recFinding,
       condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; GtQ[p, 0]; NeQ[q, -1]",
-      optionalFinding "e., q., a., b., c. and p."] },
+      optionalFinding "e., q., a., b., c. and p."] }
+]
+
+set_option maxRecDepth 8192 in
+set_option maxHeartbeats 8000000 in
+theorem entriesPart8_wellFormed : ∀ e ∈ entriesPart8,
+    (if e.rule.shape == .antiderivRec || e.rule.shape == .antiderivSubst then e.rule.recOk else e.rule.wellFormed) = true := by
+  intro e he
+  simp only [entriesPart8, List.mem_cons, List.mem_nil_iff, or_false] at he
+  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+
+def entriesPart9 : List CEntry := [
+  { rule := rubi734r62Nondeg, ruleDecl := ``rubi734r62Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition b^2*(p + 1)*(p + 2) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_7_3_4_r62, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 57 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 21 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; LtQ[p, -1]; NeQ[p, -2]",
+      optionalFinding "a., b., c. and e."] },
   { rule := rubi734r63Nondeg, ruleDecl := ``rubi734r63Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -21106,6 +22149,15 @@ def entriesPart8 : List CEntry := [
       recFinding,
       condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; GtQ[q, 0]",
       optionalFinding "e., q., a., b. and c."] },
+  { rule := rubi734r98Nondeg, ruleDecl := ``rubi734r98Nondeg, proofs := [],
+    unproved := [.real, .complex],
+    findings := [
+      "strengthened: the condition b*c*d*(p + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_7_3_4_r98, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 14 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 16 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: m, p, q are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; IntegerQ[m]; LtQ[q, -1]; LtQ[p, -1]; NeQ[Add[m, Multiply[2, q], 2], 0]",
+      optionalFinding "m., e., a., b., c. and p."] },
   { rule := rubi735r1Nondeg, ruleDecl := ``rubi735r1Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
@@ -21260,15 +22312,15 @@ def entriesPart8 : List CEntry := [
 
 set_option maxRecDepth 8192 in
 set_option maxHeartbeats 8000000 in
-theorem entriesPart8_wellFormed : ∀ e ∈ entriesPart8,
+theorem entriesPart9_wellFormed : ∀ e ∈ entriesPart9,
     (if e.rule.shape == .antiderivRec || e.rule.shape == .antiderivSubst then e.rule.recOk else e.rule.wellFormed) = true := by
   intro e he
-  simp only [entriesPart8, List.mem_cons, List.mem_nil_iff, or_false] at he
-  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+  simp only [entriesPart9, List.mem_cons, List.mem_nil_iff, or_false] at he
+  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 /-- The strengthened variants checked numerically. -/
 def entries : List CEntry :=
-  entriesPart1 ++ entriesPart2 ++ entriesPart3 ++ entriesPart4 ++ entriesPart5 ++ entriesPart6 ++ entriesPart7 ++ entriesPart8
+  entriesPart1 ++ entriesPart2 ++ entriesPart3 ++ entriesPart4 ++ entriesPart5 ++ entriesPart6 ++ entriesPart7 ++ entriesPart8 ++ entriesPart9
 
 set_option maxRecDepth 4096 in
 set_option maxHeartbeats 8000000 in
@@ -21277,7 +22329,7 @@ theorem entries_wellFormed : ∀ e ∈ entries,
     (if e.rule.shape == .antiderivRec || e.rule.shape == .antiderivSubst then e.rule.recOk else e.rule.wellFormed) = true := by
   intro e he
   simp only [entries, List.mem_append] at he
-  rcases he with (((((((h | h) | h) | h) | h) | h) | h) | h)
+  rcases he with ((((((((h | h) | h) | h) | h) | h) | h) | h) | h)
   · exact entriesPart1_wellFormed e h
   · exact entriesPart2_wellFormed e h
   · exact entriesPart3_wellFormed e h
@@ -21286,5 +22338,6 @@ theorem entries_wellFormed : ∀ e ∈ entries,
   · exact entriesPart6_wellFormed e h
   · exact entriesPart7_wellFormed e h
   · exact entriesPart8_wellFormed e h
+  · exact entriesPart9_wellFormed e h
 
 end OSR.IntegrationNum1

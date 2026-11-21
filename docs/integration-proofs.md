@@ -701,6 +701,14 @@ distributed and accepts 184 more (788 in all); 6 candidates are false, and the
 others are left out until their definedness failures (78) or sample sizes
 (51) are settled.
 
+Of the 78 definedness failures, 38 are genuine in the fragment: the result
+has a power with a non-integer exponent such as `(d + e x²)^(p + 1/2)` where
+the integrand is defined, so the variant is false in OSR v1. Of the 40 found
+with equality conditions solved numerically, 24 come from the approximate
+solution (a value near `0` or an exponent near an integer) and pass the exact
+check; with more samples, 15 of the 51 under-sampled variants reach ten exact
+points. These 39 are distributed too (827 in all).
+
 The numerical triage is not a proof: the candidate variant of 1.2.1.3 #25
 (`c (m + 2 p + 2) ≠ 0`) is false at `e = d = m = 0`, `f ≠ 0`, a case the
 samples missed; it needs `e ≠ 0` as well and is not included.
