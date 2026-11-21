@@ -15300,14 +15300,6 @@ def entriesPart1 : List CEntry := [
       "numerical: checked over ℝ only, with no failure at 5464 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 42 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
       recFinding,
       optionalFinding "d., m., b. and p."] },
-  { rule := rubi1133r8Nondeg, ruleDecl := ``rubi1133r8Nondeg, proofs := [],
-    unproved := [.real, .complex],
-    findings := [
-      "strengthened: the condition a*c ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_1_3_3_r8, which stays refuted.",
-      "numerical: checked over ℝ only, with no failure at 552 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 41 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
-      recFinding,
-      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; EqQ[Add[Multiply[n, Add[p, q, 2]], 1], 0]; EqQ[Add[Multiply[a, d, Add[p, 1]], Multiply[b, c, Add[q, 1]]], 0]",
-      optionalFinding "b. and d."] },
   { rule := rubi1133r9Nondeg, ruleDecl := ``rubi1133r9Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [
