@@ -106,8 +106,8 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 `OSR/IntegrationNum1.lean` distributed strengthened variants before their
 proofs (Specification V1-R-005e): both domains unproved, and a `numerical:`
-finding recording the evidence. All of them are now proved and its list of
-entries is empty. Each candidate was checked over ℝ
+finding recording the evidence. It currently contains 826 unproved entries.
+Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
 derivative is the residual integrand at the point, on assignments where each
 metavariable is 0 with probability 0.4 (otherwise an integer between -3 and
@@ -134,7 +134,10 @@ by them. When a variant is proved, its definition stays in
 proves 1.1.3.4 #24, `OSR/IntegrationRec51.lean` 1.1.3.4 #17, 1.2.1.3 #35 and
 1.2.2.4 #11 and #12, and `OSR/IntegrationRec52.lean` 1.2.3.3 #12 with `d ≠ 0`
 and `e ≠ 0` (`a + c x²ⁿ` factors as `(d + e xⁿ) (a/d + c xⁿ/e)`) and 1.2.3.3
-#19 and #20 with `e (n (q + 2) + 1) ≠ 0`. `OSR/IntegrationRec53.lean` proves
+#19 and #20 with `e (n (q + 2) + 1) ≠ 0`. `OSR/IntegrationRec197.lean`
+proves 1.1.3.3 #11 over ℝ and ℂ: the opposite linear coefficients make the
+product of the two binomials a binomial in `x^n`, and `a1 * a2 ≠ 0` justifies
+the constant inverse in the result. `OSR/IntegrationRec53.lean` proves
 1.2.1.6 #5 to #8 with `a ≠ 0` and `c ≠ 0` (the converted conditions make
 `(g + h x) (d + e x + f x²)` equal to `(d g/a + f h x/c) (a + b x + c x²)`; when
 `h = 0` they force `g = 0`) and 1.2.1.6 #10 with `e ≠ 0` and `f ≠ 0` (`x (a + c x²)`

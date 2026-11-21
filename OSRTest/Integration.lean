@@ -13,7 +13,7 @@ private def t : Expr := .var "t"
 -- The twenty rules of the syntactic inventory (FreeQ or NeQ conditions,
 -- registered heads, no Int in the result) are migrated or reported, plus
 -- 110 rules with residual integrals and seven unmigrated ones.
-#guard Integration.catalogVerified.length + Integration.notMigrated.length == 2568
+#guard Integration.catalogVerified.length + Integration.notMigrated.length == 2569
 #guard Integration.notMigrated.length == 520
 -- A RUBI rule is catalogued once; only a strengthened variant (a finding that
 -- starts with "strengthened:") shares the legacy id of the rule it corrects.
@@ -22,10 +22,10 @@ private def t : Expr := .var "t"
       !e.findings.any (·.startsWith "strengthened:")).filterMap (·.rule.legacyId)
   ls.eraseDups.length == ls.length
 #guard (Integration.catalogVerified.filter (·.rule.shape == .antiderivRec)).length == 1590
-#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 1880
+#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 1881
 -- RUBI rules with EqQ conditions are stated with relation1#eq (Cond.eq).
 #guard (Integration.catalogVerified.filter fun e =>
-  e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 976
+    e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 977
 
 -- RUBI 4.16.1: the new degenerate-coefficient cases are refuted in both
 -- domains, with no proof or unresolved domain accidentally attached.
@@ -52,7 +52,8 @@ private def strengthenedIds : List String := [
   "integration.rubi_4_1_13_r11_nondegenerate", "integration.rubi_4_1_13_r12_nondegenerate",
   "integration.rubi_1_1_1_2_r1_nondegenerate", "integration.rubi_1_1_3_2_r3_nondegenerate",
   "integration.rubi_1_1_3_1_r3_nondegenerate", "integration.rubi_1_1_3_2_r6_nondegenerate",
-  "integration.rubi_1_1_3_3_r10_nondegenerate", "integration.rubi_1_1_3_4_r14_nondegenerate",
+  "integration.rubi_1_1_3_3_r10_nondegenerate", "integration.rubi_1_1_3_3_r11_nondegenerate",
+  "integration.rubi_1_1_3_4_r14_nondegenerate",
   "integration.rubi_1_2_1_2_r4_nondegenerate", "integration.rubi_1_2_1_3_r1_nondegenerate",
   "integration.rubi_1_2_1_4_r1_nondegenerate", "integration.rubi_1_1_1_3_r2_nondegenerate",
   "integration.rubi_1_2_1_1_r3_nondegenerate", "integration.rubi_1_2_1_2_r55_nondegenerate",
@@ -198,11 +199,20 @@ private def strengthenedRealIds : List String := [
   ids.length == (strengthenedIds ++ strengthenedRealIds).length &&
     (strengthenedIds ++ strengthenedRealIds).all ids.contains
 
--- Strengthened variants checked numerically (OSR.IntegrationNum1) are
--- distributed unproved: no proof and no counterexample, both domains unproved,
--- a strengthened: and a numerical: finding, and the pattern, replacement and
--- prefix conditions of the refuted rule they correct.
-#guard IntegrationNum1.entries.length == 827
+-- A direct proof promotes the rule from `IntegrationNum1` into the verified
+-- catalogue, with both domain theorems attached.
+#guard
+  match Integration.catalogVerified.find? (·.rule.id == "integration.rubi_1_1_3_3_r11_nondegenerate") with
+  | none => false
+  | some v =>
+    v.proofs == [(.real, ``OSR.IntegrationRec197.rubi1133r11Nondeg_real),
+      (.complex, ``OSR.IntegrationRec197.rubi1133r11Nondeg_complex)] &&
+    v.counterexamples.isEmpty && v.unproved.isEmpty &&
+    v.findings.any (·.startsWith "strengthened:")
+
+-- The remaining strengthened variants checked numerically
+-- (`OSR.IntegrationNum1`) remain distributed unproved.
+#guard IntegrationNum1.entries.length == 826
 #guard IntegrationNum1.entries.all fun v =>
   v.proofs.isEmpty && v.counterexamples.isEmpty && v.unproved == [.real, .complex] &&
   v.findings.any (·.startsWith "strengthened:") && v.findings.any (·.startsWith "numerical:") &&
@@ -305,7 +315,8 @@ private def rules : List CRule :=
   "integration.rubi_4_1_13_r11_nondegenerate", "integration.rubi_4_1_13_r12_nondegenerate",
   "integration.rubi_1_1_1_2_r1_nondegenerate", "integration.rubi_1_1_3_2_r3_nondegenerate",
   "integration.rubi_1_1_3_1_r3_nondegenerate", "integration.rubi_1_1_3_2_r6_nondegenerate",
-  "integration.rubi_1_1_3_3_r10_nondegenerate", "integration.rubi_1_1_3_4_r14_nondegenerate",
+  "integration.rubi_1_1_3_3_r10_nondegenerate", "integration.rubi_1_1_3_3_r11_nondegenerate",
+  "integration.rubi_1_1_3_4_r14_nondegenerate",
   "integration.rubi_1_2_1_2_r4_nondegenerate", "integration.rubi_1_2_1_3_r1_nondegenerate",
   "integration.rubi_1_2_1_4_r1_nondegenerate", "integration.rubi_1_1_1_3_r2_nondegenerate",
   "integration.rubi_1_2_1_1_r3_nondegenerate", "integration.rubi_1_2_1_2_r55_nondegenerate",
