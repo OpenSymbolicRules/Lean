@@ -13,7 +13,7 @@ private def t : Expr := .var "t"
 -- The twenty rules of the syntactic inventory (FreeQ or NeQ conditions,
 -- registered heads, no Int in the result) are migrated or reported, plus
 -- 110 rules with residual integrals and seven unmigrated ones.
-#guard Integration.catalogVerified.length + Integration.notMigrated.length == 2572
+#guard Integration.catalogVerified.length + Integration.notMigrated.length == 2573
 #guard Integration.notMigrated.length == 520
 -- A RUBI rule is catalogued once; only a strengthened variant (a finding that
 -- starts with "strengthened:") shares the legacy id of the rule it corrects.
@@ -21,8 +21,8 @@ private def t : Expr := .var "t"
   let ls := (Integration.catalogVerified.filter fun e =>
       !e.findings.any (·.startsWith "strengthened:")).filterMap (·.rule.legacyId)
   ls.eraseDups.length == ls.length
-#guard (Integration.catalogVerified.filter (·.rule.shape == .antiderivRec)).length == 1590
-#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 1884
+#guard (Integration.catalogVerified.filter (·.rule.shape == .antiderivRec)).length == 1591
+#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 1885
 -- RUBI rules with EqQ conditions are stated with relation1#eq (Cond.eq).
 #guard (Integration.catalogVerified.filter fun e =>
     e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 980
@@ -56,6 +56,7 @@ private def strengthenedIds : List String := [
   "integration.rubi_1_1_3_3_r8_nondegenerate",
   "integration.rubi_1_1_3_2_r4_nondegenerate",
   "integration.rubi_1_1_3_2_r7_nondegenerate",
+  "integration.rubi_1_1_1_3_r19_nondegenerate",
   "integration.rubi_1_1_3_4_r14_nondegenerate",
   "integration.rubi_1_2_1_2_r4_nondegenerate", "integration.rubi_1_2_1_3_r1_nondegenerate",
   "integration.rubi_1_2_1_4_r1_nondegenerate", "integration.rubi_1_1_1_3_r2_nondegenerate",
@@ -232,7 +233,7 @@ private def strengthenedRealIds : List String := [
 
 -- The remaining strengthened variants checked numerically
 -- (`OSR.IntegrationNum1`) remain distributed unproved.
-#guard IntegrationNum1.entries.length == 823
+#guard IntegrationNum1.entries.length == 822
 #guard IntegrationNum1.entries.all fun v =>
   v.proofs.isEmpty && v.counterexamples.isEmpty && v.unproved == [.real, .complex] &&
   v.findings.any (·.startsWith "strengthened:") && v.findings.any (·.startsWith "numerical:") &&
@@ -339,6 +340,7 @@ private def rules : List CRule :=
   "integration.rubi_1_1_3_3_r8_nondegenerate",
   "integration.rubi_1_1_3_2_r4_nondegenerate",
   "integration.rubi_1_1_3_2_r7_nondegenerate",
+  "integration.rubi_1_1_1_3_r19_nondegenerate",
   "integration.rubi_1_1_3_4_r14_nondegenerate",
   "integration.rubi_1_2_1_2_r4_nondegenerate", "integration.rubi_1_2_1_3_r1_nondegenerate",
   "integration.rubi_1_2_1_4_r1_nondegenerate", "integration.rubi_1_1_1_3_r2_nondegenerate",
