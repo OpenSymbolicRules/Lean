@@ -15285,23 +15285,6 @@ def entriesPart1 : List CEntry := [
       recFinding,
       condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; EqQ[Add[Multiply[n, Add[p, q, 2]], 1], 0]; Or[LtQ[p, -1], Not[LtQ[q, -1]]]; NeQ[p, -1]",
       optionalFinding "b. and d."] },
-  { rule := rubi1134r28Nondeg, ruleDecl := ``rubi1134r28Nondeg, proofs := [],
-    unproved := [.real, .complex],
-    findings := [
-      "strengthened: the condition a*b^2*e*n*(p + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_1_3_4_r28, which stays refuted.",
-      "numerical: checked over ℝ only, with no failure at 56 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 16 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
-      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
-      recFinding,
-      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; IGtQ[n, 0]; LtQ[p, -1]",
-      optionalFinding "e., m., b. and d."] },
-  { rule := rubi1134r29Nondeg, ruleDecl := ``rubi1134r29Nondeg, proofs := [],
-    unproved := [.real, .complex],
-    findings := [
-      "strengthened: the condition b*e^(n + 1)*(m + n*(p + 2) + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_1_3_4_r29, which stays refuted.",
-      "numerical: checked over ℝ only, with no failure at 616 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 42 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
-      recFinding,
-      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; IGtQ[n, 0]; NeQ[Add[m, Multiply[n, Add[p, 2]], 1], 0]",
-      optionalFinding "e., m., b. and d."] },
   { rule := rubi1134r9Nondeg, ruleDecl := ``rubi1134r9Nondeg, proofs := [],
     unproved := [.real, .complex],
     findings := [

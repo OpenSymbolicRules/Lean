@@ -106,7 +106,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 `OSR/IntegrationNum1.lean` distributed strengthened variants before their
 proofs (Specification V1-R-005e): both domains unproved, and a `numerical:`
-finding recording the evidence. It currently contains 819 unproved entries.
+finding recording the evidence. It currently contains 817 unproved entries.
 Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
 derivative is the residual integrand at the point, on assignments where each
@@ -154,6 +154,10 @@ that domain is unsupported.
 `OSR/IntegrationRec204.lean` proves the recursive rule 1.1.3.4 #27, including
 the polynomial residual integrand and the scaling of integer powers. Its
 complex mapping is likewise unsupported, so the complex proof is not certified.
+`OSR/IntegrationRec205.lean` and `OSR/IntegrationRec206.lean` prove the
+recursive rules 1.1.3.4 #28 and #29, respectively, including their residual
+integrands and definedness conditions. Both complex proofs are exported as
+uncertified because their complex mapping assurance is unsupported.
 `OSR/IntegrationRec53.lean` proves
 1.2.1.6 #5 to #8 with `a ≠ 0` and `c ≠ 0` (the converted conditions make
 `(g + h x) (d + e x + f x²)` equal to `(d g/a + f h x/c) (a + b x + c x²)`; when

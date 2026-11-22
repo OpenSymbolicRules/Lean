@@ -89,6 +89,8 @@ import OSR.IntegrationRec201
 import OSR.IntegrationRec202
 import OSR.IntegrationRec203
 import OSR.IntegrationRec204
+import OSR.IntegrationRec205
+import OSR.IntegrationRec206
 import OSR.IntegrationRec116
 import OSR.IntegrationRec115
 import OSR.IntegrationRec114
@@ -199,6 +201,8 @@ open OSR.IntegrationRec201
 open OSR.IntegrationRec202
 open OSR.IntegrationRec203
 open OSR.IntegrationRec204
+open OSR.IntegrationRec205
+open OSR.IntegrationRec206
 
 open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec4 OSR.IntegrationRec5 OSR.IntegrationRec6
@@ -4816,6 +4820,21 @@ def catalogPart4 : List CEntry := [
       recFinding,
       condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; IGtQ[n, 0]; LtQ[m, -1]; GtQ[n, 0]",
       optionalFinding "e., b. and d."] },
+  { rule := rubi1134r28Nondeg, ruleDecl := ``rubi1134r28Nondeg,
+    proofs := [(.real, ``rubi1134r28Nondeg_real), (.complex, ``rubi1134r28Nondeg_complex)],
+    findings := [
+      "strengthened: the condition a*b^2*e*n*(p + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_1_3_4_r28, which stays refuted.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; IGtQ[n, 0]; LtQ[p, -1]",
+      optionalFinding "e., m., b. and d."] },
+  { rule := rubi1134r29Nondeg, ruleDecl := ``rubi1134r29Nondeg,
+    proofs := [(.real, ``rubi1134r29Nondeg_real), (.complex, ``rubi1134r29Nondeg_complex)],
+    findings := [
+      "strengthened: the condition b*e^(n + 1)*(m + n*(p + 2) + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_1_3_4_r29, which stays refuted.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; IGtQ[n, 0]; NeQ[Add[m, Multiply[n, Add[p, 2]], 1], 0]",
+      optionalFinding "e., m., b. and d."] },
   { rule := rubi1134r14Nondeg, ruleDecl := ``rubi1134r14Nondeg,
     proofs := [(.real, ``rubi1134r14Nondeg_real), (.complex, ``rubi1134r14Nondeg_complex)],
     findings := [
@@ -4890,7 +4909,7 @@ theorem catalogPart4_wellFormed : ∀ e ∈ catalogPart4,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 /-- The Integration catalogue, in v0.1 file order: part 5. -/
 def catalogPart5 : List CEntry := [

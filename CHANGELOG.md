@@ -52,6 +52,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- `integration.rubi_1_1_3_4_r28_nondegenerate` and `...r29_nondegenerate`
+  are proved over ℝ and ℂ in `OSR/IntegrationRec205.lean` and
+  `OSR/IntegrationRec206.lean`, including their residual integrals.
 - `integration.rubi_1_1_3_4_r27_nondegenerate` is proved over ℝ and ℂ in
   `OSR/IntegrationRec204.lean`, including its polynomial residual integral.
 - `integration.rubi_1_1_3_4_r16_nondegenerate` is proved over ℝ and ℂ in
