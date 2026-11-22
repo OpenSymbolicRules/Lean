@@ -31,6 +31,7 @@ check:
 	lake env leanchecker OSR.IntegrationRec201
 	lake env leanchecker OSR.IntegrationRec202
 	lake env leanchecker OSR.IntegrationRec203
+	lake env leanchecker OSR.IntegrationRec204
 
 # Audit proofs and export the interchange JSON to `out`.
 export out="generated":
