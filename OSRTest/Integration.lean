@@ -13,16 +13,17 @@ private def t : Expr := .var "t"
 -- The twenty rules of the syntactic inventory (FreeQ or NeQ conditions,
 -- registered heads, no Int in the result) are migrated or reported, plus
 -- 110 rules with residual integrals and seven unmigrated ones.
-#guard Integration.catalogVerified.length + Integration.notMigrated.length == 2578
+#guard Integration.catalogVerified.length + Integration.notMigrated.length == 2579
 #guard Integration.notMigrated.length == 520
--- A RUBI rule is catalogued once; only a strengthened variant (a finding that
--- starts with "strengthened:") shares the legacy id of the rule it corrects.
+-- A RUBI rule is catalogued once; independently identified strengthened and
+-- generalized variants may share the source rule's legacy id.
 #guard
   let ls := (Integration.catalogVerified.filter fun e =>
-      !e.findings.any (·.startsWith "strengthened:")).filterMap (·.rule.legacyId)
+      !e.findings.any (·.startsWith "strengthened:") &&
+      !e.findings.any (·.startsWith "generalized:")).filterMap (·.rule.legacyId)
   ls.eraseDups.length == ls.length
-#guard (Integration.catalogVerified.filter (·.rule.shape == .antiderivRec)).length == 1595
-#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 1890
+#guard (Integration.catalogVerified.filter (·.rule.shape == .antiderivRec)).length == 1596
+#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 1891
 -- RUBI rules with EqQ conditions are stated with relation1#eq (Cond.eq).
 #guard (Integration.catalogVerified.filter fun e =>
     e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 982
@@ -207,6 +208,19 @@ private def strengthenedRealIds : List String := [
   ids.length == (strengthenedIds ++ strengthenedRealIds).length &&
     (strengthenedIds ++ strengthenedRealIds).all ids.contains
 
+-- The order-free generalization is published independently; the original
+-- strengthened rule retains its ordering conditions and its own proof.
+#guard
+  match Integration.catalogVerified.find? (·.rule.id == "integration.rubi_1_1_3_4_r28_order_free") with
+  | none => false
+  | some v =>
+    v.findings.any (·.startsWith "generalized:") &&
+    v.proofs == [(.real, ``OSR.IntegrationRec205.rubi1134r28OrderFree_real),
+      (.complex, ``OSR.IntegrationRec205.rubi1134r28OrderFree_complex)] &&
+    v.counterexamples.isEmpty && v.unproved.isEmpty &&
+    !(v.rule.symbols.contains ⟨"relation1", "gt"⟩) &&
+    (OSR.Registry.mappingAssurance v.rule.symbols .complex).certifiable
+
 -- Direct proofs promote these rules from `IntegrationNum1` into the verified
 -- catalogue, with both domain theorems attached.
 #guard
@@ -349,6 +363,7 @@ private def rules : List CRule :=
   "integration.rubi_1_1_3_4_r16_nondegenerate",
   "integration.rubi_1_1_3_4_r27_nondegenerate",
   "integration.rubi_1_1_3_4_r28_nondegenerate", "integration.rubi_1_1_3_4_r29_nondegenerate",
+  "integration.rubi_1_1_3_4_r28_order_free",
   "integration.rubi_1_1_3_4_r14_nondegenerate",
   "integration.rubi_1_2_1_2_r4_nondegenerate", "integration.rubi_1_2_1_3_r1_nondegenerate",
   "integration.rubi_1_2_1_4_r1_nondegenerate", "integration.rubi_1_1_1_3_r2_nondegenerate",

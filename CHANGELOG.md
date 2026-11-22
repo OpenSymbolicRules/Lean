@@ -52,6 +52,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- A separately identified order-free generalization of RUBI 1.1.3.4 #28 is
+  proved over ℝ and ℂ and certified on both domains. Its single denominator
+  condition replaces the original conditions; the original rule is retained.
 - `integration.rubi_1_1_3_4_r28_nondegenerate` and `...r29_nondegenerate`
   are proved over ℝ and ℂ in `OSR/IntegrationRec205.lean` and
   `OSR/IntegrationRec206.lean`, including their residual integrals.

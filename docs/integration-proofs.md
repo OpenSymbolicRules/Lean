@@ -158,6 +158,12 @@ complex mapping is likewise unsupported, so the complex proof is not certified.
 recursive rules 1.1.3.4 #28 and #29, respectively, including their residual
 integrands and definedness conditions. Both complex proofs are exported as
 uncertified because their complex mapping assurance is unsupported.
+For #28 the same module proves `integration.rubi_1_1_3_4_r28_order_free`, a
+separate derived rule with the same expressions and matching constraints and
+only the nonzero-denominator condition. Its complex mapping is certifiable;
+the original strengthened rule and its unsupported complex order mapping are
+unchanged. Integer-power definedness remains part of the semantics even though
+the generalized rule does not add explicit integer conditions.
 `OSR/IntegrationRec53.lean` proves
 1.2.1.6 #5 to #8 with `a ≠ 0` and `c ≠ 0` (the converted conditions make
 `(g + h x) (d + e x + f x²)` equal to `(d g/a + f h x/c) (a + b x + c x²)`; when
