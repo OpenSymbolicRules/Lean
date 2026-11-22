@@ -84,6 +84,7 @@ import OSR.IntegrationRec196
 import OSR.IntegrationRec197
 import OSR.IntegrationRec198
 import OSR.IntegrationRec199
+import OSR.IntegrationRec200
 import OSR.IntegrationRec116
 import OSR.IntegrationRec115
 import OSR.IntegrationRec114
@@ -189,6 +190,7 @@ namespace OSR.Integration
 open OSR.IntegrationRec197
 open OSR.IntegrationRec198
 open OSR.IntegrationRec199
+open OSR.IntegrationRec200
 
 open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec4 OSR.IntegrationRec5 OSR.IntegrationRec6
@@ -4771,6 +4773,12 @@ def catalogPart4 : List CEntry := [
       "strengthened: the condition 2*b1*b2*n*(p + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_1_3_2_r4, which stays refuted.",
       condFinding "EqQ[Add[Multiply[a2, b1], Multiply[a1, b2]], 0]; EqQ[m, Add[Multiply[2, n], Multiply[-1, 1]]]; NeQ[p, -1]",
       optionalFinding "m., b1., n. and b2."] },
+  { rule := rubi1132r7Nondeg, ruleDecl := ``rubi1132r7Nondeg,
+    proofs := [(.real, ``rubi1132r7Nondeg_real), (.complex, ``rubi1132r7Nondeg_complex)],
+    findings := [
+      "strengthened: the condition a1*a2*c*(m + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_1_3_2_r7, which stays refuted.",
+      condFinding "EqQ[Add[Multiply[a2, b1], Multiply[a1, b2]], 0]; EqQ[Add[Multiply[Add[m, 1], Power[Multiply[2, n], -1]], p, 1], 0]; NeQ[m, -1]",
+      optionalFinding "c., m., b1. and b2."] },
   { rule := rubi1134r14Nondeg, ruleDecl := ``rubi1134r14Nondeg,
     proofs := [(.real, ``rubi1134r14Nondeg_real), (.complex, ``rubi1134r14Nondeg_complex)],
     findings := [
@@ -4845,7 +4853,7 @@ theorem catalogPart4_wellFormed : ∀ e ∈ catalogPart4,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 /-- The Integration catalogue, in v0.1 file order: part 5. -/
 def catalogPart5 : List CEntry := [

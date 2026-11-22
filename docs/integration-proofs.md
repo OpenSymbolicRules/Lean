@@ -106,7 +106,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 `OSR/IntegrationNum1.lean` distributed strengthened variants before their
 proofs (Specification V1-R-005e): both domains unproved, and a `numerical:`
-finding recording the evidence. It currently contains 824 unproved entries.
+finding recording the evidence. It currently contains 823 unproved entries.
 Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
 derivative is the residual integrand at the point, on assignments where each
@@ -141,7 +141,9 @@ the constant inverse in the result. `OSR/IntegrationRec198.lean` proves
 1.1.3.3 #8 over ℝ and ℂ: its two equality conditions cancel the `x^n` and
 `x^(2n)` coefficients in the derivative. `OSR/IntegrationRec199.lean` proves
 1.1.3.2 #4 over ℝ and ℂ using the cancellation of the cross term in the
-product of the two binomials. `OSR/IntegrationRec53.lean` proves
+product of the two binomials. `OSR/IntegrationRec200.lean` proves 1.1.3.2 #7
+over ℝ and ℂ using the same cross-term cancellation and the exponent condition.
+`OSR/IntegrationRec53.lean` proves
 1.2.1.6 #5 to #8 with `a ≠ 0` and `c ≠ 0` (the converted conditions make
 `(g + h x) (d + e x + f x²)` equal to `(d g/a + f h x/c) (a + b x + c x²)`; when
 `h = 0` they force `g = 0`) and 1.2.1.6 #10 with `e ≠ 0` and `f ≠ 0` (`x (a + c x²)`
