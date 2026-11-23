@@ -70,6 +70,20 @@ interpretation.  A consumer that rewrites an expression defined on a set `S`
 obtains an expression equal to it on `S`.  It may lose the information that the
 original was undefined outside `S`.
 
+The default algebra normalizer leaves `log (x * y)` unchanged. A caller can
+apply the real rule `algebra.log.ln_mul` using `OSR.Algebra.lnMul_real`
+after proving `0 < x`, `0 < y`,
+and that the source is defined. The two sign hypotheses imply the last premise
+by `mul_pos`. The theorem gives both a defined replacement and equality with
+`log x + log y`. Knowing only `0 < x` leaves the second guard open, as
+`x = 1, y = 0` shows.
+
+At `x = y = -1` the source is defined because the product is positive. The
+replacement is undefined because the individual factors are negative. Mathlib's
+totalized real logarithm evaluates both sides to zero here, so comparing their
+values alone misses the loss of definedness. Run `lake build OSRTest.LogProduct`
+to check these cases against the catalog rule.
+
 ## A JSON record is not a certificate
 
 `"status": "proved"` is a claim.  To check it independently:

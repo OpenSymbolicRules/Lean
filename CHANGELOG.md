@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Application tests for the real log-product rule covering positive factors,
+  a missing guard, and a loss of definedness despite equal totalized values.
 - Preliminary Mathlib checks for 28 linear-algebra identities and five
   concrete counterexamples. These are
   hand-written mathematical statements and do not certify OSR exports or
