@@ -4842,6 +4842,12 @@ def catalogPart4 : List CEntry := [
       "independence: p is not in the v0.1 FreeQ list; this derived rule retains the matching constraints of the strengthened variant.",
       recFinding,
       optionalFinding "e., m., b. and d."] },
+  { rule := rubi1134r29OrderFree, ruleDecl := ``rubi1134r29OrderFree,
+    proofs := [(.real, ``rubi1134r29OrderFree_real), (.complex, ``rubi1134r29OrderFree_complex)],
+    findings := [
+      "generalized: this independently proved derived rule replaces the RUBI conditions with e ≠ 0 and b*e^(n + 1)*(m + n*(p + 2) + 1) ≠ 0. It preserves the pattern, replacement, residual integral and matching constraints of integration.rubi_1_1_3_4_r29_nondegenerate, which remains in the catalogue. The original order and integer conditions are not required for this rule under OSR integer-power semantics.",
+      recFinding,
+      optionalFinding "e., m., b. and d."] },
   { rule := rubi1134r14Nondeg, ruleDecl := ``rubi1134r14Nondeg,
     proofs := [(.real, ``rubi1134r14Nondeg_real), (.complex, ``rubi1134r14Nondeg_complex)],
     findings := [
@@ -4916,7 +4922,7 @@ theorem catalogPart4_wellFormed : ∀ e ∈ catalogPart4,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 /-- The Integration catalogue, in v0.1 file order: part 5. -/
 def catalogPart5 : List CEntry := [

@@ -164,6 +164,11 @@ only the nonzero-denominator condition. Its complex mapping is certifiable;
 the original strengthened rule and its unsupported complex order mapping are
 unchanged. Integer-power definedness remains part of the semantics even though
 the generalized rule does not add explicit integer conditions.
+For #29 the separate derived rule `integration.rubi_1_1_3_4_r29_order_free`
+retains its expressions and matching constraints while requiring `e ≠ 0` and
+`b*e^(n + 1)*(m + n*(p + 2) + 1) ≠ 0`. Its proof covers negative integer
+exponents and both domains have reviewed symbol mappings. The original
+strengthened rule implies these conditions and remains separately catalogued.
 `OSR/IntegrationRec53.lean` proves
 1.2.1.6 #5 to #8 with `a ≠ 0` and `c ≠ 0` (the converted conditions make
 `(g + h x) (d + e x + f x²)` equal to `(d g/a + f h x/c) (a + b x + c x²)`; when

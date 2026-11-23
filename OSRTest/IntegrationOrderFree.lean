@@ -1,4 +1,5 @@
 import OSR.IntegrationRec205
+import OSR.IntegrationRec206
 import OSR.Semantics
 
 /-! Tests for the order-free variant of RUBI 1.1.3.4 #28. -/
@@ -20,3 +21,18 @@ open OSR OSR.Calculus OSR.IntegrationRec205
 #guard !(rubi1134r28OrderFree.symbols.contains ⟨"relation1", "gt"⟩)
 #guard (OSR.Registry.mappingAssurance rubi1134r28OrderFree.symbols .complex).certifiable
 #guard !(OSR.Registry.mappingAssurance OSR.IntegrationNum1.rubi1134r28Nondeg.symbols .complex).certifiable
+
+open OSR.IntegrationRec206
+
+#check rubi1134r29OrderFree_real
+#check rubi1134r29OrderFree_complex
+#check rubi1134r29OriginalConditions_imply_OrderFree
+
+#guard rubi1134r29OrderFree.id == "integration.rubi_1_1_3_4_r29_order_free"
+#guard rubi1134r29OrderFree.body == OSR.IntegrationNum1.rubi1134r29Nondeg.body
+#guard rubi1134r29OrderFree.result == OSR.IntegrationNum1.rubi1134r29Nondeg.result
+#guard rubi1134r29OrderFree.integrals == OSR.IntegrationNum1.rubi1134r29Nondeg.integrals
+#guard rubi1134r29OrderFree.independent == OSR.IntegrationNum1.rubi1134r29Nondeg.independent
+#guard rubi1134r29OrderFree.legacyId == OSR.IntegrationNum1.rubi1134r29Nondeg.legacyId
+#guard !(rubi1134r29OrderFree.symbols.contains ⟨"relation1", "gt"⟩)
+#guard (OSR.Registry.mappingAssurance rubi1134r29OrderFree.symbols .complex).certifiable

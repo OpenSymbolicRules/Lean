@@ -22,6 +22,19 @@ theorem rubi1134r29_coefficient {K : Type} [CommRing K]
 section
 variable {K : Type} [NontriviallyNormedField K]
 
+/-- Denominator condition for the order-free variant. -/
+def rubi1134r29Denominator : Cond :=
+  .ne (.app2 .mul (.app2 .mul (.var "b") (.pow (.var "e")
+    (.app2 .add (.var "n") (.int 1)))) (.app2 .add (.app2 .add (.var "m")
+    (.app2 .mul (.var "n") (.app2 .add (.var "p") (.int 2)))) (.int 1))) (.int 0)
+
+/-- This derived rule replaces the order condition by non-vanishing of e. -/
+def rubi1134r29OrderFree : CRule :=
+  { rubi1134r29Nondeg with
+    id := "integration.rubi_1_1_3_4_r29_order_free"
+    conditions := [.ne (.var "e") (.int 0), rubi1134r29Denominator]
+    description := "Order-free generalization of RUBI 1.1.3.4 #29" }
+
 private theorem int_neg_one (I : Interp K) : I.toInt? (-1 : K) = some (-1) :=
   (I.toInt?_eq _ _).2 (by simp)
 
@@ -36,13 +49,14 @@ private theorem zsucc (a : K) (k : ℤ) (h : a ≠ 0 ∨ 0 ≤ k) : a ^ (k + 1) 
       zpow_natCast, zpow_natCast, pow_succ]
 
 /-- RUBI 1.1.3.4 #29 with nonzero denominator. -/
-theorem rubi1134r29Nondeg_holds (I : Interp K)
-    (hlt : ∀ j : ℤ, I.lt 0 (j : K) → 0 < j) :
-    AntiderivRecHolds I "x" rubi1134r29Nondeg.conditions rubi1134r29Nondeg.body
+theorem rubi1134r29_holds_of_conditions (I : Interp K) (cs : List Cond)
+    (he_mem : .ne (.var "e") (.int 0) ∈ cs)
+    (hd_mem : rubi1134r29Denominator ∈ cs) :
+    AntiderivRecHolds I "x" cs rubi1134r29Nondeg.body
       rubi1134r29Nondeg.result rubi1134r29Nondeg.integrals := by
   intro env hc t hF
-  have hpos : I.lt 0 (env "n") := by
-    have h := hc (.gt (.var "n") (.int 0)) (by simp [rubi1134r29Nondeg])
+  have he : env "e" ≠ 0 := by
+    have h := hc (.ne (.var "e") (.int 0)) he_mem
     simpa [Cond.Holds, Defined, eval] using h
   rcases hkm : I.toInt? (env "m") with _ | m
   · exfalso
@@ -59,7 +73,6 @@ theorem rubi1134r29Nondeg_holds (I : Interp K)
   have hm : env "m" = (m : K) := (I.toInt?_eq _ _).1 hkm
   have hn : env "n" = (n : K) := (I.toInt?_eq _ _).1 hkn
   have hp : env "p" = (p : K) := (I.toInt?_eq _ _).1 hkp
-  have hnpos : 0 < n := hlt n (by simpa [hn] using hpos)
   have hkn1 : I.toInt? (env "n" + 1) = some (n + 1) :=
     (I.toInt?_eq _ _).2 (by rw [hn]; push_cast; ring)
   have hkmn : I.toInt? (env "m" + env "n") = some (m + n) :=
@@ -70,19 +83,11 @@ theorem rubi1134r29Nondeg_holds (I : Interp K)
     (I.toInt?_eq _ _).2 (by rw [hp]; push_cast; ring)
   have hd : env "b" * env "e" ^ (n + 1) *
       (env "m" + env "n" * (env "p" + 2) + 1) ≠ 0 := by
-    have h := hc (.ne (.app2 .mul (.app2 .mul (.var "b") (.pow (.var "e")
-      (.app2 .add (.var "n") (.int 1)))) (.app2 .add (.app2 .add (.var "m")
-      (.app2 .mul (.var "n") (.app2 .add (.var "p") (.int 2)))) (.int 1))) (.int 0))
-      (by simp [rubi1134r29Nondeg])
+    have h := hc rubi1134r29Denominator hd_mem
     have h' : (n + 1 < 0 → env "e" ≠ 0) ∧
         env "b" * env "e" ^ (n + 1) * (env "m" + env "n" * (env "p" + 2) + 1) ≠ 0 := by
-      simpa [Cond.Holds, Defined, eval, hkn1] using h
+      simpa [rubi1134r29Denominator, Cond.Holds, Defined, eval, hkn1] using h
     exact h'.2
-  have he : env "e" ≠ 0 := by
-    intro h
-    apply hd
-    rw [h, zero_zpow (n + 1) (by omega)]
-    ring
   have hd2 : env "b" * (env "m" + env "n" * (env "p" + 2) + 1) ≠ 0 := by
     intro h
     apply hd
@@ -105,7 +110,8 @@ theorem rubi1134r29Nondeg_holds (I : Interp K)
     obtain ⟨hm0, hn0, hp0⟩ := hD w hw
     simp [rubi1134r29Nondeg, Defined, eval, recEnv, hkmn1, hkn1, hkn, hkp1,
       int_neg_one, int_two, hd, he, hd2]
-    exact ⟨fun h => hm0 (by omega), hn0, fun h => hp0 (by omega)⟩
+    exact ⟨fun h => if hn : n < 0 then hn0 hn else hm0 (by omega),
+      hn0, fun h => hp0 (by omega)⟩
   · simp only [rubi1134r29Nondeg, List.mem_cons, List.not_mem_nil, or_false, forall_eq] at hΦ
     have hE : ∀ w, eval I (recEnv env (rubi1134r29Nondeg.integrals.map (·.1)) Φ "x" w)
         rubi1134r29Nondeg.result =
@@ -143,7 +149,12 @@ theorem rubi1134r29Nondeg_holds (I : Interp K)
       by_cases h : p < 0
       · exact Or.inl (ht.2.2 h)
       · exact Or.inr (by omega)
-    have heMN : env "e" * t ≠ 0 ∨ 0 ≤ m + n := he0.imp_right (by omega)
+    have heMN : env "e" * t ≠ 0 ∨ 0 ≤ m + n := by
+      rcases he0 with he0 | hm0
+      · exact Or.inl he0
+      · rcases hx with hx | hn0
+        · exact Or.inl (mul_ne_zero he hx)
+        · exact Or.inr (by omega)
     have he1 : env "e" * t ≠ 0 ∨ 0 ≤ m + n + 1 := heMN.imp_right (by omega)
     have hu1 : env "a" + env "b" * t ^ n ≠ 0 ∨ 0 ≤ p + 1 := hu.imp_right (by omega)
     have hkey : (n : K) * t ^ (n - 1) * t = (n : K) * t ^ n := by
@@ -159,7 +170,8 @@ theorem rubi1134r29Nondeg_holds (I : Interp K)
       by_cases ht0 : t = 0
       · have hm0 : 0 ≤ m := by by_contra h; exact ht.1 (by omega) ht0
         lift m to ℕ using hm0
-        lift n to ℕ using (show 0 ≤ n by omega)
+        have hn0 : 0 ≤ n := by by_contra h; exact ht.2.1 (by omega) ht0
+        lift n to ℕ using hn0
         rw [← Int.natCast_add, zpow_natCast, zpow_natCast, zpow_natCast, pow_add, mul_pow]
         simp only [zpow_natCast]
         ring
@@ -195,6 +207,55 @@ theorem rubi1134r29Nondeg_holds (I : Interp K)
     field_simp [hb, hL, he, hen]
     linear_combination
       (env "d" ^ 2 * E * U * T * env "b" * (p + 1)) * hkey
+
+/-- The original conditions imply the order-free conditions for interpretations
+    that interpret positivity of integer constants faithfully. -/
+theorem rubi1134r29OriginalConditions_imply_OrderFree (I : Interp K)
+    (hlt : ∀ j : ℤ, I.lt 0 (j : K) → 0 < j) (env : String → K)
+    (hc : ∀ c ∈ rubi1134r29Nondeg.conditions, c.Holds I env) :
+    ∀ c ∈ rubi1134r29OrderFree.conditions, c.Holds I env := by
+  have hi := hc (.int (.var "n")) (by simp [rubi1134r29Nondeg])
+  obtain ⟨n, hn⟩ : ∃ n : ℤ, I.toInt? (env "n") = some n := by
+    simpa [Cond.Holds, Defined, eval] using hi
+  have hn' : env "n" = (n : K) := (I.toInt?_eq _ _).1 hn
+  have hpos := hc (.gt (.var "n") (.int 0)) (by simp [rubi1134r29Nondeg])
+  have hnpos : 0 < n := hlt n (by simpa [Cond.Holds, Defined, eval, hn'] using hpos)
+  have hd := hc rubi1134r29Denominator (by simp [rubi1134r29Nondeg, rubi1134r29Denominator])
+  have hkn1 : I.toInt? (env "n" + 1) = some (n + 1) :=
+    (I.toInt?_eq _ _).2 (by rw [hn']; push_cast; ring)
+  have hd' : env "b" * env "e" ^ (n + 1) *
+      (env "m" + env "n" * (env "p" + 2) + 1) ≠ 0 := by
+    have h : (n + 1 < 0 → env "e" ≠ 0) ∧
+        env "b" * env "e" ^ (n + 1) * (env "m" + env "n" * (env "p" + 2) + 1) ≠ 0 := by
+      simpa [rubi1134r29Denominator, Cond.Holds, Defined, eval, hkn1] using hd
+    exact h.2
+  have he : env "e" ≠ 0 := by
+    intro h
+    apply hd'
+    rw [h, zero_zpow (n + 1) (by omega)]
+    ring
+  intro c hmem
+  simp only [rubi1134r29OrderFree, List.mem_cons, List.not_mem_nil, or_false] at hmem
+  rcases hmem with rfl | rfl
+  · simpa [Cond.Holds, Defined, eval] using he
+  · exact hd
+
+theorem rubi1134r29Nondeg_holds (I : Interp K)
+    (hlt : ∀ j : ℤ, I.lt 0 (j : K) → 0 < j) :
+    AntiderivRecHolds I "x" rubi1134r29Nondeg.conditions rubi1134r29Nondeg.body
+      rubi1134r29Nondeg.result rubi1134r29Nondeg.integrals := by
+  intro env hc t hF
+  exact rubi1134r29_holds_of_conditions I _ (by simp [rubi1134r29OrderFree])
+    (by simp [rubi1134r29OrderFree]) env
+    (rubi1134r29OriginalConditions_imply_OrderFree I hlt env hc) t hF
+
+theorem rubi1134r29OrderFree_real : rubi1134r29OrderFree.Holds .real :=
+  rubi1134r29_holds_of_conditions Interp.real _ (by simp [rubi1134r29OrderFree])
+    (by simp [rubi1134r29OrderFree])
+
+theorem rubi1134r29OrderFree_complex : rubi1134r29OrderFree.Holds .complex :=
+  rubi1134r29_holds_of_conditions Interp.complex _ (by simp [rubi1134r29OrderFree])
+    (by simp [rubi1134r29OrderFree])
 
 theorem rubi1134r29Nondeg_real : rubi1134r29Nondeg.Holds .real :=
   rubi1134r29Nondeg_holds Interp.real (by intro j h; change (0 : ℝ) < (j : ℝ) at h; exact_mod_cast h)
