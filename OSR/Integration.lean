@@ -93,6 +93,7 @@ import OSR.IntegrationRec205
 import OSR.IntegrationRec206
 import OSR.IntegrationRec207
 import OSR.IntegrationRec208
+import OSR.IntegrationRec209
 import OSR.IntegrationRec116
 import OSR.IntegrationRec115
 import OSR.IntegrationRec114
@@ -207,6 +208,7 @@ open OSR.IntegrationRec205
 open OSR.IntegrationRec206
 open OSR.IntegrationRec207
 open OSR.IntegrationRec208
+open OSR.IntegrationRec209
 
 open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec4 OSR.IntegrationRec5 OSR.IntegrationRec6
@@ -18303,6 +18305,13 @@ def catalogPart21 : List CEntry := [
       "domain: proved over ℝ, including the substitution and local definedness of its residual integral; refuted over ℂ at the logarithm branch cut, even with b*n ≠ 0.",
       recFinding,
       optionalFinding "a., b., c., n. and p."] },
+  { rule := rubi312r7Nondeg, ruleDecl := ``rubi312r7Nondeg,
+    proofs := [(.real, ``rubi312r7Nondeg_real), (.complex, ``rubi312r7Nondeg_complex)],
+    findings := [
+      "strengthened: the condition n ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_3_1_2_r7, which stays refuted.",
+      recFinding,
+      condFinding "EqQ[m, Add[n, Multiply[-1, 1]]]",
+      optionalFinding "m. and c."] },
   { rule := rubi735r10, ruleDecl := ``rubi735r10, proofs := [], unproved := [.complex],
     counterexamples := [(.real, ``rubi735r10_counterexample_real)],
     findings := [
@@ -18834,7 +18843,7 @@ theorem catalogPart21_wellFormed : ∀ e ∈ catalogPart21,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=
@@ -18842,7 +18851,9 @@ def catalogVerified : List CEntry :=
 
 /-- The unproved numerical candidates, excluding variants promoted to the verified catalogue. -/
 def pendingEntries : List CEntry :=
-  IntegrationNum1.entries.filter (fun e => e.rule.id != "integration.rubi_3_1_2_r2_nondegenerate")
+  IntegrationNum1.entries.filter (fun e =>
+    e.rule.id != "integration.rubi_3_1_2_r2_nondegenerate" &&
+    e.rule.id != "integration.rubi_3_1_2_r7_nondegenerate")
 
 /-- The Integration catalogue: the verified rules, then the strengthened variants checked
 numerically (`OSR.IntegrationNum1`), unproved. -/

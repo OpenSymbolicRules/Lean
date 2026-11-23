@@ -106,7 +106,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 `OSR/IntegrationNum1.lean` distributed strengthened variants before their
 proofs (Specification V1-R-005e): both domains unproved, and a `numerical:`
-finding recording the evidence. The catalogue currently retains 816 unproved entries.
+finding recording the evidence. The catalogue currently retains 815 unproved entries.
 Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
 derivative is the residual integrand at the point, on assignments where each
@@ -167,6 +167,10 @@ strengthened conditions imply its condition, and that rule remains catalogued.
 integrand. The original rule remains refuted over ℝ. `OSR/IntegrationRec208.lean`
 refutes the strengthened rule over ℂ at the principal logarithm's branch cut:
 with `a = p = 0`, `b = c = n = 1` and `x = -1`, the result is discontinuous.
+`OSR/IntegrationRec209.lean` proves the strengthened substitution rule 3.1.2
+#7 over ℝ and ℂ, including the local definedness of the residual integrand.
+The proof differentiates the integer-power substitution and does not require
+differentiability of the complex logarithm at its branch cut.
 `OSR/IntegrationRec205.lean` and `OSR/IntegrationRec206.lean` prove the
 recursive rules 1.1.3.4 #28 and #29, respectively, including their residual
 integrands and definedness conditions. Both complex proofs are exported as

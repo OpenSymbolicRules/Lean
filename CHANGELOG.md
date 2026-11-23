@@ -52,6 +52,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Prove the previously unproved strengthened RUBI substitution rule 3.1.2 #7
+  over ℝ and ℂ, including the local definedness of the residual integrand.
 - Refute the strengthened RUBI substitution rule 3.1.2 #2 over ℂ at the
   principal logarithm's branch cut, while retaining its real proof.
 - Prove the previously unproved strengthened RUBI substitution rule 3.1.2 #2
