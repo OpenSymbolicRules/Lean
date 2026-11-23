@@ -13,7 +13,7 @@ private def t : Expr := .var "t"
 -- The twenty rules of the syntactic inventory (FreeQ or NeQ conditions,
 -- registered heads, no Int in the result) are migrated or reported, plus
 -- 110 rules with residual integrals and seven unmigrated ones.
-#guard Integration.catalogVerified.length + Integration.notMigrated.length == 2580
+#guard Integration.catalogVerified.length + Integration.notMigrated.length == 2581
 #guard Integration.notMigrated.length == 520
 -- A RUBI rule is catalogued once; independently identified strengthened and
 -- generalized variants may share the source rule's legacy id.
@@ -22,8 +22,8 @@ private def t : Expr := .var "t"
       !e.findings.any (·.startsWith "strengthened:") &&
       !e.findings.any (·.startsWith "generalized:")).filterMap (·.rule.legacyId)
   ls.eraseDups.length == ls.length
-#guard (Integration.catalogVerified.filter (·.rule.shape == .antiderivRec)).length == 1597
-#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 1892
+#guard (Integration.catalogVerified.filter (·.rule.shape == .antiderivRec)).length == 1598
+#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 1893
 -- RUBI rules with EqQ conditions are stated with relation1#eq (Cond.eq).
 #guard (Integration.catalogVerified.filter fun e =>
     e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 982
@@ -211,6 +211,17 @@ private def strengthenedRealIds : List String := [
 -- The order-free generalization is published independently; the original
 -- strengthened rule retains its ordering conditions and its own proof.
 #guard
+  match Integration.catalogVerified.find? (·.rule.id == "integration.rubi_1_1_3_4_r27_order_free") with
+  | none => false
+  | some v =>
+    v.findings.any (·.startsWith "generalized:") &&
+    v.proofs == [(.real, ``OSR.IntegrationRec204.rubi1134r27OrderFree_real),
+      (.complex, ``OSR.IntegrationRec204.rubi1134r27OrderFree_complex)] &&
+    v.counterexamples.isEmpty && v.unproved.isEmpty &&
+    !(v.rule.symbols.contains ⟨"relation1", "gt"⟩) &&
+    (OSR.Registry.mappingAssurance v.rule.symbols .complex).certifiable
+
+#guard
   match Integration.catalogVerified.find? (·.rule.id == "integration.rubi_1_1_3_4_r28_order_free") with
   | none => false
   | some v =>
@@ -374,6 +385,7 @@ private def rules : List CRule :=
   "integration.rubi_1_1_3_4_r16_nondegenerate",
   "integration.rubi_1_1_3_4_r27_nondegenerate",
   "integration.rubi_1_1_3_4_r28_nondegenerate", "integration.rubi_1_1_3_4_r29_nondegenerate",
+  "integration.rubi_1_1_3_4_r27_order_free",
   "integration.rubi_1_1_3_4_r28_order_free",
   "integration.rubi_1_1_3_4_r29_order_free",
   "integration.rubi_1_1_3_4_r14_nondegenerate",

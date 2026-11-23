@@ -154,6 +154,10 @@ that domain is unsupported.
 `OSR/IntegrationRec204.lean` proves the recursive rule 1.1.3.4 #27, including
 the polynomial residual integrand and the scaling of integer powers. Its
 complex mapping is likewise unsupported, so the complex proof is not certified.
+The separate derived rule `integration.rubi_1_1_3_4_r27_order_free` retains
+the same expressions and matching constraints and needs only
+`a*e*(m + 1) ≠ 0`. Its mapping is reviewed over ℝ and ℂ; the original
+strengthened conditions imply its condition, and that rule remains catalogued.
 `OSR/IntegrationRec205.lean` and `OSR/IntegrationRec206.lean` prove the
 recursive rules 1.1.3.4 #28 and #29, respectively, including their residual
 integrands and definedness conditions. Both complex proofs are exported as

@@ -22,6 +22,28 @@ theorem rubi1134r27_coefficient {K : Type} [CommRing K]
 section
 variable {K : Type} [NontriviallyNormedField K]
 
+/-- The denominator condition shared by the strengthened and derived rules. -/
+def rubi1134r27Denominator : Cond :=
+  .ne (.app2 .mul (.app2 .mul (.var "a") (.var "e"))
+    (.app2 .add (.var "m") (.int 1))) (.int 0)
+
+/-- A derived rule with the same expressions and matching constraints. -/
+def rubi1134r27OrderFree : CRule :=
+  { rubi1134r27Nondeg with
+    id := "integration.rubi_1_1_3_4_r27_order_free"
+    conditions := [rubi1134r27Denominator]
+    description := "Order-free generalization of RUBI 1.1.3.4 #27" }
+
+/-- The strengthened rule's conditions imply the generalized conditions. -/
+theorem rubi1134r27OriginalConditions_imply_OrderFree (I : Interp K) (env : String → K)
+    (h : ∀ c ∈ rubi1134r27Nondeg.conditions, c.Holds I env) :
+    ∀ c ∈ rubi1134r27OrderFree.conditions, c.Holds I env := by
+  intro c hc
+  have hmem : c = rubi1134r27Denominator := by
+    simpa [rubi1134r27OrderFree] using hc
+  subst c
+  exact h rubi1134r27Denominator (by simp [rubi1134r27Nondeg, rubi1134r27Denominator])
+
 private theorem int_neg_one (I : Interp K) : I.toInt? (-1 : K) = some (-1) :=
   (I.toInt?_eq _ _).2 (by simp)
 
@@ -36,14 +58,14 @@ private theorem zsucc (a : K) (k : ℤ) (h : a ≠ 0 ∨ 0 ≤ k) : a ^ (k + 1) 
       zpow_natCast, zpow_natCast, pow_succ]
 
 /-- RUBI 1.1.3.4 #27 with nonzero denominator. -/
-theorem rubi1134r27Nondeg_holds (I : Interp K) :
-    AntiderivRecHolds I "x" rubi1134r27Nondeg.conditions rubi1134r27Nondeg.body
+theorem rubi1134r27_holds_of_denominator (I : Interp K) (cs : List Cond)
+    (hmem : rubi1134r27Denominator ∈ cs) :
+    AntiderivRecHolds I "x" cs rubi1134r27Nondeg.body
       rubi1134r27Nondeg.result rubi1134r27Nondeg.integrals := by
   intro env hc t hF
   have hd : env "a" * env "e" * (env "m" + 1) ≠ 0 := by
-    have h := hc (.ne (.app2 .mul (.app2 .mul (.var "a") (.var "e"))
-      (.app2 .add (.var "m") (.int 1))) (.int 0)) (by simp [rubi1134r27Nondeg])
-    simpa [Cond.Holds, Defined, eval] using h
+    have h := hc rubi1134r27Denominator hmem
+    simpa [rubi1134r27Denominator, Cond.Holds, Defined, eval] using h
   have he : env "e" ≠ 0 := by
     intro h
     apply hd
@@ -179,6 +201,17 @@ theorem rubi1134r27Nondeg_holds (I : Interp K) :
     field_simp [ha, he, hmne]
     linear_combination
       (env "c" ^ 2 * E * U * env "b" * (p + 1)) * hkey
+
+theorem rubi1134r27Nondeg_holds (I : Interp K) :
+    AntiderivRecHolds I "x" rubi1134r27Nondeg.conditions rubi1134r27Nondeg.body
+      rubi1134r27Nondeg.result rubi1134r27Nondeg.integrals :=
+  rubi1134r27_holds_of_denominator I _ (by simp [rubi1134r27Nondeg, rubi1134r27Denominator])
+
+theorem rubi1134r27OrderFree_real : rubi1134r27OrderFree.Holds .real :=
+  rubi1134r27_holds_of_denominator Interp.real _ (by simp [rubi1134r27OrderFree])
+
+theorem rubi1134r27OrderFree_complex : rubi1134r27OrderFree.Holds .complex :=
+  rubi1134r27_holds_of_denominator Interp.complex _ (by simp [rubi1134r27OrderFree])
 
 theorem rubi1134r27Nondeg_real : rubi1134r27Nondeg.Holds .real :=
   rubi1134r27Nondeg_holds Interp.real
