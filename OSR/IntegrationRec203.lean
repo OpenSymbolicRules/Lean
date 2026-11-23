@@ -14,6 +14,33 @@ open OSR OSR.Calculus OSR.IntegrationNum1 Filter Topology
 section
 variable {K : Type} [NontriviallyNormedField K]
 
+/-- Nonzero denominator condition for the derived rule. -/
+def rubi1134r16Denominator : Cond :=
+  .ne (.app2 .mul (.app2 .mul (.var "a") (.var "e"))
+    (.app2 .add (.var "m") (.int 1))) (.int 0)
+
+/-- Exponent relation required by the integration identity. -/
+def rubi1134r16ExponentCondition : Cond :=
+  .eq (.app2 .add (.app2 .add (.var "m")
+    (.app2 .mul (.var "n") (.app2 .add (.var "p") (.int 1)))) (.int 1)) (.int 0)
+
+/-- A derived rule preserving the expressions and matching constraints. -/
+def rubi1134r16OrderFree : CRule :=
+  { rubi1134r16Nondeg with
+    id := "integration.rubi_1_1_3_4_r16_order_free"
+    conditions := [rubi1134r16Denominator, rubi1134r16ExponentCondition]
+    description := "Order-free generalization of RUBI 1.1.3.4 #16" }
+
+/-- The strengthened rule's conditions imply both derived conditions. -/
+theorem rubi1134r16OriginalConditions_imply_OrderFree (I : Interp K) (env : String → K)
+    (h : ∀ c ∈ rubi1134r16Nondeg.conditions, c.Holds I env) :
+    ∀ c ∈ rubi1134r16OrderFree.conditions, c.Holds I env := by
+  intro c hc
+  simp only [rubi1134r16OrderFree, List.mem_cons, List.not_mem_nil, or_false] at hc
+  rcases hc with rfl | rfl
+  · exact h rubi1134r16Denominator (by simp [rubi1134r16Nondeg, rubi1134r16Denominator])
+  · exact h rubi1134r16ExponentCondition (by simp [rubi1134r16Nondeg, rubi1134r16ExponentCondition])
+
 private theorem int_neg_one (I : Interp K) : I.toInt? (-1 : K) = some (-1) :=
   (I.toInt?_eq _ _).2 (by simp)
 
@@ -25,24 +52,23 @@ private theorem zsucc (a : K) (k : ℤ) (h : a ≠ 0 ∨ 0 ≤ k) : a ^ (k + 1) 
       zpow_natCast, zpow_natCast, pow_succ]
 
 /-- RUBI 1.1.3.4 #16 with nonzero denominator. -/
-theorem rubi1134r16Nondeg_holds (I : Interp K) :
-    AntiderivRecHolds I "x" rubi1134r16Nondeg.conditions rubi1134r16Nondeg.body
+theorem rubi1134r16_holds_of_conditions (I : Interp K) (cs : List Cond)
+    (hdmem : rubi1134r16Denominator ∈ cs)
+    (hemem : rubi1134r16ExponentCondition ∈ cs) :
+    AntiderivRecHolds I "x" cs rubi1134r16Nondeg.body
       rubi1134r16Nondeg.result rubi1134r16Nondeg.integrals := by
   intro env hc t hF
   have hd : env "a" * env "e" * (env "m" + 1) ≠ 0 := by
-    have h := hc (.ne (.app2 .mul (.app2 .mul (.var "a") (.var "e"))
-      (.app2 .add (.var "m") (.int 1))) (.int 0)) (by simp [rubi1134r16Nondeg])
-    simpa [Cond.Holds, Defined, eval] using h
+    have h := hc rubi1134r16Denominator hdmem
+    simpa [rubi1134r16Denominator, Cond.Holds, Defined, eval] using h
   have he : env "e" ≠ 0 := by
     intro h
     apply hd
     rw [h]
     ring
   have hexp : env "m" + env "n" * (env "p" + 1) + 1 = 0 := by
-    have h := hc (.eq (.app2 .add (.app2 .add (.var "m")
-      (.app2 .mul (.var "n") (.app2 .add (.var "p") (.int 1)))) (.int 1)) (.int 0))
-      (by simp [rubi1134r16Nondeg])
-    simpa [Cond.Holds, Defined, eval] using h
+    have h := hc rubi1134r16ExponentCondition hemem
+    simpa [rubi1134r16ExponentCondition, Cond.Holds, Defined, eval] using h
   rcases hkm : I.toInt? (env "m") with _ | m
   · exfalso
     have h := hF.self_of_nhds
@@ -162,6 +188,21 @@ theorem rubi1134r16Nondeg_holds (I : Interp K) :
     linear_combination
       (env "c" * E * U * env "e" * env "b" * (p + 1)) * hkey +
       (env "c" * E * U * env "e" * env "b" * T) * hexp
+
+theorem rubi1134r16Nondeg_holds (I : Interp K) :
+    AntiderivRecHolds I "x" rubi1134r16Nondeg.conditions rubi1134r16Nondeg.body
+      rubi1134r16Nondeg.result rubi1134r16Nondeg.integrals :=
+  rubi1134r16_holds_of_conditions I _
+    (by simp [rubi1134r16Nondeg, rubi1134r16Denominator])
+    (by simp [rubi1134r16Nondeg, rubi1134r16ExponentCondition])
+
+theorem rubi1134r16OrderFree_real : rubi1134r16OrderFree.Holds .real :=
+  rubi1134r16_holds_of_conditions Interp.real _
+    (by simp [rubi1134r16OrderFree]) (by simp [rubi1134r16OrderFree])
+
+theorem rubi1134r16OrderFree_complex : rubi1134r16OrderFree.Holds .complex :=
+  rubi1134r16_holds_of_conditions Interp.complex _
+    (by simp [rubi1134r16OrderFree]) (by simp [rubi1134r16OrderFree])
 
 theorem rubi1134r16Nondeg_real : rubi1134r16Nondeg.Holds .real :=
   rubi1134r16Nondeg_holds Interp.real

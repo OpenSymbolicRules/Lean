@@ -151,6 +151,10 @@ the binomial product identity with a monomial factor.
 ℂ, including the scaled residual integral and its definedness. The complex
 proof is not exported as certified because the rule's mapping assurance for
 that domain is unsupported.
+The derived rule `integration.rubi_1_1_3_4_r16_order_free` retains the same
+expressions and matching constraints with `a*e*(m + 1) ≠ 0` and
+`m + n*(p + 1) + 1 = 0`. It is proved over ℝ and ℂ with reviewed mappings;
+the original strengthened conditions imply these conditions.
 `OSR/IntegrationRec204.lean` proves the recursive rule 1.1.3.4 #27, including
 the polynomial residual integrand and the scaling of integer powers. Its
 complex mapping is likewise unsupported, so the complex proof is not certified.

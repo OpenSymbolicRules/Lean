@@ -52,6 +52,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- A separate order-free generalization of RUBI 1.1.3.4 #16 is proved over ℝ
+  and ℂ using its exponent relation and nonzero denominator conditions.
 - A separate order-free generalization of RUBI 1.1.3.4 #27 is proved over ℝ
   and ℂ using only its nonzero denominator condition.
 - A separately identified order-free generalization of RUBI 1.1.3.4 #29 is
