@@ -164,8 +164,9 @@ the same expressions and matching constraints and needs only
 strengthened conditions imply its condition, and that rule remains catalogued.
 `OSR/IntegrationRec207.lean` proves the strengthened substitution rule 3.1.2
 #2 over ℝ, including the local definedness of the substitution and residual
-integrand. The original rule remains refuted over ℝ; the strengthened rule
-remains unproved over ℂ.
+integrand. The original rule remains refuted over ℝ. `OSR/IntegrationRec208.lean`
+refutes the strengthened rule over ℂ at the principal logarithm's branch cut:
+with `a = p = 0`, `b = c = n = 1` and `x = -1`, the result is discontinuous.
 `OSR/IntegrationRec205.lean` and `OSR/IntegrationRec206.lean` prove the
 recursive rules 1.1.3.4 #28 and #29, respectively, including their residual
 integrands and definedness conditions. Both complex proofs are exported as

@@ -52,6 +52,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Refute the strengthened RUBI substitution rule 3.1.2 #2 over ℂ at the
+  principal logarithm's branch cut, while retaining its real proof.
 - Prove the previously unproved strengthened RUBI substitution rule 3.1.2 #2
   over ℝ, including local definedness of its residual integral. Its complex
   case remains unproved, and the original refuted rule remains in the catalogue.

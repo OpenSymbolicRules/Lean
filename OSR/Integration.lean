@@ -92,6 +92,7 @@ import OSR.IntegrationRec204
 import OSR.IntegrationRec205
 import OSR.IntegrationRec206
 import OSR.IntegrationRec207
+import OSR.IntegrationRec208
 import OSR.IntegrationRec116
 import OSR.IntegrationRec115
 import OSR.IntegrationRec114
@@ -205,6 +206,7 @@ open OSR.IntegrationRec204
 open OSR.IntegrationRec205
 open OSR.IntegrationRec206
 open OSR.IntegrationRec207
+open OSR.IntegrationRec208
 
 open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec4 OSR.IntegrationRec5 OSR.IntegrationRec6
@@ -18294,10 +18296,11 @@ theorem catalogPart20_wellFormed : ∀ e ∈ catalogPart20,
 
 def catalogPart21 : List CEntry := [
   { rule := rubi312r2Nondeg, ruleDecl := ``rubi312r2Nondeg,
-    proofs := [(.real, ``rubi312r2Nondeg_real)], unproved := [.complex],
+    proofs := [(.real, ``rubi312r2Nondeg_real)],
+    counterexamples := [(.complex, ``rubi312r2Nondeg_counterexample_complex)],
     findings := [
       "strengthened: the condition b*n ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_3_1_2_r2, which stays refuted.",
-      "domain: proved over ℝ, including the substitution and the local definedness of its residual integral; the complex case remains unproved.",
+      "domain: proved over ℝ, including the substitution and local definedness of its residual integral; refuted over ℂ at the logarithm branch cut, even with b*n ≠ 0.",
       recFinding,
       optionalFinding "a., b., c., n. and p."] },
   { rule := rubi735r10, ruleDecl := ``rubi735r10, proofs := [], unproved := [.complex],

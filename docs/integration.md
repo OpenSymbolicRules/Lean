@@ -574,7 +574,7 @@ batches](integration-proofs.md).
 
 Integration now exports 2879 rules: 489 proved, 1574 refuted and 816
 unproved (strengthened variants checked numerically) over ℝ, 300 proved (156
-certified), 376 refuted and 2203 unproved over ℂ; 520 more RUBI
+certified), 377 refuted and 2202 unproved over ℂ; 520 more RUBI
 rules are reported as not migrated (see
 [Integration: strengthened variants and later proof batches](integration-proofs.md)).
 

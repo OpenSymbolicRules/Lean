@@ -160,7 +160,6 @@ private def strengthenedIds : List String := [
 -- Strengthened variants proved over ℝ only: the complex domain stays unproved
 -- and a `domain:` finding replaces the `numerical:` one.
 private def strengthenedRealIds : List String := [
-  "integration.rubi_3_1_2_r2_nondegenerate",
   "integration.rubi_3_1_1_r3_nondegenerate", "integration.rubi_3_1_2_r5_nondegenerate",
   "integration.rubi_3_1_2_r6_nondegenerate", "integration.rubi_3_1_4_r12_nondegenerate",
   "integration.rubi_3_1_5_r8_nondegenerate", "integration.rubi_3_1_4_r2_nondegenerate",
@@ -206,8 +205,9 @@ private def strengthenedRealIds : List String := [
 #guard
   let ids := (Integration.catalogVerified.filter fun e =>
     e.findings.any (·.startsWith "strengthened:")).map (·.rule.id)
-  ids.length == (strengthenedIds ++ strengthenedRealIds).length &&
-    (strengthenedIds ++ strengthenedRealIds).all ids.contains
+  ids.length == (strengthenedIds ++ strengthenedRealIds).length + 1 &&
+    (strengthenedIds ++ strengthenedRealIds).all ids.contains &&
+    ids.contains "integration.rubi_3_1_2_r2_nondegenerate"
 
 -- The order-free generalization is published independently; the original
 -- strengthened rule retains its ordering conditions and its own proof.
@@ -262,7 +262,8 @@ private def strengthenedRealIds : List String := [
   | none => false
   | some v =>
     v.proofs == [(.real, ``OSR.IntegrationRec207.rubi312r2Nondeg_real)] &&
-    v.unproved == [.complex] && v.counterexamples.isEmpty &&
+    v.unproved.isEmpty &&
+    v.counterexamples == [(.complex, ``OSR.IntegrationRec208.rubi312r2Nondeg_counterexample_complex)] &&
     (OSR.Registry.mappingAssurance v.rule.symbols .real).certifiable
 
 #guard
