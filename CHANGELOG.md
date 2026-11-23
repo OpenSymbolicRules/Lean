@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Preliminary Mathlib checks for 28 linear-algebra identities and five
+  concrete counterexamples. These are
+  hand-written mathematical statements and do not certify OSR exports or
+  OpenMath mappings.
+
 ### Fixed
 - Eight RUBI rules were catalogued twice: 1.1.1.2 #3, 1.2.1.2 #78 and #79,
   4.1.12 #3 and #4 (`OSR/IntegrationRec172.lean`), 3.4 #1 and 3.5 #1
