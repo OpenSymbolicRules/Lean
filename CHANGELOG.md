@@ -52,6 +52,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Prove the previously unproved strengthened RUBI substitution rule 3.1.2 #2
+  over ℝ, including local definedness of its residual integral. Its complex
+  case remains unproved, and the original refuted rule remains in the catalogue.
 - A separate order-free generalization of RUBI 1.1.3.4 #16 is proved over ℝ
   and ℂ using its exponent relation and nonzero denominator conditions.
 - A separate order-free generalization of RUBI 1.1.3.4 #27 is proved over ℝ

@@ -106,7 +106,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 `OSR/IntegrationNum1.lean` distributed strengthened variants before their
 proofs (Specification V1-R-005e): both domains unproved, and a `numerical:`
-finding recording the evidence. It currently contains 817 unproved entries.
+finding recording the evidence. The catalogue currently retains 816 unproved entries.
 Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
 derivative is the residual integrand at the point, on assignments where each
@@ -162,6 +162,10 @@ The separate derived rule `integration.rubi_1_1_3_4_r27_order_free` retains
 the same expressions and matching constraints and needs only
 `a*e*(m + 1) ≠ 0`. Its mapping is reviewed over ℝ and ℂ; the original
 strengthened conditions imply its condition, and that rule remains catalogued.
+`OSR/IntegrationRec207.lean` proves the strengthened substitution rule 3.1.2
+#2 over ℝ, including the local definedness of the substitution and residual
+integrand. The original rule remains refuted over ℝ; the strengthened rule
+remains unproved over ℂ.
 `OSR/IntegrationRec205.lean` and `OSR/IntegrationRec206.lean` prove the
 recursive rules 1.1.3.4 #28 and #29, respectively, including their residual
 integrands and definedness conditions. Both complex proofs are exported as
