@@ -10,3 +10,8 @@ open OSR OSR.Calculus OSR.IntegrationExpPower
 
 -- The counterexample is a kernel-checked negation of the original real rule.
 example : ¬ rubi23r1.Holds .real := rubi23r1_counterexample_real
+
+#guard rubi23r8.conditions.isEmpty
+#guard rubi23r8.independent == ["F", "a", "b", "c", "d"]
+#guard rubi23r8.wellFormed
+example : ¬ rubi23r8.Holds .real := rubi23r8_counterexample_real

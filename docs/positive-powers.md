@@ -1,7 +1,7 @@
 # Positive real powers: exploratory proof
 
 The current OSR interpretation of `arith1#power` accepts only integer
-exponents. The Integration migration report lists 519 examined rules as not
+exponents. The Integration migration report lists 518 examined rules as not
 migrated because of this limit. This number is a report subset, not a count of
 all unmigrated RUBI rules. The official [OpenMath definition of power](https://openmath.org/cd/arith1#power)
 also describes non-integer powers via exponentials and logarithms.
@@ -96,3 +96,10 @@ in the integer-only production interpretation: `F=2`, `a=b=0`, `c=n=1`
 makes the integrand defined everywhere and the replacement undefined. Its
 complex case is unproved. The report records the integer-only scope and does
 not establish a RUBI runtime bug.
+
+RUBI 2.3 #8 has the analogous defect in its original-condition mathematical
+rule: `F=2`, `a=b=0`, `c=d=1` gives an everywhere-defined integrand and a
+replacement with zero denominator. The Lean theorem
+`OSR.IntegrationExpPower.rubi23r8_counterexample_real` checks this under the
+existing integer-power interpretation; the complex case remains unproved.
+As with rule #1, runtime dispatch in RUBI has not been tested.

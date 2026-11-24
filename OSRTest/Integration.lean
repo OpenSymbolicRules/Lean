@@ -33,13 +33,18 @@ open OSR OSR.Calculus OSR.Integration
   | some e => e.counterexamples.any (fun p => p.1 == Domain.real) &&
       e.proofs.isEmpty && e.unproved.contains Domain.complex
 
+#guard match Integration.catalog.find? (·.rule.id == "integration.rubi_2_3_r8") with
+  | none => false
+  | some e => e.counterexamples.any (fun p => p.1 == Domain.real) &&
+      e.proofs.isEmpty && e.unproved.contains Domain.complex
+
 private def t : Expr := .var "t"
 
 -- The twenty rules of the syntactic inventory (FreeQ or NeQ conditions,
 -- registered heads, no Int in the result) are migrated or reported, plus
 -- 110 rules with residual integrals and seven unmigrated ones.
 #guard Integration.catalogVerified.length + Integration.notMigrated.length == 2587
-#guard Integration.notMigrated.length == 519
+#guard Integration.notMigrated.length == 518
 -- A RUBI rule is catalogued once; independently identified strengthened and
 -- generalized variants may share the source rule's legacy id.
 #guard

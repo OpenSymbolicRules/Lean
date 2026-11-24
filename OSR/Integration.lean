@@ -440,8 +440,6 @@ def powCosLog : CRule where
 def notMigrated : List (String × String) := [
   ("rubi:1 Algebraic functions/1.2 Trinomial products/1.2.1 Quadratic/1.2.1.2 (d+e x)^m (a+b x+c x^2)^p:10",
     "the integrand raises a + c x^2 to the exponent 3/2; the fragment interprets arith1#power for integer exponents only"),
-  ("rubi:2 Exponentials/2.3 Miscellaneous exponentials:8",
-    "the integrand F^(a + b (c + d x)) is a power with a non-constant exponent; the fragment interprets arith1#power for integer exponents only"),
   ("rubi:1 Algebraic functions/1.2 Trinomial products/1.2.1 Quadratic/1.2.1.1 (a+b x+c x^2)^p:6",
     "the integrand raises a + b x + c x^2 to the exponent 3/2; the fragment interprets arith1#power for integer exponents only"),
   ("rubi:1 Algebraic functions/1.2 Trinomial products/1.2.1 Quadratic/1.2.1.2 (d+e x)^m (a+b x+c x^2)^p:9",
@@ -18865,7 +18863,13 @@ def catalogPart21 : List CEntry := [
       "counterexample: at F = 2, a = b = 0 and c = n = 1 the integrand is defined everywhere but the result divides by zero; RUBI evaluation and dispatch for this instance have not been tested.",
       "exponent: the fragment interprets arith1#power for integer exponents only; the real counterexample uses integer-valued exponents throughout.",
       "complex: unproved; no complex verification is claimed.",
-      optionalFinding "a., b., c. and n."] }
+      optionalFinding "a., b., c. and n."] },
+  { rule := rubi23r8, ruleDecl := ``rubi23r8, proofs := [], unproved := [.complex],
+    counterexamples := [(.real, ``rubi23r8_counterexample_real)], findings := [
+      "counterexample: at F = 2, a = b = 0 and c = d = 1 the integrand is defined everywhere but the result divides by zero; RUBI evaluation and dispatch for this instance have not been tested.",
+      "exponent: the fragment interprets arith1#power for integer exponents only; the real counterexample uses integer-valued exponents throughout.",
+      "complex: unproved; no complex verification is claimed.",
+      optionalFinding "a., b., c. and d."] }
 ]
 
 theorem catalogPart21_wellFormed : ∀ e ∈ catalogPart21,
@@ -18876,7 +18880,7 @@ theorem catalogPart21_wellFormed : ∀ e ∈ catalogPart21,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=

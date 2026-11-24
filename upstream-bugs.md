@@ -24,3 +24,13 @@ reproduction is still required before reporting a confirmed upstream bug.
 The case establishes that a nonzero denominator is necessary for an OSR
 rewrite valid for every mathematical substitution; it does not establish that
 this condition alone handles all real or complex branch and domain cases.
+
+## RUBI 4.17.3.0 (pinned source), rule 2.3 #8
+
+The source at revision `61e9c18` and the OSR v0.1 transcription give only
+`FreeQ[{F,a,b,c,d},x]`. With `F=2`, `a=b=0`, `c=d=1`, the integrand is
+defined everywhere in the integer-power interpretation, while the result's
+`b*d*log(F)` denominator is zero. Lean 4.35.0 and Mathlib revision
+`56a005855ea17e0b0958f73ec801ae140b0a1679` check the counterexample as
+`OSR.IntegrationExpPower.rubi23r8_counterexample_real`. As for #1, this is a
+mathematical rewrite counterexample; RUBI runtime dispatch is untested.
