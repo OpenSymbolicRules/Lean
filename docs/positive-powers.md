@@ -21,6 +21,14 @@ possible first step, restricted to strictly positive real bases:
 - A negative check shows that omitting `p ≠ -1` yields a false derivative
   claim. Another check records that Mathlib's totalized `0^(-1)` has value
   zero while the current OSR expression is undefined.
+- A test-only candidate power domain accepts a strictly positive base at any
+  real exponent, or an integer exponent under the current nonzero condition
+  for negative exponents. Lean proves that every currently defined power is
+  admitted by this candidate, including negative bases and `0^0`; it also
+  checks that `2^(1/2)` is admitted and `0^(-1)` is rejected. This is a
+  one-operation domain inclusion using the existing evaluations of the
+  operands, not a recursive interpreter or a proof that existing rules
+  remain valid after extending their domain.
 - A separate check proves that `2^(1/2)` is not defined by the current OSR
   integer-only interpretation even though Mathlib's real value is positive.
   This illustrates the precise gap; it does not turn the expression into a
@@ -32,9 +40,9 @@ not a new interpretation. They use Lean `v4.35.0` and Mathlib revision
 
 Before an extension can certify or export rules, it needs an explicit domain
 contract and a faithful mapping from OpenMath expressions and conditions. A
-compatibility proof must account for **all** currently defined integer-power
-cases, including negative bases and zero with nonnegative exponents; the
-positive-base overlap alone is insufficient. Enlarging `Defined` changes the
+compatibility proof for a full recursive interpreter must account for **all**
+currently defined expressions and their values; the test-only power-domain
+inclusion does not establish this. Enlarging `Defined` changes the
 quantification of existing theorem statements, so previous certificates must
 be rechecked under any changed interpretation. Negative real bases, zero,
 non-integer exponents, and complex branch cuts need separate decisions. No

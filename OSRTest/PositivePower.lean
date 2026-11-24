@@ -81,4 +81,28 @@ example : ¬ HasDerivAt
   have heq := h.unique hz
   norm_num at heq
 
+/-- A proposed domain: positive bases plus every currently defined integer power. -/
+def candidatePowerDefined (base exponent : ℝ) : Prop :=
+  0 < base ∨ ∃ n : ℤ, exponent = n ∧ (n < 0 → base ≠ 0)
+
+/-- Every currently defined power remains in the candidate domain. -/
+theorem old_domain_in_candidate (env : String → ℝ) (base exponent : Expr)
+    (h : Defined Interp.real env (.pow base exponent)) :
+    candidatePowerDefined (eval Interp.real env base) (eval Interp.real env exponent) := by
+  obtain ⟨_, _, n, hn, hne⟩ := h
+  exact Or.inr ⟨n, (intValue?_eq _ _).1 hn, hne⟩
+
+-- The extension accepts fractional powers on positive bases and preserves 0^0.
+example : candidatePowerDefined 2 (1 / 2) := Or.inl (by norm_num)
+example : candidatePowerDefined 0 0 := Or.inr ⟨0, by norm_num, by norm_num⟩
+
+-- It still rejects a pole; the total Mathlib value does not establish definedness.
+example : ¬ candidatePowerDefined 0 (-1) := by
+  intro h
+  rcases h with hpos | ⟨n, hn, hne⟩
+  · norm_num at hpos
+  · have hn' : n = -1 := by exact_mod_cast hn.symm
+    subst n
+    exact hne (by norm_num) rfl
+
 end OSRTest.PositivePower

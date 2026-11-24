@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove that a test-only candidate real-power domain includes every currently
+  defined integer power, and check fractional powers and poles explicitly.
+  No production interpretation or exported rule is changed.
 - Check the current integer-only interpretation rejects `2^(1/2)` despite
   its positive real value, documenting the non-integer domain gap.
 - Add exploratory Lean checks for positive-base real powers, including
