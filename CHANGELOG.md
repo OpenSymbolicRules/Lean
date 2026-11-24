@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Migrate RUBI 7.3.7 #19 with its original condition and a Lean-checked
+  real counterexample; its complex case is unproved.
 - Prove RUBI 1.1.1.2 #21 over ℝ using its original conditions and local
   definedness of its square-root product; its complex case remains unproved.
 - Migrate RUBI 5.3.7 #19 with its original conditions and a Lean-checked

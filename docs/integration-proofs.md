@@ -1,5 +1,12 @@
 # Integration: strengthened variants and later proof batches
 
+RUBI 7.3.7 #19 has a real counterexample: with `a = 3`, `b = c = 1` and
+`x = -1`, the original condition holds and the integrand is defined locally,
+but the result asks for the real logarithm of the negative value `artanh(-1/2)`.
+The Lean theorem checks local definedness and the failure of the result's
+domain condition. The complex case is unproved because the fragment does not
+interpret complex square roots or `arctanh`.
+
 RUBI 1.1.1.2 #21, the inverse square-root product integrated to an `arcosh`,
 is proved over ℝ under its original conditions `a+c=0`, `b-d=0` and `a>0`.
 Local definedness of the integrand entails `b*x > a`, which establishes the

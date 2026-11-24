@@ -1,6 +1,7 @@
 import OSR.Calculus
 import OSR.IntegrationCandidate
 import OSR.IntegrationAcosh
+import OSR.IntegrationAtanh
 import OSR.IntegrationRec48
 import OSR.IntegrationNum1
 import OSR.IntegrationRec117
@@ -213,6 +214,7 @@ open OSR.IntegrationRec208
 open OSR.IntegrationRec209
 open OSR.IntegrationCandidate
 open OSR.IntegrationAcosh
+open OSR.IntegrationAtanh
 
 open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec4 OSR.IntegrationRec5 OSR.IntegrationRec6
@@ -18850,7 +18852,14 @@ def catalogPart21 : List CEntry := [
       "real: proved with the original conditions a + c = 0, b - d = 0 and a > 0; local definedness of the square-root product implies b*x > a and b ≠ 0.",
       "complex: unproved; the fragment does not interpret square roots or arccosh over complex numbers, so the statement would be vacuous.",
       condFinding "EqQ[Add[a, c], 0]; EqQ[Add[b, Multiply[-1, d]], 0]; GtQ[a, 0]",
-      optionalFinding "b. and d."] }
+      optionalFinding "b. and d."] },
+  { rule := rubi737r19, ruleDecl := ``rubi737r19, proofs := [],
+    unproved := [.complex], counterexamples := [(.real, ``rubi737r19_counterexample_real)],
+    findings := [
+      "counterexample: at a = 3, b = 1, c = 1 and x = -1, the original equality condition holds and the integrand is defined on a neighbourhood, but the result contains the real logarithm of a negative arctanh (Lean theorem rubi737r19_counterexample_real).",
+      "complex: unproved; the fragment does not interpret square roots or arctanh over complex numbers, so the statement would be vacuous.",
+      condFinding "EqQ[b, Power[c, 2]]",
+      optionalFinding "a., b. and c."] }
 ]
 
 theorem catalogPart21_wellFormed : ∀ e ∈ catalogPart21,
@@ -18861,7 +18870,7 @@ theorem catalogPart21_wellFormed : ∀ e ∈ catalogPart21,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=
