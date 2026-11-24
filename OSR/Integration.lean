@@ -18883,7 +18883,25 @@ def catalogPart21 : List CEntry := [
     findings := [
       "strengthened: the condition d ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This variant excludes the degenerate counterexample to integration.rubi_4_1_1_1_r6, which remains refuted.",
       "real and complex: proved under d ≠ 0 using the derivative of cosine.",
-      optionalFinding "c. and d."] }
+      optionalFinding "c. and d."] },
+  { rule := IntegrationNum1.rubi4111r2Nondeg, ruleDecl := ``IntegrationNum1.rubi4111r2Nondeg,
+    proofs := [(.real, ``sinHalfAngle_real), (.complex, ``sinHalfAngle_complex)],
+    findings := [
+      "strengthened: the condition 2*d ≠ 0 is appended; the original integration.rubi_4_1_1_1_r2 remains refuted.",
+      "real and complex: proved using the sine derivative and cosine double-angle identity.",
+      optionalFinding "c. and d."] },
+  { rule := IntegrationNum1.rubi417r1Nondeg, ruleDecl := ``IntegrationNum1.rubi417r1Nondeg,
+    proofs := [(.real, ``sinQuarticProduct_real), (.complex, ``sinQuarticProduct_complex)],
+    findings := [
+      "strengthened: the condition 8*f ≠ 0 is appended; the original integration.rubi_4_1_7_r1 remains refuted.",
+      "real and complex: proved using a quartic sine-product derivative and the Pythagorean identity.",
+      optionalFinding "b., e., f., A. and B."] },
+  { rule := IntegrationNum1.rubi417r10Nondeg, ruleDecl := ``IntegrationNum1.rubi417r10Nondeg,
+    proofs := [(.real, ``sinQuarticSquare_real), (.complex, ``sinQuarticSquare_complex)],
+    findings := [
+      "strengthened: the condition 8*f ≠ 0 is appended; the original integration.rubi_4_1_7_r10 remains refuted.",
+      "real and complex: proved using the quartic sine-product derivative and the Pythagorean identity.",
+      optionalFinding "b., e. and f."] }
 ]
 
 theorem catalogPart21_wellFormed : ∀ e ∈ catalogPart21,
@@ -18894,7 +18912,8 @@ theorem catalogPart21_wellFormed : ∀ e ∈ catalogPart21,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=
@@ -18906,7 +18925,10 @@ def pendingEntries : List CEntry :=
     e.rule.id != "integration.rubi_3_1_2_r2_nondegenerate" &&
     e.rule.id != "integration.rubi_3_1_2_r7_nondegenerate" &&
     e.rule.id != "integration.rubi_4_1_1_1_r11_nondegenerate" &&
-    e.rule.id != "integration.rubi_4_1_1_1_r6_nondegenerate")
+    e.rule.id != "integration.rubi_4_1_1_1_r6_nondegenerate" &&
+    e.rule.id != "integration.rubi_4_1_1_1_r2_nondegenerate" &&
+    e.rule.id != "integration.rubi_4_1_7_r1_nondegenerate" &&
+    e.rule.id != "integration.rubi_4_1_7_r10_nondegenerate")
 
 /-- The Integration catalogue: the verified rules, then the strengthened variants checked
 numerically (`OSR.IntegrationNum1`), unproved. -/

@@ -808,3 +808,10 @@ variant. The original optional wildcard matching limitations remain.
 The same module also proves the strengthened RUBI 4.1.1.1 #6 primitive
 `-cos(c + d x)/d` for `sin(c + d x)`, over ℝ and ℂ, with `d ≠ 0`.
 The original rule without that additional condition remains refuted.
+
+Three more strengthened variants are proved over ℝ and ℂ: the half-angle
+sine-square primitive 4.1.1.1 #2 under `2*d ≠ 0`, and the product and square
+of affine expressions in sine squared (4.1.7 #1 and #10) under `8*f ≠ 0`.
+A shared quartic derivative proves the latter two. Their original unguarded
+rules remain separate refuted entries, and their optional-wildcard matching
+limitations are retained.

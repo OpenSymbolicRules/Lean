@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove three further strengthened trigonometric primitives over ℝ and ℂ:
+  RUBI 4.1.1.1 #2 and 4.1.7 #1 and #10, retaining their denominator guards.
 - Prove the strengthened RUBI 4.1.1.1 #6 sine primitive over ℝ and ℂ
   under its existing condition `d ≠ 0`; the original rule remains refuted.
 - Prove the existing strengthened RUBI 4.1.1.1 #11 sine-square primitive
