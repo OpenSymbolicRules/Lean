@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove the complete real `integration.power` statement in the test-only
+  power interpreter, reusing the existing certificate for integer exponents
+  and handling nonpositive points via neighborhood definedness. The
+  production interpretation and published rule are unchanged.
 - Check the existing `integration.power` expressions against the test-only
   real-power interpreter on the positive half-line, including neighborhood
   definedness; the published rule and its status remain unchanged.

@@ -44,12 +44,14 @@ domain, and it does not address complex powers.
 
 `OSRTest/RealPowerPrimitive.lean` checks the exact pattern and replacement
 expressions of the existing `integration.power` rule against the candidate
-interpreter. For `x > 0` and `m ≠ -1`, it proves that the replacement is
-defined on a neighborhood and differentiates to the pattern. This covers
-real, possibly non-integer exponents on the positive half-line, but it is
-only a local result: it does not establish the existing rule's full statement
-on negative or zero bases under the enlarged interpretation, nor does it
-change that rule's published status or exponent finding.
+interpreter. It proves the full real statement with the published rule's
+original condition `m ≠ -1`, including neighborhood definedness of the
+replacement and its derivative. On the positive half-line this covers real,
+possibly non-integer exponents. At nonpositive points, the hypothesis that
+the integrand is defined on a neighborhood implies that `m` is an integer;
+the proof then reuses the existing certificate, including its treatment of
+zero. This is a theorem for the test interpreter, not the production
+`CRule.Holds`; the rule's published status and exponent finding do not change.
 
 A separate Lean counterexample demonstrates why theorem replay is essential:
 a claim about `2^(1/2)` is vacuously true under the old definedness guard but
