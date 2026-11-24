@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Add exploratory Lean checks for positive-base real powers, including
+  integer-fragment agreement, a local primitive and definedness pitfalls.
+  The existing v1 interpretation and exported rules are unchanged.
 - Migrate RUBI 7.3.7 #19 with its original condition and a Lean-checked
   real counterexample; its complex case is unproved.
 - Prove RUBI 1.1.1.2 #21 over ℝ using its original conditions and local
