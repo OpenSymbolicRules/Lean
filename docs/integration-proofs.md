@@ -1,5 +1,14 @@
 # Integration: strengthened variants and later proof batches
 
+RUBI 5.3.7 #19 has a real counterexample in the current interpretation: for
+`a = 2`, `b = -1`, `c = 1`, the original condition `b + c² = 0` holds. The
+integrand is defined near `x = -1`, but the result asks for the real
+logarithm of `arctan(-1)`, which is negative. The compiled theorem
+`OSR.IntegrationCandidate.rubi537r19_counterexample_real` formalizes the
+complete local-definedness statement. Its complex case is unproved: the
+current fragment does not interpret complex square roots, so a proof there
+would not establish the intended identity. The source rule remains unchanged.
+
 This page continues [Integration](integration.md): the strengthened variants
 of refuted rules, and the proofs and refutations added batch by batch after
 the first backlog. The counts of the current catalogue are on the

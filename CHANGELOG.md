@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Migrate RUBI 5.3.7 #19 with its original conditions and a Lean-checked
+  real counterexample at a negative arctangent; its complex case is unproved.
 - Preliminary Mathlib checks for 28 linear-algebra identities and five
   concrete counterexamples. These are
   hand-written mathematical statements and do not certify OSR exports or

@@ -8,12 +8,19 @@ namespace OSRTest.Integration
 
 open OSR OSR.Calculus OSR.Integration
 
+-- The arctangent candidate is published as a real counterexample, with no
+-- unsupported claim about the complex domain.
+#guard match Integration.catalog.find? (·.rule.id == "integration.rubi_5_3_7_r19") with
+  | none => false
+  | some e => e.counterexamples.any (fun p => p.1 == Domain.real) &&
+      e.proofs.isEmpty && e.unproved.contains Domain.complex
+
 private def t : Expr := .var "t"
 
 -- The twenty rules of the syntactic inventory (FreeQ or NeQ conditions,
 -- registered heads, no Int in the result) are migrated or reported, plus
 -- 110 rules with residual integrals and seven unmigrated ones.
-#guard Integration.catalogVerified.length + Integration.notMigrated.length == 2584
+#guard Integration.catalogVerified.length + Integration.notMigrated.length == 2585
 #guard Integration.notMigrated.length == 520
 -- A RUBI rule is catalogued once; independently identified strengthened and
 -- generalized variants may share the source rule's legacy id.
@@ -23,10 +30,10 @@ private def t : Expr := .var "t"
       !e.findings.any (·.startsWith "generalized:")).filterMap (·.rule.legacyId)
   ls.eraseDups.length == ls.length
 #guard (Integration.catalogVerified.filter (·.rule.shape == .antiderivRec)).length == 1599
-#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 1896
+#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 1897
 -- RUBI rules with EqQ conditions are stated with relation1#eq (Cond.eq).
 #guard (Integration.catalogVerified.filter fun e =>
-    e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 984
+    e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 985
 
 -- RUBI 4.16.1: the new degenerate-coefficient cases are refuted in both
 -- domains, with no proof or unresolved domain accidentally attached.

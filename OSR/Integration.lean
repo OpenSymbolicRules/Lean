@@ -1,4 +1,5 @@
 import OSR.Calculus
+import OSR.IntegrationCandidate
 import OSR.IntegrationRec48
 import OSR.IntegrationNum1
 import OSR.IntegrationRec117
@@ -209,6 +210,7 @@ open OSR.IntegrationRec206
 open OSR.IntegrationRec207
 open OSR.IntegrationRec208
 open OSR.IntegrationRec209
+open OSR.IntegrationCandidate
 
 open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec4 OSR.IntegrationRec5 OSR.IntegrationRec6
@@ -18832,7 +18834,14 @@ def catalogPart21 : List CEntry := [
       "counterexample: at b = -3, c = 1 and the other metavariables 0 the conditions hold and the integrand is defined near x = 1, but the integrand of the first integral in the result is not defined where it is evaluated for x = 1 (Lean theorem rubi726r2_counterexample_real). RUBI excludes this case by its rule order or by evaluation; the v1 rule, stated on its own, needs a condition that this migration does not add.",
       "complex: not proved; transc1#arccosh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there.",
       recFinding,
-      optionalFinding "e., f., m., a., b., d. and n."] }
+      optionalFinding "e., f., m., a., b., d. and n."] },
+  { rule := rubi537r19, ruleDecl := ``rubi537r19, proofs := [],
+    unproved := [.complex], counterexamples := [(.real, ``rubi537r19_counterexample_real)],
+    findings := [
+      "counterexample: at a = 2, b = -1, c = 1 and x = -1, the original equality condition holds and the integrand is defined on a neighbourhood, but the result contains the real logarithm of a negative arctangent (Lean theorem rubi537r19_counterexample_real).",
+      "complex: unproved; the fragment does not interpret square roots over complex numbers, so the statement would be vacuous.",
+      condFinding "EqQ[Add[b, Power[c, 2]], 0]",
+      optionalFinding "a., b. and c."] }
 ]
 
 theorem catalogPart21_wellFormed : ∀ e ∈ catalogPart21,
@@ -18843,7 +18852,7 @@ theorem catalogPart21_wellFormed : ∀ e ∈ catalogPart21,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=
