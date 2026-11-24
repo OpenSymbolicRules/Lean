@@ -793,3 +793,14 @@ A development triage adds `D ≠ 0` for every coefficient-only denominator
 condition, and a numerical truth check finds 206 of these variants true (35
 without residual integrals), 39 still refuted, 41 never defined in the samples
 and 5 mixed. They are the backlog of strengthened variants.
+
+## Sine-square primitive
+
+The strengthened variant `integration.rubi_4_1_1_1_r11_nondegenerate`
+integrates `(a + b sin(c + d x))^2` with the explicit condition `d ≠ 0`.
+`OSR.IntegrationSinSquare` proves the existing exported expression on both
+ℝ and ℂ, using the derivatives of sine and cosine and `sin² + cos² = 1`.
+The proof also checks that the result is defined on a neighborhood. The
+original RUBI rule remains a distinct, refuted entry because it does not
+supply the nonzero condition; this proof certifies only the strengthened
+variant. The original optional wildcard matching limitations remain.

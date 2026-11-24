@@ -3,6 +3,7 @@ import OSR.IntegrationCandidate
 import OSR.IntegrationAcosh
 import OSR.IntegrationAtanh
 import OSR.IntegrationExpPower
+import OSR.IntegrationSinSquare
 import OSR.IntegrationRec48
 import OSR.IntegrationNum1
 import OSR.IntegrationRec117
@@ -217,6 +218,7 @@ open OSR.IntegrationCandidate
 open OSR.IntegrationAcosh
 open OSR.IntegrationAtanh
 open OSR.IntegrationExpPower
+open OSR.IntegrationSinSquare
 
 open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec4 OSR.IntegrationRec5 OSR.IntegrationRec6
@@ -18869,7 +18871,13 @@ def catalogPart21 : List CEntry := [
       "counterexample: at F = 2, a = b = 0 and c = d = 1 the integrand is defined everywhere but the result divides by zero; RUBI evaluation and dispatch for this instance have not been tested.",
       "exponent: the fragment interprets arith1#power for integer exponents only; the real counterexample uses integer-valued exponents throughout.",
       "complex: unproved; no complex verification is claimed.",
-      optionalFinding "a., b., c. and d."] }
+      optionalFinding "a., b., c. and d."] },
+  { rule := IntegrationNum1.rubi4111r11Nondeg, ruleDecl := ``IntegrationNum1.rubi4111r11Nondeg,
+    proofs := [(.real, ``sinSquare_real), (.complex, ``sinSquare_complex)],
+    findings := [
+      "strengthened: the condition d ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This variant excludes the degenerate counterexample to integration.rubi_4_1_1_1_r11, which remains refuted.",
+      "real and complex: proved under d ≠ 0 using the sine and cosine derivative and Pythagorean identities.",
+      optionalFinding "b., c. and d."] }
 ]
 
 theorem catalogPart21_wellFormed : ∀ e ∈ catalogPart21,
@@ -18880,7 +18888,7 @@ theorem catalogPart21_wellFormed : ∀ e ∈ catalogPart21,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=
@@ -18890,7 +18898,8 @@ def catalogVerified : List CEntry :=
 def pendingEntries : List CEntry :=
   IntegrationNum1.entries.filter (fun e =>
     e.rule.id != "integration.rubi_3_1_2_r2_nondegenerate" &&
-    e.rule.id != "integration.rubi_3_1_2_r7_nondegenerate")
+    e.rule.id != "integration.rubi_3_1_2_r7_nondegenerate" &&
+    e.rule.id != "integration.rubi_4_1_1_1_r11_nondegenerate")
 
 /-- The Integration catalogue: the verified rules, then the strengthened variants checked
 numerically (`OSR.IntegrationNum1`), unproved. -/

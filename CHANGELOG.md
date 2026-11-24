@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove the existing strengthened RUBI 4.1.1.1 #11 sine-square primitive
+  over ℝ and ℂ with its condition `d ≠ 0`. The original rule remains refuted.
 - Migrate RUBI 2.3 #8 with its original condition and a Lean-checked real
   counterexample; its complex status remains unproved.
 - Migrate RUBI 2.3 #1 with its original condition and a Lean-checked real
