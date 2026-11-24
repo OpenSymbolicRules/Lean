@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Avoid a stale hard-coded count of proved strengthened variants in generated
+  integration reports; use the per-rule and per-domain metrics instead.
+
 ### Added
 - Prove four strengthened RUBI 4.3.1.1 tangent recurrences over the real and
   fragment complex interpretations. Complex order mapping remains unsupported.
