@@ -814,14 +814,10 @@ has derivative `F[x := t]` at `t` (`HasDerivAt`), for every assignment of the
 metavariables satisfying the rule's conditions. A recursive rule
 `int(λx. F) ⟶ λx. G[int(λx. H)(x)]` states that the residual integrands are
 defined near `t` and that, for every choice of antiderivatives of them, the
-result is an antiderivative of `F`. The rules are the twenty RUBI 4.16.1 rules
-of `OpenSymbolicRules/Integration` with no `Int` in their result, whose
-conditions are `FreeQ` or `NeQ` and whose heads, the outer `Int` removed, are
-in the registry, 60 further rules without residual integrals whose conditions
-are expressible (including `EqQ`, `relation1#eq`), and 342 rules with residual
-integrals (313 migrated); the other 5,835 rules are not yet considered. One hundred and sixty-four strengthened variants
-of refuted rules (identifiers ending in `_nondegenerate`) append a non-degeneracy condition to
-the converted RUBI conditions and are proved, forty-nine more over ℝ only; the refutations of the original rules are kept. The reference rewriter applies a
+result is an antiderivative of `F`. Each entry identifies its source rule and records its real and complex status separately.
+A source rule may have additional, explicitly identified strengthened variants.
+The table below counts catalogue entries. The v0.1 manifest defines RUBI load order.
+The reference rewriter applies a
 conditional rule only when its substituted conditions are closed and decided
 true by exact rational arithmetic (`OSR.Cond.decide?`), and does not apply
 recursive rules."

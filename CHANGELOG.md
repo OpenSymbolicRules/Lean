@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Migrate 118 default-profile RUBI source identities, retaining their guards,
+  source locators and per-domain evidence.
 - Migrate RUBI 2.3 #1 with its original condition and a Lean-checked real
   counterexample in the integer-power interpretation; the complex case is
   unproved and runtime dispatch in RUBI has not been tested.

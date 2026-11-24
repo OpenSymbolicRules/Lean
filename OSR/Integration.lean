@@ -1,3 +1,4 @@
+import OSR.IntegrationRecovered
 import OSR.Calculus
 import OSR.IntegrationCandidate
 import OSR.IntegrationAcosh
@@ -18891,14 +18892,18 @@ def pendingEntries : List CEntry :=
 /-- The Integration catalogue: the verified rules, then the strengthened variants checked
 numerically (`OSR.IntegrationNum1`), unproved. -/
 def catalog : List CEntry :=
-  catalogVerified ++ pendingEntries
+  catalogVerified ++ pendingEntries ++ IntegrationRecovered.entries
 
 /-- Every catalogue rule is well formed: recursive rules (with or without
 substitutions) by `recOk`, the others by `wellFormed`. -/
 theorem catalog_wellFormed : ∀ e ∈ catalog,
     (if e.rule.shape == .antiderivRec || e.rule.shape == .antiderivSubst then e.rule.recOk else e.rule.wellFormed) = true := by
   intro e he
-  simp only [catalog, catalogVerified, List.mem_append] at he
+  obtain h | h := List.mem_append.mp he
+  swap
+  · exact IntegrationRecovered.entries_wellFormed e h
+  have he := h
+  simp only [catalogVerified, List.mem_append] at he
   rcases he with ((((((((((((((((((((h | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h
   · exact catalogPart1_wellFormed e h
   · exact catalogPart2_wellFormed e h

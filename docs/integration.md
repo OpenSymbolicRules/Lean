@@ -6,6 +6,31 @@ corpus of `OpenSymbolicRules/Integration` (commit
 files).  They are exported as `integration.osr.json` with its report and
 conformance cases.
 
+## Default-profile migration
+
+`OSR/IntegrationRecovered.lean` adds 118 original source identities from
+Integration commit `155e92f4dd42b84291dcd3516f4b932857923b98`. Three appear among the
+1,704 entries restored after Integration commit `85db3b3`. The remaining
+115 were already present in that source manifest.
+The priority range beginning at 100001 uses the one-based position in
+the default manifest, including skipped entries. It preserves order within
+this batch and follows the existing v1 priority range. Reproducing RUBI's
+global dispatch requires the source manifest and its matching conventions.
+
+The catalogue records the 111 newly transcribed statements as unproved over
+the reals. A missing interpretation in the pinned registry gives the affected
+new domain record the status `unsupported`.
+For seven further occurrences, the complete source payload and translated
+OpenMath objects agree with an existing audited entry. Lean checks the
+proof or counterexample again against each new declaration. Optional RUBI
+arguments are matched explicitly in the v1 mathematical pattern.
+
+The new transcriptions use literal or source-constrained integer powers,
+explicit independence and the existing residual-integral and substitution
+forms. Where the source requires evaluation-aware `Star`, lexical `With`,
+an unsupported predicate or a function-valued wildcard, a consumer needs
+a faithful representation before the corresponding entry can be migrated.
+
 ## Statement
 
 A RUBI rule `Int[F, x] := G` becomes the calculus rule
