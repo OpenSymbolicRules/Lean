@@ -849,3 +849,11 @@ mapping, not a canonical complex ordering. The registry marks the complex
 order mapping unsupported, so these four complex theorems are not certified
 for OSR despite compiling in Lean. The original unguarded rules remain
 separately refuted.
+
+The strengthened recursive hyperbolic-power variants 6.1.13 #15–18 are
+proved over ℝ and in the fragment's complex interpretation for their
+existing condition `m < -1` and appended nonzero denominator. Definedness of
+the negative integer power forces the base to remain nonzero locally; each
+residual integrand and result is checked there. The registry marks complex
+order unsupported, so the complex theorems compile but are not certified.
+The unguarded source rules remain separately refuted.

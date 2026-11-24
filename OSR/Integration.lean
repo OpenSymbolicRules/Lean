@@ -18996,6 +18996,42 @@ def catalogPart21 : List CEntry := [
       "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
       recFinding,
       condFinding "GtQ[m, 1]; NeQ[Add[Multiply[b, e], Multiply[-1, 2, c, d]], 0]",
+      optionalFinding "d., e., a., b. and c."] },
+  { rule := IntegrationNum1.rubi6113r15Nondeg, ruleDecl := ``IntegrationNum1.rubi6113r15Nondeg,
+    proofs := [(.real, ``sinhNegative_real), (.complex, ``sinhNegative_complex)], findings := [
+      "strengthened: the condition e*(m + 1) ≠ 0 is appended; the original integration.rubi_6_1_13_r15 remains refuted.",
+      "real and complex: proved including residual-integrand definedness; the negative integer exponent forces the power base nonzero on the integrand's neighborhood.",
+      "domain: complex order is the fragment's provisional real-part comparison on real-valued complex numbers; the complex proof is not an assertion of a canonical complex ordering.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "LtQ[m, -1]; EqQ[Add[Multiply[b, e], Multiply[-1, 2, c, d]], 0]",
+      optionalFinding "d., e., a., b. and c."] },
+  { rule := IntegrationNum1.rubi6113r16Nondeg, ruleDecl := ``IntegrationNum1.rubi6113r16Nondeg,
+    proofs := [(.real, ``coshNegative_real), (.complex, ``coshNegative_complex)], findings := [
+      "strengthened: the condition e*(m + 1) ≠ 0 is appended; the original integration.rubi_6_1_13_r16 remains refuted.",
+      "real and complex: proved including residual-integrand definedness; the negative integer exponent forces the power base nonzero on the integrand's neighborhood.",
+      "domain: complex order is the fragment's provisional real-part comparison on real-valued complex numbers; the complex proof is not an assertion of a canonical complex ordering.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "LtQ[m, -1]; EqQ[Add[Multiply[b, e], Multiply[-1, 2, c, d]], 0]",
+      optionalFinding "d., e., a., b. and c."] },
+  { rule := IntegrationNum1.rubi6113r17Nondeg, ruleDecl := ``IntegrationNum1.rubi6113r17Nondeg,
+    proofs := [(.real, ``sinhNegativeTwo_real), (.complex, ``sinhNegativeTwo_complex)], findings := [
+      "strengthened: the condition e*(m + 1) ≠ 0 is appended; the original integration.rubi_6_1_13_r17 remains refuted.",
+      "real and complex: proved including residual-integrand definedness; the negative integer exponent forces the power base nonzero on the integrand's neighborhood.",
+      "domain: complex order is the fragment's provisional real-part comparison on real-valued complex numbers; the complex proof is not an assertion of a canonical complex ordering.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "LtQ[m, -1]; NeQ[Add[Multiply[b, e], Multiply[-1, 2, c, d]], 0]",
+      optionalFinding "d., e., a., b. and c."] },
+  { rule := IntegrationNum1.rubi6113r18Nondeg, ruleDecl := ``IntegrationNum1.rubi6113r18Nondeg,
+    proofs := [(.real, ``coshNegativeTwo_real), (.complex, ``coshNegativeTwo_complex)], findings := [
+      "strengthened: the condition e*(m + 1) ≠ 0 is appended; the original integration.rubi_6_1_13_r18 remains refuted.",
+      "real and complex: proved including residual-integrand definedness; the negative integer exponent forces the power base nonzero on the integrand's neighborhood.",
+      "domain: complex order is the fragment's provisional real-part comparison on real-valued complex numbers; the complex proof is not an assertion of a canonical complex ordering.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "LtQ[m, -1]; NeQ[Add[Multiply[b, e], Multiply[-1, 2, c, d]], 0]",
       optionalFinding "d., e., a., b. and c."] }
 ]
 
@@ -19009,7 +19045,7 @@ theorem catalogPart21_wellFormed : ∀ e ∈ catalogPart21,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=
@@ -19035,7 +19071,11 @@ def pendingEntries : List CEntry :=
     e.rule.id != "integration.rubi_6_1_13_r11_nondegenerate" &&
     e.rule.id != "integration.rubi_6_1_13_r12_nondegenerate" &&
     e.rule.id != "integration.rubi_6_1_13_r13_nondegenerate" &&
-    e.rule.id != "integration.rubi_6_1_13_r14_nondegenerate")
+    e.rule.id != "integration.rubi_6_1_13_r14_nondegenerate" &&
+    e.rule.id != "integration.rubi_6_1_13_r15_nondegenerate" &&
+    e.rule.id != "integration.rubi_6_1_13_r16_nondegenerate" &&
+    e.rule.id != "integration.rubi_6_1_13_r17_nondegenerate" &&
+    e.rule.id != "integration.rubi_6_1_13_r18_nondegenerate")
 
 /-- The Integration catalogue: the verified rules, then the strengthened variants checked
 numerically (`OSR.IntegrationNum1`), unproved. -/

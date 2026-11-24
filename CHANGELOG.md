@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove four strengthened RUBI 6.1.13 #15–18 recursive hyperbolic rules
+  for negative exponents over ℝ and in the fragment's complex interpretation;
+  the complex order mapping is unsupported and those proofs are not certified.
 - Prove four strengthened RUBI 6.1.13 #11–14 recursive hyperbolic power
   rules over ℝ and the fragment's ordered-complex interpretation, including
   definedness at zero; complex order mapping remains provisional.
