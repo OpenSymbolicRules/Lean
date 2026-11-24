@@ -7,6 +7,7 @@ import OSR.IntegrationSinSquare
 import OSR.IntegrationCosecant
 import OSR.IntegrationExpArctan
 import OSR.IntegrationHyperbolicQuad
+import OSR.IntegrationHyperbolicRec
 import OSR.IntegrationRec48
 import OSR.IntegrationNum1
 import OSR.IntegrationRec117
@@ -225,6 +226,7 @@ open OSR.IntegrationSinSquare
 open OSR.IntegrationCosecant
 open OSR.IntegrationExpArctan
 open OSR.IntegrationHyperbolicQuad
+open OSR.IntegrationHyperbolicRec
 
 open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec4 OSR.IntegrationRec5 OSR.IntegrationRec6
@@ -18942,6 +18944,20 @@ def catalogPart21 : List CEntry := [
       "strengthened: the condition 2*c ≠ 0 is appended; the original integration.rubi_6_1_13_r8 remains refuted.",
       "real and complex: proved under the original equality and the appended nonzero condition using the derivative of sinh.",
       condFinding "EqQ[Add[Multiply[b, e], Multiply[-1, 2, c, d]], 0]",
+      optionalFinding "d., e., a., b. and c."] },
+  { rule := IntegrationNum1.rubi6113r9Nondeg, ruleDecl := ``IntegrationNum1.rubi6113r9Nondeg,
+    proofs := [(.real, ``sinhRec_real), (.complex, ``sinhRec_complex)], findings := [
+      "strengthened: the condition 2*c ≠ 0 is appended; the original integration.rubi_6_1_13_r9 remains refuted.",
+      "real and complex: proved including residual-integrand and result definedness.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, e], Multiply[-1, 2, c, d]], 0]",
+      optionalFinding "d., e., a., b. and c."] },
+  { rule := IntegrationNum1.rubi6113r10Nondeg, ruleDecl := ``IntegrationNum1.rubi6113r10Nondeg,
+    proofs := [(.real, ``coshRec_real), (.complex, ``coshRec_complex)], findings := [
+      "strengthened: the condition 2*c ≠ 0 is appended; the original integration.rubi_6_1_13_r10 remains refuted.",
+      "real and complex: proved including residual-integrand and result definedness.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, e], Multiply[-1, 2, c, d]], 0]",
       optionalFinding "d., e., a., b. and c."] }
 ]
 
@@ -18954,7 +18970,7 @@ theorem catalogPart21_wellFormed : ∀ e ∈ catalogPart21,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=
@@ -18974,7 +18990,9 @@ def pendingEntries : List CEntry :=
     e.rule.id != "integration.rubi_5_3_6_r13_nondegenerate" &&
     e.rule.id != "integration.rubi_5_3_6_r55_nondegenerate" &&
     e.rule.id != "integration.rubi_6_1_13_r7_nondegenerate" &&
-    e.rule.id != "integration.rubi_6_1_13_r8_nondegenerate")
+    e.rule.id != "integration.rubi_6_1_13_r8_nondegenerate" &&
+    e.rule.id != "integration.rubi_6_1_13_r9_nondegenerate" &&
+    e.rule.id != "integration.rubi_6_1_13_r10_nondegenerate")
 
 /-- The Integration catalogue: the verified rules, then the strengthened variants checked
 numerically (`OSR.IntegrationNum1`), unproved. -/

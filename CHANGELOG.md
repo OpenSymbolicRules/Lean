@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove the strengthened RUBI 6.1.13 #9 and #10 recursive hyperbolic
+  primitives over ℝ and ℂ, including residual-integrand definedness.
 - Prove the strengthened RUBI 6.1.13 #7 and #8 hyperbolic primitives over
   ℝ and ℂ under their original equality and appended nonzero condition.
 - Prove the strengthened RUBI 5.3.6 #13 and #55 exponential-arctangent

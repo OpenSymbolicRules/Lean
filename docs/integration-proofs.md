@@ -831,3 +831,9 @@ The strengthened hyperbolic primitives 6.1.13 #7 and #8 are proved over ℝ
 and ℂ using the derivatives of `sinh` and `cosh`. They retain the equality
 `b*e = 2*c*d` and the appended nonzero condition `2*c ≠ 0`; the original
 unguarded rules remain separate refuted entries.
+
+The corresponding strengthened recursive rules 6.1.13 #9 and #10 are also
+proved over ℝ and ℂ. Their statements explicitly require the residual
+integrand and result to be defined locally and quantify over every admissible
+primitive of that residual integrand. The original unguarded rules remain
+separate refuted entries.

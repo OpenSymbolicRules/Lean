@@ -45,6 +45,7 @@ check:
 	lake env leanchecker OSR.IntegrationCosecant
 	lake env leanchecker OSR.IntegrationExpArctan
 	lake env leanchecker OSR.IntegrationHyperbolicQuad
+	lake env leanchecker OSR.IntegrationHyperbolicRec
 
 # Audit proofs and export the interchange JSON to `out`.
 export out="generated":
