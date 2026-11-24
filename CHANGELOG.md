@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Add a test-only recursive real-power interpreter and prove that all currently
+  defined real expressions retain their values and definedness. A constructed
+  counterexample shows why this does not preserve all guarded theorems.
 - Prove that a test-only candidate real-power domain includes every currently
   defined integer power, and check fractional powers and poles explicitly.
   No production interpretation or exported rule is changed.

@@ -34,15 +34,27 @@ possible first step, restricted to strictly positive real bases:
   This illustrates the precise gap; it does not turn the expression into a
   supported OSR rule.
 
-These are exploratory Mathlib/Lean results, not exported OSR v1 rules and
-not a new interpretation. They use Lean `v4.35.0` and Mathlib revision
+`OSRTest/RecursiveRealPower.lean` also defines a **test-only recursive
+interpreter** that uses the candidate power domain and `Real.rpow`. Lean
+proves by structural induction that every expression defined by the current
+real interpretation remains defined with the same value in this interpreter.
+A nested fractional-power example exercises recursive evaluation. This result
+concerns expressions, not the preservation of theorems over the enlarged
+domain, and it does not address complex powers.
+
+A separate Lean counterexample demonstrates why theorem replay is essential:
+a claim about `2^(1/2)` is vacuously true under the old definedness guard but
+false when the candidate domain admits that power. This is a constructed
+example, not a finding that any existing exported rule is invalid.
+
+These are exploratory Mathlib/Lean results, not exported OSR v1 rules or
+a production interpretation. They use Lean `v4.35.0` and Mathlib revision
 `56a005855ea17e0b0958f73ec801ae140b0a1679`.
 
 Before an extension can certify or export rules, it needs an explicit domain
 contract and a faithful mapping from OpenMath expressions and conditions. A
-compatibility proof for a full recursive interpreter must account for **all**
-currently defined expressions and their values; the test-only power-domain
-inclusion does not establish this. Enlarging `Defined` changes the
+production implementation must separately establish that its recursive
+interpreter satisfies the same compatibility theorem. Enlarging `Defined` changes the
 quantification of existing theorem statements, so previous certificates must
 be rechecked under any changed interpretation. Negative real bases, zero,
 non-integer exponents, and complex branch cuts need separate decisions. No

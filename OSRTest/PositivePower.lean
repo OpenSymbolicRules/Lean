@@ -56,7 +56,7 @@ example : ¬ Defined Interp.real (fun _ => 0) (.pow (.int 0) (.int (-1))) := by
   simp [Defined, eval, Interp.real, hm1]
 
 -- The present fragment excludes even positive-base non-integer powers.
-example : ¬ Defined Interp.real (fun _ => 0)
+theorem fractional_power_not_defined : ¬ Defined Interp.real (fun _ => 0)
     (.pow (.int 2) (.app2 .div (.int 1) (.int 2))) := by
   intro h
   obtain ⟨_, _, n, hn, _⟩ := h
@@ -104,5 +104,17 @@ example : ¬ candidatePowerDefined 0 (-1) := by
   · have hn' : n = -1 := by exact_mod_cast hn.symm
     subst n
     exact hne (by norm_num) rfl
+
+-- A formerly vacuous statement need not survive an enlarged domain.
+theorem old_vacuous_claim :
+    Defined Interp.real (fun _ => 0)
+      (.pow (.int 2) (.app2 .div (.int 1) (.int 2))) →
+      Real.rpow 2 (1 / 2) = 0 := by
+  intro h
+  exact (fractional_power_not_defined h).elim
+
+theorem candidate_refutes_claim :
+    candidatePowerDefined 2 (1 / 2) ∧ Real.rpow 2 (1 / 2) ≠ 0 := by
+  exact ⟨Or.inl (by norm_num), (Real.rpow_pos_of_pos (by norm_num) _).ne'⟩
 
 end OSRTest.PositivePower
