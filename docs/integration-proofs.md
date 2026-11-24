@@ -845,5 +845,7 @@ ensure that the reduced exponents remain nonnegative, including at zero
 bases. The proofs check each residual integral and quantify over its
 admissible primitives. Over ℂ, the fragment interprets the order condition
 using the real parts of real-valued complex numbers; this is a provisional
-mapping, not a canonical complex ordering. The original unguarded rules
-remain separately refuted.
+mapping, not a canonical complex ordering. The registry marks the complex
+order mapping unsupported, so these four complex theorems are not certified
+for OSR despite compiling in Lean. The original unguarded rules remain
+separately refuted.
