@@ -826,3 +826,8 @@ The strengthened exponential-arctangent primitives 5.3.6 #13 and #55 are
 proved over ℝ under their existing conditions `d = a²*c` and `a*c*n ≠ 0`; the complex
 case remains unproved. The original source rules lack the appended nonzero
 condition and remain separate refuted entries.
+
+The strengthened hyperbolic primitives 6.1.13 #7 and #8 are proved over ℝ
+and ℂ using the derivatives of `sinh` and `cosh`. They retain the equality
+`b*e = 2*c*d` and the appended nonzero condition `2*c ≠ 0`; the original
+unguarded rules remain separate refuted entries.
