@@ -8,6 +8,7 @@ import OSR.IntegrationCosecant
 import OSR.IntegrationExpArctan
 import OSR.IntegrationHyperbolicQuad
 import OSR.IntegrationHyperbolicRec
+import OSR.IntegrationHyperbolicPower
 import OSR.IntegrationRec48
 import OSR.IntegrationNum1
 import OSR.IntegrationRec117
@@ -227,6 +228,7 @@ open OSR.IntegrationCosecant
 open OSR.IntegrationExpArctan
 open OSR.IntegrationHyperbolicQuad
 open OSR.IntegrationHyperbolicRec
+open OSR.IntegrationHyperbolicPower
 
 open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec4 OSR.IntegrationRec5 OSR.IntegrationRec6
@@ -18958,6 +18960,42 @@ def catalogPart21 : List CEntry := [
       "real and complex: proved including residual-integrand and result definedness.",
       recFinding,
       condFinding "NeQ[Add[Multiply[b, e], Multiply[-1, 2, c, d]], 0]",
+      optionalFinding "d., e., a., b. and c."] },
+  { rule := IntegrationNum1.rubi6113r11Nondeg, ruleDecl := ``IntegrationNum1.rubi6113r11Nondeg,
+    proofs := [(.real, ``sinhPower_real), (.complex, ``sinhPower_complex)], findings := [
+      "strengthened: the condition 2*c ≠ 0 is appended; the original integration.rubi_6_1_13_r11 remains refuted.",
+      "real and complex: proved including residual-integrand definedness and the integer exponent cases admitted by the fragment.",
+      "domain: complex order is the fragment's provisional real-part comparison on real-valued complex numbers; the complex proof is not an assertion of a canonical complex ordering.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "GtQ[m, 1]; EqQ[Add[Multiply[b, e], Multiply[-1, 2, c, d]], 0]",
+      optionalFinding "d., e., a., b. and c."] },
+  { rule := IntegrationNum1.rubi6113r12Nondeg, ruleDecl := ``IntegrationNum1.rubi6113r12Nondeg,
+    proofs := [(.real, ``coshPower_real), (.complex, ``coshPower_complex)], findings := [
+      "strengthened: the condition 2*c ≠ 0 is appended; the original integration.rubi_6_1_13_r12 remains refuted.",
+      "real and complex: proved including residual-integrand definedness and the integer exponent cases admitted by the fragment.",
+      "domain: complex order is the fragment's provisional real-part comparison on real-valued complex numbers; the complex proof is not an assertion of a canonical complex ordering.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "GtQ[m, 1]; EqQ[Add[Multiply[b, e], Multiply[-1, 2, c, d]], 0]",
+      optionalFinding "d., e., a., b. and c."] },
+  { rule := IntegrationNum1.rubi6113r13Nondeg, ruleDecl := ``IntegrationNum1.rubi6113r13Nondeg,
+    proofs := [(.real, ``sinhPowerTwo_real), (.complex, ``sinhPowerTwo_complex)], findings := [
+      "strengthened: the condition 2*c ≠ 0 is appended; the original integration.rubi_6_1_13_r13 remains refuted.",
+      "real and complex: proved including residual-integrand definedness and the integer exponent cases admitted by the fragment.",
+      "domain: complex order is the fragment's provisional real-part comparison on real-valued complex numbers; the complex proof is not an assertion of a canonical complex ordering.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "GtQ[m, 1]; NeQ[Add[Multiply[b, e], Multiply[-1, 2, c, d]], 0]",
+      optionalFinding "d., e., a., b. and c."] },
+  { rule := IntegrationNum1.rubi6113r14Nondeg, ruleDecl := ``IntegrationNum1.rubi6113r14Nondeg,
+    proofs := [(.real, ``coshPowerTwo_real), (.complex, ``coshPowerTwo_complex)], findings := [
+      "strengthened: the condition 2*c ≠ 0 is appended; the original integration.rubi_6_1_13_r14 remains refuted.",
+      "real and complex: proved including residual-integrand definedness and the integer exponent cases admitted by the fragment.",
+      "domain: complex order is the fragment's provisional real-part comparison on real-valued complex numbers; the complex proof is not an assertion of a canonical complex ordering.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "GtQ[m, 1]; NeQ[Add[Multiply[b, e], Multiply[-1, 2, c, d]], 0]",
       optionalFinding "d., e., a., b. and c."] }
 ]
 
@@ -18970,7 +19008,8 @@ theorem catalogPart21_wellFormed : ∀ e ∈ catalogPart21,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=
@@ -18992,7 +19031,11 @@ def pendingEntries : List CEntry :=
     e.rule.id != "integration.rubi_6_1_13_r7_nondegenerate" &&
     e.rule.id != "integration.rubi_6_1_13_r8_nondegenerate" &&
     e.rule.id != "integration.rubi_6_1_13_r9_nondegenerate" &&
-    e.rule.id != "integration.rubi_6_1_13_r10_nondegenerate")
+    e.rule.id != "integration.rubi_6_1_13_r10_nondegenerate" &&
+    e.rule.id != "integration.rubi_6_1_13_r11_nondegenerate" &&
+    e.rule.id != "integration.rubi_6_1_13_r12_nondegenerate" &&
+    e.rule.id != "integration.rubi_6_1_13_r13_nondegenerate" &&
+    e.rule.id != "integration.rubi_6_1_13_r14_nondegenerate")
 
 /-- The Integration catalogue: the verified rules, then the strengthened variants checked
 numerically (`OSR.IntegrationNum1`), unproved. -/

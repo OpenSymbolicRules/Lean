@@ -837,3 +837,13 @@ proved over ℝ and ℂ. Their statements explicitly require the residual
 integrand and result to be defined locally and quantify over every admissible
 primitive of that residual integrand. The original unguarded rules remain
 separate refuted entries.
+
+The strengthened recursive hyperbolic-power variants 6.1.13 #11–14 are
+proved over ℝ and in the fragment's complex interpretation. Their original numeric condition `m > 1`, the fragment's
+integer-exponent definedness and the existing nonzero denominator condition
+ensure that the reduced exponents remain nonnegative, including at zero
+bases. The proofs check each residual integral and quantify over its
+admissible primitives. Over ℂ, the fragment interprets the order condition
+using the real parts of real-valued complex numbers; this is a provisional
+mapping, not a canonical complex ordering. The original unguarded rules
+remain separately refuted.

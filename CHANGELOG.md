@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove four strengthened RUBI 6.1.13 #11–14 recursive hyperbolic power
+  rules over ℝ and the fragment's ordered-complex interpretation, including
+  definedness at zero; complex order mapping remains provisional.
 - Prove the strengthened RUBI 6.1.13 #9 and #10 recursive hyperbolic
   primitives over ℝ and ℂ, including residual-integrand definedness.
 - Prove the strengthened RUBI 6.1.13 #7 and #8 hyperbolic primitives over
