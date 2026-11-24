@@ -68,3 +68,19 @@ example : OSR.IntegrationNum1.rubi4331r4Nondeg.Holds .real :=
   OSR.IntegrationTangentRec.tanTripleNegative_real
 example : OSR.IntegrationNum1.rubi4331r4Nondeg.Holds .complex :=
   OSR.IntegrationTangentRec.tanTripleNegative_complex
+example : OSR.IntegrationNum1.rubi4331r2Nondeg.Holds .real :=
+  OSR.IntegrationTangentRec.tanTripleQuotient_real
+example : OSR.IntegrationNum1.rubi4331r2Nondeg.Holds .complex :=
+  OSR.IntegrationTangentRec.tanTripleQuotient_complex
+example : OSR.IntegrationNum1.rubi4331r19Nondeg.Holds .real :=
+  OSR.IntegrationTangentRec.tanSquaredQuotient_real
+example : OSR.IntegrationNum1.rubi4331r19Nondeg.Holds .complex :=
+  OSR.IntegrationTangentRec.tanSquaredQuotient_complex
+example : OSR.IntegrationNum1.rubi4341r3Nondeg.Holds .real :=
+  OSR.IntegrationTangentRec.tanQuadraticFactor_real
+example : OSR.IntegrationNum1.rubi4341r3Nondeg.Holds .complex :=
+  OSR.IntegrationTangentRec.tanQuadraticFactor_complex
+example : OSR.IntegrationNum1.rubi4341r4Nondeg.Holds .real :=
+  OSR.IntegrationTangentRec.tanQuadraticEven_real
+example : OSR.IntegrationNum1.rubi4341r4Nondeg.Holds .complex :=
+  OSR.IntegrationTangentRec.tanQuadraticEven_complex

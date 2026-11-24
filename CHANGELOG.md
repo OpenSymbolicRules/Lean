@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   integration reports; use the per-rule and per-domain metrics instead.
 
 ### Added
+- Prove four strengthened tangent quotient and quadratic-factor recurrences
+  RUBI 4.3.3.1 #2, #19 and 4.3.4.1 #3–4 over ℝ and ℂ.
 - Prove four strengthened RUBI 4.3.2.1 #20–21 and 4.3.3.1 #4–5 tangent
   recurrences over ℝ and the complex fragment; the complex order mapping
   remains unsupported.

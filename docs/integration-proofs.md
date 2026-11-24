@@ -889,3 +889,10 @@ nonnegative integer powers. Complex order mapping remains unsupported, so
 these complex statements are not certified. Their denominator guards,
 original conditions and residual-integrand definedness are retained. The
 original unguarded rules remain refuted.
+
+The strengthened RUBI 4.3.3.1 #2 and #19 quotient recurrences and 4.3.4.1
+#3–4 quadratic-factor recurrences are proved over ℝ and ℂ. Both quadratic
+factor rules cover arbitrary integer exponents: a negative exponent derives
+a nonzero base from the integrand's definedness, and a nonnegative exponent
+also admits a zero base. Denominator guards and coefficient equalities remain
+explicit; the corresponding unguarded original rules remain refuted.
