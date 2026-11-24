@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove four strengthened RUBI 4.3.1.1 tangent recurrences over the real and
+  fragment complex interpretations. Complex order mapping remains unsupported.
 - Prove four strengthened RUBI 6.1.13 #15–18 recursive hyperbolic rules
   for negative exponents over ℝ and in the fragment's complex interpretation;
   the complex order mapping is unsupported and those proofs are not certified.

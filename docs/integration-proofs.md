@@ -857,3 +857,14 @@ the negative integer power forces the base to remain nonzero locally; each
 residual integrand and result is checked there. The registry marks complex
 order unsupported, so the complex theorems compile but are not certified.
 The unguarded source rules remain separately refuted.
+
+## Tangent recurrences
+
+The strengthened RUBI 4.3.1.1 #1, #5, #6 and #10 rules have Lean proofs
+for real and complex interpretations, including residual-integrand definedness
+and their explicit denominator guards. The corresponding original unguarded
+rules remain refuted. The symbolic powers use the fragment's integer-power
+semantics. For #1, #6 and #10 the complex comparison is the fragment's
+provisional interpretation; its OpenMath order mapping is unsupported and
+therefore these complex proofs are not OSR-certified. The equality condition
+in #6 is retained, including for complex coefficients.
