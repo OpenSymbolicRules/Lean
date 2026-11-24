@@ -55,6 +55,21 @@ example : ¬ Defined Interp.real (fun _ => 0) (.pow (.int 0) (.int (-1))) := by
   have hm1 : intValue? (-1 : ℝ) = some (-1) := (intValue?_eq _ _).2 (by norm_num)
   simp [Defined, eval, Interp.real, hm1]
 
+-- The present fragment excludes even positive-base non-integer powers.
+example : ¬ Defined Interp.real (fun _ => 0)
+    (.pow (.int 2) (.app2 .div (.int 1) (.int 2))) := by
+  intro h
+  obtain ⟨_, _, n, hn, _⟩ := h
+  have hv : (1 / 2 : ℝ) = n := by
+    have hvalue := (intValue?_eq _ _).1 hn
+    simpa [eval] using hvalue
+  have heven : (2 : ℤ) * n = 1 := by
+    exact_mod_cast (show (2 : ℝ) * (n : ℝ) = 1 by linarith)
+  omega
+
+example : 0 < Real.rpow 2 (1 / 2) := by
+  exact Real.rpow_pos_of_pos (by norm_num) _
+
 -- Dropping p ≠ -1 would certify a false statement via totalized division.
 example : ¬ HasDerivAt
     (fun x : ℝ => Real.rpow x ((-1 : ℝ) + 1) / ((-1 : ℝ) + 1))

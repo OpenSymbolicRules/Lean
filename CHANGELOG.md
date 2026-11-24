@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Check the current integer-only interpretation rejects `2^(1/2)` despite
+  its positive real value, documenting the non-integer domain gap.
 - Add exploratory Lean checks for positive-base real powers, including
   integer-fragment agreement, a local primitive and definedness pitfalls.
   The existing v1 interpretation and exported rules are unchanged.

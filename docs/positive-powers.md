@@ -21,6 +21,10 @@ possible first step, restricted to strictly positive real bases:
 - A negative check shows that omitting `p ≠ -1` yields a false derivative
   claim. Another check records that Mathlib's totalized `0^(-1)` has value
   zero while the current OSR expression is undefined.
+- A separate check proves that `2^(1/2)` is not defined by the current OSR
+  integer-only interpretation even though Mathlib's real value is positive.
+  This illustrates the precise gap; it does not turn the expression into a
+  supported OSR rule.
 
 These are exploratory Mathlib/Lean results, not exported OSR v1 rules and
 not a new interpretation. They use Lean `v4.35.0` and Mathlib revision
