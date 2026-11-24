@@ -70,3 +70,23 @@ quantification of existing theorem statements, so previous certificates must
 be rechecked under any changed interpretation. Negative real bases, zero,
 non-integer exponents, and complex branch cuts need separate decisions. No
 rule has been marked proved for them here.
+
+## A blocked RUBI rule with an undefined replacement
+
+The OSR v0.1 transcription of RUBI 4.16.1 rule 2.3 #1 has only the
+`FreeQ[{F,a,b,c,n},x]` constraint. Under the candidate real-power domain,
+`OSRTest/RealPowerRefutation.lean` encodes its pattern and replacement and
+proves a counterexample: set `F=b=c=n=1`, `a=0`. All parameters are
+independent of `x`, the integrand is defined at every real `x`, and the
+replacement is undefined because its denominator contains `log(1)=0`.
+The inverse is represented as power `-1`, with undefinedness checked rather
+than relying on Mathlib's totalized zero value.
+
+The pinned vendored RUBI 4.16.1 source also states the rule with only `FreeQ`.
+However, the Lean theorem concerns a mathematical instance of the OSR
+transcription; it does not establish that Mathematica/RUBI's evaluation and
+pattern matching would dispatch that instance to this rule. This is a
+candidate upstream issue, not a tested runtime bug. A nonzero denominator
+would be necessary to exclude this example, but is not asserted sufficient
+for all branch and domain cases. The rule remains unmigrated and is not
+reported as a production v1 refutation.

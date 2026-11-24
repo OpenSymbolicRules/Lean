@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Formally check a candidate-domain counterexample to the OSR transcription
+  of RUBI 4.16.1 rule 2.3 #1, and document the separate question of whether
+  RUBI's runtime matching actually applies that rule to the witness.
 - Prove the complete real `integration.power` statement in the test-only
   power interpreter, reusing the existing certificate for integer exponents
   and handling nonpositive points via neighborhood definedness. The
