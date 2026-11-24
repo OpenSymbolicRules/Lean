@@ -15,12 +15,18 @@ open OSR OSR.Calculus OSR.Integration
   | some e => e.counterexamples.any (fun p => p.1 == Domain.real) &&
       e.proofs.isEmpty && e.unproved.contains Domain.complex
 
+-- The arcosh rule retains the RUBI conditions and is proved over the reals.
+#guard match Integration.catalog.find? (·.rule.id == "integration.rubi_1_1_1_2_r21") with
+  | none => false
+  | some e => e.proofs.any (fun p => p.1 == Domain.real) &&
+      e.counterexamples.isEmpty && e.unproved.contains Domain.complex
+
 private def t : Expr := .var "t"
 
 -- The twenty rules of the syntactic inventory (FreeQ or NeQ conditions,
 -- registered heads, no Int in the result) are migrated or reported, plus
 -- 110 rules with residual integrals and seven unmigrated ones.
-#guard Integration.catalogVerified.length + Integration.notMigrated.length == 2585
+#guard Integration.catalogVerified.length + Integration.notMigrated.length == 2586
 #guard Integration.notMigrated.length == 520
 -- A RUBI rule is catalogued once; independently identified strengthened and
 -- generalized variants may share the source rule's legacy id.
@@ -30,10 +36,10 @@ private def t : Expr := .var "t"
       !e.findings.any (·.startsWith "generalized:")).filterMap (·.rule.legacyId)
   ls.eraseDups.length == ls.length
 #guard (Integration.catalogVerified.filter (·.rule.shape == .antiderivRec)).length == 1599
-#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 1897
+#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 1898
 -- RUBI rules with EqQ conditions are stated with relation1#eq (Cond.eq).
 #guard (Integration.catalogVerified.filter fun e =>
-    e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 985
+    e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 986
 
 -- RUBI 4.16.1: the new degenerate-coefficient cases are refuted in both
 -- domains, with no proof or unresolved domain accidentally attached.
@@ -549,7 +555,8 @@ private def rules : List CRule :=
   "integration.rubi_4_1_2_1_r14", "integration.rubi_4_3_2_1_r29", "integration.rubi_4_3_4_1_r9", "integration.rubi_4_5_2_1_r13", "integration.rubi_4_5_2_1_r19", "integration.rubi_7_3_1_r159", "integration.rubi_7_3_1_r161", "integration.rubi_7_3_1_r62", "integration.rubi_7_3_4_r139", "integration.rubi_7_3_4_r141", "integration.rubi_7_3_4_r42",
   "integration.rubi_5_3_4_r42", "integration.rubi_5_3_4_r139", "integration.rubi_5_3_4_r141", "integration.rubi_4_5_3_1_r10", "integration.rubi_4_5_1_2_r51", "integration.rubi_4_5_4_1_r18", "integration.rubi_4_5_4_1_r19", "integration.rubi_4_5_2_1_r12", "integration.rubi_4_5_1_1_r7", "integration.rubi_4_3_1_1_r12", "integration.rubi_4_3_4_1_r8",
   "integration.rubi_4_5_2_1_r11", "integration.rubi_4_1_3_1_r36", "integration.rubi_4_1_5_r27", "integration.rubi_4_1_5_r28", "integration.rubi_4_3_3_1_r24", "integration.rubi_4_3_4_1_r7", "integration.rubi_4_3_4_1_r10", "integration.rubi_4_3_4_1_r11", "integration.rubi_4_3_2_1_r10", "integration.rubi_4_3_2_1_r49", "integration.rubi_4_3_4_2_r20", "integration.rubi_4_3_4_2_r21", "integration.rubi_6_7_9_r45", "integration.rubi_6_7_9_r48",
-  "integration.rubi_3_1_2_r2_nondegenerate", "integration.rubi_3_1_2_r7_nondegenerate"]
+  "integration.rubi_3_1_2_r2_nondegenerate", "integration.rubi_3_1_2_r7_nondegenerate",
+  "integration.rubi_1_1_1_2_r21"]
 
 -- A conditional rule applies only when its conditions are decided: int(λt. t^m)
 -- stays (m ≠ -1 is undecided), int(λt. t^(-1)) stays (decided false),

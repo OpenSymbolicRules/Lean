@@ -1,5 +1,12 @@
 # Integration: strengthened variants and later proof batches
 
+RUBI 1.1.1.2 #21, the inverse square-root product integrated to an `arcosh`,
+is proved over ℝ under its original conditions `a+c=0`, `b-d=0` and `a>0`.
+Local definedness of the integrand entails `b*x > a`, which establishes the
+required `arcosh` domain and `b ≠ 0`; these are derived, not added premises.
+The complex case is unproved because the fragment does not interpret complex
+square roots or `arccosh`.
+
 RUBI 5.3.7 #19 has a real counterexample in the current interpretation: for
 `a = 2`, `b = -1`, `c = 1`, the original condition `b + c² = 0` holds. The
 integrand is defined near `x = -1`, but the result asks for the real

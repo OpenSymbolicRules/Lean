@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove RUBI 1.1.1.2 #21 over ℝ using its original conditions and local
+  definedness of its square-root product; its complex case remains unproved.
 - Migrate RUBI 5.3.7 #19 with its original conditions and a Lean-checked
   real counterexample at a negative arctangent; its complex case is unproved.
 - Application tests for the real log-product rule covering positive factors,
