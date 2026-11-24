@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Check the existing `integration.power` expressions against the test-only
+  real-power interpreter on the positive half-line, including neighborhood
+  definedness; the published rule and its status remain unchanged.
 - Add a test-only recursive real-power interpreter and prove that all currently
   defined real expressions retain their values and definedness. A constructed
   counterexample shows why this does not preserve all guarded theorems.

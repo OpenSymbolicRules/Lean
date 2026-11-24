@@ -42,6 +42,15 @@ A nested fractional-power example exercises recursive evaluation. This result
 concerns expressions, not the preservation of theorems over the enlarged
 domain, and it does not address complex powers.
 
+`OSRTest/RealPowerPrimitive.lean` checks the exact pattern and replacement
+expressions of the existing `integration.power` rule against the candidate
+interpreter. For `x > 0` and `m ≠ -1`, it proves that the replacement is
+defined on a neighborhood and differentiates to the pattern. This covers
+real, possibly non-integer exponents on the positive half-line, but it is
+only a local result: it does not establish the existing rule's full statement
+on negative or zero bases under the enlarged interpretation, nor does it
+change that rule's published status or exponent finding.
+
 A separate Lean counterexample demonstrates why theorem replay is essential:
 a claim about `2^(1/2)` is vacuously true under the old definedness guard but
 false when the candidate domain admits that power. This is a constructed
