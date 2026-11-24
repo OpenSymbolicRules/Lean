@@ -4,6 +4,8 @@ import OSR.IntegrationAcosh
 import OSR.IntegrationAtanh
 import OSR.IntegrationExpPower
 import OSR.IntegrationSinSquare
+import OSR.IntegrationCosecant
+import OSR.IntegrationExpArctan
 import OSR.IntegrationRec48
 import OSR.IntegrationNum1
 import OSR.IntegrationRec117
@@ -219,6 +221,8 @@ open OSR.IntegrationAcosh
 open OSR.IntegrationAtanh
 open OSR.IntegrationExpPower
 open OSR.IntegrationSinSquare
+open OSR.IntegrationCosecant
+open OSR.IntegrationExpArctan
 
 open OSR OSR.Calculus OSR.IntegrationRec OSR.IntegrationRec2 OSR.IntegrationRec3
   OSR.IntegrationRec4 OSR.IntegrationRec5 OSR.IntegrationRec6
@@ -18901,7 +18905,30 @@ def catalogPart21 : List CEntry := [
     findings := [
       "strengthened: the condition 8*f ≠ 0 is appended; the original integration.rubi_4_1_7_r10 remains refuted.",
       "real and complex: proved using the quartic sine-product derivative and the Pythagorean identity.",
-      optionalFinding "b., e. and f."] }
+      optionalFinding "b., e. and f."] },
+  { rule := IntegrationNum1.rubi4511r4Nondeg, ruleDecl := ``IntegrationNum1.rubi4511r4Nondeg,
+    proofs := [(.real, ``cosecant_real)], unproved := [.complex],
+    findings := [
+      "strengthened: the condition d ≠ 0 is appended; the original integration.rubi_4_5_1_1_r4 remains refuted.",
+      "real: proved with d ≠ 0; sine nonzero implies cosine lies in the real domain of artanh.",
+      "complex: unproved; the fragment does not interpret complex cosecant and arctanh.",
+      optionalFinding "c. and d."] },
+  { rule := IntegrationNum1.rubi536r13Nondeg, ruleDecl := ``IntegrationNum1.rubi536r13Nondeg,
+    proofs := [(.real, ``expArctan_real)], unproved := [.complex],
+    findings := [
+      "strengthened: the condition a*c*n ≠ 0 is appended; the original integration.rubi_5_3_6_r13 remains refuted.",
+      "real: proved under d = a²*c and a*c*n ≠ 0 using the derivative of arctangent.",
+      "complex: unproved; no complex certificate is claimed.",
+      condFinding "EqQ[d, Multiply[Power[a, 2], c]]",
+      optionalFinding "n., a. and d."] },
+  { rule := IntegrationNum1.rubi536r55Nondeg, ruleDecl := ``IntegrationNum1.rubi536r55Nondeg,
+    proofs := [(.real, ``expArctanReciprocal_real)], unproved := [.complex],
+    findings := [
+      "strengthened: the condition a*c*n ≠ 0 is appended; the original integration.rubi_5_3_6_r55 remains refuted.",
+      "real: proved under d = a²*c and a*c*n ≠ 0 using the derivative of reciprocal arctangent.",
+      "complex: unproved; no complex certificate is claimed.",
+      condFinding "EqQ[d, Multiply[Power[a, 2], c]]",
+      optionalFinding "n., a. and d."] }
 ]
 
 theorem catalogPart21_wellFormed : ∀ e ∈ catalogPart21,
@@ -18913,7 +18940,7 @@ theorem catalogPart21_wellFormed : ∀ e ∈ catalogPart21,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=
@@ -18928,7 +18955,10 @@ def pendingEntries : List CEntry :=
     e.rule.id != "integration.rubi_4_1_1_1_r6_nondegenerate" &&
     e.rule.id != "integration.rubi_4_1_1_1_r2_nondegenerate" &&
     e.rule.id != "integration.rubi_4_1_7_r1_nondegenerate" &&
-    e.rule.id != "integration.rubi_4_1_7_r10_nondegenerate")
+    e.rule.id != "integration.rubi_4_1_7_r10_nondegenerate" &&
+    e.rule.id != "integration.rubi_4_5_1_1_r4_nondegenerate" &&
+    e.rule.id != "integration.rubi_5_3_6_r13_nondegenerate" &&
+    e.rule.id != "integration.rubi_5_3_6_r55_nondegenerate")
 
 /-- The Integration catalogue: the verified rules, then the strengthened variants checked
 numerically (`OSR.IntegrationNum1`), unproved. -/

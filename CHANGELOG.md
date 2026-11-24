@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove the strengthened RUBI 5.3.6 #13 and #55 exponential-arctangent
+  primitives over ℝ under their existing equality and nonzero conditions;
+  ℂ is unproved.
+- Prove the strengthened RUBI 4.5.1.1 #4 cosecant primitive over ℝ under
+  its existing condition `d ≠ 0`; the complex case remains unproved.
 - Prove three further strengthened trigonometric primitives over ℝ and ℂ:
   RUBI 4.1.1.1 #2 and 4.1.7 #1 and #10, retaining their denominator guards.
 - Prove the strengthened RUBI 4.1.1.1 #6 sine primitive over ℝ and ℂ
