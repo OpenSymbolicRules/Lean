@@ -11,7 +11,7 @@ private abbrev inv (a : Expr) : Expr := pow a (.int (-1))
 private abbrev body : Expr := pow (pow (v "F") (mul (v "c")
   (add (v "a") (mul (v "b") (v "x"))))) (v "n")
 
-/-- RUBI 4.16.1, 2.3 #1, with its original independence condition. -/
+/-- RUBI 4.17.3.0 (pinned source), 2.3 #1, with its original independence condition. -/
 def rubi23r1 : CRule where
   id := "integration.rubi_2_3_r1"
   legacyId := some "rubi:2 Exponentials/2.3 Miscellaneous exponentials:1"

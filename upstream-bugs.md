@@ -1,10 +1,12 @@
 # Candidate upstream issues
 
-## RUBI 4.16.1, rule 2.3 #1: missing denominator condition in transcription
+## RUBI 4.17.3.0 (pinned source), rule 2.3 #1: missing denominator condition in transcription
 
 The `OpenSymbolicRules/Integration` v0.1 transcription at revision
-`f84ed2a81702836c019e647e0a586b8d576ae7c6` and the vendored RUBI 4.16.1
-source both show only a `FreeQ[{F,a,b,c,n},x]` condition for rule 2.3 #1.
+`f84ed2a81702836c019e647e0a586b8d576ae7c6` and the vendored RUBI 4.17.3.0
+source (revision `61e9c18`, declaring version `4.17.3.0` in `PacletInfo.m`)
+both show only a `FreeQ[{F,a,b,c,n},x]` condition for rule 2.3 #1. The
+v0.1 per-rule `4.16.1` label is historical and not independently verified.
 As a mathematical rewrite over the test-only candidate real interpretation,
 the instance `F=b=c=n=1`, `a=0` has an everywhere-defined integrand but an
 undefined result, because `b*c*n*log(F)=0`. The checked statement is

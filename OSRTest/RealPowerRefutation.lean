@@ -6,7 +6,7 @@ namespace OSRTest.RealPowerRefutation
 
 open OSR OSRTest.PositivePower OSRTest.RecursiveRealPower
 
--- RUBI 4.16.1, 2 Exponentials/2.3 Miscellaneous exponentials.m#1.
+-- RUBI 4.17.3.0 (pinned source), 2 Exponentials/2.3 Miscellaneous exponentials.m#1.
 def rubi23_body : Expr :=
   .pow (.pow (.var "F") (.app2 .mul (.var "c")
     (.app2 .add (.var "a") (.app2 .mul (.var "b") (.var "x"))))) (.var "n")

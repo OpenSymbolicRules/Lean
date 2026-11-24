@@ -73,7 +73,7 @@ rule has been marked proved for them here.
 
 ## A blocked RUBI rule with an undefined replacement
 
-The OSR v0.1 transcription of RUBI 4.16.1 rule 2.3 #1 has only the
+The OSR v0.1 transcription of RUBI rule 2.3 #1 has only the
 `FreeQ[{F,a,b,c,n},x]` constraint. Under the candidate real-power domain,
 `OSRTest/RealPowerRefutation.lean` encodes its pattern and replacement and
 proves a counterexample: set `F=b=c=n=1`, `a=0`. All parameters are
@@ -82,7 +82,10 @@ replacement is undefined because its denominator contains `log(1)=0`.
 The inverse is represented as power `-1`, with undefinedness checked rather
 than relying on Mathlib's totalized zero value.
 
-The pinned vendored RUBI 4.16.1 source also states the rule with only `FreeQ`.
+The pinned vendored RUBI source (revision `61e9c18`, `PacletInfo.m` version
+`4.17.3.0`) also states the rule with only `FreeQ`. The v0.1 rule metadata
+historically labels its source `4.16.1`; that label is not a verification of
+this rule against an independent 4.16.1 checkout.
 However, the Lean theorem concerns a mathematical instance of the OSR
 transcription; it does not establish that Mathematica/RUBI's evaluation and
 pattern matching would dispatch that instance to this rule. This is a
