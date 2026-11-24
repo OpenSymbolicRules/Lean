@@ -804,3 +804,7 @@ The proof also checks that the result is defined on a neighborhood. The
 original RUBI rule remains a distinct, refuted entry because it does not
 supply the nonzero condition; this proof certifies only the strengthened
 variant. The original optional wildcard matching limitations remain.
+
+The same module also proves the strengthened RUBI 4.1.1.1 #6 primitive
+`-cos(c + d x)/d` for `sin(c + d x)`, over ℝ and ℂ, with `d ≠ 0`.
+The original rule without that additional condition remains refuted.

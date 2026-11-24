@@ -18877,7 +18877,13 @@ def catalogPart21 : List CEntry := [
     findings := [
       "strengthened: the condition d ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This variant excludes the degenerate counterexample to integration.rubi_4_1_1_1_r11, which remains refuted.",
       "real and complex: proved under d ≠ 0 using the sine and cosine derivative and Pythagorean identities.",
-      optionalFinding "b., c. and d."] }
+      optionalFinding "b., c. and d."] },
+  { rule := IntegrationNum1.rubi4111r6Nondeg, ruleDecl := ``IntegrationNum1.rubi4111r6Nondeg,
+    proofs := [(.real, ``sinLinear_real), (.complex, ``sinLinear_complex)],
+    findings := [
+      "strengthened: the condition d ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This variant excludes the degenerate counterexample to integration.rubi_4_1_1_1_r6, which remains refuted.",
+      "real and complex: proved under d ≠ 0 using the derivative of cosine.",
+      optionalFinding "c. and d."] }
 ]
 
 theorem catalogPart21_wellFormed : ∀ e ∈ catalogPart21,
@@ -18888,7 +18894,7 @@ theorem catalogPart21_wellFormed : ∀ e ∈ catalogPart21,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=
@@ -18899,7 +18905,8 @@ def pendingEntries : List CEntry :=
   IntegrationNum1.entries.filter (fun e =>
     e.rule.id != "integration.rubi_3_1_2_r2_nondegenerate" &&
     e.rule.id != "integration.rubi_3_1_2_r7_nondegenerate" &&
-    e.rule.id != "integration.rubi_4_1_1_1_r11_nondegenerate")
+    e.rule.id != "integration.rubi_4_1_1_1_r11_nondegenerate" &&
+    e.rule.id != "integration.rubi_4_1_1_1_r6_nondegenerate")
 
 /-- The Integration catalogue: the verified rules, then the strengthened variants checked
 numerically (`OSR.IntegrationNum1`), unproved. -/
