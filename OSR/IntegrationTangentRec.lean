@@ -425,6 +425,140 @@ theorem tanProductNegative_holds (I : Interp 𝕜)
       ring
 
 omit [CharZero 𝕜] in
+theorem tanSquaredNegative_holds (I : Interp 𝕜)
+    (htan : ∀ u, I.tanDefined u → HasDerivAt I.tan (1 + I.tan u ^ 2) u)
+    (horder : ∀ k : ℤ, I.lt (k : 𝕜) (-1) → k < -1) :
+    AntiderivRecHolds I "x" IntegrationNum1.rubi4321r20Nondeg.conditions
+      IntegrationNum1.rubi4321r20Nondeg.body IntegrationNum1.rubi4321r20Nondeg.result IntegrationNum1.rubi4321r20Nondeg.integrals := by
+  intro env hcond t hF
+  have hN : env "b" * env "f" * (env "m" + 1) * (env "a"^2 + env "b"^2) ≠ 0 := by
+    have h := hcond (.ne (.app2 .mul (.app2 .mul (.app2 .mul (.var "b") (.var "f")) (.app2 .add (.var "m") (.int 1)))
+      (.app2 .add (.pow (.var "a") (.int 2)) (.pow (.var "b") (.int 2)))) (.int 0)) (by simp [IntegrationNum1.rubi4321r20Nondeg])
+    simpa [Cond.Holds, Defined, eval, htwo] using h
+  have hb : env "b" ≠ 0 := (mul_ne_zero_iff.mp (mul_ne_zero_iff.mp (mul_ne_zero_iff.mp hN).1).1).1
+  have hd : env "f" ≠ 0 := (mul_ne_zero_iff.mp (mul_ne_zero_iff.mp (mul_ne_zero_iff.mp hN).1).1).2
+  have hn1 : env "m" + 1 ≠ 0 := (mul_ne_zero_iff.mp (mul_ne_zero_iff.mp hN).1).2
+  have hab : env "a"^2 + env "b"^2 ≠ 0 := (mul_ne_zero_iff.mp hN).2
+  have hord : I.lt (env "m") (-1) := by
+    have h := hcond (.gt (.int (-1)) (.var "m")) (by simp [IntegrationNum1.rubi4321r20Nondeg])
+    simpa [Cond.Holds, Defined, eval] using h
+  rcases hk : I.toInt? (env "m") with _ | k
+  · exfalso
+    have h := hF.self_of_nhds
+    simp [IntegrationNum1.rubi4321r20Nondeg, Defined, eval, Function.update, hk] at h
+  have hn : env "m" = (k : 𝕜) := (I.toInt?_eq _ _).1 hk
+  have hkneg : k < 0 := by rw [hn] at hord; have h := horder k hord; omega
+  have hk1 : I.toInt? (env "m" + 1) = some (k + 1) :=
+    (I.toInt?_eq _ _).2 (by rw [hn]; push_cast; ring)
+  have hbase : ∀ᶠ w in 𝓝 t, I.tanDefined (env "e" + env "f"*w) ∧
+      env "a" + env "b" * I.tan (env "e"+env "f"*w) ≠ 0 := by
+    filter_upwards [hF] with w hw
+    simp [IntegrationNum1.rubi4321r20Nondeg, Defined, eval, Function.update, hk, htwo] at hw
+    exact ⟨hw.1.1, hw.1.2 hkneg⟩
+  refine ⟨?_, ?_⟩
+  · intro i hi
+    simp only [IntegrationNum1.rubi4321r20Nondeg, List.mem_cons, List.not_mem_nil, or_false] at hi
+    subst i
+    filter_upwards [hbase] with w hw
+    simp [Defined, eval, Function.update, hk1, htwo, hw.1, hw.2]
+  · intro Φ hΦ
+    simp only [IntegrationNum1.rubi4321r20Nondeg, List.mem_cons, List.not_mem_nil, or_false, forall_eq] at hΦ
+    refine ⟨?_, ?_⟩
+    · filter_upwards [hbase] with w hw
+      simp [IntegrationNum1.rubi4321r20Nondeg, Defined, eval, recEnv, hneg, htwo, hk1, hN, hab, hw.1, hw.2]
+    · have hz := hbase.self_of_nhds.2
+      have hU : HasDerivAt (fun w : 𝕜 => env "e" + env "f"*w) (env "f") t := by
+        simpa using (((hasDerivAt_id' t).const_mul (env "f")).const_add (env "e"))
+      have hT := (htan _ hbase.self_of_nhds.1).comp t hU
+      have hY := (hT.const_mul (env "b")).const_add (env "a")
+      have hP := (hasDerivAt_zpow (k+1) (env "a" + env "b" * I.tan (env "e"+env "f"*t)) (Or.inl hz)).comp t hY
+      have hfun : (fun w => eval I (recEnv env (IntegrationNum1.rubi4321r20Nondeg.integrals.map (·.1)) Φ "x" w) IntegrationNum1.rubi4321r20Nondeg.result) =
+        (fun w : 𝕜 => (env "b"*env "c"-env "a"*env "d")^2 * (env "a"+env "b"*I.tan (env "e"+env "f"*w))^(k+1) *
+          (env "b"*env "f"*(env "m"+1)*(env "a"^2+env "b"^2))⁻¹ + (env "a"^2+env "b"^2)⁻¹ * Φ "I1" w) := by
+        funext w
+        simp [IntegrationNum1.rubi4321r20Nondeg, eval, recEnv, hneg, htwo, hk1, -mul_eq_mul_right_iff, -mul_eq_mul_left_iff]
+        ring
+      rw [hfun]
+      simp [eval, Function.update, hk1, htwo] at hΦ
+      refine (((hP.const_mul _).mul_const _).add (hΦ.const_mul _)).congr_deriv ?_
+      simp [IntegrationNum1.rubi4321r20Nondeg, eval, Function.update, hk, htwo]
+      have hpow := zpow_add_one₀ hz k
+      simp_rw [hpow]
+      rw [hn]
+      have hkne : (k : 𝕜) + 1 ≠ 0 := by simpa [hn] using hn1
+      generalize I.tan (env "e"+env "f"*t) = T
+      generalize (env "a"+env "b"*T)^k = P
+      field_simp [hb, hd, hkne, hab]
+      ring
+
+omit [CharZero 𝕜] in
+theorem tanTripleNegative_holds (I : Interp 𝕜)
+    (htan : ∀ u, I.tanDefined u → HasDerivAt I.tan (1 + I.tan u ^ 2) u)
+    (horder : ∀ k : ℤ, I.lt (k : 𝕜) (-1) → k < -1) :
+    AntiderivRecHolds I "x" IntegrationNum1.rubi4331r4Nondeg.conditions
+      IntegrationNum1.rubi4331r4Nondeg.body IntegrationNum1.rubi4331r4Nondeg.result IntegrationNum1.rubi4331r4Nondeg.integrals := by
+  intro env hcond t hF
+  have hN : env "b" * env "f" * (env "m" + 1) * (env "a"^2 + env "b"^2) ≠ 0 := by
+    have h := hcond (.ne (.app2 .mul (.app2 .mul (.app2 .mul (.var "b") (.var "f")) (.app2 .add (.var "m") (.int 1)))
+      (.app2 .add (.pow (.var "a") (.int 2)) (.pow (.var "b") (.int 2)))) (.int 0)) (by simp [IntegrationNum1.rubi4331r4Nondeg])
+    simpa [Cond.Holds, Defined, eval, htwo] using h
+  have hb : env "b" ≠ 0 := (mul_ne_zero_iff.mp (mul_ne_zero_iff.mp (mul_ne_zero_iff.mp hN).1).1).1
+  have hd : env "f" ≠ 0 := (mul_ne_zero_iff.mp (mul_ne_zero_iff.mp (mul_ne_zero_iff.mp hN).1).1).2
+  have hn1 : env "m" + 1 ≠ 0 := (mul_ne_zero_iff.mp (mul_ne_zero_iff.mp hN).1).2
+  have hab : env "a"^2 + env "b"^2 ≠ 0 := (mul_ne_zero_iff.mp hN).2
+  have hord : I.lt (env "m") (-1) := by
+    have h := hcond (.gt (.int (-1)) (.var "m")) (by simp [IntegrationNum1.rubi4331r4Nondeg])
+    simpa [Cond.Holds, Defined, eval] using h
+  rcases hk : I.toInt? (env "m") with _ | k
+  · exfalso
+    have h := hF.self_of_nhds
+    simp [IntegrationNum1.rubi4331r4Nondeg, Defined, eval, Function.update, hk] at h
+  have hn : env "m" = (k : 𝕜) := (I.toInt?_eq _ _).1 hk
+  have hkneg : k < 0 := by rw [hn] at hord; have h := horder k hord; omega
+  have hk1 : I.toInt? (env "m" + 1) = some (k + 1) :=
+    (I.toInt?_eq _ _).2 (by rw [hn]; push_cast; ring)
+  have hbase : ∀ᶠ w in 𝓝 t, I.tanDefined (env "e" + env "f"*w) ∧
+      env "a" + env "b" * I.tan (env "e"+env "f"*w) ≠ 0 := by
+    filter_upwards [hF] with w hw
+    simp [IntegrationNum1.rubi4331r4Nondeg, Defined, eval, Function.update, hk] at hw
+    exact ⟨hw.1.1, hw.1.2 hkneg⟩
+  refine ⟨?_, ?_⟩
+  · intro i hi
+    simp only [IntegrationNum1.rubi4331r4Nondeg, List.mem_cons, List.not_mem_nil, or_false] at hi
+    subst i
+    filter_upwards [hbase] with w hw
+    simp [Defined, eval, Function.update, hk1, hw.1, hw.2]
+  · intro Φ hΦ
+    simp only [IntegrationNum1.rubi4331r4Nondeg, List.mem_cons, List.not_mem_nil, or_false, forall_eq] at hΦ
+    refine ⟨?_, ?_⟩
+    · filter_upwards [hbase] with w hw
+      simp [IntegrationNum1.rubi4331r4Nondeg, Defined, eval, recEnv, hneg, htwo, hk1, hN, hab, hw.1, hw.2]
+    · have hz := hbase.self_of_nhds.2
+      have hU : HasDerivAt (fun w : 𝕜 => env "e" + env "f"*w) (env "f") t := by
+        simpa using (((hasDerivAt_id' t).const_mul (env "f")).const_add (env "e"))
+      have hT := (htan _ hbase.self_of_nhds.1).comp t hU
+      have hY := (hT.const_mul (env "b")).const_add (env "a")
+      have hP := (hasDerivAt_zpow (k+1) (env "a" + env "b" * I.tan (env "e"+env "f"*t)) (Or.inl hz)).comp t hY
+      have hfun : (fun w => eval I (recEnv env (IntegrationNum1.rubi4331r4Nondeg.integrals.map (·.1)) Φ "x" w) IntegrationNum1.rubi4331r4Nondeg.result) =
+        (fun w : 𝕜 => (env "b"*env "c"-env "a"*env "d")*(env "A"*env "b"-env "a"*env "B") * (env "a"+env "b"*I.tan (env "e"+env "f"*w))^(k+1) *
+          (env "b"*env "f"*(env "m"+1)*(env "a"^2+env "b"^2))⁻¹ + (env "a"^2+env "b"^2)⁻¹ * Φ "I1" w) := by
+        funext w
+        simp [IntegrationNum1.rubi4331r4Nondeg, eval, recEnv, hneg, htwo, hk1, -mul_eq_mul_right_iff, -mul_eq_mul_left_iff]
+        ring
+      rw [hfun]
+      simp [eval, Function.update, hk1] at hΦ
+      refine (((hP.const_mul _).mul_const _).add (hΦ.const_mul _)).congr_deriv ?_
+      simp [IntegrationNum1.rubi4331r4Nondeg, eval, Function.update, hk]
+      have hpow := zpow_add_one₀ hz k
+      simp_rw [hpow]
+      rw [hn]
+      have hkne : (k : 𝕜) + 1 ≠ 0 := by simpa [hn] using hn1
+      generalize I.tan (env "e"+env "f"*t) = T
+      generalize (env "a"+env "b"*T)^k = P
+      field_simp [hb, hd, hkne, hab]
+      ring
+
+omit [CharZero 𝕜] in
 theorem tanProduct_holds (I : Interp 𝕜)
     (htan : ∀ u, I.tanDefined u → HasDerivAt I.tan (1 + I.tan u ^ 2) u) :
     AntiderivHoldsUnder I "x" IntegrationNum1.rubi4321r3Nondeg.conditions
@@ -601,6 +735,126 @@ theorem tanQuotientSquare_holds (I : Interp 𝕜) :
       field_simp [hb, hz]
       ring
 
+omit [CharZero 𝕜] in
+theorem tanSquaredNonnegative_holds (I : Interp 𝕜)
+    (htan : ∀ u, I.tanDefined u → HasDerivAt I.tan (1 + I.tan u ^ 2) u)
+    (horder : ∀ k : ℤ, I.lt (-1) (k : 𝕜) → -1 < k) :
+    AntiderivRecHolds I "x" IntegrationNum1.rubi4321r21Nondeg.conditions
+      IntegrationNum1.rubi4321r21Nondeg.body IntegrationNum1.rubi4321r21Nondeg.result IntegrationNum1.rubi4321r21Nondeg.integrals := by
+  intro env hcond t hF
+  have hN : env "b" * env "f" * (env "m" + 1) ≠ 0 := by
+    have h := hcond (.ne (.app2 .mul (.app2 .mul (.var "b") (.var "f")) (.app2 .add (.var "m") (.int 1))) (.int 0)) (by simp [IntegrationNum1.rubi4321r21Nondeg])
+    simpa [Cond.Holds, Defined, eval] using h
+  have hb : env "b" ≠ 0 := (mul_ne_zero_iff.mp (mul_ne_zero_iff.mp hN).1).1
+  have hf : env "f" ≠ 0 := (mul_ne_zero_iff.mp (mul_ne_zero_iff.mp hN).1).2
+  have hm1 : env "m" + 1 ≠ 0 := (mul_ne_zero_iff.mp hN).2
+  have hord : I.lt (-1) (env "m") := by
+    have h := hcond (.gt (.var "m") (.int (-1))) (by simp [IntegrationNum1.rubi4321r21Nondeg])
+    simpa [Cond.Holds, Defined, eval] using h
+  rcases hk : I.toInt? (env "m") with _ | k
+  · exfalso
+    have h := hF.self_of_nhds
+    simp [IntegrationNum1.rubi4321r21Nondeg, Defined, eval, Function.update, hk, htwo] at h
+  have hn : env "m" = (k : 𝕜) := (I.toInt?_eq _ _).1 hk
+  have hkpos : 0 ≤ k := by rw [hn] at hord; have h := horder k hord; omega
+  have hk1 : I.toInt? (env "m" + 1) = some (k + 1) :=
+    (I.toInt?_eq _ _).2 (by rw [hn]; push_cast; ring)
+  have htanDef : ∀ᶠ w in 𝓝 t, I.tanDefined (env "e" + env "f"*w) := by
+    filter_upwards [hF] with w hw
+    simp [IntegrationNum1.rubi4321r21Nondeg, Defined, eval, Function.update, hk, htwo] at hw
+    exact hw.1.1
+  refine ⟨?_, ?_⟩
+  · intro i hi
+    simp only [IntegrationNum1.rubi4321r21Nondeg, List.mem_cons, List.not_mem_nil, or_false] at hi
+    subst i
+    filter_upwards [htanDef] with w hw
+    simp [Defined, eval, Function.update, hk, htwo, hw, show ¬ k < 0 by omega]
+  · intro Φ hΦ
+    simp only [IntegrationNum1.rubi4321r21Nondeg, List.mem_cons, List.not_mem_nil, or_false, forall_eq] at hΦ
+    refine ⟨?_, ?_⟩
+    · filter_upwards [htanDef] with w hw
+      simp [IntegrationNum1.rubi4321r21Nondeg, Defined, eval, recEnv, hneg, htwo, hk1, hN, hw, show ¬ k + 1 < 0 by omega]
+    · have hU : HasDerivAt (fun w : 𝕜 => env "e" + env "f"*w) (env "f") t := by
+        simpa using (((hasDerivAt_id' t).const_mul (env "f")).const_add (env "e"))
+      have hT := (htan _ htanDef.self_of_nhds).comp t hU
+      have hY := (hT.const_mul (env "b")).const_add (env "a")
+      have hP := (hasDerivAt_zpow (k+1) (env "a" + env "b" * I.tan (env "e"+env "f"*t)) (Or.inr (by omega))).comp t hY
+      have hfun : (fun w => eval I (recEnv env (IntegrationNum1.rubi4321r21Nondeg.integrals.map (·.1)) Φ "x" w) IntegrationNum1.rubi4321r21Nondeg.result) =
+        (fun w : 𝕜 => env "d"^2 * (env "a"+env "b"*I.tan (env "e"+env "f"*w))^(k+1) *
+          (env "b"*env "f"*(env "m"+1))⁻¹ + Φ "I1" w) := by
+        funext w
+        simp [IntegrationNum1.rubi4321r21Nondeg, eval, recEnv, hneg, htwo, hk1]
+      rw [hfun]
+      simp [eval, Function.update, hk, htwo] at hΦ
+      refine (((hP.const_mul _).mul_const _).add hΦ).congr_deriv ?_
+      simp [IntegrationNum1.rubi4321r21Nondeg, eval, Function.update, hk, htwo]
+      rw [hn]
+      have hkne : (k : 𝕜) + 1 ≠ 0 := by simpa [hn] using hm1
+      generalize I.tan (env "e"+env "f"*t) = T
+      generalize (env "a"+env "b"*T)^k = P
+      field_simp [hb, hf, hkne]
+      ring
+
+omit [CharZero 𝕜] in
+theorem tanTripleNonnegative_holds (I : Interp 𝕜)
+    (htan : ∀ u, I.tanDefined u → HasDerivAt I.tan (1 + I.tan u ^ 2) u)
+    (horder : ∀ k : ℤ, I.lt (-1) (k : 𝕜) → -1 < k) :
+    AntiderivRecHolds I "x" IntegrationNum1.rubi4331r5Nondeg.conditions
+      IntegrationNum1.rubi4331r5Nondeg.body IntegrationNum1.rubi4331r5Nondeg.result IntegrationNum1.rubi4331r5Nondeg.integrals := by
+  intro env hcond t hF
+  have hN : env "b" * env "f" * (env "m" + 1) ≠ 0 := by
+    have h := hcond (.ne (.app2 .mul (.app2 .mul (.var "b") (.var "f")) (.app2 .add (.var "m") (.int 1))) (.int 0)) (by simp [IntegrationNum1.rubi4331r5Nondeg])
+    simpa [Cond.Holds, Defined, eval] using h
+  have hb : env "b" ≠ 0 := (mul_ne_zero_iff.mp (mul_ne_zero_iff.mp hN).1).1
+  have hf : env "f" ≠ 0 := (mul_ne_zero_iff.mp (mul_ne_zero_iff.mp hN).1).2
+  have hm1 : env "m" + 1 ≠ 0 := (mul_ne_zero_iff.mp hN).2
+  have hord : I.lt (-1) (env "m") := by
+    have h := hcond (.gt (.var "m") (.int (-1))) (by simp [IntegrationNum1.rubi4331r5Nondeg])
+    simpa [Cond.Holds, Defined, eval] using h
+  rcases hk : I.toInt? (env "m") with _ | k
+  · exfalso
+    have h := hF.self_of_nhds
+    simp [IntegrationNum1.rubi4331r5Nondeg, Defined, eval, Function.update, hk] at h
+  have hn : env "m" = (k : 𝕜) := (I.toInt?_eq _ _).1 hk
+  have hkpos : 0 ≤ k := by rw [hn] at hord; have h := horder k hord; omega
+  have hk1 : I.toInt? (env "m" + 1) = some (k + 1) :=
+    (I.toInt?_eq _ _).2 (by rw [hn]; push_cast; ring)
+  have htanDef : ∀ᶠ w in 𝓝 t, I.tanDefined (env "e" + env "f"*w) := by
+    filter_upwards [hF] with w hw
+    simp [IntegrationNum1.rubi4331r5Nondeg, Defined, eval, Function.update, hk] at hw
+    exact hw.1.1
+  refine ⟨?_, ?_⟩
+  · intro i hi
+    simp only [IntegrationNum1.rubi4331r5Nondeg, List.mem_cons, List.not_mem_nil, or_false] at hi
+    subst i
+    filter_upwards [htanDef] with w hw
+    simp [Defined, eval, Function.update, hk, hw, show ¬ k < 0 by omega]
+  · intro Φ hΦ
+    simp only [IntegrationNum1.rubi4331r5Nondeg, List.mem_cons, List.not_mem_nil, or_false, forall_eq] at hΦ
+    refine ⟨?_, ?_⟩
+    · filter_upwards [htanDef] with w hw
+      simp [IntegrationNum1.rubi4331r5Nondeg, Defined, eval, recEnv, hneg, hk1, hN, hw, show ¬ k + 1 < 0 by omega]
+    · have hU : HasDerivAt (fun w : 𝕜 => env "e" + env "f"*w) (env "f") t := by
+        simpa using (((hasDerivAt_id' t).const_mul (env "f")).const_add (env "e"))
+      have hT := (htan _ htanDef.self_of_nhds).comp t hU
+      have hY := (hT.const_mul (env "b")).const_add (env "a")
+      have hP := (hasDerivAt_zpow (k+1) (env "a" + env "b" * I.tan (env "e"+env "f"*t)) (Or.inr (by omega))).comp t hY
+      have hfun : (fun w => eval I (recEnv env (IntegrationNum1.rubi4331r5Nondeg.integrals.map (·.1)) Φ "x" w) IntegrationNum1.rubi4331r5Nondeg.result) =
+        (fun w : 𝕜 => env "B"*env "d" * (env "a"+env "b"*I.tan (env "e"+env "f"*w))^(k+1) *
+          (env "b"*env "f"*(env "m"+1))⁻¹ + Φ "I1" w) := by
+        funext w
+        simp [IntegrationNum1.rubi4331r5Nondeg, eval, recEnv, hneg, hk1]
+      rw [hfun]
+      simp [eval, Function.update, hk] at hΦ
+      refine (((hP.const_mul _).mul_const _).add hΦ).congr_deriv ?_
+      simp [IntegrationNum1.rubi4331r5Nondeg, eval, Function.update, hk]
+      rw [hn]
+      have hkne : (k : 𝕜) + 1 ≠ 0 := by simpa [hn] using hm1
+      generalize I.tan (env "e"+env "f"*t) = T
+      generalize (env "a"+env "b"*T)^k = P
+      field_simp [hb, hf, hkne]
+      ring
+
 end
 
 private theorem real_tan_deriv (u : ℝ) (h : Real.cos u ≠ 0) :
@@ -696,5 +950,41 @@ theorem tanQuotientSquare_real : IntegrationNum1.rubi4321r19Nondeg.Holds .real :
 
 theorem tanQuotientSquare_complex : IntegrationNum1.rubi4321r19Nondeg.Holds .complex :=
   tanQuotientSquare_holds Interp.complex
+
+theorem tanSquaredNegative_real : IntegrationNum1.rubi4321r20Nondeg.Holds .real :=
+  tanSquaredNegative_holds Interp.real real_tan_deriv (by intro k h; have hr : (k : ℝ) < -1 := h; exact_mod_cast hr)
+
+theorem tanSquaredNegative_complex : IntegrationNum1.rubi4321r20Nondeg.Holds .complex :=
+  tanSquaredNegative_holds Interp.complex complex_tan_deriv (by
+    intro k h
+    have hr : (k : ℝ) < -1 := by simpa [Interp.complex] using h
+    exact_mod_cast hr)
+
+theorem tanSquaredNonnegative_real : IntegrationNum1.rubi4321r21Nondeg.Holds .real :=
+  tanSquaredNonnegative_holds Interp.real real_tan_deriv (by intro k h; have hr : (-1 : ℝ) < (k : ℝ) := h; exact_mod_cast hr)
+
+theorem tanSquaredNonnegative_complex : IntegrationNum1.rubi4321r21Nondeg.Holds .complex :=
+  tanSquaredNonnegative_holds Interp.complex complex_tan_deriv (by
+    intro k h
+    have hr : (-1 : ℝ) < (k : ℝ) := by simpa [Interp.complex] using h
+    exact_mod_cast hr)
+
+theorem tanTripleNonnegative_real : IntegrationNum1.rubi4331r5Nondeg.Holds .real :=
+  tanTripleNonnegative_holds Interp.real real_tan_deriv (by intro k h; have hr : (-1 : ℝ) < (k : ℝ) := h; exact_mod_cast hr)
+
+theorem tanTripleNonnegative_complex : IntegrationNum1.rubi4331r5Nondeg.Holds .complex :=
+  tanTripleNonnegative_holds Interp.complex complex_tan_deriv (by
+    intro k h
+    have hr : (-1 : ℝ) < (k : ℝ) := by simpa [Interp.complex] using h
+    exact_mod_cast hr)
+
+theorem tanTripleNegative_real : IntegrationNum1.rubi4331r4Nondeg.Holds .real :=
+  tanTripleNegative_holds Interp.real real_tan_deriv (by intro k h; have hr : (k : ℝ) < -1 := h; exact_mod_cast hr)
+
+theorem tanTripleNegative_complex : IntegrationNum1.rubi4331r4Nondeg.Holds .complex :=
+  tanTripleNegative_holds Interp.complex complex_tan_deriv (by
+    intro k h
+    have hr : (k : ℝ) < -1 := by simpa [Interp.complex] using h
+    exact_mod_cast hr)
 
 end OSR.IntegrationTangentRec

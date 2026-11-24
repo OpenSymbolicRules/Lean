@@ -19114,7 +19114,41 @@ def catalogPart21 : List CEntry := [
       "numerical: checked over ℝ only, with no failure at 13800 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 40 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
       recFinding,
       condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; NeQ[Add[Power[a, 2], Power[b, 2]], 0]",
-      optionalFinding "c., d., e., f., a. and b."] }
+      optionalFinding "c., d., e., f., a. and b."] },
+  { rule := IntegrationNum1.rubi4321r20Nondeg, ruleDecl := ``IntegrationNum1.rubi4321r20Nondeg, proofs := [(.real, ``tanSquaredNegative_real), (.complex, ``tanSquaredNegative_complex)],
+    findings := [
+      "domain: complex order uses the fragment provisional real-part comparison on real-valued complex numbers; its OpenMath mapping is unsupported, so the complex proof is not certified.",
+      "strengthened: the condition b*f*(m + 1)*(a^2 + b^2) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_3_2_1_r20, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 688 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 40 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; LtQ[m, -1]; NeQ[Add[Power[a, 2], Power[b, 2]], 0]",
+      optionalFinding "a., b., e., f., c. and d."] },
+  { rule := IntegrationNum1.rubi4321r21Nondeg, ruleDecl := ``IntegrationNum1.rubi4321r21Nondeg, proofs := [(.real, ``tanSquaredNonnegative_real), (.complex, ``tanSquaredNonnegative_complex)],
+    findings := [
+      "domain: complex order uses the fragment provisional real-part comparison on real-valued complex numbers; its OpenMath mapping is unsupported, so the complex proof is not certified.",
+      "strengthened: the condition b*f*(m + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_3_2_1_r21, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 3488 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 41 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; Not[LeQ[m, -1]]; Not[And[EqQ[m, 2], EqQ[a, 0]]]",
+      optionalFinding "a., b., e., f., c. and d."] },
+  { rule := IntegrationNum1.rubi4331r4Nondeg, ruleDecl := ``IntegrationNum1.rubi4331r4Nondeg, proofs := [(.real, ``tanTripleNegative_real), (.complex, ``tanTripleNegative_complex)],
+    findings := [
+      "domain: complex order uses the fragment provisional real-part comparison on real-valued complex numbers; its OpenMath mapping is unsupported, so the complex proof is not certified.",
+      "strengthened: the condition b*f*(m + 1)*(a^2 + b^2) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_3_3_1_r4, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 800 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 30 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; LtQ[m, -1]; NeQ[Add[Power[a, 2], Power[b, 2]], 0]",
+      optionalFinding "a., b., e., f., c., d., A. and B."] },
+  { rule := IntegrationNum1.rubi4331r5Nondeg, ruleDecl := ``IntegrationNum1.rubi4331r5Nondeg, proofs := [(.real, ``tanTripleNonnegative_real), (.complex, ``tanTripleNonnegative_complex)],
+    findings := [
+      "domain: complex order uses the fragment provisional real-part comparison on real-valued complex numbers; its OpenMath mapping is unsupported, so the complex proof is not certified.",
+      "strengthened: the condition b*f*(m + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_3_3_1_r5, which stays refuted.",
+      "numerical: checked over ℝ only, with no failure at 3576 points: assignments of the metavariables satisfying the conditions (each metavariable 0 with probability 0.4, otherwise one of ±1, ±2, ±3, ±1/2, 1/3, 3/2) and points where the integrand is defined, including the real zeros of the bases raised to a negative power; at each point the residual integrands (at their substitution) and the result are defined and a central difference of the result, each residual integral replaced by its linearisation there, equals the integrand (failures traced to rounding were rechecked exactly). The derivative of the result was also computed symbolically and compared with the integrand to 50 digits at 42 points with rational metavariables (equality conditions solved exactly), with no difference. This is not a proof, and the complex domain is not checked.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; Not[LeQ[m, -1]]",
+      optionalFinding "a., b., e., f., m., c., d., A. and B."] }
 ]
 
 theorem catalogPart21_wellFormed : ∀ e ∈ catalogPart21,
@@ -19127,7 +19161,7 @@ theorem catalogPart21_wellFormed : ∀ e ∈ catalogPart21,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=
@@ -19167,7 +19201,11 @@ def pendingEntries : List CEntry :=
     e.rule.id != "integration.rubi_4_3_2_1_r4_nondegenerate" &&
     e.rule.id != "integration.rubi_4_3_2_1_r7_nondegenerate" &&
     e.rule.id != "integration.rubi_4_3_2_1_r8_nondegenerate" &&
-    e.rule.id != "integration.rubi_4_3_2_1_r19_nondegenerate")
+    e.rule.id != "integration.rubi_4_3_2_1_r19_nondegenerate" &&
+    e.rule.id != "integration.rubi_4_3_2_1_r20_nondegenerate" &&
+    e.rule.id != "integration.rubi_4_3_2_1_r21_nondegenerate" &&
+    e.rule.id != "integration.rubi_4_3_3_1_r4_nondegenerate" &&
+    e.rule.id != "integration.rubi_4_3_3_1_r5_nondegenerate")
 
 /-- The Integration catalogue: the verified rules, then the strengthened variants checked
 numerically (`OSR.IntegrationNum1`), unproved. -/

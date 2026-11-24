@@ -882,3 +882,10 @@ respectively. Their complex order mapping remains unsupported. Rule #19 is
 proved over both domains with two residual integrals; its denominator and the
 integrand domain ensure nonzero divisors. The original unguarded rules remain
 refuted.
+
+The strengthened RUBI 4.3.2.1 #20–21 and 4.3.3.1 #4–5 recurrences
+are proved in the real and complex fragment, covering negative and
+nonnegative integer powers. Complex order mapping remains unsupported, so
+these complex statements are not certified. Their denominator guards,
+original conditions and residual-integrand definedness are retained. The
+original unguarded rules remain refuted.

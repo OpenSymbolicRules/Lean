@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   integration reports; use the per-rule and per-domain metrics instead.
 
 ### Added
+- Prove four strengthened RUBI 4.3.2.1 #20–21 and 4.3.3.1 #4–5 tangent
+  recurrences over ℝ and the complex fragment; the complex order mapping
+  remains unsupported.
 - Prove strengthened tangent product recurrences RUBI 4.3.2.1 #7, #8 and
   #19 over ℝ and the complex fragment; complex ordering remains unsupported
   for the first two.
