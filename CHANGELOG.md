@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Migrate RUBI 2.3 #1 with its original condition and a Lean-checked real
+  counterexample in the integer-power interpretation; the complex case is
+  unproved and runtime dispatch in RUBI has not been tested.
 - Formally check a candidate-domain counterexample to the OSR transcription
   of RUBI 4.16.1 rule 2.3 #1, and document the separate question of whether
   RUBI's runtime matching actually applies that rule to the witness.

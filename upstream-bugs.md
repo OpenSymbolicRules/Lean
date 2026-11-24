@@ -12,7 +12,11 @@ undefined result, because `b*c*n*log(F)=0`. The checked statement is
 `OSRTest/RealPowerRefutation.lean`, using Lean 4.35.0 and Mathlib revision
 `56a005855ea17e0b0958f73ec801ae140b0a1679`.
 
-This does not prove that RUBI actually applies the rule to this instance:
+A second witness, `F=2`, `a=b=0`, `c=n=1`, is also checked against the
+production integer-exponent interpretation by
+`OSR.IntegrationExpPower.rubi23r1_counterexample_real`.
+
+Neither witness proves that RUBI actually applies the rule to this instance:
 Mathematica evaluation or rule dispatch may simplify it first. Runtime
 reproduction is still required before reporting a confirmed upstream bug.
 The case establishes that a nonzero denominator is necessary for an OSR
