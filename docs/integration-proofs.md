@@ -868,3 +868,10 @@ semantics. For #1, #6 and #10 the complex comparison is the fragment's
 provisional interpretation; its OpenMath order mapping is unsupported and
 therefore these complex proofs are not OSR-certified. The equality condition
 in #6 is retained, including for complex coefficients.
+
+The strengthened RUBI 4.3.1.1 #11 negative-power recurrence is proved
+over ℝ and in the complex fragment. The integrand's definedness forces its
+base to be nonzero nearby. The order mapping is unsupported over ℂ, so that
+complex theorem is not certified. Strengthened RUBI 4.3.2.1 #3 and #4
+are also proved over both domains, with their coefficient conditions and
+denominator guards retained; the corresponding original rules stay refuted.

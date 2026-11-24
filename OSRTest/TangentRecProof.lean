@@ -24,3 +24,19 @@ example : OSR.IntegrationNum1.rubi4311r10Nondeg.Holds .real :=
 example : OSR.IntegrationNum1.rubi4311r10Nondeg.Holds .complex :=
   OSR.IntegrationTangentRec.tanAffinePower_complex
 
+example : OSR.IntegrationNum1.rubi4311r11Nondeg.Holds .real :=
+  OSR.IntegrationTangentRec.tanNegative_real
+
+example : OSR.IntegrationNum1.rubi4311r11Nondeg.Holds .complex :=
+  OSR.IntegrationTangentRec.tanNegative_complex
+example : OSR.IntegrationNum1.rubi4321r3Nondeg.Holds .real :=
+  OSR.IntegrationTangentRec.tanProduct_real
+
+example : OSR.IntegrationNum1.rubi4321r3Nondeg.Holds .complex :=
+  OSR.IntegrationTangentRec.tanProduct_complex
+
+example : OSR.IntegrationNum1.rubi4321r4Nondeg.Holds .real :=
+  OSR.IntegrationTangentRec.tanProductRec_real
+
+example : OSR.IntegrationNum1.rubi4321r4Nondeg.Holds .complex :=
+  OSR.IntegrationTangentRec.tanProductRec_complex

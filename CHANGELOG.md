@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   integration reports; use the per-rule and per-domain metrics instead.
 
 ### Added
+- Prove three further strengthened tangent rules: RUBI 4.3.1.1 #11 and
+  4.3.2.1 #3–4 on both interpreted domains; the negative-power complex
+  order mapping remains unsupported.
 - Prove four strengthened RUBI 4.3.1.1 tangent recurrences over the real and
   fragment complex interpretations. Complex order mapping remains unsupported.
 - Prove four strengthened RUBI 6.1.13 #15–18 recursive hyperbolic rules
