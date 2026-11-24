@@ -40,3 +40,15 @@ example : OSR.IntegrationNum1.rubi4321r4Nondeg.Holds .real :=
 
 example : OSR.IntegrationNum1.rubi4321r4Nondeg.Holds .complex :=
   OSR.IntegrationTangentRec.tanProductRec_complex
+example : OSR.IntegrationNum1.rubi4321r7Nondeg.Holds .real :=
+  OSR.IntegrationTangentRec.tanProductPower_real
+example : OSR.IntegrationNum1.rubi4321r7Nondeg.Holds .complex :=
+  OSR.IntegrationTangentRec.tanProductPower_complex
+example : OSR.IntegrationNum1.rubi4321r8Nondeg.Holds .real :=
+  OSR.IntegrationTangentRec.tanProductNegative_real
+example : OSR.IntegrationNum1.rubi4321r8Nondeg.Holds .complex :=
+  OSR.IntegrationTangentRec.tanProductNegative_complex
+example : OSR.IntegrationNum1.rubi4321r19Nondeg.Holds .real :=
+  OSR.IntegrationTangentRec.tanQuotientSquare_real
+example : OSR.IntegrationNum1.rubi4321r19Nondeg.Holds .complex :=
+  OSR.IntegrationTangentRec.tanQuotientSquare_complex

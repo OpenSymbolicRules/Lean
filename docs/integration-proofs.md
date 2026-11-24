@@ -875,3 +875,10 @@ base to be nonzero nearby. The order mapping is unsupported over ℂ, so that
 complex theorem is not certified. Strengthened RUBI 4.3.2.1 #3 and #4
 are also proved over both domains, with their coefficient conditions and
 denominator guards retained; the corresponding original rules stay refuted.
+
+The strengthened RUBI 4.3.2.1 #7 and #8 product recurrences are proved in
+the real and complex fragment, covering positive and negative integer powers
+respectively. Their complex order mapping remains unsupported. Rule #19 is
+proved over both domains with two residual integrals; its denominator and the
+integrand domain ensure nonzero divisors. The original unguarded rules remain
+refuted.
