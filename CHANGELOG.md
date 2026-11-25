@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- State 39 more original RUBI rules with integer-matching parameters. Check the
+  cosecant witness for RUBI 4.5.2.1 #47 and reassess counterexamples under the
+  full chained bounds of their source rules.
 - Migrate 118 default-profile RUBI source identities, retaining their guards,
   source locators and per-domain evidence.
 - Migrate RUBI 2.3 #1 with its original condition and a Lean-checked real

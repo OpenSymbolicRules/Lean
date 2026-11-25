@@ -1,3 +1,4 @@
+import OSR.IntegrationBounds
 import OSR.IntegrationRecovered
 import OSR.Calculus
 import OSR.IntegrationCandidate
@@ -438,7 +439,7 @@ def powCosLog : CRule where
   provenance := migrated s!"{trigLog}:12" "4 Trig functions/4.7 Miscellaneous/4.7.8 u trig(a+b log(c x^n))^p.m#12"
 
 /-- v0.1 rules of the inventory outside the fragment, with the reason. -/
-def notMigrated : List (String × String) := [
+def notMigrated : List (String × String) := IntegrationBounds.outside ++ [
   ("rubi:1 Algebraic functions/1.2 Trinomial products/1.2.1 Quadratic/1.2.1.2 (d+e x)^m (a+b x+c x^2)^p:10",
     "the integrand raises a + c x^2 to the exponent 3/2; the fragment interprets arith1#power for integer exponents only"),
   ("rubi:2 Exponentials/2.3 Miscellaneous exponentials:8",
@@ -18881,51 +18882,56 @@ theorem catalogPart21_wellFormed : ∀ e ∈ catalogPart21,
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=
-  catalogPart1 ++ catalogPart2 ++ catalogPart3 ++ catalogPart4 ++ catalogPart5 ++ catalogPart6 ++ catalogPart7 ++ catalogPart8 ++ catalogPart9 ++ catalogPart10 ++ catalogPart11 ++ catalogPart12 ++ catalogPart13 ++ catalogPart14 ++ catalogPart15 ++ catalogPart16 ++ catalogPart17 ++ catalogPart18 ++ catalogPart19 ++ catalogPart20 ++ catalogPart21
+  (catalogPart1 ++ catalogPart2 ++ catalogPart3 ++ catalogPart4 ++ catalogPart5 ++ catalogPart6 ++ catalogPart7 ++ catalogPart8 ++ catalogPart9 ++ catalogPart10 ++ catalogPart11 ++ catalogPart12 ++ catalogPart13 ++ catalogPart14 ++ catalogPart15 ++ catalogPart16 ++ catalogPart17 ++ catalogPart18 ++ catalogPart19 ++ catalogPart20 ++ catalogPart21).filter (fun e => !IntegrationBounds.replaced.contains e.rule.id)
 
 /-- The unproved numerical candidates, excluding variants promoted to the verified catalogue. -/
 def pendingEntries : List CEntry :=
   IntegrationNum1.entries.filter (fun e =>
+    !IntegrationBounds.replaced.contains e.rule.id &&
     e.rule.id != "integration.rubi_3_1_2_r2_nondegenerate" &&
     e.rule.id != "integration.rubi_3_1_2_r7_nondegenerate")
 
 /-- The Integration catalogue: the verified rules, then the strengthened variants checked
 numerically (`OSR.IntegrationNum1`), unproved. -/
 def catalog : List CEntry :=
-  catalogVerified ++ pendingEntries ++ IntegrationRecovered.entries
+  catalogVerified ++ pendingEntries ++
+    IntegrationRecovered.entries.filter (fun e => !IntegrationBounds.replaced.contains e.rule.id) ++
+    IntegrationBounds.entries
 
 /-- Every catalogue rule is well formed: recursive rules (with or without
 substitutions) by `recOk`, the others by `wellFormed`. -/
 theorem catalog_wellFormed : ∀ e ∈ catalog,
     (if e.rule.shape == .antiderivRec || e.rule.shape == .antiderivSubst then e.rule.recOk else e.rule.wellFormed) = true := by
   intro e he
-  obtain h | h := List.mem_append.mp he
-  swap
-  · exact IntegrationRecovered.entries_wellFormed e h
-  have he := h
-  simp only [catalogVerified, List.mem_append] at he
-  rcases he with ((((((((((((((((((((h | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h
-  · exact catalogPart1_wellFormed e h
-  · exact catalogPart2_wellFormed e h
-  · exact catalogPart3_wellFormed e h
-  · exact catalogPart4_wellFormed e h
-  · exact catalogPart5_wellFormed e h
-  · exact catalogPart6_wellFormed e h
-  · exact catalogPart7_wellFormed e h
-  · exact catalogPart8_wellFormed e h
-  · exact catalogPart9_wellFormed e h
-  · exact catalogPart10_wellFormed e h
-  · exact catalogPart11_wellFormed e h
-  · exact catalogPart12_wellFormed e h
-  · exact catalogPart13_wellFormed e h
-  · exact catalogPart14_wellFormed e h
-  · exact catalogPart15_wellFormed e h
-  · exact catalogPart16_wellFormed e h
-  · exact catalogPart17_wellFormed e h
-  · exact catalogPart18_wellFormed e h
-  · exact catalogPart19_wellFormed e h
-  · exact catalogPart20_wellFormed e h
-  · exact catalogPart21_wellFormed e h
-  · exact IntegrationNum1.entries_wellFormed e (List.mem_filter.mp h).1
+  rcases List.mem_append.mp he with he | h
+  · rcases List.mem_append.mp he with he | h
+    · rcases List.mem_append.mp he with he | h
+      · have he := (List.mem_filter.mp he).1
+        simp only [List.mem_append] at he
+        rcases he with (((((((((((((((((((h | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h
+        · exact catalogPart1_wellFormed e h
+        · exact catalogPart2_wellFormed e h
+        · exact catalogPart3_wellFormed e h
+        · exact catalogPart4_wellFormed e h
+        · exact catalogPart5_wellFormed e h
+        · exact catalogPart6_wellFormed e h
+        · exact catalogPart7_wellFormed e h
+        · exact catalogPart8_wellFormed e h
+        · exact catalogPart9_wellFormed e h
+        · exact catalogPart10_wellFormed e h
+        · exact catalogPart11_wellFormed e h
+        · exact catalogPart12_wellFormed e h
+        · exact catalogPart13_wellFormed e h
+        · exact catalogPart14_wellFormed e h
+        · exact catalogPart15_wellFormed e h
+        · exact catalogPart16_wellFormed e h
+        · exact catalogPart17_wellFormed e h
+        · exact catalogPart18_wellFormed e h
+        · exact catalogPart19_wellFormed e h
+        · exact catalogPart20_wellFormed e h
+        · exact catalogPart21_wellFormed e h
+      · exact IntegrationNum1.entries_wellFormed e (List.mem_filter.mp h).1
+    · exact IntegrationRecovered.entries_wellFormed e (List.mem_filter.mp h).1
+  · exact IntegrationBounds.entries_wellFormed e h
 
 end OSR.Integration

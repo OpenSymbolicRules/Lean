@@ -629,6 +629,35 @@ pattern does not bind: 630 of them use the constants `E`, `ImaginaryI` or
 `Pi`, which the converter left without semantics (Integration,
 `docs/known-issues.md` §4).
 
+## Integer guards and chained comparisons
+
+The pinned RUBI utility definitions for `LtQ[a,b,c]`, `LeQ`, `GtQ` and
+`GeQ` compare both adjacent pairs. For example, `LtQ[0,n,m+1]` requires
+both `0 < n` and `n < m+1`. The earlier catalogue kept only the first
+comparison. Of 49 affected entries, 34 were originals. Ten originals use a
+power in the pattern whose exponent lies strictly between zero and one.
+The current integer-power interpretation cannot match such an exponent.
+The catalogue records these source IDs under `notMigrated`. The other 24
+originals now carry both comparisons. The 15 associated strengthened
+variants were withdrawn. The previous proof declarations remain in their
+historical modules.
+
+For each of the 23 corrected originals that previously had a real
+counterexample, the earlier witness was tried against the corrected
+statement. Only witnesses checked by Lean under the full conditions appear
+in the current report. A failed witness leaves the rule open.
+
+Separately, 39 more source identities require a literal integer match for
+one or more parameters. Such a match is independent of the integration
+variable. Each declaration retains integer membership and any additional
+source inequalities. All 39 await a real proof or counterexample.
+
+The regression theorem `OSRTest.RubiCosecant.wrong_residual` checks the
+upstream 4.5.2.1 #47 erratum at π/2. The prefactor is identically one
+near the witness. Any primitive of the residual cosine integrand has
+derivative zero there, while the input integrand is two. This test is
+separate from the exported integer-power catalogue.
+
 ## Next steps
 
 - Conditions do not limit the inventory: 2,155 rules have only expressible

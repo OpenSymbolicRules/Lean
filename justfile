@@ -42,6 +42,7 @@ check:
 	lake env leanchecker OSR.IntegrationAtanh
 	lake env leanchecker OSR.IntegrationExpPower
 	lake env leanchecker OSR.IntegrationRecovered
+	lake env leanchecker OSR.IntegrationBounds
 
 # Audit proofs and export the interchange JSON to `out`.
 export out="generated":
