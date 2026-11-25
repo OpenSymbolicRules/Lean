@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove 36 strengthened RUBI variants and move them from the numerically
+  checked candidates to the verified catalogue: 18 with closed results
+  (trigonometric, hyperbolic, inverse tangent and inverse hyperbolic tangent
+  families; nine over ℝ and ℂ, nine over ℝ only) and 18 inverse hyperbolic
+  tangent rules with one residual integral, over ℝ only.
 - State 39 more original RUBI rules with integer-matching parameters. Check the
   cosecant witness for RUBI 4.5.2.1 #47 and reassess counterexamples under the
   full chained bounds of their source rules.

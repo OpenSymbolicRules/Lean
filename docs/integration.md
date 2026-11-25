@@ -597,9 +597,9 @@ The strengthened variants of refuted rules and the proof batches that follow
 are described in [Integration: strengthened variants and later proof
 batches](integration-proofs.md).
 
-Integration now exports 2879 rules: 490 proved, 1574 refuted and 815
-unproved (strengthened variants checked numerically) over ℝ, 301 proved (157
-certified), 377 refuted and 2201 unproved over ℂ; 520 more RUBI
+Integration now exports 3015 rules: 524 proved, 1560 refuted and 931
+unproved over ℝ (768 of them strengthened variants checked numerically), 306
+proved (166 certified), 365 refuted and 2344 unproved over ℂ; 520 more RUBI
 rules are reported as not migrated (see
 [Integration: strengthened variants and later proof batches](integration-proofs.md)).
 

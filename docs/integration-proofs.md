@@ -129,7 +129,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 `OSR/IntegrationNum1.lean` distributed strengthened variants before their
 proofs (Specification V1-R-005e): both domains unproved, and a `numerical:`
-finding recording the evidence. The catalogue currently retains 815 unproved entries.
+finding recording the evidence. The catalogue currently retains 768 unproved entries.
 Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
 derivative is the residual integrand at the point, on assignments where each
@@ -194,6 +194,29 @@ with `a = p = 0`, `b = c = n = 1` and `x = -1`, the result is discontinuous.
 #7 over ℝ and ℂ, including the local definedness of the residual integrand.
 The proof differentiates the integer-power substitution and does not require
 differentiability of the complex logarithm at its branch cut.
+`OSR/IntegrationRec210.lean`, `OSR/IntegrationRec211.lean` and
+`OSR/IntegrationRec212.lean` prove 18 strengthened variants whose result has no
+residual integral (shape `antideriv`), so their proofs differentiate the closed
+result directly. Over ℝ and ℂ: 4.1.1.1 #2, #6 and #11, 4.1.2.1 #1, 4.1.4.1 #2,
+4.1.7 #1, 4.3.2.1 #3 and 6.1.13 #7 and #8. Over ℝ only: the inverse tangent
+rules 5.3.4 #15 and #16 and 5.3.6 #13 and #55 (Mathlib has no derivative of
+`Complex.arctan` at this revision), and 4.5.1.1 #4 and the inverse hyperbolic
+tangent rules 7.3.1 #35 and #36 and 7.3.4 #15 and #16, whose cosecant or
+inverse hyperbolic tangent has no complex interpretation in the fragment (the
+complex statement is vacuous and is not recorded as proved). The 7.3.4 rules
+have the same statement as their 7.3.1 twins and reuse their proofs. These
+variants leave `OSR.IntegrationNum1`'s unproved set through
+`Integration.promotedVariants` and are catalogued with the verified rules,
+without their `numerical:` finding.
+`OSR/IntegrationRec213.lean`, `OSR/IntegrationRec214.lean` and
+`OSR/IntegrationRec215.lean` prove 18 recursive inverse hyperbolic tangent
+variants over ℝ, integrating `a + b artanh(c x)` (or `artanh(1/(c x))`) by
+parts against powers of `d + e x` or `d + e x²`: 7.3.1 #17, #18, #29, #47,
+#69, #73, #79, #123 and #124, each with its 7.3.3 or 7.3.4 twin of the same
+statement (7.3.3 #9 and #10, 7.3.4 #9, #27, #49, #53, #59, #103 and #104).
+`OSR.IntegrationRec215.hasDerivAt_artanh_mul` and `hasDerivAt_artanh_inv` give
+both arguments the derivative `c / (1 - c² x²)`. The complex statements are
+vacuous (no complex interpretation of `transc1#arctanh`) and stay unproved.
 `OSR/IntegrationRec205.lean` and `OSR/IntegrationRec206.lean` prove the
 recursive rules 1.1.3.4 #28 and #29, respectively, including their residual
 integrands and definedness conditions. Both complex proofs are exported as
