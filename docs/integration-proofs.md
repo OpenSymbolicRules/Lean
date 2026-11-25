@@ -129,7 +129,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 `OSR/IntegrationNum1.lean` distributed strengthened variants before their
 proofs (Specification V1-R-005e): both domains unproved, and a `numerical:`
-finding recording the evidence. The catalogue currently retains 768 unproved entries.
+finding recording the evidence. The catalogue currently retains 754 unproved entries.
 Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
 derivative is the residual integrand at the point, on assignments where each
@@ -217,6 +217,12 @@ statement (7.3.3 #9 and #10, 7.3.4 #9, #27, #49, #53, #59, #103 and #104).
 `OSR.IntegrationRec215.hasDerivAt_artanh_mul` and `hasDerivAt_artanh_inv` give
 both arguments the derivative `c / (1 - c² x²)`. The complex statements are
 vacuous (no complex interpretation of `transc1#arctanh`) and stay unproved.
+`OSR/IntegrationRec216.lean` proves the `artanh(1/(c x))` companions 7.3.1
+#70, #74 and #80 (with 7.3.4 #50, #54 and #60) on `|c x| > 1`.
+`OSR/IntegrationRec217.lean` proves 7.3.1 #65–#68 (with 7.3.4 #45–#48), whose
+results are constant-coefficient combinations of two residual integrals that
+move `x²` between the integrands; the inverse hyperbolic tangent factor is
+carried unchanged.
 `OSR/IntegrationRec205.lean` and `OSR/IntegrationRec206.lean` prove the
 recursive rules 1.1.3.4 #28 and #29, respectively, including their residual
 integrands and definedness conditions. Both complex proofs are exported as
