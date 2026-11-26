@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove 6 more strengthened inverse hyperbolic tangent recurrences over ℝ
+  (OSR/IntegrationRec223–225): 7.3.1 #101 (over `sqrt(d + e x^2)`, with
+  `Real.hasDerivAt_sqrt`), #89 and #118, each with its 7.3.4 twin.
 - Register `arith1#abs` (real absolute value, no complex interpretation) and
   add three authored Algebra square-root rules, proved over ℝ:
   `algebra.root.sqrt_sq_abs` (`sqrt(a^2) ⟶ |a|`, unconditional, applied by the
