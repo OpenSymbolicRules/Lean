@@ -129,7 +129,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 `OSR/IntegrationNum1.lean` distributed strengthened variants before their
 proofs (Specification V1-R-005e): both domains unproved, and a `numerical:`
-finding recording the evidence. The catalogue currently retains 601 unproved entries.
+finding recording the evidence. The catalogue currently retains 592 unproved entries.
 Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
 derivative is the residual integrand at the point, on assignments where each
@@ -308,7 +308,9 @@ over ℝ). `OSR/IntegrationRec252.lean` proves the split 4.1.2.1 #23 and
 `OSR/IntegrationRec253.lean` the double angles 4.7.4 #6, #7 and #31 over ℝ and ℂ: when
 `b c = a d` and `d / b = 2`, `sin(c + d x) = 2 sin(a + b x) cos(a + b x)`; the powers of a
 vanishing `e cos u` or `f sin u` are split with `zpow_add'`, the domain excluding the
-degenerate exponents.
+degenerate exponents. `OSR/IntegrationRec254.lean` proves 4.1.4.1 #6, 4.3.4.1 #3, 4.1.2.2 #35,
+#47 and #83, 4.1.5 #31 and #32 and 4.1.10 #8 over ℝ and ℂ (quadratic numerators, partial
+fractions with `sin² + cos² = 1`, the addition formula), and 4.5.4.1 #1 over ℝ.
 `OSR/IntegrationRec205.lean` and `OSR/IntegrationRec206.lean` prove the
 recursive rules 1.1.3.4 #28 and #29, respectively, including their residual
 integrands and definedness conditions. Both complex proofs are exported as

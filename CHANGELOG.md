@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove 9 more strengthened trigonometric rules (OSR/IntegrationRec254), 8 of
+  them over ℝ and ℂ: quadratic numerators 4.1.4.1 #6 and 4.3.4.1 #3
+  (`(a + b y)^m (A + B y + C y^2)` when `A b^2 - a b B + a^2 C = 0`), the
+  partial fractions 4.1.2.2 #35 and 4.1.5 #31 and #32, the addition formula
+  4.1.10 #8 and 4.1.2.2 #47 and #83 (`(a + b sin)(a - b sin) = b^2 cos^2`
+  when `a^2 = b^2`); and over ℝ the `csc` analogue 4.5.4.1 #1.
 - Prove 29 more strengthened trigonometric rules (OSR/IntegrationRec249–253),
   19 of them over ℝ and ℂ, among them the split 4.1.2.1 #23 and the double
   angles 4.7.4 #6, #7 and #31 (`sin(2 u) = 2 sin u cos u` when `b c = a d`
