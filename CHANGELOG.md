@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove 16 more strengthened rules (OSR/IntegrationRec288–294), 10 of them over
+  ℝ and ℂ: 1.2.1.3 #6, #27, #34, #59, 4.1.0.1 #1, 4.1.2.2 #34,
+  #39 and 4.1.6 #24–#26, and over ℝ 4.5.1.2 #26, 4.5.4.2 #15, #16 and 4.7.6
+  #9, #19, #21. The derivative construction now handles two integer exponents
+  (each case `= 0` or `≠ 0` separately) and divides by a nonzero parameter
+  when a relation only holds after cancelling it.
 - Prove 17 more strengthened trigonometric rules over ℝ and ℂ
   (OSR/IntegrationRec280–283): 4.1.10 #2, 4.1.2.2 #26, 4.1.4.2 #5, #6, 4.1.3.1
   #23, 4.1.5 #6, 4.1.6 #14, #27–#30, #41–#43, 4.1.1.2 #3 and 4.1.7 #5, #14,

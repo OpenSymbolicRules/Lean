@@ -129,7 +129,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 `OSR/IntegrationNum1.lean` distributed strengthened variants before their
 proofs (Specification V1-R-005e): both domains unproved, and a `numerical:`
-finding recording the evidence. The catalogue currently retains 440 unproved entries.
+finding recording the evidence. The catalogue currently retains 424 unproved entries.
 Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
 derivative is the residual integrand at the point, on assignments where each
@@ -364,7 +364,13 @@ differentiated term by term from the rule expression, and the integrand follows 
 4.1.4.2 #5, #6, 4.1.3.1 #23, 4.1.5 #6, 4.1.6 #14, #27–#30, #41–#43, 4.1.1.2 #3 and 4.1.7 #5, #14,
 whose explicit terms combine `sin`, `cos` and a power `(a + b cos + c sin)^n` (or `(a + b sin)^m`);
 4.1.6 #30 has no residual integral. `OSR/IntegrationRec285.lean` proves the inverse tangent rules
-5.3.3 #9 and 5.3.4 #103 over ℝ in the same way.
+5.3.3 #9 and 5.3.4 #103 over ℝ in the same way. `OSR/IntegrationRec288.lean` to
+`OSR/IntegrationRec294.lean` extend the construction to two integer exponents (the cases `m = 0`
+or not and `n = 0` or not are separate, and cases excluded by the conditions close at once) and,
+when a parameter relation only gives the integrand after cancelling a nonzero parameter, multiply
+the goal by it (`mul_left_cancel₀`): 1.2.1.3 #6, #27, #34, #59, 4.1.0.1 #1, 4.1.2.2
+#34, #39 and 4.1.6 #24–#26 over ℝ and ℂ, 4.5.1.2 #26, 4.5.4.2 #15, #16 and 4.7.6 #9, #19, #21 over
+ℝ.
 `OSR/IntegrationRec205.lean` and `OSR/IntegrationRec206.lean` prove the
 recursive rules 1.1.3.4 #28 and #29, respectively, including their residual
 integrands and definedness conditions. Both complex proofs are exported as
