@@ -38,7 +38,7 @@ private def t : Expr := .var "t"
 -- The twenty rules of the syntactic inventory (FreeQ or NeQ conditions,
 -- registered heads, no Int in the result) are migrated or reported, plus
 -- 110 rules with residual integrals and seven unmigrated ones.
-#guard Integration.catalogVerified.length + Integration.notMigrated.length == 2808
+#guard Integration.catalogVerified.length + Integration.notMigrated.length == 2837
 #guard Integration.notMigrated.length == 529
 -- A RUBI rule is catalogued once; independently identified strengthened and
 -- generalized variants may share the source rule's legacy id.
@@ -47,11 +47,11 @@ private def t : Expr := .var "t"
       !e.findings.any (·.startsWith "strengthened:") &&
       !e.findings.any (·.startsWith "generalized:")).filterMap (·.rule.legacyId)
   ls.eraseDups.length == ls.length
-#guard (Integration.catalogVerified.filter (·.rule.shape == .antiderivRec)).length == 1760
-#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 2110
+#guard (Integration.catalogVerified.filter (·.rule.shape == .antiderivRec)).length == 1789
+#guard (Integration.catalogVerified.filter (!·.rule.conditions.isEmpty)).length == 2139
 -- RUBI rules with EqQ conditions are stated with relation1#eq (Cond.eq).
 #guard (Integration.catalogVerified.filter fun e =>
-    e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 1094
+    e.rule.conditions.any fun | .eq _ _ => true | _ => false).length == 1106
 
 -- RUBI 4.16.1: the new degenerate-coefficient cases are refuted in both
 -- domains, with no proof or unresolved domain accidentally attached.
@@ -74,6 +74,9 @@ private def degenerateCoefficientIds : List String := [
 -- least one, declares it in a `strengthened:` finding and is proved in both
 -- domains.
 private def strengthenedIds : List String := [
+  "integration.rubi_4_1_4_2_r2_nondegenerate", "integration.rubi_4_1_4_2_r1_nondegenerate", "integration.rubi_4_3_4_2_r2_nondegenerate", "integration.rubi_4_3_4_2_r1_nondegenerate",
+  "integration.rubi_4_3_3_1_r19_nondegenerate", "integration.rubi_4_3_10_r17_nondegenerate",
+  "integration.rubi_6_7_9_r9_nondegenerate", "integration.rubi_6_7_9_r10_nondegenerate", "integration.rubi_6_7_9_r4_nondegenerate", "integration.rubi_4_3_2_1_r4_nondegenerate", "integration.rubi_4_1_2_1_r2_nondegenerate", "integration.rubi_4_3_3_1_r2_nondegenerate", "integration.rubi_4_3_2_1_r19_nondegenerate", "integration.rubi_4_1_2_1_r13_nondegenerate", "integration.rubi_6_1_13_r9_nondegenerate", "integration.rubi_6_1_13_r10_nondegenerate", "integration.rubi_4_7_9_r76_nondegenerate", "integration.rubi_4_7_9_r77_nondegenerate", "integration.rubi_6_7_9_r78_nondegenerate", "integration.rubi_6_7_9_r79_nondegenerate",
   "integration.rubi_4_7_9_r28_nondegenerate", "integration.rubi_4_7_9_r29_nondegenerate", "integration.rubi_6_7_9_r23_nondegenerate", "integration.rubi_6_7_9_r24_nondegenerate", "integration.rubi_6_7_9_r25_nondegenerate", "integration.rubi_6_7_9_r30_nondegenerate",
   "integration.rubi_1_1_1_4_r16_nondegenerate", "integration.rubi_1_1_3_5_r27_nondegenerate",
   "integration.rubi_6_7_9_r1_nondegenerate", "integration.rubi_6_7_9_r2_nondegenerate", "integration.rubi_4_7_9_r15_nondegenerate", "integration.rubi_6_7_9_r14_nondegenerate",
@@ -200,6 +203,8 @@ private def strengthenedIds : List String := [
 -- Strengthened variants proved over ℝ only: the complex domain stays unproved
 -- and a `domain:` finding replaces the `numerical:` one.
 private def strengthenedRealIds : List String := [
+  "integration.rubi_4_5_4_1_r2_nondegenerate", "integration.rubi_4_5_4_2_r2_nondegenerate", "integration.rubi_4_5_4_2_r1_nondegenerate",
+  "integration.rubi_4_5_2_1_r17_nondegenerate", "integration.rubi_4_5_4_1_r8_nondegenerate", "integration.rubi_4_5_4_1_r9_nondegenerate", "integration.rubi_6_7_8_r47_nondegenerate", "integration.rubi_6_7_8_r48_nondegenerate", "integration.rubi_6_3_12_r3_nondegenerate",
   "integration.rubi_4_7_9_r31_nondegenerate", "integration.rubi_4_7_9_r32_nondegenerate", "integration.rubi_6_7_9_r26_nondegenerate", "integration.rubi_6_7_9_r27_nondegenerate", "integration.rubi_6_7_9_r28_nondegenerate", "integration.rubi_6_7_9_r29_nondegenerate", "integration.rubi_6_7_9_r31_nondegenerate", "integration.rubi_6_7_9_r32_nondegenerate", "integration.rubi_6_7_9_r33_nondegenerate", "integration.rubi_6_7_9_r34_nondegenerate",
   "integration.rubi_1_1_3_5_r12_nondegenerate", "integration.rubi_1_2_1_7_r29_nondegenerate", "integration.rubi_1_2_1_7_r30_nondegenerate", "integration.rubi_1_2_1_7_r31_nondegenerate", "integration.rubi_1_2_1_7_r32_nondegenerate",
   "integration.rubi_4_7_9_r21_nondegenerate", "integration.rubi_4_7_9_r22_nondegenerate", "integration.rubi_6_7_9_r19_nondegenerate", "integration.rubi_6_7_9_r20_nondegenerate", "integration.rubi_6_7_9_r13_nondegenerate", "integration.rubi_4_7_9_r13_nondegenerate", "integration.rubi_4_7_9_r14_nondegenerate", "integration.rubi_6_7_9_r11_nondegenerate", "integration.rubi_6_7_9_r12_nondegenerate",
@@ -385,7 +390,7 @@ private def strengthenedRealIds : List String := [
 
 -- The remaining strengthened variants checked numerically
 -- (`OSR.IntegrationNum1`) remain distributed unproved.
-#guard Integration.pendingEntries.length == 556
+#guard Integration.pendingEntries.length == 527
 #guard Integration.pendingEntries.all fun v =>
   v.proofs.isEmpty && v.counterexamples.isEmpty && v.unproved == [.real, .complex] &&
   v.findings.any (·.startsWith "strengthened:") && v.findings.any (·.startsWith "numerical:") &&
@@ -668,6 +673,9 @@ private def rules : List CRule :=
   "integration.rubi_4_7_9_r21_nondegenerate", "integration.rubi_4_7_9_r22_nondegenerate", "integration.rubi_6_7_9_r19_nondegenerate", "integration.rubi_6_7_9_r20_nondegenerate", "integration.rubi_6_7_9_r1_nondegenerate", "integration.rubi_6_7_9_r2_nondegenerate", "integration.rubi_4_7_9_r15_nondegenerate", "integration.rubi_6_7_9_r14_nondegenerate", "integration.rubi_6_7_9_r13_nondegenerate", "integration.rubi_4_7_9_r13_nondegenerate", "integration.rubi_4_7_9_r14_nondegenerate", "integration.rubi_6_7_9_r11_nondegenerate", "integration.rubi_6_7_9_r12_nondegenerate",
   "integration.rubi_1_1_3_5_r12_nondegenerate", "integration.rubi_1_2_1_7_r29_nondegenerate", "integration.rubi_1_2_1_7_r30_nondegenerate", "integration.rubi_1_2_1_7_r31_nondegenerate", "integration.rubi_1_2_1_7_r32_nondegenerate", "integration.rubi_1_1_1_4_r16_nondegenerate", "integration.rubi_1_1_3_5_r27_nondegenerate",
   "integration.rubi_4_7_9_r28_nondegenerate", "integration.rubi_4_7_9_r29_nondegenerate", "integration.rubi_4_7_9_r31_nondegenerate", "integration.rubi_4_7_9_r32_nondegenerate", "integration.rubi_6_7_9_r23_nondegenerate", "integration.rubi_6_7_9_r24_nondegenerate", "integration.rubi_6_7_9_r25_nondegenerate", "integration.rubi_6_7_9_r26_nondegenerate", "integration.rubi_6_7_9_r27_nondegenerate", "integration.rubi_6_7_9_r28_nondegenerate", "integration.rubi_6_7_9_r29_nondegenerate", "integration.rubi_6_7_9_r30_nondegenerate", "integration.rubi_6_7_9_r31_nondegenerate", "integration.rubi_6_7_9_r32_nondegenerate", "integration.rubi_6_7_9_r33_nondegenerate", "integration.rubi_6_7_9_r34_nondegenerate",
+  "integration.rubi_6_7_9_r9_nondegenerate", "integration.rubi_6_7_9_r10_nondegenerate", "integration.rubi_6_7_9_r4_nondegenerate", "integration.rubi_4_3_2_1_r4_nondegenerate", "integration.rubi_4_1_2_1_r2_nondegenerate", "integration.rubi_4_3_3_1_r2_nondegenerate", "integration.rubi_4_3_2_1_r19_nondegenerate", "integration.rubi_4_1_2_1_r13_nondegenerate", "integration.rubi_6_1_13_r9_nondegenerate", "integration.rubi_6_1_13_r10_nondegenerate", "integration.rubi_4_5_2_1_r17_nondegenerate", "integration.rubi_4_7_9_r76_nondegenerate", "integration.rubi_4_7_9_r77_nondegenerate", "integration.rubi_6_7_9_r78_nondegenerate", "integration.rubi_6_7_9_r79_nondegenerate", "integration.rubi_4_5_4_1_r8_nondegenerate", "integration.rubi_4_5_4_1_r9_nondegenerate", "integration.rubi_6_7_8_r47_nondegenerate", "integration.rubi_6_7_8_r48_nondegenerate", "integration.rubi_6_3_12_r3_nondegenerate",
+  "integration.rubi_4_3_3_1_r19_nondegenerate", "integration.rubi_4_3_10_r17_nondegenerate",
+  "integration.rubi_4_1_4_2_r2_nondegenerate", "integration.rubi_4_1_4_2_r1_nondegenerate", "integration.rubi_4_3_4_2_r2_nondegenerate", "integration.rubi_4_3_4_2_r1_nondegenerate", "integration.rubi_4_5_4_1_r2_nondegenerate", "integration.rubi_4_5_4_2_r2_nondegenerate", "integration.rubi_4_5_4_2_r1_nondegenerate",
   "integration.source_1_4_3_r31"]
 
 -- A conditional rule applies only when its conditions are decided: int(λt. t^m)

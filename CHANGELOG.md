@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove 29 more strengthened trigonometric and hyperbolic rules
+  (OSR/IntegrationRec258–263), 20 of them over ℝ and ℂ: the even reductions
+  6.7.9 #9 and #10 (`yⁿ = yⁿ⁻² y²` with `cosh² - sinh² = 1`), 6.7.9 #4
+  (`sinh / (a + b cosh)` when `a² = b²`, through `exp`), and results that
+  combine an explicit term with residual integrals: 4.1.2.1 #2, #13, 4.3.2.1
+  #4, #19, 4.3.3.1 #2, #19, 4.3.10 #17, 6.1.13 #9, #10, 4.7.9 #76, #77 and
+  6.7.9 #78, #79; and
+  over ℝ 4.5.2.1 #17, 4.5.4.1 #8, #9 (`csc`), 6.7.8 #47, #48 and 6.3.12 #3
+  (`ln`, whose principal complex branch is not differentiable across the
+  negative real axis). The quadratic factors of 4.1.4.2 #1, #2, 4.3.4.2 #1,
+  #2 and (over ℝ) 4.5.4.1 #2, 4.5.4.2 #1, #2 are absorbed by `a + b y` when
+  `A b² - a b B + a² C = 0`.
 - Prove 36 more strengthened trigonometric, hyperbolic and algebraic rules
   (OSR/IntegrationRec255–257), 12 of them over ℝ and ℂ: the quotients by
   `a + b z` of 4.7.9 #13, #14, #15, #21, #22 and 6.7.9 #1, #2, #11–#14, #19,

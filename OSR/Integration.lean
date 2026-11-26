@@ -147,6 +147,12 @@ import OSR.IntegrationRec254
 import OSR.IntegrationRec255
 import OSR.IntegrationRec256
 import OSR.IntegrationRec257
+import OSR.IntegrationRec258
+import OSR.IntegrationRec259
+import OSR.IntegrationRec260
+import OSR.IntegrationRec261
+import OSR.IntegrationRec262
+import OSR.IntegrationRec263
 import OSR.IntegrationRec116
 import OSR.IntegrationRec115
 import OSR.IntegrationRec114
@@ -309,6 +315,12 @@ open OSR.IntegrationRec254
 open OSR.IntegrationRec255
 open OSR.IntegrationRec256
 open OSR.IntegrationRec257
+open OSR.IntegrationRec258
+open OSR.IntegrationRec259
+open OSR.IntegrationRec260
+open OSR.IntegrationRec261
+open OSR.IntegrationRec262
+open OSR.IntegrationRec263
 open OSR.IntegrationCandidate
 open OSR.IntegrationAcosh
 open OSR.IntegrationAtanh
@@ -21233,7 +21245,226 @@ def catalogPart24 : List CEntry := [
       "independence: m, n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       recFinding,
       condFinding "IGtQ[m, 0]; IGtQ[n, 0]; IGtQ[p, 0]",
-      optionalFinding "e., f., m., c., d., p., n. and b."] }
+      optionalFinding "e., f., m., c., d., p., n. and b."] },
+  { rule := rubi679r9Nondeg, ruleDecl := ``rubi679r9Nondeg,
+    proofs := [(.real, ``rubi679r9Nondeg_real), (.complex, ``rubi679r9Nondeg_complex)],
+    findings := [
+      "strengthened: the condition b^2 ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_7_9_r9, which stays refuted.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[n, 1]; NeQ[Add[Power[a, 2], Power[b, 2]], 0]; IGtQ[m, 0]",
+      optionalFinding "e., f., m., c., d. and b."] },
+  { rule := rubi679r10Nondeg, ruleDecl := ``rubi679r10Nondeg,
+    proofs := [(.real, ``rubi679r10Nondeg_real), (.complex, ``rubi679r10Nondeg_complex)],
+    findings := [
+      "strengthened: the condition b^2 ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_7_9_r10, which stays refuted.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[n, 1]; NeQ[Add[Power[a, 2], Multiply[-1, Power[b, 2]]], 0]; IGtQ[m, 0]",
+      optionalFinding "e., f., m., c., d. and b."] },
+  { rule := rubi679r4Nondeg, ruleDecl := ``rubi679r4Nondeg,
+    proofs := [(.real, ``rubi679r4Nondeg_real), (.complex, ``rubi679r4Nondeg_complex)],
+    findings := [
+      "strengthened: the condition b*f*(m + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_7_9_r4, which stays refuted.",
+      "independence: m is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; EqQ[Add[Power[a, 2], Multiply[-1, Power[b, 2]]], 0]",
+      optionalFinding "e., f., m., c., d. and b."] },
+  { rule := rubi4321r4Nondeg, ruleDecl := ``rubi4321r4Nondeg,
+    proofs := [(.real, ``rubi4321r4Nondeg_real), (.complex, ``rubi4321r4Nondeg_complex)],
+    findings := [
+      "strengthened: the condition f ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_3_2_1_r4, which stays refuted.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; NeQ[Add[Multiply[b, c], Multiply[a, d]], 0]",
+      optionalFinding "b., e., f., c. and d."] },
+  { rule := rubi4121r2Nondeg, ruleDecl := ``rubi4121r2Nondeg,
+    proofs := [(.real, ``rubi4121r2Nondeg_real), (.complex, ``rubi4121r2Nondeg_complex)],
+    findings := [
+      "strengthened: the condition d ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_1_2_1_r2, which stays refuted.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]",
+      optionalFinding "a., b., e., f., c. and d."] },
+  { rule := rubi4331r2Nondeg, ruleDecl := ``rubi4331r2Nondeg,
+    proofs := [(.real, ``rubi4331r2Nondeg_real), (.complex, ``rubi4331r2Nondeg_complex)],
+    findings := [
+      "strengthened: the condition b ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_3_3_1_r2, which stays refuted.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]",
+      optionalFinding "c., d., e., f., A., B., a. and b."] },
+  { rule := rubi4321r19Nondeg, ruleDecl := ``rubi4321r19Nondeg,
+    proofs := [(.real, ``rubi4321r19Nondeg_real), (.complex, ``rubi4321r19Nondeg_complex)],
+    findings := [
+      "strengthened: the condition b^2 ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_3_2_1_r19, which stays refuted.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; NeQ[Add[Power[a, 2], Power[b, 2]], 0]",
+      optionalFinding "c., d., e., f., a. and b."] },
+  { rule := rubi4121r13Nondeg, ruleDecl := ``rubi4121r13Nondeg,
+    proofs := [(.real, ``rubi4121r13Nondeg_real), (.complex, ``rubi4121r13Nondeg_complex)],
+    findings := [
+      "strengthened: the condition d*f ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_1_2_1_r13, which stays refuted.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]",
+      optionalFinding "a., b., e., f., c. and d."] },
+  { rule := rubi6113r9Nondeg, ruleDecl := ``rubi6113r9Nondeg,
+    proofs := [(.real, ``rubi6113r9Nondeg_real), (.complex, ``rubi6113r9Nondeg_complex)],
+    findings := [
+      "strengthened: the condition 2*c ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_1_13_r9, which stays refuted.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, e], Multiply[-1, 2, c, d]], 0]",
+      optionalFinding "d., e., a., b. and c."] },
+  { rule := rubi6113r10Nondeg, ruleDecl := ``rubi6113r10Nondeg,
+    proofs := [(.real, ``rubi6113r10Nondeg_real), (.complex, ``rubi6113r10Nondeg_complex)],
+    findings := [
+      "strengthened: the condition 2*c ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_1_13_r10, which stays refuted.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, e], Multiply[-1, 2, c, d]], 0]",
+      optionalFinding "d., e., a., b. and c."] },
+  { rule := rubi4521r17Nondeg, ruleDecl := ``rubi4521r17Nondeg,
+    proofs := [(.real, ``rubi4521r17Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition a ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_5_2_1_r17, which stays refuted.",
+      "domain: proved over ℝ only; transc1#csc has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]",
+      optionalFinding "d., e., f. and b."] },
+  { rule := rubi479r76Nondeg, ruleDecl := ``rubi479r76Nondeg,
+    proofs := [(.real, ``rubi479r76Nondeg_real), (.complex, ``rubi479r76Nondeg_complex)],
+    findings := [
+      "strengthened: the condition a*d ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_7_9_r76, which stays refuted.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[a, A], Multiply[-1, b, B]], 0]",
+      optionalFinding "e., f., B., c., d. and b."] },
+  { rule := rubi479r77Nondeg, ruleDecl := ``rubi479r77Nondeg,
+    proofs := [(.real, ``rubi479r77Nondeg_real), (.complex, ``rubi479r77Nondeg_complex)],
+    findings := [
+      "strengthened: the condition a*d ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_7_9_r77, which stays refuted.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[a, A], Multiply[-1, b, B]], 0]",
+      optionalFinding "e., f., B., c., d. and b."] },
+  { rule := rubi679r78Nondeg, ruleDecl := ``rubi679r78Nondeg,
+    proofs := [(.real, ``rubi679r78Nondeg_real), (.complex, ``rubi679r78Nondeg_complex)],
+    findings := [
+      "strengthened: the condition a*d ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_7_9_r78, which stays refuted.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[a, A], Multiply[b, B]], 0]",
+      optionalFinding "e., f., B., c., d. and b."] },
+  { rule := rubi679r79Nondeg, ruleDecl := ``rubi679r79Nondeg,
+    proofs := [(.real, ``rubi679r79Nondeg_real), (.complex, ``rubi679r79Nondeg_complex)],
+    findings := [
+      "strengthened: the condition a*d ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_7_9_r79, which stays refuted.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[a, A], Multiply[-1, b, B]], 0]",
+      optionalFinding "e., f., B., c., d. and b."] },
+  { rule := rubi4541r8Nondeg, ruleDecl := ``rubi4541r8Nondeg,
+    proofs := [(.real, ``rubi4541r8Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition 2*f ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_5_4_1_r8, which stays refuted.",
+      "domain: proved over ℝ only; transc1#csc has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      recFinding,
+      optionalFinding "b., e., f., A., B. and C."] },
+  { rule := rubi4541r9Nondeg, ruleDecl := ``rubi4541r9Nondeg,
+    proofs := [(.real, ``rubi4541r9Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition 2*f ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_5_4_1_r9, which stays refuted.",
+      "domain: proved over ℝ only; transc1#csc has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      recFinding,
+      optionalFinding "b., e., f., A. and C."] },
+  { rule := rubi678r47Nondeg, ruleDecl := ``rubi678r47Nondeg,
+    proofs := [(.real, ``rubi678r47Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition a ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_7_8_r47, which stays refuted.",
+      "domain: proved over ℝ only; transc1#ln is interpreted over ℂ by the principal logarithm, which is not differentiable across the negative real axis, so the complex domain is unproved.",
+      recFinding,
+      optionalFinding "a. and b."] },
+  { rule := rubi678r48Nondeg, ruleDecl := ``rubi678r48Nondeg,
+    proofs := [(.real, ``rubi678r48Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition a ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_7_8_r48, which stays refuted.",
+      "domain: proved over ℝ only; transc1#ln is interpreted over ℂ by the principal logarithm, which is not differentiable across the negative real axis, so the complex domain is unproved.",
+      recFinding,
+      optionalFinding "a. and b."] },
+  { rule := rubi6312r3Nondeg, ruleDecl := ``rubi6312r3Nondeg,
+    proofs := [(.real, ``rubi6312r3Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition 2*c ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_3_12_r3, which stays refuted.",
+      "domain: proved over ℝ only; transc1#ln is interpreted over ℂ by the principal logarithm, which is not differentiable across the negative real axis, so the complex domain is unproved.",
+      recFinding,
+      optionalFinding "d., e., a., b. and c."] },
+  { rule := rubi4331r19Nondeg, ruleDecl := ``rubi4331r19Nondeg,
+    proofs := [(.real, ``rubi4331r19Nondeg_real), (.complex, ``rubi4331r19Nondeg_complex)],
+    findings := [
+      "strengthened: the condition d*f ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_3_3_1_r19, which stays refuted.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; NeQ[Add[Power[a, 2], Power[b, 2]], 0]; NeQ[Add[Power[c, 2], Power[d, 2]], 0]",
+      optionalFinding "a., b., e., f., A., B., c. and d."] },
+  { rule := rubi4310r17Nondeg, ruleDecl := ``rubi4310r17Nondeg,
+    proofs := [(.real, ``rubi4310r17Nondeg_real), (.complex, ``rubi4310r17Nondeg_complex)],
+    findings := [
+      "strengthened: the conditions 2*d*(a^2 + b^2) ≠ 0 and f*(a^2 + b^2) ≠ 0 (relation1#neq) are appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_3_10_r17, which stays refuted.",
+      recFinding,
+      condFinding "NeQ[Add[Power[a, 2], Power[b, 2]], 0]",
+      optionalFinding "c., d., b., e. and f."] },
+  { rule := rubi4142r2Nondeg, ruleDecl := ``rubi4142r2Nondeg,
+    proofs := [(.real, ``rubi4142r2Nondeg_real), (.complex, ``rubi4142r2Nondeg_complex)],
+    findings := [
+      "strengthened: the condition b^2 ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_1_4_2_r2, which stays refuted.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; EqQ[Add[Multiply[A, Power[b, 2]], Multiply[Power[a, 2], C]], 0]",
+      optionalFinding "a., b., e., f., m., c., d., n., A. and C."] },
+  { rule := rubi4142r1Nondeg, ruleDecl := ``rubi4142r1Nondeg,
+    proofs := [(.real, ``rubi4142r1Nondeg_real), (.complex, ``rubi4142r1Nondeg_complex)],
+    findings := [
+      "strengthened: the condition b^2 ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_1_4_2_r1, which stays refuted.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; EqQ[Add[Multiply[A, Power[b, 2]], Multiply[-1, a, b, B], Multiply[Power[a, 2], C]], 0]",
+      optionalFinding "a., b., e., f., m., c., d., n., A., B. and C."] },
+  { rule := rubi4342r2Nondeg, ruleDecl := ``rubi4342r2Nondeg,
+    proofs := [(.real, ``rubi4342r2Nondeg_real), (.complex, ``rubi4342r2Nondeg_complex)],
+    findings := [
+      "strengthened: the condition b^2 ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_3_4_2_r2, which stays refuted.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; EqQ[Add[Multiply[A, Power[b, 2]], Multiply[Power[a, 2], C]], 0]",
+      optionalFinding "a., b., e., f., m., c., d., n., A. and C."] },
+  { rule := rubi4342r1Nondeg, ruleDecl := ``rubi4342r1Nondeg,
+    proofs := [(.real, ``rubi4342r1Nondeg_real), (.complex, ``rubi4342r1Nondeg_complex)],
+    findings := [
+      "strengthened: the condition b^2 ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_3_4_2_r1, which stays refuted.",
+      recFinding,
+      condFinding "NeQ[Add[Multiply[b, c], Multiply[-1, a, d]], 0]; EqQ[Add[Multiply[A, Power[b, 2]], Multiply[-1, a, b, B], Multiply[Power[a, 2], C]], 0]",
+      optionalFinding "a., b., e., f., m., c., d., n., A., B. and C."] },
+  { rule := rubi4541r2Nondeg, ruleDecl := ``rubi4541r2Nondeg,
+    proofs := [(.real, ``rubi4541r2Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition b^2 ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_5_4_1_r2, which stays refuted.",
+      "domain: proved over ℝ only; transc1#csc has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[A, Power[b, 2]], Multiply[Power[a, 2], C]], 0]",
+      optionalFinding "b., e., f., m., A. and C."] },
+  { rule := rubi4542r2Nondeg, ruleDecl := ``rubi4542r2Nondeg,
+    proofs := [(.real, ``rubi4542r2Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition b^2 ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_5_4_2_r2, which stays refuted.",
+      "domain: proved over ℝ only; transc1#csc has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[A, Power[b, 2]], Multiply[Power[a, 2], C]], 0]",
+      optionalFinding "a., b., e., f., m., c., d., n., A. and C."] },
+  { rule := rubi4542r1Nondeg, ruleDecl := ``rubi4542r1Nondeg,
+    proofs := [(.real, ``rubi4542r1Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition b^2 ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_5_4_2_r1, which stays refuted.",
+      "domain: proved over ℝ only; transc1#csc has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[A, Power[b, 2]], Multiply[-1, a, b, B], Multiply[Power[a, 2], C]], 0]",
+      optionalFinding "a., b., e., f., m., c., d., n., A., B. and C."] }
 ]
 
 theorem catalogPart24_wellFormed : ∀ e ∈ catalogPart24,
@@ -21241,7 +21472,9 @@ theorem catalogPart24_wellFormed : ∀ e ∈ catalogPart24,
   intro e he
   simp only [catalogPart24, List.mem_cons, List.mem_nil_iff, or_false] at he
   rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=
@@ -21497,7 +21730,36 @@ def promotedVariants : List String := [
   "integration.rubi_6_7_9_r31_nondegenerate",
   "integration.rubi_6_7_9_r32_nondegenerate",
   "integration.rubi_6_7_9_r33_nondegenerate",
-  "integration.rubi_6_7_9_r34_nondegenerate"]
+  "integration.rubi_6_7_9_r34_nondegenerate",
+  "integration.rubi_6_7_9_r9_nondegenerate",
+  "integration.rubi_6_7_9_r10_nondegenerate",
+  "integration.rubi_6_7_9_r4_nondegenerate",
+  "integration.rubi_4_3_2_1_r4_nondegenerate",
+  "integration.rubi_4_1_2_1_r2_nondegenerate",
+  "integration.rubi_4_3_3_1_r2_nondegenerate",
+  "integration.rubi_4_3_2_1_r19_nondegenerate",
+  "integration.rubi_4_1_2_1_r13_nondegenerate",
+  "integration.rubi_6_1_13_r9_nondegenerate",
+  "integration.rubi_6_1_13_r10_nondegenerate",
+  "integration.rubi_4_7_9_r76_nondegenerate",
+  "integration.rubi_4_7_9_r77_nondegenerate",
+  "integration.rubi_6_7_9_r78_nondegenerate",
+  "integration.rubi_6_7_9_r79_nondegenerate",
+  "integration.rubi_4_5_2_1_r17_nondegenerate",
+  "integration.rubi_4_5_4_1_r8_nondegenerate",
+  "integration.rubi_4_5_4_1_r9_nondegenerate",
+  "integration.rubi_6_7_8_r47_nondegenerate",
+  "integration.rubi_6_7_8_r48_nondegenerate",
+  "integration.rubi_6_3_12_r3_nondegenerate",
+  "integration.rubi_4_3_3_1_r19_nondegenerate",
+  "integration.rubi_4_3_10_r17_nondegenerate",
+  "integration.rubi_4_1_4_2_r2_nondegenerate",
+  "integration.rubi_4_1_4_2_r1_nondegenerate",
+  "integration.rubi_4_3_4_2_r2_nondegenerate",
+  "integration.rubi_4_3_4_2_r1_nondegenerate",
+  "integration.rubi_4_5_4_1_r2_nondegenerate",
+  "integration.rubi_4_5_4_2_r2_nondegenerate",
+  "integration.rubi_4_5_4_2_r1_nondegenerate"]
 
 /-- The unproved numerical candidates, excluding variants promoted to the verified catalogue. -/
 def pendingEntries : List CEntry :=

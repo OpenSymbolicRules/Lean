@@ -129,7 +129,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 `OSR/IntegrationNum1.lean` distributed strengthened variants before their
 proofs (Specification V1-R-005e): both domains unproved, and a `numerical:`
-finding recording the evidence. The catalogue currently retains 556 unproved entries.
+finding recording the evidence. The catalogue currently retains 527 unproved entries.
 Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
 derivative is the residual integrand at the point, on assignments where each
@@ -318,7 +318,20 @@ and 1.1.3.5 #27 over ℝ and ℂ and 1.1.3.5 #12 and 1.2.1.7 #29–#32 over ℝ,
 are opaque factors. `OSR/IntegrationRec257.lean` proves the three-factor quotients
 `(e + f x)^m yᵖ wⁿ / (a + b z)` of 4.7.9 #28, #29, #31, #32 and 6.7.9 #23–#34, shifting `p` or
 `n` by one through relations such as `coth · sinh = cosh` and `sech · sinh = tanh` (over ℝ and ℂ
-for 4.7.9 #28, #29 and 6.7.9 #23–#25, #30).
+for 4.7.9 #28, #29 and 6.7.9 #23–#25, #30). `OSR/IntegrationRec258.lean` proves the even reductions
+6.7.9 #9 and #10 (`yⁿ = yⁿ⁻² y²` with `cosh² - sinh² = 1`) and `OSR/IntegrationRec259.lean` 6.7.9 #4,
+`sinh / (a + b cosh)` when `a² = b²` (split on `a = ±b`, writing `sinh` and `cosh` through `exp`),
+both over ℝ and ℂ. `OSR/IntegrationRec260.lean`, `OSR/IntegrationRec261.lean` and `OSR/IntegrationRec262.lean` prove results that
+combine an explicit term (`x`, `cos`, `tan`, `cosh`, `csc cot`, `ln cosh`) with residual integrals:
+4.1.2.1 #2, #13, 4.3.2.1 #4, #19, 4.3.3.1 #2, #19, 4.3.10 #17, 6.1.13 #9, #10, 4.7.9 #76, #77 and
+6.7.9 #78, #79 over
+ℝ and ℂ, 4.5.2.1 #17, 4.5.4.1 #8, #9, 6.7.8 #47, #48 and 6.3.12 #3 over ℝ. The tangent rules use
+`tan' = (1 + tan²) f`; the others close with `sin² + cos² = 1` (or `cosh² - sinh² = 1`) and the stated
+parameter relation, with `linear_combination` coefficients computed by Gröbner reduction.
+`OSR/IntegrationRec263.lean` proves 4.1.4.2 #1, #2 and 4.3.4.2 #1, #2 over ℝ and ℂ and 4.5.4.1 #2,
+4.5.4.2 #1, #2 over ℝ: when `A b² - a b B + a² C = 0`, `A + B y + C y²` equals
+`(a + b y) (b B - a C + b C y) / b²`, so the integrand is a multiple of the residual integrand with
+`(a + b y)^(m + 1)`.
 `OSR/IntegrationRec205.lean` and `OSR/IntegrationRec206.lean` prove the
 recursive rules 1.1.3.4 #28 and #29, respectively, including their residual
 integrands and definedness conditions. Both complex proofs are exported as
