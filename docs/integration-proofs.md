@@ -129,7 +129,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 `OSR/IntegrationNum1.lean` distributed strengthened variants before their
 proofs (Specification V1-R-005e): both domains unproved, and a `numerical:`
-finding recording the evidence. The catalogue currently retains 724 unproved entries.
+finding recording the evidence. The catalogue currently retains 690 unproved entries.
 Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
 derivative is the residual integrand at the point, on assignments where each
@@ -246,6 +246,23 @@ by parts) and `OSR/IntegrationRec225.lean` proves 7.3.1 #118 (with 7.3.4 #98,
 7.3.1 #172 and #173 (with 7.3.2 #5 and #6), reducing
 `∫ (a + b artanh(c x^n))^p / x dx` and its `artanh(1/(c x^n))` variant to `1/n` times
 the same integral in `u`.
+`OSR/IntegrationRec230.lean` proves the linear substitutions `u = c + d x` of 7.3.2 #1,
+#2, #9 and #10 and 7.3.5 #5 (with their 7.3.5 or 7.3.2 twins) and the rewrites of
+`artanh(c x^n)` as `artanh(1/(x^(-n)/c))` for an integer `n < 0` (7.3.1 (power) #5,
+7.3.2 #13). `OSR/IntegrationRec231.lean` proves 7.3.7 #21 and #17 (with their 7.3.4
+(mixed) twins) from the derivative `c / sqrt(a + c² x²)` of
+`artanh(c x / sqrt(a + c² x²))`, and `OSR/IntegrationRec232.lean` proves 7.3.7 #45 (with
+7.3.4 (mixed) #45) from the derivative `sec(2 u)` of `artanh(tan u)` where `|tan u| < 1`.
+`OSR/IntegrationRec233.lean` proves the substitution `u = artanh(c x)` of 7.3.1 #39 (with
+7.3.4 #19), using `sech(artanh(c x)) = sqrt(1 - c² x²)` (`Real.cosh_artanh`) and
+`sqrt(d + e x²) = sqrt d sqrt(1 - c² x²)` for `d > 0`.
+`OSR/IntegrationRec234.lean` proves 7.3.7 #33 and #34 (with their 7.3.4 (mixed) twins):
+when `(c - d)² = 1`, both `artanh(c + d tanh(a + b x))` and `artanh(1/(c + d tanh(a + b x)))`
+have the derivative `-b / (c - d + c exp(2 a + 2 b x))`.
+`OSR/IntegrationRec235.lean` proves the integrations by parts 7.3.1 #7 and #8 (factor
+`(d x)^m`), 7.3.2 #7 and #8 (factor `(e + f x)^m` with `m < -1`, with their 7.3.5 twins) and
+7.3.1 #9 (with 7.3.3 #1, against `-ln(2 / (1 + e x / d)) / e`, whose argument is positive
+because `c² d² = e²` and `|c x| < 1`), and the substitution 7.3.5 #6 (with 7.3.2 #6).
 `OSR/IntegrationRec205.lean` and `OSR/IntegrationRec206.lean` prove the
 recursive rules 1.1.3.4 #28 and #29, respectively, including their residual
 integrands and definedness conditions. Both complex proofs are exported as

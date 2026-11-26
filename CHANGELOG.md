@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove 34 more strengthened inverse hyperbolic tangent rules over ℝ
+  (OSR/IntegrationRec230–235): the linear substitutions `u = c + d x` of
+  7.3.2 #1, #2, #9, #10 and 7.3.5 #5, the rewrites of `artanh(c x^n)` as
+  `artanh(1/(x^(-n)/c))` for `n < 0` (7.3.1 (power) #5, 7.3.2 #13), the
+  `artanh(c x / sqrt(a + c^2 x^2))` rules 7.3.7 #21 and #17, and the
+  `artanh(tan(a + b x))` integration by parts 7.3.7 #45 (with `sec(2 u)` as
+  the derivative), the substitution `u = artanh(c x)` of 7.3.1 #39 (with
+  `Real.cosh_artanh`) and the integrations by parts of
+  `(e + f x)^m artanh(c + d tanh(a + b x))` and of its reciprocal-argument form
+  when `(c - d)^2 = 1` (7.3.7 #33 and #34), the integrations by parts 7.3.1 #7,
+  #8 and #9 and 7.3.2 #7 and #8, and the substitution 7.3.5 #6, with their
+  7.3.2, 7.3.3, 7.3.5 and 7.3.4 twins.
 - Prove 10 more strengthened inverse hyperbolic tangent rules over ℝ
   (OSR/IntegrationRec226–229): 7.3.1 #82 (`x (a + b artanh(1/(c x)))^p / (d + e x^2)^2`
   with `p < -1`), #136 (with a factor `ln(f + g x)`) and #21 (splitting
