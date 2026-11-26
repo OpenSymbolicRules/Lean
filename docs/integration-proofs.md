@@ -129,7 +129,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 `OSR/IntegrationNum1.lean` distributed strengthened variants before their
 proofs (Specification V1-R-005e): both domains unproved, and a `numerical:`
-finding recording the evidence. The catalogue currently retains 742 unproved entries.
+finding recording the evidence. The catalogue currently retains 740 unproved entries.
 Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
 derivative is the residual integrand at the point, on assignments where each
@@ -228,6 +228,8 @@ carried unchanged.
 (d + e x²)²`), #83 (`x² (d + e x²)^q (a + b artanh)`, `q < -1`) and #87
 (`(f x)^m (d + e x²)^q (a + b artanh)` with `m + 2q + 2 = 0`), each with its
 7.3.4 twin, over ℝ.
+`OSR/IntegrationRec222.lean` proves 7.3.1 #94 (with 7.3.4 #74), the
+`artanh(1/(c x))` rule with `m + 2q + 3 = 0`, where `m` and `q` may be negative.
 `OSR/IntegrationRec205.lean` and `OSR/IntegrationRec206.lean` prove the
 recursive rules 1.1.3.4 #28 and #29, respectively, including their residual
 integrands and definedness conditions. Both complex proofs are exported as

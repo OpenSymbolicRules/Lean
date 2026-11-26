@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Add the authored Algebra rule `algebra.root.sqrt_sq_nonneg`, `sqrt(a^2) ⟶ a`
+  for `a ≥ 0`, proved over ℝ (`OSR.Algebra.sqrtSq_real`, Mathlib
+  `Real.sqrt_sq`) and not stated over ℂ, where `arith1#root` has no
+  interpretation; the reference engine does not apply this conditional rule.
+- Prove the strengthened inverse hyperbolic tangent rule 7.3.1 #94 and its
+  7.3.4 #74 twin over ℝ (`OSR/IntegrationRec222.lean`), with `m + 2q + 3 = 0`
+  and possibly negative exponents.
 - Prove 12 more strengthened inverse hyperbolic tangent recurrences over ℝ
   (OSR/IntegrationRec218–221): 7.3.1 #43, #44, #83, #85, #86 and #87, each
   with its 7.3.4 twin.

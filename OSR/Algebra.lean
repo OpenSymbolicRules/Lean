@@ -20,6 +20,11 @@ mathematical statement:
 
 `relation1#gt` has no complex interpretation, so the logarithm-of-a-product
 rule is stated and certified over ℝ only.
+
+One rule is authored in OSR rather than migrated: `sqrt(a^2) ⟶ a` for `a ≥ 0`
+(`algebra.root.sqrt_sq_nonneg`), with the real principal square root
+(`arith1#root` with index 2). It is stated over ℝ only: `arith1#root` has no
+complex interpretation in the fragment.
 -/
 
 namespace OSR.Algebra
@@ -41,6 +46,7 @@ private abbrev mul (e f : Expr) : Expr := .app2 .mul e f
 private abbrev ln (e : Expr) : Expr := .app1 .ln e
 private abbrev exp (e : Expr) : Expr := .app1 .exp e
 private abbrev pow (e f : Expr) : Expr := .pow e f
+private abbrev root (e f : Expr) : Expr := .app2 .root e f
 
 private def repo : String := "OpenSymbolicRules/Algebra"
 private def rev : String := "e8152ba57aa7a10a270a1e9ed16f75bede335ad1"
@@ -173,6 +179,22 @@ def expLn : Rule where
   description := "Exponential and principal natural logarithm are inverse for nonzero arguments"
   provenance := migrated "algebra:2-logarithms/2.1-basic-logarithms:3"
     [{ name := "Fungrim MathJSON", locator := "corpus/log.json#d87f6e", license := some "MIT" }]
+
+/-! ## Roots -/
+
+/-- `sqrt(a^2) ⟶ a` for `a ≥ 0` (real principal square root). -/
+def sqrtSq : Rule where
+  id := "algebra.root.sqrt_sq_nonneg"
+  vars := ["a"]
+  lhs := root (pow a (.int 2)) (.int 2)
+  rhs := a
+  conditions := [.ge a zero]
+  profiles := ["default"]
+  priority := 95
+  description := "Square root of a square: sqrt(a^2) = a for a >= 0"
+  provenance := { method := .authored, sources := [
+    { name := "Mathlib", locator := "Real.sqrt_sq",
+      revision := some "56a005855ea17e0b0958f73ec801ae140b0a1679", license := some "Apache-2.0" }] }
 
 /-! ## Polynomials -/
 
@@ -436,6 +458,20 @@ theorem expLn_real : expLn.Holds .real := by
 theorem expLn_complex : expLn.Holds .complex := by
   alg_intro expLn Interp.complex; exact Complex.exp_log hd
 
+/-- `Real.sqrt (a ^ 2) = a` for `0 ≤ a` (`Real.sqrt_sq`). -/
+theorem sqrtSq_real : sqrtSq.Holds .real := by
+  simp only [Rule.Holds, Rule.Sound]
+  intro env hc hd
+  simp only [sqrtSq, Interp.real, Cond.Holds, Defined, eval, List.mem_cons, List.mem_nil_iff,
+    or_false, forall_eq, true_and, Int.cast_zero, Int.cast_ofNat] at hc hd ⊢
+  have ha : 0 ≤ env "a" := by
+    rcases hc with h | h
+    · exact h.le
+    · exact h ▸ le_refl _
+  have i2 : intValue? (2 : ℝ) = some 2 := (intValue?_eq _ _).2 (by norm_num)
+  simp only [i2] at hd ⊢
+  exact Real.sqrt_sq ha
+
 theorem distribute_real : distribute.Holds .real := by
   alg_intro distribute Interp.real; ring
 
@@ -536,6 +572,10 @@ def catalog : List CatalogEntry := [
   { rule := expLn, ruleDecl := ``expLn,
     proofs := [(.real, ``expLn_real), (.complex, ``expLn_complex)],
     findings := ["real: the v0.1 condition z != 0 (from the complex Fungrim entry d87f6e) does not suffice over ℝ; the rule holds because ln is defined only for z > 0 there, so engines must not apply it to a negative real z."] },
+  { rule := sqrtSq, ruleDecl := ``sqrtSq,
+    proofs := [(.real, ``sqrtSq_real)],
+    findings := ["authored: not in OSR v0.1 Algebra; added for the real principal square root (Mathlib Real.sqrt_sq). Without the condition the rule is false: sqrt((-1)^2) = 1.",
+      "complex: not stated; arith1#root has no complex interpretation in the fragment."] },
   { rule := distribute, ruleDecl := ``distribute,
     proofs := [(.real, ``distribute_real), (.complex, ``distribute_complex)] },
   { rule := factorLeftAdd, ruleDecl := ``factorLeftAdd,
@@ -570,7 +610,7 @@ def profileRules (p : String) : List Rule :=
 
 theorem profileRules_default :
     profileRules "default" = [powPow, powMulPow, powOne, powZero, powNegOne, onePow, lnMul,
-      lnPow, expLn, distribute, addZero, zeroAdd, mulOne, oneMul, mulZero, zeroMul] :=
+      lnPow, expLn, sqrtSq, distribute, addZero, zeroAdd, mulOne, oneMul, mulZero, zeroMul] :=
   rfl
 
 theorem profileRules_factor :
@@ -619,9 +659,9 @@ theorem default_decreasing : defaultWeight.RulesDecrease (profileRules "default"
   rw [profileRules_default]
   simp only [Weight.RulesDecrease, List.forall_mem_cons, List.not_mem_nil, IsEmpty.forall_iff,
     implies_true, and_true]
-  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> intro hc env <;>
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> intro hc env <;>
     simp only [Weight.eval, defaultWeight, powPow, powMulPow, powOne, powZero, powNegOne, onePow,
-      lnMul, lnPow, expLn, distribute, addZero, zeroAdd, mulOne, oneMul, mulZero, zeroMul,
+      lnMul, lnPow, expLn, sqrtSq, distribute, addZero, zeroAdd, mulOne, oneMul, mulZero, zeroMul,
       List.isEmpty_cons, Bool.false_eq_true] at hc ⊢
   all_goals first | omega | nlinarith
 
@@ -644,15 +684,15 @@ private theorem catalog_closed : ∀ e ∈ catalog, e.rule.rhsClosed = true := b
   intro e he
   simp only [catalog, List.mem_cons, List.mem_nil_iff, or_false] at he
   rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 private theorem unconditional_holds (d : Domain) (hd : d ≠ .boolean) :
     ∀ e ∈ catalog, e.rule.conditions.isEmpty → e.rule.Holds d := by
   intro e he hc
   simp only [catalog, List.mem_cons, List.mem_nil_iff, or_false] at he
   rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
-    simp [powPow, powMulPow, powZero, powNegOne, lnMul, lnPow, expLn] at hc <;> cases d
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
+    simp [powPow, powMulPow, powZero, powNegOne, lnMul, lnPow, expLn, sqrtSq] at hc <;> cases d
   all_goals first
     | exact absurd rfl hd
     | exact powOne_real | exact powOne_complex | exact onePow_real | exact onePow_complex

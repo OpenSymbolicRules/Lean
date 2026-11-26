@@ -70,7 +70,7 @@ OSR/OMObject.lean      OpenMath object model; faithfulness of the export
 OSR/Catalog.lean       catalogue entries and the `osr_intro` proof helper
 OSR/Trigonometry.lean  the pilot rules, their proofs, profiles and engine
                        soundness and termination per profile
-OSR/Algebra.lean       Algebra rules (all 20), same structure
+OSR/Algebra.lean       Algebra rules (all 20 v0.1, one authored), same structure
 OSR/LogicOps.lean      Boolean interpretations of the logic1 connectives, CMPs
 OSR/LogicCore.lean     quantified Boolean formulas, rewriter, soundness, termination
 OSR/Logic.lean         Logic rules (all 39), profiles and their weights

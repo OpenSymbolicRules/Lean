@@ -112,6 +112,7 @@ import OSR.IntegrationRec218
 import OSR.IntegrationRec219
 import OSR.IntegrationRec220
 import OSR.IntegrationRec221
+import OSR.IntegrationRec222
 import OSR.IntegrationRec116
 import OSR.IntegrationRec115
 import OSR.IntegrationRec114
@@ -239,6 +240,7 @@ open OSR.IntegrationRec218
 open OSR.IntegrationRec219
 open OSR.IntegrationRec220
 open OSR.IntegrationRec221
+open OSR.IntegrationRec222
 open OSR.IntegrationCandidate
 open OSR.IntegrationAcosh
 open OSR.IntegrationAtanh
@@ -19459,7 +19461,27 @@ def catalogPart22 : List CEntry := [
       "independence: m, q are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
       recFinding,
       condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; EqQ[Add[m, Multiply[2, q], 2], 0]; LtQ[q, -1]",
-      optionalFinding "f., e., a., b. and c."] }
+      optionalFinding "f., e., a., b. and c."] },
+  { rule := rubi731r94Nondeg, ruleDecl := ``rubi731r94Nondeg,
+    proofs := [(.real, ``rubi731r94Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition d*f*(m + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_7_3_1_r94, which stays refuted.",
+      "domain: proved over ℝ only; transc1#arctanh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; EqQ[Add[m, Multiply[2, q], 3], 0]; GtQ[p, 0]; NeQ[m, -1]",
+      optionalFinding "f., m., e., q., a., b., c. and p."] },
+  { rule := rubi734r74Nondeg, ruleDecl := ``rubi734r74Nondeg,
+    proofs := [(.real, ``rubi734r74Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition d*f*(m + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_7_3_4_r74, which stays refuted.",
+      "domain: proved over ℝ only; transc1#arctanh has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "EqQ[Add[Multiply[Power[c, 2], d], e], 0]; EqQ[Add[m, Multiply[2, q], 3], 0]; GtQ[p, 0]; NeQ[m, -1]",
+      optionalFinding "f., m., e., q., a., b., c. and p."] }
 ]
 
 theorem catalogPart22_wellFormed : ∀ e ∈ catalogPart22,
@@ -19468,7 +19490,7 @@ theorem catalogPart22_wellFormed : ∀ e ∈ catalogPart22,
   simp only [catalogPart22, List.mem_cons, List.mem_nil_iff, or_false] at he
   rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=
@@ -19538,7 +19560,9 @@ def promotedVariants : List String := [
   "integration.rubi_7_3_1_r83_nondegenerate",
   "integration.rubi_7_3_4_r63_nondegenerate",
   "integration.rubi_7_3_1_r87_nondegenerate",
-  "integration.rubi_7_3_4_r67_nondegenerate"]
+  "integration.rubi_7_3_4_r67_nondegenerate",
+  "integration.rubi_7_3_1_r94_nondegenerate",
+  "integration.rubi_7_3_4_r74_nondegenerate"]
 
 /-- The unproved numerical candidates, excluding variants promoted to the verified catalogue. -/
 def pendingEntries : List CEntry :=

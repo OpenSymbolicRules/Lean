@@ -39,8 +39,22 @@ private def u : Expr := .var "u"
   (.app2 .add (.app2 .mul t u) (.app2 .mul t t))).result ==
     .app2 .mul t (.app2 .add u t)
 
--- Every v0.1 rule is migrated.
-#guard Algebra.notMigrated.isEmpty && Algebra.catalog.length == 20
+-- Every v0.1 rule is migrated; one more rule is authored in OSR.
+#guard Algebra.notMigrated.isEmpty && Algebra.catalog.length == 21
+#guard (Algebra.catalog.filter (·.rule.provenance.method == .authored)).map (·.rule.id) ==
+  ["algebra.root.sqrt_sq_nonneg"]
+
+-- `sqrt(a^2) ⟶ a` for `a ≥ 0`: proved over ℝ, not stated over ℂ (no complex
+-- interpretation of arith1#root), and conditional, so the engine leaves it alone.
+#guard
+  match Algebra.catalog.find? (·.rule.id == "algebra.root.sqrt_sq_nonneg") with
+  | none => false
+  | some e =>
+    e.rule.conditions == [.ge (.var "a") (.int 0)] &&
+    e.proofs == [(.real, ``OSR.Algebra.sqrtSq_real)] &&
+    e.findings.any (·.startsWith "complex:")
+#guard (normalize (Algebra.profileRules "default") 8
+  (.app2 .root (.pow t (.int 2)) (.int 2))).trace == []
 
 -- `1^x ⟶ 1` is unconditional: the engine applies it, whatever the exponent.
 #guard (normalize (Algebra.profileRules "default") 8 (.pow (.int 1) (.var "n"))).result == .int 1
