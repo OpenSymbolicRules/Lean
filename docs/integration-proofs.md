@@ -129,7 +129,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 `OSR/IntegrationNum1.lean` distributed strengthened variants before their
 proofs (Specification V1-R-005e): both domains unproved, and a `numerical:`
-finding recording the evidence. The catalogue currently retains 690 unproved entries.
+finding recording the evidence. The catalogue currently retains 665 unproved entries.
 Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
 derivative is the residual integrand at the point, on assignments where each
@@ -263,6 +263,21 @@ have the derivative `-b / (c - d + c exp(2 a + 2 b x))`.
 `(d x)^m`), 7.3.2 #7 and #8 (factor `(e + f x)^m` with `m < -1`, with their 7.3.5 twins) and
 7.3.1 #9 (with 7.3.3 #1, against `-ln(2 / (1 + e x / d)) / e`, whose argument is positive
 because `c² d² = e²` and `|c x| < 1`), and the substitution 7.3.5 #6 (with 7.3.2 #6).
+`OSR/IntegrationRec236.lean` proves the reductions 7.3.1 #31 and #51 (with 7.3.4 #11 and
+#31) of `(d + e x²)^q (a + b artanh(c x))^p` for integers `q > 0` and `q < -1`.
+`OSR/IntegrationRec237.lean` proves 7.3.7 #37–#40 (with their 7.3.4 (mixed) twins): with
+`E = exp(2 a + 2 b x)`, the derivative of `artanh(c + d tanh(a + b x))` (and of its `coth`
+and reciprocal-argument forms) splits into two partial fractions in `E`, whose denominators
+are nonzero on the domain since `1 - (c + d tanh u)²` is their product over `(E + 1)²`.
+`OSR/IntegrationRec238.lean` proves 7.3.1 #164 (with 7.3.4 #144), where
+`f + g x² = f (1 - c² x²)` because `c² f + g = 0`.
+`OSR/IntegrationRec239.lean` and `OSR/IntegrationRec240.lean` prove 11 inverse hyperbolic sine
+rules of RUBI 7.1, where `arsinh` is defined everywhere and only the integer powers and square
+roots constrain the domain: the substitutions 7.1.6 #1 (`u = c + d x`), 7.1.1 #3 and 7.1.2 #6
+(`u = a + b arsinh(c x)`, with `cosh(arsinh y) = sqrt(1 + y²)`) and 7.1.3 #7 and 7.1.4 #1
+(`u = arsinh(c x)` when `e = c² d`), the integrations by parts 7.1.1 #2, 7.1.2 #2, 7.1.4 #23
+and 7.1.5 #2 and #11, and the closed form 7.1.3 #2, where the domain forces `d > 0` so that
+`sqrt(d + e x²) = sqrt d sqrt(1 + c² x²)`.
 `OSR/IntegrationRec205.lean` and `OSR/IntegrationRec206.lean` prove the
 recursive rules 1.1.3.4 #28 and #29, respectively, including their residual
 integrands and definedness conditions. Both complex proofs are exported as
