@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove 17 more strengthened trigonometric rules over ℝ and ℂ
+  (OSR/IntegrationRec280–283): 4.1.10 #2, 4.1.2.2 #26, 4.1.4.2 #5, #6, 4.1.3.1
+  #23, 4.1.5 #6, 4.1.6 #14, #27–#30, #41–#43, 4.1.1.2 #3 and 4.1.7 #5, #14,
+  whose results are explicit terms in `sin`, `cos` and a power
+  `(a + b cos + c sin)^n` (or `(a + b sin)^m`) plus at most one residual
+  integral; the same derivative construction as for the cosecant rules, with
+  `m = 0` treated separately. Over ℝ, the inverse tangent rules 5.3.3 #9 and
+  5.3.4 #103 (OSR/IntegrationRec285) by the same construction.
 - Prove 18 more strengthened cosecant rules over ℝ (OSR/IntegrationRec277–279):
   4.5.1.2 #50, 4.5.3.1 #2, #8, #14, #15, 4.5.4.1 #6, #14, #15 and 4.5.4.2 #5,
   #6, #9–#12, #19–#22, whose results are an explicit `K cot (a + b csc)^E`
