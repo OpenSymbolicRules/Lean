@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove 10 more strengthened inverse hyperbolic tangent rules over ℝ
+  (OSR/IntegrationRec226–229): 7.3.1 #82 (`x (a + b artanh(1/(c x)))^p / (d + e x^2)^2`
+  with `p < -1`), #136 (with a factor `ln(f + g x)`) and #21 (splitting
+  `(f x)^m / (d + e x)`), each with its 7.3.4 twin, and the substitutions
+  `u = x^n` 7.3.1 #172 and #173 with their 7.3.2 twins #5 and #6.
 - Prove 6 more strengthened inverse hyperbolic tangent recurrences over ℝ
   (OSR/IntegrationRec223–225): 7.3.1 #101 (over `sqrt(d + e x^2)`, with
   `Real.hasDerivAt_sqrt`), #89 and #118, each with its 7.3.4 twin.
@@ -121,6 +126,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these premises, so no assumptions were added silently.
 
 ### Added
+- Prove 6 more strengthened inverse hyperbolic tangent rules over ℝ
+  (OSR/IntegrationRec226–228): 7.3.1 #82 (by parts, `(a + b artanh(1/(c x)))^p`
+  over `d + e x^2`), #136 (with a factor `ln(f + g x)`) and #21 (splitting
+  `(f x)^m / (d + e x)`), each with its 7.3.4 twin.
 - Prove the previously unproved strengthened RUBI substitution rule 3.1.2 #7
   over ℝ and ℂ, including the local definedness of the residual integrand.
 - Refute the strengthened RUBI substitution rule 3.1.2 #2 over ℂ at the

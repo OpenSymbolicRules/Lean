@@ -129,7 +129,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 `OSR/IntegrationNum1.lean` distributed strengthened variants before their
 proofs (Specification V1-R-005e): both domains unproved, and a `numerical:`
-finding recording the evidence. The catalogue currently retains 734 unproved entries.
+finding recording the evidence. The catalogue currently retains 724 unproved entries.
 Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
 derivative is the residual integrand at the point, on assignments where each
@@ -236,6 +236,16 @@ and result involve the real principal square root `sqrt(d + e x²)`
 `OSR/IntegrationRec224.lean` proves 7.3.1 #89 (with 7.3.4 #69, two integrations
 by parts) and `OSR/IntegrationRec225.lean` proves 7.3.1 #118 (with 7.3.4 #98,
 `p < -1` with exponents of any sign).
+`OSR/IntegrationRec226.lean` proves 7.3.1 #82 (with 7.3.4 #62,
+`x (a + b artanh(1/(c x)))^p / (d + e x²)²` for `p < -1`, `p ≠ -2`),
+`OSR/IntegrationRec227.lean` proves 7.3.1 #136 (with 7.3.4 #116, a factor
+`ln(f + g x)` integrated by parts; `c² f² = g²` is not needed) and
+`OSR/IntegrationRec228.lean` proves 7.3.1 #21 (with 7.3.4 #1, the algebraic split of
+`(f x)^m / (d + e x)`; `c² d² = e²` is not needed).
+`OSR/IntegrationRec229.lean` proves the substitutions `u = x^n` (integer `n ≠ 0`) of
+7.3.1 #172 and #173 (with 7.3.2 #5 and #6), reducing
+`∫ (a + b artanh(c x^n))^p / x dx` and its `artanh(1/(c x^n))` variant to `1/n` times
+the same integral in `u`.
 `OSR/IntegrationRec205.lean` and `OSR/IntegrationRec206.lean` prove the
 recursive rules 1.1.3.4 #28 and #29, respectively, including their residual
 integrands and definedness conditions. Both complex proofs are exported as
