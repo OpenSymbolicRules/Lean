@@ -129,7 +129,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 `OSR/IntegrationNum1.lean` distributed strengthened variants before their
 proofs (Specification V1-R-005e): both domains unproved, and a `numerical:`
-finding recording the evidence. The catalogue currently retains 654 unproved entries.
+finding recording the evidence. The catalogue currently retains 630 unproved entries.
 Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
 derivative is the residual integrand at the point, on assignments where each
@@ -286,6 +286,16 @@ defined on a neighbourhood of `x` forces `1 < c x`, where
 `OSR/IntegrationRec243.lean` proves 7.2.6 #2 and the closed forms 7.2.3 #4 and #5, whose
 results contain ratios of square roots that are constant where `1 < c x` (the domain forces
 the signs of `d`, `d1` and `d2`), so the derivative is taken through an eventual equality.
+`OSR/IntegrationRec245.lean`, `OSR/IntegrationRec246.lean` and `OSR/IntegrationRec247.lean`
+prove 17 trigonometric rules. Ten hold over ℝ and ℂ, where `sin`, `cos`, `tan` and `cot` are
+interpreted: the algebraic splits 4.1.2.1 #15, 4.1.4.1 #1 and 4.1.7 #3, the reduction 4.3.1.1 #1
+and the square 4.3.1.1 #5 (with `tan' = 1 / cos²`), the substitutions 4.3.4.1 #1 and #2
+(`u = b tan` and `u = b cot`, `cot' = -1 / sin²`) and 4.7.9 #47 and #48 (`u = 1 / (c + d x)`),
+and the integration by parts 4.1.10 #1. Seven hold over ℝ only, `sec` and `csc` having no
+complex interpretation: 4.5.7 #6, 4.5.1.1 #17, 4.5.1.2 #1, #3, #4 and #45, and 4.5.10 #5.
+`OSR/IntegrationRec248.lean` proves over ℝ and ℂ the rewrites 5.3.1 (power) #5 and 5.3.2 #13 of
+`arctan(c x^n)` as `arctan(1/(x^(-n)/c))` for `n < 0` and the splits 4.1.2.1 #56, 4.1.4.1 #7
+and 4.3.4.1 #4, and over ℝ only the `csc` splits 4.5.4.1 #7 and 4.5.1.2 #2.
 `OSR/IntegrationRec205.lean` and `OSR/IntegrationRec206.lean` prove the
 recursive rules 1.1.3.4 #28 and #29, respectively, including their residual
 integrands and definedness conditions. Both complex proofs are exported as

@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove 24 strengthened trigonometric and inverse tangent rules
+  (OSR/IntegrationRec245–248), 15 of them over ℝ and ℂ: the rewrites of
+  `arctan(c x^n)` as `arctan(1/(x^(-n)/c))` for `n < 0` (5.3.1 (power) #5,
+  5.3.2 #13), the algebraic splits 4.1.2.1 #15 and #56, 4.1.4.1 #1 and #7,
+  4.1.7 #3 and 4.3.4.1 #4, the reduction 4.3.1.1 #1 and the square 4.3.1.1 #5
+  of `tan` powers, the substitutions `u = b tan u`, `u = b cot u` (4.3.4.1 #1,
+  #2) and `u = 1 / (c + d x)` (4.7.9 #47, #48) and the integration by parts
+  4.1.10 #1; and over ℝ only (no complex `sec`/`csc`) 4.5.7 #6, 4.5.1.1 #17,
+  4.5.1.2 #1, #2, #3, #4 and #45, 4.5.4.1 #7 and 4.5.10 #5.
 - Prove 11 more strengthened inverse hyperbolic rules over ℝ
   (OSR/IntegrationRec241–243): the substitution 7.1.6 #2 and ten RUBI 7.2
   inverse hyperbolic cosine rules (7.2.1 #2 and #3, 7.2.2 #1, #2 and #6,
