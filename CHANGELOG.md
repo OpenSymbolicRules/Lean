@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove 12 more strengthened inverse hyperbolic tangent recurrences over ℝ
+  (OSR/IntegrationRec218–221): 7.3.1 #43, #44, #83, #85, #86 and #87, each
+  with its 7.3.4 twin.
 - Prove 14 more strengthened inverse hyperbolic tangent variants over ℝ:
   the reciprocal-argument companions 7.3.1 #70, #74 and #80 and the residual
   splits 7.3.1 #65–#68, each with its 7.3.4 twin (OSR/IntegrationRec216–217).
