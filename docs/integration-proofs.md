@@ -129,7 +129,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 `OSR/IntegrationNum1.lean` distributed strengthened variants before their
 proofs (Specification V1-R-005e): both domains unproved, and a `numerical:`
-finding recording the evidence. The catalogue currently retains 527 unproved entries.
+finding recording the evidence. The catalogue currently retains 501 unproved entries.
 Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
 derivative is the residual integrand at the point, on assignments where each
@@ -332,6 +332,21 @@ parameter relation, with `linear_combination` coefficients computed by Gröbner 
 4.5.4.2 #1, #2 over ℝ: when `A b² - a b B + a² C = 0`, `A + B y + C y²` equals
 `(a + b y) (b B - a C + b C y) / b²`, so the integrand is a multiple of the residual integrand with
 `(a + b y)^(m + 1)`.
+`OSR/IntegrationRec264.lean`, `OSR/IntegrationRec265.lean`, `OSR/IntegrationRec268.lean` and
+`OSR/IntegrationRec269.lean` prove results that are combinations of residual integrals whose
+integrands carry powers shifted by one or two: 4.1.3.1 #21, #37, 4.1.4.2 #35, #36, 4.1.2.1 #89,
+1.1.3.5 #31, 4.1.2.2 #48, #78 and 4.1.5 #37, #38 over ℝ and ℂ, 4.5.3.1 #12, #43 over ℝ. Integer
+exponents are case split: `X^(j + n) = X^j X^n` holds when `X ≠ 0` (guaranteed by the integrand's
+domain when `j < 0`) or `0 ≤ j`. `OSR/IntegrationRec266.lean` and `OSR/IntegrationRec267.lean` prove
+1.2.1.2 #2, 1.2.1.3 #21, #37, 1.2.1.4 #4, 1.2.3.3 #11, #51 and 1.2.3.4 #18 over ℝ and ℂ: the
+relation `c d² - b d e + a e² = 0` factors `a + b xⁿ + c x²ⁿ` as `(d + e xⁿ) (a / d + c xⁿ / e)`, and
+the powers of `d + e xⁿ` merge because `d + e xⁿ = 0` forces the trinomial to vanish.
+`OSR/IntegrationRec270.lean` proves 4.1.2.1 #26, #28, #57 and #58 over ℝ and ℂ: the derivative of
+`K cos (a + b sin)^(m + 1)` is `K f (a + b sin)^m (-(a + b sin) sin + (m + 1) b cos²)`, and the
+integrand follows from `sin² + cos² = 1`. `OSR/IntegrationRec271.lean` proves 4.1.2.1 #17, #25 and
+#27 over ℝ and ℂ, where the explicit term is `K cos (a + b sin)^m [(c + d sin)]`: the condition
+`m < -1/2` (or `m < -1`) keeps `a + b sin ≠ 0` on the integrand's domain, and the integrand follows
+from `sin² + cos² = 1` and `a² = b²`.
 `OSR/IntegrationRec205.lean` and `OSR/IntegrationRec206.lean` prove the
 recursive rules 1.1.3.4 #28 and #29, respectively, including their residual
 integrands and definedness conditions. Both complex proofs are exported as

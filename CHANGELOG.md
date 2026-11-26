@@ -8,6 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove 26 more strengthened trigonometric and algebraic rules
+  (OSR/IntegrationRec264–271), 24 of them over ℝ and ℂ: 4.1.2.1 #26, #28,
+  #57, #58 (an explicit `K cos (a + b sin)^(m + 1)` term plus a residual
+  integral) and #17, #25, #27 (`K cos (a + b sin)^m` with `a² = b²` and
+  `m < 0`), and results that combine residual integrals with shifted
+  powers: 4.1.3.1 #21, #37, 4.1.4.2 #35, #36,
+  4.1.2.1 #89, 4.1.2.2 #48, #78, 4.1.5 #37, #38 and 1.1.3.5 #31 (powers
+  `X^(j + n) = X^j X^n` split when `X ≠ 0` or `0 ≤ j`), the quadratic factors
+  1.2.1.2 #2, 1.2.1.3 #21, #37, 1.2.1.4 #4, 1.2.3.3 #11, #51 and 1.2.3.4 #18
+  (`a + b xⁿ + c x²ⁿ = (d + e xⁿ) (a / d + c xⁿ / e)`), and over ℝ 4.5.3.1
+  #12, #43.
 - Prove 29 more strengthened trigonometric and hyperbolic rules
   (OSR/IntegrationRec258–263), 20 of them over ℝ and ℂ: the even reductions
   6.7.9 #9 and #10 (`yⁿ = yⁿ⁻² y²` with `cosh² - sinh² = 1`), 6.7.9 #4
