@@ -129,7 +129,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 `OSR/IntegrationNum1.lean` distributed strengthened variants before their
 proofs (Specification V1-R-005e): both domains unproved, and a `numerical:`
-finding recording the evidence. The catalogue currently retains 630 unproved entries.
+finding recording the evidence. The catalogue currently retains 601 unproved entries.
 Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
 derivative is the residual integrand at the point, on assignments where each
@@ -296,6 +296,19 @@ complex interpretation: 4.5.7 #6, 4.5.1.1 #17, 4.5.1.2 #1, #3, #4 and #45, and 4
 `OSR/IntegrationRec248.lean` proves over ℝ and ℂ the rewrites 5.3.1 (power) #5 and 5.3.2 #13 of
 `arctan(c x^n)` as `arctan(1/(x^(-n)/c))` for `n < 0` and the splits 4.1.2.1 #56, 4.1.4.1 #7
 and 4.3.4.1 #4, and over ℝ only the `csc` splits 4.5.4.1 #7 and 4.5.1.2 #2.
+`OSR/IntegrationRec249.lean` proves the perfect-square trinomials 4.1.9 #1 and #2 and 4.3.9 #1
+and #2 over ℝ and ℂ, and 4.5.9 #1 and #2 over ℝ: when `b² = 4 a c`,
+`(a + b yⁿ + c y²ⁿ)^p = (b + 2 c yⁿ)^(2 p) / (4^p c^p)` since
+`(b + 2 c yⁿ)² = 4 c (a + b yⁿ + c y²ⁿ)`. `OSR/IntegrationRec250.lean` proves the split
+4.1.2.2 #6 over ℝ and ℂ, and over ℝ the `csc` quotients 4.5.4.1 #10, 4.5.3.1 #3 and 4.5.1.2 #52
+and the split 4.1.7 #4 over `sqrt(a + b sin² u)`. `OSR/IntegrationRec251.lean` extends the
+trinomial identity to the 14 rules that multiply it by `A + B y` or by a power `z^m`
+(4.1.9 #5, #6, #29, #30, 4.3.9 #9, #10, #15, #16, #19, #20 over ℝ and ℂ; 4.5.9 #5, #6, #11, #12
+over ℝ). `OSR/IntegrationRec252.lean` proves the split 4.1.2.1 #23 and
+`OSR/IntegrationRec253.lean` the double angles 4.7.4 #6, #7 and #31 over ℝ and ℂ: when
+`b c = a d` and `d / b = 2`, `sin(c + d x) = 2 sin(a + b x) cos(a + b x)`; the powers of a
+vanishing `e cos u` or `f sin u` are split with `zpow_add'`, the domain excluding the
+degenerate exponents.
 `OSR/IntegrationRec205.lean` and `OSR/IntegrationRec206.lean` prove the
 recursive rules 1.1.3.4 #28 and #29, respectively, including their residual
 integrands and definedness conditions. Both complex proofs are exported as

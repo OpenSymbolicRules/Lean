@@ -8,6 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove 29 more strengthened trigonometric rules (OSR/IntegrationRec249–253),
+  19 of them over ℝ and ℂ, among them the split 4.1.2.1 #23 and the double
+  angles 4.7.4 #6, #7 and #31 (`sin(2 u) = 2 sin u cos u` when `b c = a d`
+  and `d / b = 2`). Perfect-square trinomials: when `b^2 = 4 a c`,
+  `(a + b y^n + c y^(2 n))^p = (b + 2 c y^n)^(2 p) / (4^p c^p)`, alone
+  (4.1.9 #1, #2, 4.3.9 #1, #2) or multiplied by `A + B y` or a power `z^m`
+  (4.1.9 #5, #6, #29, #30, 4.3.9 #9, #10, #15, #16, #19, #20), and over ℝ
+  only for `sec`/`csc` (4.5.9 #1, #2, #5, #6, #11, #12). Also the split
+  4.1.2.2 #6 over ℝ and ℂ, and over ℝ the `csc` quotients 4.5.4.1 #10,
+  4.5.3.1 #3 and 4.5.1.2 #52 and 4.1.7 #4 (over `sqrt(a + b sin^2 u)`).
 - Prove 24 strengthened trigonometric and inverse tangent rules
   (OSR/IntegrationRec245–248), 15 of them over ℝ and ℂ: the rewrites of
   `arctan(c x^n)` as `arctan(1/(x^(-n)/c))` for `n < 0` (5.3.1 (power) #5,
