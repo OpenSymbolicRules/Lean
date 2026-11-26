@@ -30,6 +30,7 @@ inductive Op1 where
   | cot | sec | csc
   | arcsin | arccos
   | arcsinh | arccosh | arctanh
+  | abs
   deriving DecidableEq, Repr, Inhabited, BEq
 
 /-- Binary operators of the fragment. -/
@@ -70,6 +71,7 @@ def Op1.symbol : Op1 → OMSymbol
   | .arcsinh => ⟨"transc1", "arcsinh"⟩
   | .arccosh => ⟨"transc1", "arccosh"⟩
   | .arctanh => ⟨"transc1", "arctanh"⟩
+  | .abs => ⟨"arith1", "abs"⟩
 
 /-- The OpenMath symbol of a binary operator. -/
 def Op2.symbol : Op2 → OMSymbol
@@ -124,7 +126,7 @@ def symbols : Expr → List OMSymbol
 /-- Every OpenMath symbol the fragment can emit. -/
 def allSymbols : List OMSymbol :=
   [Op1.neg, .sin, .cos, .tan, .arctan, .exp, .ln, .sinh, .cosh, .tanh, .coth, .sech, .csch,
-      .cot, .sec, .csc, .arcsin, .arccos, .arcsinh, .arccosh, .arctanh].map Op1.symbol ++
+      .cot, .sec, .csc, .arcsin, .arccos, .arcsinh, .arccosh, .arctanh, .abs].map Op1.symbol ++
   [Op2.add, .sub, .mul, .div, .root].map Op2.symbol ++
   [Const.pi].map Const.symbol ++ [powerSymbol]
 

@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Register `arith1#abs` (real absolute value, no complex interpretation) and
+  add three authored Algebra square-root rules, proved over ℝ:
+  `algebra.root.sqrt_sq_abs` (`sqrt(a^2) ⟶ |a|`, unconditional, applied by the
+  reference engine), `algebra.root.sq_sqrt` (`(sqrt a)^2 ⟶ a` for `a ≥ 0`) and
+  `algebra.root.sqrt_mul` (`sqrt(a b) ⟶ sqrt a sqrt b` for `a, b ≥ 0`).
 - Add the authored Algebra rule `algebra.root.sqrt_sq_nonneg`, `sqrt(a^2) ⟶ a`
   for `a ≥ 0`, proved over ℝ (`OSR.Algebra.sqrtSq_real`, Mathlib
   `Real.sqrt_sq`) and not stated over ℂ, where `arith1#root` has no

@@ -40,9 +40,13 @@ private def u : Expr := .var "u"
     .app2 .mul t (.app2 .add u t)
 
 -- Every v0.1 rule is migrated; one more rule is authored in OSR.
-#guard Algebra.notMigrated.isEmpty && Algebra.catalog.length == 21
+#guard Algebra.notMigrated.isEmpty && Algebra.catalog.length == 24
 #guard (Algebra.catalog.filter (·.rule.provenance.method == .authored)).map (·.rule.id) ==
-  ["algebra.root.sqrt_sq_nonneg"]
+  ["algebra.root.sqrt_sq_nonneg", "algebra.root.sqrt_sq_abs", "algebra.root.sq_sqrt",
+    "algebra.root.sqrt_mul"]
+-- The square-root rules are proved over ℝ only (arith1#root has no complex interpretation).
+#guard (Algebra.catalog.filter (·.rule.provenance.method == .authored)).all fun e =>
+  e.proofs.map (·.1) == [.real] && e.findings.any (·.startsWith "complex:")
 
 -- `sqrt(a^2) ⟶ a` for `a ≥ 0`: proved over ℝ, not stated over ℂ (no complex
 -- interpretation of arith1#root), and conditional, so the engine leaves it alone.
@@ -53,8 +57,16 @@ private def u : Expr := .var "u"
     e.rule.conditions == [.ge (.var "a") (.int 0)] &&
     e.proofs == [(.real, ``OSR.Algebra.sqrtSq_real)] &&
     e.findings.any (·.startsWith "complex:")
+-- `sqrt(t^2) ⟶ |t|` is unconditional, so the engine applies it; the conditional
+-- `(sqrt t)^2 ⟶ t` and `sqrt(t u) ⟶ sqrt t sqrt u` are left alone.
 #guard (normalize (Algebra.profileRules "default") 8
-  (.app2 .root (.pow t (.int 2)) (.int 2))).trace == []
+  (.app2 .root (.pow t (.int 2)) (.int 2))).result == .app1 .abs t
+#guard (normalize (Algebra.profileRules "default") 8
+  (.pow (.app2 .root t (.int 2)) (.int 2))).trace == []
+#guard (normalize (Algebra.profileRules "default") 8
+  (.app2 .root (.app2 .mul t u) (.int 2))).trace == []
+-- `arith1#abs` is a fragment symbol with a real interpretation.
+#guard Expr.allSymbols.contains ⟨"arith1", "abs"⟩
 
 -- `1^x ⟶ 1` is unconditional: the engine applies it, whatever the exponent.
 #guard (normalize (Algebra.profileRules "default") 8 (.pow (.int 1) (.var "n"))).result == .int 1

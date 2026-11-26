@@ -144,6 +144,7 @@ theorem complex_cot_cmp (z : ℂ) : Complex.cot z = 1 / Complex.tan z := by
   rw [Complex.cot_eq_cos_div_sin, Complex.tan_eq_sin_div_cos, one_div_div]
 theorem real_arcsinh_cmp (x : ℝ) : Real.arsinh x = Real.log (x + Real.sqrt (1 + x ^ 2)) := rfl
 theorem real_root_cmp (a : ℝ) (h : 0 ≤ a) : Real.sqrt a ^ 2 = a := Real.sq_sqrt h
+theorem real_abs_cmp (a : ℝ) : 0 ≤ |a| := abs_nonneg a
 
 /-! ## Entries -/
 
@@ -544,6 +545,14 @@ def entries : List SymbolEntry := [
         justification := "root(x, 2) is the nonnegative square root.",
         obligations := [
           { cmp := "for all a,n | power(root(a,n),n) = a (if the root exists!)", theoremName := ``real_root_cmp, note := "for n = 2 and a ≥ 0" }] }] },
+  { symbol := ⟨"arith1", "abs"⟩, arity := 1,
+    fragment := "real absolute value only; no complex interpretation",
+    interpretations := [
+      { domain := .real, leanConst := ``abs, assurance := .formallyRelated,
+        definedness := "everywhere",
+        justification := "Mathlib's absolute value |x| = max x (-x) on the real field.",
+        obligations := [
+          { cmp := "for all a | abs(a) >= 0", theoremName := ``real_abs_cmp }] }] },
   { symbol := ⟨"nums1", "pi"⟩, arity := 0,
     interpretations := [
       { domain := .real, leanConst := ``Real.pi, assurance := .reviewed, definedness := "constant",

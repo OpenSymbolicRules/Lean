@@ -108,6 +108,7 @@ noncomputable def Interp.real : Interp ℝ where
     | .cot => Real.cot | .sec => Fn.sec | .csc => Fn.csc
     | .arcsin => Real.arcsin | .arccos => Real.arccos
     | .arcsinh => Real.arsinh | .arccosh => Real.arcosh | .arctanh => Real.artanh
+    | .abs => fun x => |x|
     | _ => id
   fnDefined o := match o with
     | .coth | .csch => fun x => Real.sinh x ≠ 0

@@ -21,10 +21,11 @@ mathematical statement:
 `relation1#gt` has no complex interpretation, so the logarithm-of-a-product
 rule is stated and certified over ℝ only.
 
-One rule is authored in OSR rather than migrated: `sqrt(a^2) ⟶ a` for `a ≥ 0`
-(`algebra.root.sqrt_sq_nonneg`), with the real principal square root
-(`arith1#root` with index 2). It is stated over ℝ only: `arith1#root` has no
-complex interpretation in the fragment.
+Four square-root rules are authored in OSR rather than migrated, with the real
+principal square root (`arith1#root` with index 2): `sqrt(a^2) ⟶ a` for `a ≥ 0`,
+`sqrt(a^2) ⟶ |a|` (`arith1#abs`), `(sqrt a)^2 ⟶ a` for `a ≥ 0` and
+`sqrt(a b) ⟶ sqrt a sqrt b` for `a, b ≥ 0`. They are stated over ℝ only:
+`arith1#root` and `arith1#abs` have no complex interpretation in the fragment.
 -/
 
 namespace OSR.Algebra
@@ -47,6 +48,7 @@ private abbrev ln (e : Expr) : Expr := .app1 .ln e
 private abbrev exp (e : Expr) : Expr := .app1 .exp e
 private abbrev pow (e f : Expr) : Expr := .pow e f
 private abbrev root (e f : Expr) : Expr := .app2 .root e f
+private abbrev sqrt (e : Expr) : Expr := root e (.int 2)
 
 private def repo : String := "OpenSymbolicRules/Algebra"
 private def rev : String := "e8152ba57aa7a10a270a1e9ed16f75bede335ad1"
@@ -194,6 +196,47 @@ def sqrtSq : Rule where
   description := "Square root of a square: sqrt(a^2) = a for a >= 0"
   provenance := { method := .authored, sources := [
     { name := "Mathlib", locator := "Real.sqrt_sq",
+      revision := some "56a005855ea17e0b0958f73ec801ae140b0a1679", license := some "Apache-2.0" }] }
+
+/-- `sqrt(a^2) ⟶ |a|` (real principal square root). -/
+def sqrtSqAbs : Rule where
+  id := "algebra.root.sqrt_sq_abs"
+  vars := ["a"]
+  lhs := sqrt (pow a (.int 2))
+  rhs := .app1 .abs a
+  profiles := ["default"]
+  priority := 96
+  description := "Square root of a square: sqrt(a^2) = |a|"
+  provenance := { method := .authored, sources := [
+    { name := "Mathlib", locator := "Real.sqrt_sq_eq_abs",
+      revision := some "56a005855ea17e0b0958f73ec801ae140b0a1679", license := some "Apache-2.0" }] }
+
+/-- `(sqrt a)^2 ⟶ a` for `a ≥ 0`. -/
+def sqSqrt : Rule where
+  id := "algebra.root.sq_sqrt"
+  vars := ["a"]
+  lhs := pow (sqrt a) (.int 2)
+  rhs := a
+  conditions := [.ge a zero]
+  profiles := ["default"]
+  priority := 97
+  description := "Square of a square root: sqrt(a)^2 = a for a >= 0"
+  provenance := { method := .authored, sources := [
+    { name := "Mathlib", locator := "Real.sq_sqrt",
+      revision := some "56a005855ea17e0b0958f73ec801ae140b0a1679", license := some "Apache-2.0" }] }
+
+/-- `sqrt(a b) ⟶ sqrt a sqrt b` for `a ≥ 0` and `b ≥ 0`. -/
+def sqrtMul : Rule where
+  id := "algebra.root.sqrt_mul"
+  vars := ["a", "b"]
+  lhs := sqrt (mul a b)
+  rhs := mul (sqrt a) (sqrt b)
+  conditions := [.ge a zero, .ge b zero]
+  profiles := ["default"]
+  priority := 98
+  description := "Square root of a product: sqrt(a * b) = sqrt(a) * sqrt(b) for a, b >= 0"
+  provenance := { method := .authored, sources := [
+    { name := "Mathlib", locator := "Real.sqrt_mul",
       revision := some "56a005855ea17e0b0958f73ec801ae140b0a1679", license := some "Apache-2.0" }] }
 
 /-! ## Polynomials -/
@@ -472,6 +515,44 @@ theorem sqrtSq_real : sqrtSq.Holds .real := by
   simp only [i2] at hd ⊢
   exact Real.sqrt_sq ha
 
+private theorem iv2 : intValue? (2 : ℝ) = some 2 := (intValue?_eq _ _).2 (by norm_num)
+
+private theorem ge_zero_of {x : ℝ} (h : 0 < x ∨ x = 0) : 0 ≤ x := by
+  rcases h with h | h
+  · exact h.le
+  · exact h ▸ le_refl _
+
+/-- `Real.sqrt (a ^ 2) = |a|` (`Real.sqrt_sq_eq_abs`). -/
+theorem sqrtSqAbs_real : sqrtSqAbs.Holds .real := by
+  simp only [Rule.Holds, Rule.Sound]
+  intro env _ hd
+  simp only [sqrtSqAbs, Interp.real, Defined, eval, true_and, Int.cast_ofNat, iv2] at hd ⊢
+  exact Real.sqrt_sq_eq_abs _
+
+/-- Over ℂ the pattern is never defined (`arith1#root` has no complex interpretation); the
+engine soundness proof needs this vacuous statement, which the catalogue does not record. -/
+theorem sqrtSqAbs_complex : sqrtSqAbs.Holds .complex := by
+  simp only [Rule.Holds, Rule.Sound]
+  intro env _ hd
+  simp [sqrtSqAbs, Interp.complex, Defined] at hd
+
+/-- `Real.sqrt a ^ 2 = a` for `0 ≤ a` (`Real.sq_sqrt`). -/
+theorem sqSqrt_real : sqSqrt.Holds .real := by
+  simp only [Rule.Holds, Rule.Sound]
+  intro env hc hd
+  simp only [sqSqrt, Interp.real, Cond.Holds, Defined, eval, List.mem_cons, List.mem_nil_iff,
+    or_false, forall_eq, true_and, Int.cast_zero, Int.cast_ofNat, iv2] at hc hd ⊢
+  exact Real.sq_sqrt (ge_zero_of hc)
+
+/-- `Real.sqrt (a * b) = Real.sqrt a * Real.sqrt b` for `0 ≤ a` (`Real.sqrt_mul`). -/
+theorem sqrtMul_real : sqrtMul.Holds .real := by
+  simp only [Rule.Holds, Rule.Sound]
+  intro env hc hd
+  simp only [sqrtMul, Interp.real, Cond.Holds, Defined, eval, List.mem_cons, List.mem_nil_iff,
+    or_false, forall_eq_or_imp, forall_eq, true_and, Int.cast_zero, Int.cast_ofNat, iv2]
+    at hc hd ⊢
+  exact ⟨⟨ge_zero_of hc.1, ge_zero_of hc.2⟩, Real.sqrt_mul (ge_zero_of hc.1) _⟩
+
 theorem distribute_real : distribute.Holds .real := by
   alg_intro distribute Interp.real; ring
 
@@ -576,6 +657,18 @@ def catalog : List CatalogEntry := [
     proofs := [(.real, ``sqrtSq_real)],
     findings := ["authored: not in OSR v0.1 Algebra; added for the real principal square root (Mathlib Real.sqrt_sq). Without the condition the rule is false: sqrt((-1)^2) = 1.",
       "complex: not stated; arith1#root has no complex interpretation in the fragment."] },
+  { rule := sqrtSqAbs, ruleDecl := ``sqrtSqAbs,
+    proofs := [(.real, ``sqrtSqAbs_real)],
+    findings := ["authored: not in OSR v0.1 Algebra; the real principal square root of a square is the absolute value (Mathlib Real.sqrt_sq_eq_abs). The rule is unconditional, so the reference engine applies it.",
+      "complex: not stated; arith1#root and arith1#abs have no complex interpretation in the fragment (the pattern is never defined over ℂ)."] },
+  { rule := sqSqrt, ruleDecl := ``sqSqrt,
+    proofs := [(.real, ``sqSqrt_real)],
+    findings := ["authored: not in OSR v0.1 Algebra (Mathlib Real.sq_sqrt). The condition repeats the definedness of sqrt a over ℝ; it is kept so that engines see the guard.",
+      "complex: not stated; arith1#root has no complex interpretation in the fragment."] },
+  { rule := sqrtMul, ruleDecl := ``sqrtMul,
+    proofs := [(.real, ``sqrtMul_real)],
+    findings := ["authored: not in OSR v0.1 Algebra (Mathlib Real.sqrt_mul). Without the conditions the rule is false over ℝ: sqrt((-1)(-1)) = 1 while sqrt(-1) is undefined.",
+      "complex: not stated; arith1#root has no complex interpretation in the fragment."] },
   { rule := distribute, ruleDecl := ``distribute,
     proofs := [(.real, ``distribute_real), (.complex, ``distribute_complex)] },
   { rule := factorLeftAdd, ruleDecl := ``factorLeftAdd,
@@ -610,7 +703,8 @@ def profileRules (p : String) : List Rule :=
 
 theorem profileRules_default :
     profileRules "default" = [powPow, powMulPow, powOne, powZero, powNegOne, onePow, lnMul,
-      lnPow, expLn, sqrtSq, distribute, addZero, zeroAdd, mulOne, oneMul, mulZero, zeroMul] :=
+      lnPow, expLn, sqrtSq, sqrtSqAbs, sqSqrt, sqrtMul, distribute, addZero, zeroAdd, mulOne,
+      oneMul, mulZero, zeroMul] :=
   rfl
 
 theorem profileRules_factor :
@@ -659,9 +753,10 @@ theorem default_decreasing : defaultWeight.RulesDecrease (profileRules "default"
   rw [profileRules_default]
   simp only [Weight.RulesDecrease, List.forall_mem_cons, List.not_mem_nil, IsEmpty.forall_iff,
     implies_true, and_true]
-  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> intro hc env <;>
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;>
+    intro hc env <;>
     simp only [Weight.eval, defaultWeight, powPow, powMulPow, powOne, powZero, powNegOne, onePow,
-      lnMul, lnPow, expLn, sqrtSq, distribute, addZero, zeroAdd, mulOne, oneMul, mulZero, zeroMul,
+      lnMul, lnPow, expLn, sqrtSq, sqrtSqAbs, sqSqrt, sqrtMul, distribute, addZero, zeroAdd, mulOne, oneMul, mulZero, zeroMul,
       List.isEmpty_cons, Bool.false_eq_true] at hc ⊢
   all_goals first | omega | nlinarith
 
@@ -684,18 +779,20 @@ private theorem catalog_closed : ∀ e ∈ catalog, e.rule.rhsClosed = true := b
   intro e he
   simp only [catalog, List.mem_cons, List.mem_nil_iff, or_false] at he
   rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 private theorem unconditional_holds (d : Domain) (hd : d ≠ .boolean) :
     ∀ e ∈ catalog, e.rule.conditions.isEmpty → e.rule.Holds d := by
   intro e he hc
   simp only [catalog, List.mem_cons, List.mem_nil_iff, or_false] at he
   rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
-    simp [powPow, powMulPow, powZero, powNegOne, lnMul, lnPow, expLn, sqrtSq] at hc <;> cases d
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
+    simp [powPow, powMulPow, powZero, powNegOne, lnMul, lnPow, expLn, sqrtSq, sqSqrt, sqrtMul]
+      at hc <;> cases d
   all_goals first
     | exact absurd rfl hd
     | exact powOne_real | exact powOne_complex | exact onePow_real | exact onePow_complex
+    | exact sqrtSqAbs_real | exact sqrtSqAbs_complex
     | exact distribute_real
     | exact distribute_complex | exact factorLeftAdd_real | exact factorLeftAdd_complex
     | exact factorRightAdd_real | exact factorRightAdd_complex | exact factorLeftSub_real
