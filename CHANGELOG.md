@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove 11 more strengthened inverse hyperbolic rules over ℝ
+  (OSR/IntegrationRec241–243): the substitution 7.1.6 #2 and ten RUBI 7.2
+  inverse hyperbolic cosine rules (7.2.1 #2 and #3, 7.2.2 #1, #2 and #6,
+  7.2.3 #4 and #5, 7.2.5 #2, 7.2.6 #1 and #2); since `arcosh` is defined on `[1, ∞)` only, a domain
+  holding near `x` forces `1 < c x`.
 - Prove 11 strengthened inverse hyperbolic sine rules over ℝ
   (OSR/IntegrationRec239–240): the substitutions `u = c + d x` (7.1.6 #1),
   `u = a + b arsinh(c x)` (7.1.1 #3, 7.1.2 #6) and `u = arsinh(c x)` (7.1.3 #7,

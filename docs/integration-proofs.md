@@ -129,7 +129,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 `OSR/IntegrationNum1.lean` distributed strengthened variants before their
 proofs (Specification V1-R-005e): both domains unproved, and a `numerical:`
-finding recording the evidence. The catalogue currently retains 665 unproved entries.
+finding recording the evidence. The catalogue currently retains 654 unproved entries.
 Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
 derivative is the residual integrand at the point, on assignments where each
@@ -278,6 +278,14 @@ roots constrain the domain: the substitutions 7.1.6 #1 (`u = c + d x`), 7.1.1 #3
 (`u = arsinh(c x)` when `e = c² d`), the integrations by parts 7.1.1 #2, 7.1.2 #2, 7.1.4 #23
 and 7.1.5 #2 and #11, and the closed form 7.1.3 #2, where the domain forces `d > 0` so that
 `sqrt(d + e x²) = sqrt d sqrt(1 + c² x²)`.
+`OSR/IntegrationRec241.lean` proves the substitution 7.1.6 #2. `OSR/IntegrationRec242.lean`
+proves seven inverse hyperbolic cosine rules of RUBI 7.2 (7.2.1 #2 and #3, 7.2.2 #1, #2 and #6,
+7.2.5 #2, 7.2.6 #1). The real `arcosh` is defined on `[1, ∞)` only, a closed set: an integrand
+defined on a neighbourhood of `x` forces `1 < c x`, where
+`arcosh'(c x) = c / (sqrt(1 + c x) sqrt(-1 + c x))`.
+`OSR/IntegrationRec243.lean` proves 7.2.6 #2 and the closed forms 7.2.3 #4 and #5, whose
+results contain ratios of square roots that are constant where `1 < c x` (the domain forces
+the signs of `d`, `d1` and `d2`), so the derivative is taken through an eventual equality.
 `OSR/IntegrationRec205.lean` and `OSR/IntegrationRec206.lean` prove the
 recursive rules 1.1.3.4 #28 and #29, respectively, including their residual
 integrands and definedness conditions. Both complex proofs are exported as
