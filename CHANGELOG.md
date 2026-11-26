@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove 36 more strengthened trigonometric, hyperbolic and algebraic rules
+  (OSR/IntegrationRec255–257), 12 of them over ℝ and ℂ: the quotients by
+  `a + b z` of 4.7.9 #13, #14, #15, #21, #22 and 6.7.9 #1, #2, #11–#14, #19,
+  #20 (with `y z = w` relations such as `cot · sin = cos`), the three-factor
+  quotients 4.7.9 #28, #29, #31, #32 and 6.7.9 #23–#34, and the partial
+  fractions 1.1.1.4 #16, 1.1.3.5 #12 and #27 and 1.2.1.7 #29–#32 (square
+  roots as opaque factors).
 - Prove 9 more strengthened trigonometric rules (OSR/IntegrationRec254), 8 of
   them over ℝ and ℂ: quadratic numerators 4.1.4.1 #6 and 4.3.4.1 #3
   (`(a + b y)^m (A + B y + C y^2)` when `A b^2 - a b B + a^2 C = 0`), the

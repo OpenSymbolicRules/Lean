@@ -144,6 +144,9 @@ import OSR.IntegrationRec251
 import OSR.IntegrationRec252
 import OSR.IntegrationRec253
 import OSR.IntegrationRec254
+import OSR.IntegrationRec255
+import OSR.IntegrationRec256
+import OSR.IntegrationRec257
 import OSR.IntegrationRec116
 import OSR.IntegrationRec115
 import OSR.IntegrationRec114
@@ -303,6 +306,9 @@ open OSR.IntegrationRec251
 open OSR.IntegrationRec252
 open OSR.IntegrationRec253
 open OSR.IntegrationRec254
+open OSR.IntegrationRec255
+open OSR.IntegrationRec256
+open OSR.IntegrationRec257
 open OSR.IntegrationCandidate
 open OSR.IntegrationAcosh
 open OSR.IntegrationAtanh
@@ -20883,7 +20889,188 @@ def catalogPart23 : List CEntry := [
       "strengthened: the condition b^2 ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_1_2_2_r83, which stays refuted.",
       recFinding,
       condFinding "EqQ[Add[Power[a, 2], Multiply[-1, Power[b, 2]]], 0]; IntegersQ[Multiply[2, m], Multiply[2, n]]",
-      optionalFinding "e., f., b. and d."] }
+      optionalFinding "e., f., b. and d."] },
+  { rule := rubi479r21Nondeg, ruleDecl := ``rubi479r21Nondeg,
+    proofs := [(.real, ``rubi479r21Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition a ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_7_9_r21, which stays refuted.",
+      "domain: proved over ℝ only; transc1#csc has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]",
+      optionalFinding "e., f., m., c., d., n. and b."] },
+  { rule := rubi479r22Nondeg, ruleDecl := ``rubi479r22Nondeg,
+    proofs := [(.real, ``rubi479r22Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition a ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_7_9_r22, which stays refuted.",
+      "domain: proved over ℝ only; transc1#sec has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]",
+      optionalFinding "e., f., m., c., d., n. and b."] },
+  { rule := rubi679r19Nondeg, ruleDecl := ``rubi679r19Nondeg,
+    proofs := [(.real, ``rubi679r19Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition a ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_7_9_r19, which stays refuted.",
+      "domain: proved over ℝ only; transc1#csch has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]",
+      optionalFinding "e., f., m., c., d., n. and b."] },
+  { rule := rubi679r20Nondeg, ruleDecl := ``rubi679r20Nondeg,
+    proofs := [(.real, ``rubi679r20Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition a ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_7_9_r20, which stays refuted.",
+      "domain: proved over ℝ only; transc1#sech has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]",
+      optionalFinding "e., f., m., c., d., n. and b."] },
+  { rule := rubi679r1Nondeg, ruleDecl := ``rubi679r1Nondeg,
+    proofs := [(.real, ``rubi679r1Nondeg_real), (.complex, ``rubi679r1Nondeg_complex)],
+    findings := [
+      "strengthened: the condition b ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_7_9_r1, which stays refuted.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]",
+      optionalFinding "e., f., m., c., d., n. and b."] },
+  { rule := rubi679r2Nondeg, ruleDecl := ``rubi679r2Nondeg,
+    proofs := [(.real, ``rubi679r2Nondeg_real), (.complex, ``rubi679r2Nondeg_complex)],
+    findings := [
+      "strengthened: the condition b ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_7_9_r2, which stays refuted.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]",
+      optionalFinding "e., f., m., c., d., n. and b."] },
+  { rule := rubi479r15Nondeg, ruleDecl := ``rubi479r15Nondeg,
+    proofs := [(.real, ``rubi479r15Nondeg_real), (.complex, ``rubi479r15Nondeg_complex)],
+    findings := [
+      "strengthened: the condition a ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_7_9_r15, which stays refuted.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]",
+      optionalFinding "e., f., m., c., d., n. and b."] },
+  { rule := rubi679r14Nondeg, ruleDecl := ``rubi679r14Nondeg,
+    proofs := [(.real, ``rubi679r14Nondeg_real), (.complex, ``rubi679r14Nondeg_complex)],
+    findings := [
+      "strengthened: the condition a ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_7_9_r14, which stays refuted.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]",
+      optionalFinding "e., f., m., c., d., n. and b."] },
+  { rule := rubi679r13Nondeg, ruleDecl := ``rubi679r13Nondeg,
+    proofs := [(.real, ``rubi679r13Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition a ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_7_9_r13, which stays refuted.",
+      "domain: proved over ℝ only; transc1#coth has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]",
+      optionalFinding "e., f., m., c., d., n. and b."] },
+  { rule := rubi479r13Nondeg, ruleDecl := ``rubi479r13Nondeg,
+    proofs := [(.real, ``rubi479r13Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition b ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_7_9_r13, which stays refuted.",
+      "domain: proved over ℝ only; transc1#sec has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]",
+      optionalFinding "e., f., m., c., d., n. and b."] },
+  { rule := rubi479r14Nondeg, ruleDecl := ``rubi479r14Nondeg,
+    proofs := [(.real, ``rubi479r14Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition b ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_7_9_r14, which stays refuted.",
+      "domain: proved over ℝ only; transc1#csc has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]",
+      optionalFinding "e., f., m., c., d., n. and b."] },
+  { rule := rubi679r11Nondeg, ruleDecl := ``rubi679r11Nondeg,
+    proofs := [(.real, ``rubi679r11Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition b ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_7_9_r11, which stays refuted.",
+      "domain: proved over ℝ only; transc1#sech has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]",
+      optionalFinding "e., f., m., c., d., n. and b."] },
+  { rule := rubi679r12Nondeg, ruleDecl := ``rubi679r12Nondeg,
+    proofs := [(.real, ``rubi679r12Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition b ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_7_9_r12, which stays refuted.",
+      "domain: proved over ℝ only; transc1#csch has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      "independence: m, n are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]",
+      optionalFinding "e., f., m., c., d., n. and b."] },
+  { rule := rubi1135r12Nondeg, ruleDecl := ``rubi1135r12Nondeg,
+    proofs := [(.real, ``rubi1135r12Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition (b*c + -1*a*d) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_1_3_5_r12, which stays refuted.",
+      "domain: proved over ℝ only; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      recFinding,
+      optionalFinding "b., d. and f."] },
+  { rule := rubi1217r29Nondeg, ruleDecl := ``rubi1217r29Nondeg,
+    proofs := [(.real, ``rubi1217r29Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition c ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_7_r29, which stays refuted.",
+      "domain: proved over ℝ only; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      recFinding,
+      condFinding "NeQ[Add[Power[e, 2], Multiply[-1, 4, d, f]], 0]",
+      optionalFinding "A., B., C., c., d., e. and f."] },
+  { rule := rubi1217r30Nondeg, ruleDecl := ``rubi1217r30Nondeg,
+    proofs := [(.real, ``rubi1217r30Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition c ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_7_r30, which stays refuted.",
+      "domain: proved over ℝ only; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      recFinding,
+      condFinding "NeQ[Add[Power[e, 2], Multiply[-1, 4, d, f]], 0]",
+      optionalFinding "A., C., c., d., e. and f."] },
+  { rule := rubi1217r31Nondeg, ruleDecl := ``rubi1217r31Nondeg,
+    proofs := [(.real, ``rubi1217r31Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition c ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_7_r31, which stays refuted.",
+      "domain: proved over ℝ only; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      recFinding,
+      condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]",
+      optionalFinding "A., B., C., b., c., d. and f."] },
+  { rule := rubi1217r32Nondeg, ruleDecl := ``rubi1217r32Nondeg,
+    proofs := [(.real, ``rubi1217r32Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition c ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_2_1_7_r32, which stays refuted.",
+      "domain: proved over ℝ only; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      recFinding,
+      condFinding "NeQ[Add[Power[b, 2], Multiply[-1, 4, a, c]], 0]",
+      optionalFinding "A., C., b., c., d. and f."] },
+  { rule := rubi1114r16Nondeg, ruleDecl := ``rubi1114r16Nondeg,
+    proofs := [(.real, ``rubi1114r16Nondeg_real), (.complex, ``rubi1114r16Nondeg_complex)],
+    findings := [
+      "strengthened: the condition (b*c + -1*a*d) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_1_1_4_r16, which stays refuted.",
+      "independence: p is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      optionalFinding "e., f., g., h., a., b., c. and d."] },
+  { rule := rubi1135r27Nondeg, ruleDecl := ``rubi1135r27Nondeg,
+    proofs := [(.real, ``rubi1135r27Nondeg_real), (.complex, ``rubi1135r27Nondeg_complex)],
+    findings := [
+      "strengthened: the condition (b*c + -1*a*d) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_1_1_3_5_r27, which stays refuted.",
+      "independence: q is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "LeQ[q, -1]",
+      optionalFinding "d., f. and b."] }
 ]
 
 theorem catalogPart23_wellFormed : ∀ e ∈ catalogPart23,
@@ -20895,11 +21082,170 @@ theorem catalogPart23_wellFormed : ∀ e ∈ catalogPart23,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+
+def catalogPart24 : List CEntry := [
+  { rule := rubi479r28Nondeg, ruleDecl := ``rubi479r28Nondeg,
+    proofs := [(.real, ``rubi479r28Nondeg_real), (.complex, ``rubi479r28Nondeg_complex)],
+    findings := [
+      "strengthened: the condition b ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_7_9_r28, which stays refuted.",
+      "independence: m, n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]; IGtQ[p, 0]",
+      optionalFinding "e., f., m., c., d., p., n. and b."] },
+  { rule := rubi479r29Nondeg, ruleDecl := ``rubi479r29Nondeg,
+    proofs := [(.real, ``rubi479r29Nondeg_real), (.complex, ``rubi479r29Nondeg_complex)],
+    findings := [
+      "strengthened: the condition a ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_7_9_r29, which stays refuted.",
+      "independence: m, n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]; IGtQ[p, 0]",
+      optionalFinding "e., f., m., c., d., p., n. and b."] },
+  { rule := rubi479r31Nondeg, ruleDecl := ``rubi479r31Nondeg,
+    proofs := [(.real, ``rubi479r31Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition a ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_7_9_r31, which stays refuted.",
+      "domain: proved over ℝ only; transc1#csc has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      "independence: m, n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]; IGtQ[p, 0]",
+      optionalFinding "e., f., m., c., d., p., n. and b."] },
+  { rule := rubi479r32Nondeg, ruleDecl := ``rubi479r32Nondeg,
+    proofs := [(.real, ``rubi479r32Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition a ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_7_9_r32, which stays refuted.",
+      "domain: proved over ℝ only; transc1#sec has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      "independence: m, n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]; IGtQ[p, 0]",
+      optionalFinding "e., f., m., c., d., p., n. and b."] },
+  { rule := rubi679r23Nondeg, ruleDecl := ``rubi679r23Nondeg,
+    proofs := [(.real, ``rubi679r23Nondeg_real), (.complex, ``rubi679r23Nondeg_complex)],
+    findings := [
+      "strengthened: the condition b ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_7_9_r23, which stays refuted.",
+      "independence: m, n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]; IGtQ[p, 0]",
+      optionalFinding "e., f., m., c., d., p., n. and b."] },
+  { rule := rubi679r24Nondeg, ruleDecl := ``rubi679r24Nondeg,
+    proofs := [(.real, ``rubi679r24Nondeg_real), (.complex, ``rubi679r24Nondeg_complex)],
+    findings := [
+      "strengthened: the condition b ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_7_9_r24, which stays refuted.",
+      "independence: m, n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]; IGtQ[p, 0]",
+      optionalFinding "e., f., m., c., d., p., n. and b."] },
+  { rule := rubi679r25Nondeg, ruleDecl := ``rubi679r25Nondeg,
+    proofs := [(.real, ``rubi679r25Nondeg_real), (.complex, ``rubi679r25Nondeg_complex)],
+    findings := [
+      "strengthened: the condition b ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_7_9_r25, which stays refuted.",
+      "independence: m, n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]; IGtQ[p, 0]",
+      optionalFinding "e., f., m., c., d., p., n. and b."] },
+  { rule := rubi679r26Nondeg, ruleDecl := ``rubi679r26Nondeg,
+    proofs := [(.real, ``rubi679r26Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition b ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_7_9_r26, which stays refuted.",
+      "domain: proved over ℝ only; transc1#coth has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      "independence: m, n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]; IGtQ[p, 0]",
+      optionalFinding "e., f., m., c., d., p., n. and b."] },
+  { rule := rubi679r27Nondeg, ruleDecl := ``rubi679r27Nondeg,
+    proofs := [(.real, ``rubi679r27Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition b ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_7_9_r27, which stays refuted.",
+      "domain: proved over ℝ only; transc1#sech has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      "independence: m, n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]; IGtQ[p, 0]",
+      optionalFinding "e., f., m., c., d., p., n. and b."] },
+  { rule := rubi679r28Nondeg, ruleDecl := ``rubi679r28Nondeg,
+    proofs := [(.real, ``rubi679r28Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition b ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_7_9_r28, which stays refuted.",
+      "domain: proved over ℝ only; transc1#csch has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      "independence: m, n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]; IGtQ[p, 0]",
+      optionalFinding "e., f., m., c., d., p., n. and b."] },
+  { rule := rubi679r29Nondeg, ruleDecl := ``rubi679r29Nondeg,
+    proofs := [(.real, ``rubi679r29Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition a ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_7_9_r29, which stays refuted.",
+      "domain: proved over ℝ only; transc1#coth has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      "independence: m, n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]; IGtQ[p, 0]",
+      optionalFinding "e., f., m., c., d., p., n. and b."] },
+  { rule := rubi679r30Nondeg, ruleDecl := ``rubi679r30Nondeg,
+    proofs := [(.real, ``rubi679r30Nondeg_real), (.complex, ``rubi679r30Nondeg_complex)],
+    findings := [
+      "strengthened: the condition a ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_7_9_r30, which stays refuted.",
+      "independence: m, n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]; IGtQ[p, 0]",
+      optionalFinding "e., f., m., c., d., p., n. and b."] },
+  { rule := rubi679r31Nondeg, ruleDecl := ``rubi679r31Nondeg,
+    proofs := [(.real, ``rubi679r31Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition a ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_7_9_r31, which stays refuted.",
+      "domain: proved over ℝ only; transc1#csch has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      "independence: m, n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]; IGtQ[p, 0]",
+      optionalFinding "e., f., m., c., d., p., n. and b."] },
+  { rule := rubi679r32Nondeg, ruleDecl := ``rubi679r32Nondeg,
+    proofs := [(.real, ``rubi679r32Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition a ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_7_9_r32, which stays refuted.",
+      "domain: proved over ℝ only; transc1#sech has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      "independence: m, n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]; IGtQ[p, 0]",
+      optionalFinding "e., f., m., c., d., p., n. and b."] },
+  { rule := rubi679r33Nondeg, ruleDecl := ``rubi679r33Nondeg,
+    proofs := [(.real, ``rubi679r33Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition a ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_7_9_r33, which stays refuted.",
+      "domain: proved over ℝ only; transc1#sech has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      "independence: m, n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]; IGtQ[p, 0]",
+      optionalFinding "e., f., m., c., d., p., n. and b."] },
+  { rule := rubi679r34Nondeg, ruleDecl := ``rubi679r34Nondeg,
+    proofs := [(.real, ``rubi679r34Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition a ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_7_9_r34, which stays refuted.",
+      "domain: proved over ℝ only; transc1#csch has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      "independence: m, n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[m, 0]; IGtQ[n, 0]; IGtQ[p, 0]",
+      optionalFinding "e., f., m., c., d., p., n. and b."] }
+]
+
+theorem catalogPart24_wellFormed : ∀ e ∈ catalogPart24,
+    (if e.rule.shape == .antiderivRec || e.rule.shape == .antiderivSubst then e.rule.recOk else e.rule.wellFormed) = true := by
+  intro e he
+  simp only [catalogPart24, List.mem_cons, List.mem_nil_iff, or_false] at he
+  rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=
-  (catalogPart1 ++ catalogPart2 ++ catalogPart3 ++ catalogPart4 ++ catalogPart5 ++ catalogPart6 ++ catalogPart7 ++ catalogPart8 ++ catalogPart9 ++ catalogPart10 ++ catalogPart11 ++ catalogPart12 ++ catalogPart13 ++ catalogPart14 ++ catalogPart15 ++ catalogPart16 ++ catalogPart17 ++ catalogPart18 ++ catalogPart19 ++ catalogPart20 ++ catalogPart21 ++ catalogPart22 ++ catalogPart23).filter (fun e => !IntegrationBounds.replaced.contains e.rule.id)
+  (catalogPart1 ++ catalogPart2 ++ catalogPart3 ++ catalogPart4 ++ catalogPart5 ++ catalogPart6 ++ catalogPart7 ++ catalogPart8 ++ catalogPart9 ++ catalogPart10 ++ catalogPart11 ++ catalogPart12 ++ catalogPart13 ++ catalogPart14 ++ catalogPart15 ++ catalogPart16 ++ catalogPart17 ++ catalogPart18 ++ catalogPart19 ++ catalogPart20 ++ catalogPart21 ++ catalogPart22 ++ catalogPart23 ++ catalogPart24).filter (fun e => !IntegrationBounds.replaced.contains e.rule.id)
 
 /-- Strengthened variants of `OSR.IntegrationNum1` proved in later modules and catalogued in
 `catalogVerified`. -/
@@ -21115,7 +21461,43 @@ def promotedVariants : List String := [
   "integration.rubi_4_1_10_r8_nondegenerate",
   "integration.rubi_4_5_4_1_r1_nondegenerate",
   "integration.rubi_4_1_2_2_r47_nondegenerate",
-  "integration.rubi_4_1_2_2_r83_nondegenerate"]
+  "integration.rubi_4_1_2_2_r83_nondegenerate",
+  "integration.rubi_6_7_9_r1_nondegenerate",
+  "integration.rubi_6_7_9_r2_nondegenerate",
+  "integration.rubi_4_7_9_r15_nondegenerate",
+  "integration.rubi_6_7_9_r14_nondegenerate",
+  "integration.rubi_4_7_9_r21_nondegenerate",
+  "integration.rubi_4_7_9_r22_nondegenerate",
+  "integration.rubi_6_7_9_r19_nondegenerate",
+  "integration.rubi_6_7_9_r20_nondegenerate",
+  "integration.rubi_6_7_9_r13_nondegenerate",
+  "integration.rubi_4_7_9_r13_nondegenerate",
+  "integration.rubi_4_7_9_r14_nondegenerate",
+  "integration.rubi_6_7_9_r11_nondegenerate",
+  "integration.rubi_6_7_9_r12_nondegenerate",
+  "integration.rubi_1_1_1_4_r16_nondegenerate",
+  "integration.rubi_1_1_3_5_r27_nondegenerate",
+  "integration.rubi_1_1_3_5_r12_nondegenerate",
+  "integration.rubi_1_2_1_7_r29_nondegenerate",
+  "integration.rubi_1_2_1_7_r30_nondegenerate",
+  "integration.rubi_1_2_1_7_r31_nondegenerate",
+  "integration.rubi_1_2_1_7_r32_nondegenerate",
+  "integration.rubi_4_7_9_r28_nondegenerate",
+  "integration.rubi_4_7_9_r29_nondegenerate",
+  "integration.rubi_6_7_9_r23_nondegenerate",
+  "integration.rubi_6_7_9_r24_nondegenerate",
+  "integration.rubi_6_7_9_r25_nondegenerate",
+  "integration.rubi_6_7_9_r30_nondegenerate",
+  "integration.rubi_4_7_9_r31_nondegenerate",
+  "integration.rubi_4_7_9_r32_nondegenerate",
+  "integration.rubi_6_7_9_r26_nondegenerate",
+  "integration.rubi_6_7_9_r27_nondegenerate",
+  "integration.rubi_6_7_9_r28_nondegenerate",
+  "integration.rubi_6_7_9_r29_nondegenerate",
+  "integration.rubi_6_7_9_r31_nondegenerate",
+  "integration.rubi_6_7_9_r32_nondegenerate",
+  "integration.rubi_6_7_9_r33_nondegenerate",
+  "integration.rubi_6_7_9_r34_nondegenerate"]
 
 /-- The unproved numerical candidates, excluding variants promoted to the verified catalogue. -/
 def pendingEntries : List CEntry :=
@@ -21142,7 +21524,7 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
     · rcases List.mem_append.mp he with he | h
       · have he := (List.mem_filter.mp he).1
         simp only [List.mem_append] at he
-        rcases he with (((((((((((((((((((((h | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h
+        rcases he with ((((((((((((((((((((((h | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h) | h
         · exact catalogPart1_wellFormed e h
         · exact catalogPart2_wellFormed e h
         · exact catalogPart3_wellFormed e h
@@ -21166,6 +21548,7 @@ theorem catalog_wellFormed : ∀ e ∈ catalog,
         · exact catalogPart21_wellFormed e h
         · exact catalogPart22_wellFormed e h
         · exact catalogPart23_wellFormed e h
+        · exact catalogPart24_wellFormed e h
       · exact IntegrationNum1.entries_wellFormed e (List.mem_filter.mp h).1
     · exact IntegrationRecovered.entries_wellFormed e (List.mem_filter.mp h).1
   · exact IntegrationBounds.entries_wellFormed e h
