@@ -129,7 +129,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 `OSR/IntegrationNum1.lean` distributed strengthened variants before their
 proofs (Specification V1-R-005e): both domains unproved, and a `numerical:`
-finding recording the evidence. The catalogue currently retains 501 unproved entries.
+finding recording the evidence. The catalogue currently retains 459 unproved entries.
 Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
 derivative is the residual integrand at the point, on assignments where each
@@ -347,6 +347,19 @@ integrand follows from `sin² + cos² = 1`. `OSR/IntegrationRec271.lean` proves 
 #27 over ℝ and ℂ, where the explicit term is `K cos (a + b sin)^m [(c + d sin)]`: the condition
 `m < -1/2` (or `m < -1`) keeps `a + b sin ≠ 0` on the integrand's domain, and the integrand follows
 from `sin² + cos² = 1` and `a² = b²`.
+`OSR/IntegrationRec272.lean`, `OSR/IntegrationRec273.lean` and `OSR/IntegrationRec274.lean` prove
+4.1.4.1 #3, #5, #10–#15 and 4.1.4.2 #3, #4 over ℝ and ℂ with the same explicit `K cos y^E` terms
+(`y = a + b sin` or `b sin`); the bodies, residual integrands and coefficients are translated
+mechanically from the rule expressions. `OSR/IntegrationRec275.lean` and
+`OSR/IntegrationRec276.lean` prove the tangent rules 4.3.2.1 #7, #8, #20, #21, 4.3.3.1 #4, #5,
+4.3.4.1 #12–#15, 4.3.4.2 #4, #6, #7 and 4.3.1.1 #10 over ℝ and ℂ: the explicit term is
+`K [tan] (a + b tan)^E`, and with `tan' = (1 + tan²) f` the integrand is a rational identity in
+`tan`. `OSR/IntegrationRec277.lean`, `OSR/IntegrationRec278.lean` and `OSR/IntegrationRec279.lean`
+prove 4.5.1.2 #50, 4.5.3.1 #2, #8, #14, #15, 4.5.4.1 #6, #14, #15 and 4.5.4.2 #5, #6, #9–#12,
+#19–#22 over ℝ (`csc` has no complex interpretation): the explicit term `K cot (a + b csc)^E` is
+differentiated term by term from the rule expression, and the integrand follows from
+`sin² + cos² = 1` and the stated relations, with `m = 0` treated separately because
+`(a + b csc)^(m - 1)` may be undefined there.
 `OSR/IntegrationRec205.lean` and `OSR/IntegrationRec206.lean` prove the
 recursive rules 1.1.3.4 #28 and #29, respectively, including their residual
 integrands and definedness conditions. Both complex proofs are exported as

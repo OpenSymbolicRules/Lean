@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove 18 more strengthened cosecant rules over ℝ (OSR/IntegrationRec277–279):
+  4.5.1.2 #50, 4.5.3.1 #2, #8, #14, #15, 4.5.4.1 #6, #14, #15 and 4.5.4.2 #5,
+  #6, #9–#12, #19–#22, whose results are an explicit `K cot (a + b csc)^E`
+  term plus a residual integral; the derivative of the explicit term is built
+  from the rule expression and the integrand follows from `sin² + cos² = 1`
+  and the stated relations, separately for `m = 0` and `m ≠ 0`.
+- Prove 24 more strengthened trigonometric rules (OSR/IntegrationRec272–276),
+  all over ℝ and ℂ: 4.1.4.1 #3, #5, #10–#15 and 4.1.4.2 #3, #4 (an explicit
+  `K cos y^E` term plus a residual integral, with `sin² + cos² = 1`), and the
+  tangent rules 4.3.2.1 #7, #8, #20, #21, 4.3.3.1 #4, #5, 4.3.4.1 #12–#15,
+  4.3.4.2 #4, #6, #7 and 4.3.1.1 #10 (an explicit `K [tan] (a + b tan)^E`
+  term, a rational identity in `tan` once `tan' = (1 + tan²) f`).
 - Prove 26 more strengthened trigonometric and algebraic rules
   (OSR/IntegrationRec264–271), 24 of them over ℝ and ℂ: 4.1.2.1 #26, #28,
   #57, #58 (an explicit `K cos (a + b sin)^(m + 1)` term plus a residual
