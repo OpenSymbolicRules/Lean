@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove 12 more affine-substitution rules whose integrand matches the
+  substituted residual integrand up to an algebraic identity
+  (`antiderivSubst_affine_of`, `subst_congr`, OSR/IntegrationRec301–302):
+  3.3 #2, #20, #37, #46, 4.1.12 #75, #76 and 5.3.5 #5, #6, #9, #10 over ℝ and
+  ℂ, and 5.1.6 #3, #4 over ℝ.
 - Prove the strengthened rules with one affine substitution `x ↦ c + d x` by a
   single theorem for every interpretation (`antiderivSubst_affine`,
   OSR/IntegrationRec300): 3.3 #1, 3.4 #28 and 5.3.5 #1, #2 over ℝ and ℂ, and

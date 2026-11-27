@@ -129,7 +129,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 `OSR/IntegrationNum1.lean` distributed strengthened variants before their
 proofs (Specification V1-R-005e): both domains unproved, and a `numerical:`
-finding recording the evidence. The catalogue currently retains 360 unproved entries.
+finding recording the evidence. The catalogue currently retains 348 unproved entries.
 Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
 derivative is the residual integrand at the point, on assignments where each
@@ -399,6 +399,13 @@ and the result is `(1 · d⁻¹) · I1(c + d x)`, `antiderivSubst_affine` derive
 `t` to that of the residual integrand near `c + d t`, and the chain rule gives the derivative.
 Its instances are 3.3 #1, 3.4 #28 and 5.3.5 #1, #2 over ℝ and ℂ, and 5.1.6 #1, #2 over ℝ
 (`arcsin` and `arccos` have no complex interpretation in the fragment).
+`OSR/IntegrationRec301.lean` relaxes the syntactic condition: `antiderivSubst_affine_of` only
+asks that the integrand and the substituted residual integrand be `K[y := A]` and `K[y := B]` for a
+common skeleton `K`, where each pair of subterms `A`, `B` has the same value and `B` is defined
+(`subst_congr`). `OSR/IntegrationRec302.lean` applies it to rules whose affine subterms agree
+after an identity that uses the rule's relations and nonzero parameters, for instance
+`g + h x = h (e + f x)/f` when `f g = e h`: 3.3 #2, #20, #37, #46, 4.1.12 #75, #76 and
+5.3.5 #5, #6, #9, #10 over ℝ and ℂ, and 5.1.6 #3, #4 over ℝ.
 `OSR/IntegrationRec205.lean` and `OSR/IntegrationRec206.lean` prove the
 recursive rules 1.1.3.4 #28 and #29, respectively, including their residual
 integrands and definedness conditions. Both complex proofs are exported as
