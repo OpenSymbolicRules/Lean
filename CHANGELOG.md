@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove the strengthened rules with one affine substitution `x ↦ c + d x` by a
+  single theorem for every interpretation (`antiderivSubst_affine`,
+  OSR/IntegrationRec300): 3.3 #1, 3.4 #28 and 5.3.5 #1, #2 over ℝ and ℂ, and
+  5.1.6 #1, #2 over ℝ.
 - Prove 16 more strengthened rules (OSR/IntegrationRec299), 13 of them over ℝ
   and ℂ: 1.2.1.6 #22–#24, 1.2.2.2 #16, 1.2.2.4 #31–#34, 4.1.2.2 #25 and 6.1.13
   #13, #14, #17, #18, and over ℝ 4.5.1.2 #53, #54 and 4.5.3.1 #33. Results

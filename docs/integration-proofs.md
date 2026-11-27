@@ -129,7 +129,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 `OSR/IntegrationNum1.lean` distributed strengthened variants before their
 proofs (Specification V1-R-005e): both domains unproved, and a `numerical:`
-finding recording the evidence. The catalogue currently retains 366 unproved entries.
+finding recording the evidence. The catalogue currently retains 360 unproved entries.
 Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
 derivative is the residual integrand at the point, on assignments where each
@@ -391,6 +391,14 @@ exponent other than `-1` and `2` (`intValue?` of the literal is stated once), an
 `1 + m` or `m + 1` that a lower bound on `m` keeps nonzero: 1.2.1.6 #22–#24, 1.2.2.2 #16, 1.2.2.4
 #31–#34, 4.1.2.2 #25 and 6.1.13 #13, #14, #17, #18 over ℝ and ℂ, and 4.5.1.2 #53, #54 and 4.5.3.1
 #33 over ℝ.
+`OSR/IntegrationRec300.lean` proves the rules with one affine substitution once for every
+interpretation: when the integrand is the residual integrand with `x` replaced by `c + d x`
+and the result is `(1 · d⁻¹) · I1(c + d x)`, `antiderivSubst_affine` derives the rule from
+`d ≠ 0`. Evaluation and definedness commute with the substitution (`eval_subst`,
+`defined_subst`), the inverse map `x = (u − c)/d` carries the definedness of the integrand near
+`t` to that of the residual integrand near `c + d t`, and the chain rule gives the derivative.
+Its instances are 3.3 #1, 3.4 #28 and 5.3.5 #1, #2 over ℝ and ℂ, and 5.1.6 #1, #2 over ℝ
+(`arcsin` and `arccos` have no complex interpretation in the fragment).
 `OSR/IntegrationRec205.lean` and `OSR/IntegrationRec206.lean` prove the
 recursive rules 1.1.3.4 #28 and #29, respectively, including their residual
 integrands and definedness conditions. Both complex proofs are exported as
