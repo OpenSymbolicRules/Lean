@@ -184,6 +184,7 @@ import OSR.IntegrationRec296
 import OSR.IntegrationRec297
 import OSR.IntegrationRec298
 import OSR.IntegrationRec299
+import OSR.IntegrationRec303
 import OSR.IntegrationRec301
 import OSR.IntegrationRec302
 import OSR.IntegrationRec300
@@ -386,6 +387,7 @@ open OSR.IntegrationRec296
 open OSR.IntegrationRec297
 open OSR.IntegrationRec298
 open OSR.IntegrationRec299
+open OSR.IntegrationRec303
 open OSR.IntegrationRec301
 open OSR.IntegrationRec302
 open OSR.IntegrationRec300
@@ -23007,7 +23009,39 @@ def catalogPart26 : List CEntry := [
       "strengthened: the condition d ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_5_3_5_r10, which stays refuted.",
       recFinding,
       condFinding "IGtQ[p, 0]",
-      optionalFinding "e., f., m., a., b., d. and p."] }
+      optionalFinding "e., f., m., a., b., d. and p."] },
+  { rule := rubi4112r9Nondeg, ruleDecl := ``rubi4112r9Nondeg,
+    proofs := [(.real, ``rubi4112r9Nondeg_real), (.complex, ``rubi4112r9Nondeg_complex)],
+    findings := [
+      "strengthened: the condition f ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_1_12_r9, which stays refuted.",
+      "independence: n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[p, 0]; ILtQ[n, 0]; EqQ[n, -2]",
+      optionalFinding "a., b., c., d., e., f. and p."] },
+  { rule := rubi4112r10Nondeg, ruleDecl := ``rubi4112r10Nondeg,
+    proofs := [(.real, ``rubi4112r10Nondeg_real), (.complex, ``rubi4112r10Nondeg_complex)],
+    findings := [
+      "strengthened: the condition f ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_4_1_12_r10, which stays refuted.",
+      "independence: n, p are not in the v0.1 FreeQ list, but RUBI's numeric conditions on them only hold for numbers, so the v1 rule declares them independent of x.",
+      recFinding,
+      condFinding "IGtQ[p, 0]; ILtQ[n, 0]; EqQ[n, -2]",
+      optionalFinding "a., b., c., d., e., f. and p."] },
+  { rule := rubi679r49Nondeg, ruleDecl := ``rubi679r49Nondeg,
+    proofs := [(.real, ``rubi679r49Nondeg_real), (.complex, ``rubi679r49Nondeg_complex)],
+    findings := [
+      "strengthened: the condition d ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_7_9_r49, which stays refuted.",
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[n, 0]",
+      optionalFinding "a., c., d. and n."] },
+  { rule := rubi679r50Nondeg, ruleDecl := ``rubi679r50Nondeg,
+    proofs := [(.real, ``rubi679r50Nondeg_real), (.complex, ``rubi679r50Nondeg_complex)],
+    findings := [
+      "strengthened: the condition d ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_6_7_9_r50, which stays refuted.",
+      "independence: n is not in the v0.1 FreeQ list, but RUBI's numeric conditions on it only hold for numbers, so the v1 rule declares it independent of x.",
+      recFinding,
+      condFinding "IGtQ[n, 0]",
+      optionalFinding "a., c., d. and n."] }
 ]
 
 theorem catalogPart26_wellFormed : ∀ e ∈ catalogPart26,
@@ -23015,7 +23049,7 @@ theorem catalogPart26_wellFormed : ∀ e ∈ catalogPart26,
   intro e he
   simp only [catalogPart26, List.mem_cons, List.mem_nil_iff, or_false] at he
   rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=
@@ -23479,7 +23513,11 @@ def promotedVariants : List String := [
   "integration.rubi_5_3_5_r9_nondegenerate",
   "integration.rubi_5_3_5_r10_nondegenerate",
   "integration.rubi_5_1_6_r3_nondegenerate",
-  "integration.rubi_5_1_6_r4_nondegenerate"]
+  "integration.rubi_5_1_6_r4_nondegenerate",
+  "integration.rubi_4_1_12_r9_nondegenerate",
+  "integration.rubi_4_1_12_r10_nondegenerate",
+  "integration.rubi_6_7_9_r49_nondegenerate",
+  "integration.rubi_6_7_9_r50_nondegenerate"]
 
 /-- The unproved numerical candidates, excluding variants promoted to the verified catalogue. -/
 def pendingEntries : List CEntry :=

@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Add a symbolic derivative with a soundness proof (OSR/SymDeriv.lean:
+  `SymDeriv.d`, `hasStrictDerivAt_eval`, with the derivative facts of ℝ and ℂ)
+  and a chain-rule theorem for rules with a substitution `u = g(x)`
+  (`antiderivSubst_chain`); prove 4.1.12 #9, #10 and 6.7.9 #49, #50 over ℝ
+  and ℂ with it (OSR/IntegrationRec303).
 - Prove 12 more affine-substitution rules whose integrand matches the
   substituted residual integrand up to an algebraic identity
   (`antiderivSubst_affine_of`, `subst_congr`, OSR/IntegrationRec301–302):

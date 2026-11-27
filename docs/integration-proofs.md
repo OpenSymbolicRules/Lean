@@ -129,7 +129,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 `OSR/IntegrationNum1.lean` distributed strengthened variants before their
 proofs (Specification V1-R-005e): both domains unproved, and a `numerical:`
-finding recording the evidence. The catalogue currently retains 348 unproved entries.
+finding recording the evidence. The catalogue currently retains 344 unproved entries.
 Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
 derivative is the residual integrand at the point, on assignments where each
@@ -406,6 +406,19 @@ common skeleton `K`, where each pair of subterms `A`, `B` has the same value and
 after an identity that uses the rule's relations and nonzero parameters, for instance
 `g + h x = h (e + f x)/f` when `f g = e h`: 3.3 #2, #20, #37, #46, 4.1.12 #75, #76 and
 5.3.5 #5, #6, #9, #10 over ℝ and ℂ, and 5.1.6 #3, #4 over ℝ.
+
+`OSR/SymDeriv.lean` adds a symbolic derivative `SymDeriv.d x e` for the fragment built from
+variables, integers, `π`, `+`, `-`, `*`, `/`, `sin`, `cos`, `exp`, `ln`, the square root and
+powers with an exponent free of `x`, and proves it sound (`hasStrictDerivAt_eval`): wherever
+`SymDeriv.Ok` holds (logarithms and square roots inside their regions of differentiability,
+nonzero divisors, integer exponents free of `x` with a nonzero base or a nonnegative
+exponent), the value of `e` has strict derivative the value of `d x e`. The derivative facts of
+an interpretation are a `SymDeriv.Calc`; `Calc.real` and `Calc.complex` give them for ℝ and ℂ
+(principal logarithm off the cut). `antiderivSubst_chain` uses it for a substitution
+`u = g(x)` with result `K · I1(g(x))`: when `g'(t) ≠ 0` the strict derivative makes `g` a local
+homeomorphism near `t`, which carries the definedness of `H ∘ g` to that of `H` near `g(t)`.
+`OSR/IntegrationRec303.lean` applies it to `u = 1/(e + f x)`: 4.1.12 #9, #10 and 6.7.9 #49, #50
+over ℝ and ℂ.
 `OSR/IntegrationRec205.lean` and `OSR/IntegrationRec206.lean` prove the
 recursive rules 1.1.3.4 #28 and #29, respectively, including their residual
 integrands and definedness conditions. Both complex proofs are exported as
