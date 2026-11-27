@@ -129,7 +129,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 `OSR/IntegrationNum1.lean` distributed strengthened variants before their
 proofs (Specification V1-R-005e): both domains unproved, and a `numerical:`
-finding recording the evidence. The catalogue currently retains 382 unproved entries.
+finding recording the evidence. The catalogue currently retains 366 unproved entries.
 Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
 derivative is the residual integrand at the point, on assignments where each
@@ -385,7 +385,12 @@ argument are generalized, with `cosh² - sinh² = 1`), to rules without a symbol
 integrands with a power `B^(m - 2)` (the powers are then split from `B^(m - 2)`, and a lower bound
 on `m` excludes the cases `m ≤ 1`): 1.2.1.3 #7, 4.1.1.2 #26, 4.1.10 #15, 4.1.2.1 #50, 4.1.6 #9,
 4.1.7 #11 and 6.1.13 #11, #12, #15, #16 over ℝ and ℂ, and 4.5.1.4 #3, 4.5.2.2 #1 and 4.5.4.2 #17,
-#18 over ℝ.
+#18 over ℝ. `OSR/IntegrationRec299.lean` handles results with several residual integrals
+(`c₁ I₁ + c₂ I₂`, each integrand's derivative taken from its own hypothesis), powers with a literal
+exponent other than `-1` and `2` (`intValue?` of the literal is stated once), and denominators
+`1 + m` or `m + 1` that a lower bound on `m` keeps nonzero: 1.2.1.6 #22–#24, 1.2.2.2 #16, 1.2.2.4
+#31–#34, 4.1.2.2 #25 and 6.1.13 #13, #14, #17, #18 over ℝ and ℂ, and 4.5.1.2 #53, #54 and 4.5.3.1
+#33 over ℝ.
 `OSR/IntegrationRec205.lean` and `OSR/IntegrationRec206.lean` prove the
 recursive rules 1.1.3.4 #28 and #29, respectively, including their residual
 integrands and definedness conditions. Both complex proofs are exported as

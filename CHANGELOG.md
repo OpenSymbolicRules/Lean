@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove 16 more strengthened rules (OSR/IntegrationRec299), 13 of them over ℝ
+  and ℂ: 1.2.1.6 #22–#24, 1.2.2.2 #16, 1.2.2.4 #31–#34, 4.1.2.2 #25 and 6.1.13
+  #13, #14, #17, #18, and over ℝ 4.5.1.2 #53, #54 and 4.5.3.1 #33. Results
+  with several residual integrals, literal exponents other than `-1` and `2`,
+  and denominators `1 + m` kept nonzero by a bound on `m` are now covered.
 - Prove 14 more strengthened rules (OSR/IntegrationRec298), 10 of them over ℝ
   and ℂ: 1.2.1.3 #7, 4.1.1.2 #26, 4.1.10 #15, 4.1.2.1 #50, 4.1.6 #9, 4.1.7
   #11 and the hyperbolic rules 6.1.13 #11, #12, #15, #16, and over ℝ 4.5.1.4
