@@ -129,7 +129,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 `OSR/IntegrationNum1.lean` distributed strengthened variants before their
 proofs (Specification V1-R-005e): both domains unproved, and a `numerical:`
-finding recording the evidence. The catalogue currently retains 424 unproved entries.
+finding recording the evidence. The catalogue currently retains 396 unproved entries.
 Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
 derivative is the residual integrand at the point, on assignments where each
@@ -370,7 +370,16 @@ or not and `n = 0` or not are separate, and cases excluded by the conditions clo
 when a parameter relation only gives the integrand after cancelling a nonzero parameter, multiply
 the goal by it (`mul_left_cancel₀`): 1.2.1.3 #6, #27, #34, #59, 4.1.0.1 #1, 4.1.2.2
 #34, #39 and 4.1.6 #24–#26 over ℝ and ℂ, 4.5.1.2 #26, 4.5.4.2 #15, #16 and 4.7.6 #9, #19, #21 over
-ℝ.
+ℝ. `OSR/IntegrationRec296.lean` and `OSR/IntegrationRec297.lean` add three steps to the
+construction. A nonzero parameter is derived from several conditions: when `b = 0` and the
+relations force another parameter to vanish (for instance `a² = b²` gives `a = 0`), a stated
+condition such as `b c - a d ≠ 0` fails, or a product of nonzero parameters vanishes. Every
+factor of a product condition `≠ 0` becomes a fact, including sums such as `m + n + 1`. A
+denominator left after `field_simp` is shown nonzero from a proportional fact, or by `omega`
+when it is an integer expression, and is cleared with `div_eq_iff` or before `field_simp`.
+They prove 1.2.1.2 #35, #36, 1.2.1.3 #5, #17, #18, 1.2.1.6 #17, 4.1.2.1 #9, #16, #18, 4.1.3.1
+#18, #19, 4.1.4.2 #7, #15, #16, 4.1.6 #5, #31–#33 and 4.1.7 #2 over ℝ and ℂ, and 4.5.1.2 #49,
+4.5.3.1 #4, #6, #7, #27, #29, 4.5.4.1 #3 and 4.5.4.2 #25, #26 over ℝ.
 `OSR/IntegrationRec205.lean` and `OSR/IntegrationRec206.lean` prove the
 recursive rules 1.1.3.4 #28 and #29, respectively, including their residual
 integrands and definedness conditions. Both complex proofs are exported as

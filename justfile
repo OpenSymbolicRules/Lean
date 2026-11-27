@@ -117,6 +117,8 @@ check:
 	lake env leanchecker OSR.IntegrationRec291
 	lake env leanchecker OSR.IntegrationRec293
 	lake env leanchecker OSR.IntegrationRec294
+	lake env leanchecker OSR.IntegrationRec296
+	lake env leanchecker OSR.IntegrationRec297
 	lake env leanchecker OSR.IntegrationCandidate
 	lake env leanchecker OSR.IntegrationAcosh
 	lake env leanchecker OSR.IntegrationAtanh

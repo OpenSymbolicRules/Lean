@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove 28 more strengthened rules (OSR/IntegrationRec296–297), 19 of them over
+  ℝ and ℂ: 1.2.1.2 #35, #36, 1.2.1.3 #5, #17, #18, 1.2.1.6 #17, 4.1.2.1 #9,
+  #16, #18, 4.1.3.1 #18, #19, 4.1.4.2 #7, #15, #16, 4.1.6 #5, #31–#33 and
+  4.1.7 #2, and over ℝ 4.5.1.2 #49, 4.5.3.1 #4, #6, #7, #27, #29, 4.5.4.1 #3
+  and 4.5.4.2 #25, #26. Nonzero parameters are now derived from several
+  conditions together, every factor of a product condition becomes a fact,
+  and denominators left after `field_simp` are cleared from a proportional
+  fact or an integer bound.
 - Prove 16 more strengthened rules (OSR/IntegrationRec288–294), 10 of them over
   ℝ and ℂ: 1.2.1.3 #6, #27, #34, #59, 4.1.0.1 #1, 4.1.2.2 #34,
   #39 and 4.1.6 #24–#26, and over ℝ 4.5.1.2 #26, 4.5.4.2 #15, #16 and 4.7.6
