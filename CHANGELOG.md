@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove 14 more strengthened rules (OSR/IntegrationRec298), 10 of them over ℝ
+  and ℂ: 1.2.1.3 #7, 4.1.1.2 #26, 4.1.10 #15, 4.1.2.1 #50, 4.1.6 #9, 4.1.7
+  #11 and the hyperbolic rules 6.1.13 #11, #12, #15, #16, and over ℝ 4.5.1.4
+  #3, 4.5.2.2 #1 and 4.5.4.2 #17, #18. The derivative construction now covers
+  `sinh` and `cosh`, rules without a symbolic exponent and powers `B^(m - 2)`.
 - Prove 28 more strengthened rules (OSR/IntegrationRec296–297), 19 of them over
   ℝ and ℂ: 1.2.1.2 #35, #36, 1.2.1.3 #5, #17, #18, 1.2.1.6 #17, 4.1.2.1 #9,
   #16, #18, 4.1.3.1 #18, #19, 4.1.4.2 #7, #15, #16, 4.1.6 #5, #31–#33 and
