@@ -184,6 +184,7 @@ import OSR.IntegrationRec296
 import OSR.IntegrationRec297
 import OSR.IntegrationRec298
 import OSR.IntegrationRec299
+import OSR.IntegrationRec308
 import OSR.IntegrationRec307
 import OSR.IntegrationRec305
 import OSR.IntegrationRec306
@@ -391,6 +392,7 @@ open OSR.IntegrationRec296
 open OSR.IntegrationRec297
 open OSR.IntegrationRec298
 open OSR.IntegrationRec299
+open OSR.IntegrationRec308
 open OSR.IntegrationRec307
 open OSR.IntegrationRec305
 open OSR.IntegrationRec306
@@ -23383,7 +23385,33 @@ def catalogPart26 : List CEntry := [
       "domain: proved over ℝ only; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
       recFinding,
       condFinding "EqQ[Add[Multiply[B, c], Multiply[-1, b, C]], 0]; NeQ[Add[Multiply[A, b], Multiply[-1, a, B]], 0]",
-      optionalFinding "A., B., d., e., C., b. and c."] }
+      optionalFinding "A., B., d., e., C., b. and c."] },
+  { rule := rubi537r17Nondeg, ruleDecl := ``rubi537r17Nondeg,
+    proofs := [(.real, ``rubi537r17Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition d*(m + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_5_3_7_r17, which stays refuted.",
+      "domain: proved over ℝ only; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      recFinding,
+      condFinding "EqQ[Add[b, Power[c, 2]], 0]; NeQ[m, -1]",
+      optionalFinding "d., m., c., a. and b."] },
+  { rule := rubi537r18Nondeg, ruleDecl := ``rubi537r18Nondeg,
+    proofs := [(.real, ``rubi537r18Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition d*(m + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_5_3_7_r18, which stays refuted.",
+      "domain: proved over ℝ only; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      recFinding,
+      condFinding "EqQ[Add[b, Power[c, 2]], 0]; NeQ[m, -1]",
+      optionalFinding "d., m., c., a. and b."] },
+  { rule := rubi537r21Nondeg, ruleDecl := ``rubi537r21Nondeg,
+    proofs := [(.real, ``rubi537r21Nondeg_real)],
+    unproved := [.complex],
+    findings := [
+      "strengthened: the condition c*(m + 1) ≠ 0 (relation1#neq) is appended to the converted v0.1 conditions. This corrected variant is not RUBI's rule as stated: it excludes the degenerate case of the counterexample to integration.rubi_5_3_7_r21, which stays refuted.",
+      "domain: proved over ℝ only; arith1#root has no complex interpretation in the fragment, so the integrand is nowhere defined over ℂ and the statement is vacuous there; the complex domain is unproved.",
+      condFinding "EqQ[Add[b, Power[c, 2]], 0]; NeQ[m, -1]",
+      optionalFinding "c., a., b. and m."] }
 ]
 
 theorem catalogPart26_wellFormed : ∀ e ∈ catalogPart26,
@@ -23394,7 +23422,7 @@ theorem catalogPart26_wellFormed : ∀ e ∈ catalogPart26,
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> decide
 
 /-- The rules with a proof or a counterexample, in v0.1 file order. -/
 def catalogVerified : List CEntry :=
@@ -23901,7 +23929,10 @@ def promotedVariants : List String := [
   "integration.rubi_1_3_3_r27_nondegenerate",
   "integration.rubi_4_1_2_1_r19_nondegenerate",
   "integration.rubi_4_1_2_3_r14_nondegenerate",
-  "integration.rubi_4_1_6_r34_nondegenerate"]
+  "integration.rubi_4_1_6_r34_nondegenerate",
+  "integration.rubi_5_3_7_r17_nondegenerate",
+  "integration.rubi_5_3_7_r18_nondegenerate",
+  "integration.rubi_5_3_7_r21_nondegenerate"]
 
 /-- The unproved numerical candidates, excluding variants promoted to the verified catalogue. -/
 def pendingEntries : List CEntry :=

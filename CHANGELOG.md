@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove 5.3.7 #17, #18 and #21 over ℝ (OSR/IntegrationRec308).
 - Prove 8 more strengthened Integration variants with square roots over ℝ
   (OSR/IntegrationRec307): 1.1.1.7 #12, 1.1.3.5 #13, 1.2.1.6 #26, #29,
   1.3.3 #27, 4.1.2.1 #19, 4.1.2.3 #14 and 4.1.6 #34.
