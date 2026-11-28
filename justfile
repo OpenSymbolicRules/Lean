@@ -127,6 +127,8 @@ check:
 	lake env leanchecker OSR.SymDeriv
 	lake env leanchecker OSR.IntegrationRec303
 	lake env leanchecker OSR.IntegrationRec304
+	lake env leanchecker OSR.IntegrationRec305
+	lake env leanchecker OSR.IntegrationRec306
 	lake env leanchecker OSR.IntegrationCandidate
 	lake env leanchecker OSR.IntegrationAcosh
 	lake env leanchecker OSR.IntegrationAtanh

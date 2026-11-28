@@ -129,7 +129,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 `OSR/IntegrationNum1.lean` distributed strengthened variants before their
 proofs (Specification V1-R-005e): both domains unproved, and a `numerical:`
-finding recording the evidence. The catalogue currently retains 341 unproved entries.
+finding recording the evidence. The catalogue currently retains 313 unproved entries.
 Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
 derivative is the residual integrand at the point, on assignments where each
@@ -408,7 +408,8 @@ after an identity that uses the rule's relations and nonzero parameters, for ins
 5.3.5 #5, #6, #9, #10 over ℝ and ℂ, and 5.1.6 #3, #4 over ℝ.
 
 `OSR/SymDeriv.lean` adds a symbolic derivative `SymDeriv.d x e` for the fragment built from
-variables, integers, `π`, `+`, `-`, `*`, `/`, `sin`, `cos`, `exp`, `ln`, the square root and
+variables, integers, `π`, `+`, `-`, `*`, `/`, `sin`, `cos`, `exp`, `ln`, `tan`, `arctan`,
+`sinh`, `cosh`, `arcsin`, `arccos` (the inverse functions over ℝ only), the square root and
 powers with an exponent free of `x`, and proves it sound (`hasStrictDerivAt_eval`): wherever
 `SymDeriv.Ok` holds (logarithms and square roots inside their regions of differentiability,
 nonzero divisors, integer exponents free of `x` with a nonzero base or a nonnegative
@@ -424,6 +425,22 @@ stay inside their domains nearby), so `antiderivSubst_chain_open` needs no condi
 its obligations are pointwise, at `t` and at `g(t)`. It covers substitutions whose derivative
 vanishes, such as `u = xⁿ` at `x = 0`: 1.1.3.2 #83 (`u = c x`), 1.1.3.4 #9 and 1.1.3.6 #5
 (`u = xⁿ`) over ℝ and ℂ (`OSR/IntegrationRec304.lean`).
+
+`antiderivRec_open`, `antiderivRec_open1` and `antideriv_open` prove a rule whose result is an
+explicit term `E`, plus `K` times a residual integral when the rule is recursive, from pointwise
+obligations at `t`: `E` (and the residual integrand) satisfy `Ok` and are defined at `t`, and the
+integrand equals `d x E` (plus `K` times the residual integrand) there. `antiderivRec_open2`,
+`antiderivRec_lin2` and `antiderivRec_lin1` do the same for `E + K₁ I₁ + K₂ I₂`,
+`K₁ I₁ + K₂ I₂` and `K I₁`. The instances in `OSR/IntegrationRec305.lean` and
+`OSR/IntegrationRec306.lean` split each power `B ^ (k + c)` with a symbolic integer exponent
+into `B ^ (k + c₀) * B ^ (c - c₀)`, where `c₀` is the least offset of `k` on `B` (`zsplit`,
+valid when `B ≠ 0` or `k + c₀ ≥ 0`), so that the value identity becomes a rational-function
+identity in `B ^ (k + c₀)`; it is closed by `field_simp` and `ring1`, or by `linear_combination`
+with a coefficient computed offline when an equality condition of the rule is needed (for
+instance `c d² − b d e + a e² = 0` in 1.2.1.2 #41). They prove 1.1.1.3 #24, #26, #28,
+1.1.1.4 #4, #8, #10, #12, 1.2.1.2 #41, #42, #59, #69, #77, 1.2.1.3 #61 and 6.7.6 #1, #2, #16,
+#17 over ℝ and ℂ, and 1.2.1.2 #76, 5.3.4 #23, #24, #45, #46, #47, #48, #65, #66 and 6.7.8 #49,
+#50 over ℝ.
 `OSR/IntegrationRec205.lean` and `OSR/IntegrationRec206.lean` prove the
 recursive rules 1.1.3.4 #28 and #29, respectively, including their residual
 integrands and definedness conditions. Both complex proofs are exported as

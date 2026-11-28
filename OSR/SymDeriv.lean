@@ -10,7 +10,8 @@ import Mathlib.Analysis.Calculus.Deriv.ZPow
 
 `SymDeriv.d x e` is the derivative of the expression `e` with respect to the variable `x`, for
 the fragment built from variables, integers, `π`, `+`, `-`, `*`, `/`, `−`, `sin`, `cos`,
-`exp`, `ln`, the square root and powers with an exponent free of `x`.
+`exp`, `ln`, `tan`, `arctan`, `sinh`, `cosh`, `arcsin`, `arccos`, the square root and powers
+with an exponent free of `x`.
 
 `hasStrictDerivAt_eval` proves it sound: wherever `Ok` holds (each logarithm and square root
 is applied in its region of differentiability, each divisor is nonzero, and each power has an
@@ -31,6 +32,15 @@ def d (x : String) : Expr → Expr
   | .app1 .cos a => .app2 .mul (.app1 .neg (.app1 .sin a)) (d x a)
   | .app1 .exp a => .app2 .mul (.app1 .exp a) (d x a)
   | .app1 .ln a => .app2 .mul (.pow a (.int (-1))) (d x a)
+  | .app1 .tan a => .app2 .mul (.app2 .div (.int 1) (.pow (.app1 .cos a) (.int 2))) (d x a)
+  | .app1 .arctan a =>
+    .app2 .mul (.app2 .div (.int 1) (.app2 .add (.int 1) (.pow a (.int 2)))) (d x a)
+  | .app1 .sinh a => .app2 .mul (.app1 .cosh a) (d x a)
+  | .app1 .cosh a => .app2 .mul (.app1 .sinh a) (d x a)
+  | .app1 .arcsin a => .app2 .mul (.app2 .div (.int 1)
+      (.app2 .root (.app2 .sub (.int 1) (.pow a (.int 2))) (.int 2))) (d x a)
+  | .app1 .arccos a => .app2 .mul (.app1 .neg (.app2 .div (.int 1)
+      (.app2 .root (.app2 .sub (.int 1) (.pow a (.int 2))) (.int 2)))) (d x a)
   | .app1 _ _ => .int 0
   | .app2 .add a b => .app2 .add (d x a) (d x b)
   | .app2 .sub a b => .app2 .sub (d x a) (d x b)
@@ -59,6 +69,25 @@ structure Calc (I : Interp 𝕜) where
   lnOpen : ∀ z, lnOk z → ∀ᶠ w in 𝓝 z, I.lnDefined w
   /-- The square root is defined near a point where it is differentiable. -/
   rootOpen : ∀ z n, rootOk z → I.toInt? n = some 2 → ∀ᶠ w in 𝓝 z, I.rootDefined w n
+  /-- Where `tan`, `arctan`, `arcsin`, `arccos` are differentiable. -/
+  tanOk : 𝕜 → Prop
+  arctanOk : 𝕜 → Prop
+  asinOk : 𝕜 → Prop
+  acosOk : 𝕜 → Prop
+  tan : ∀ z, tanOk z → HasStrictDerivAt I.tan (1 / I.cos z ^ (2 : ℤ)) z
+  tanOpen : ∀ z, tanOk z → ∀ᶠ w in 𝓝 z, I.tanDefined w
+  arctan : ∀ z, arctanOk z → HasStrictDerivAt I.arctan (1 / (1 + z ^ (2 : ℤ))) z
+  arctanOpen : ∀ z, arctanOk z → ∀ᶠ w in 𝓝 z, I.arctanDefined w
+  sinh : ∀ z, HasStrictDerivAt (I.fn .sinh) (I.fn .cosh z) z
+  cosh : ∀ z, HasStrictDerivAt (I.fn .cosh) (I.fn .sinh z) z
+  sinhDef : ∀ z, I.fnDefined .sinh z
+  coshDef : ∀ z, I.fnDefined .cosh z
+  asin : ∀ z, asinOk z →
+    HasStrictDerivAt (I.fn .arcsin) (1 / I.root (1 - z ^ (2 : ℤ)) ((2 : ℤ) : 𝕜)) z
+  asinOpen : ∀ z, asinOk z → ∀ᶠ w in 𝓝 z, I.fnDefined .arcsin w
+  acos : ∀ z, acosOk z →
+    HasStrictDerivAt (I.fn .arccos) (-(1 / I.root (1 - z ^ (2 : ℤ)) ((2 : ℤ) : 𝕜))) z
+  acosOpen : ∀ z, acosOk z → ∀ᶠ w in 𝓝 z, I.fnDefined .arccos w
 
 variable {I : Interp 𝕜}
 
@@ -73,6 +102,12 @@ def Ok (C : Calc I) (x : String) (ρ : String → 𝕜) : Expr → Prop
   | .app1 .cos a => Ok C x ρ a
   | .app1 .exp a => Ok C x ρ a
   | .app1 .ln a => Ok C x ρ a ∧ C.lnOk (eval I ρ a)
+  | .app1 .tan a => Ok C x ρ a ∧ C.tanOk (eval I ρ a)
+  | .app1 .arctan a => Ok C x ρ a ∧ C.arctanOk (eval I ρ a)
+  | .app1 .sinh a => Ok C x ρ a
+  | .app1 .cosh a => Ok C x ρ a
+  | .app1 .arcsin a => Ok C x ρ a ∧ C.asinOk (eval I ρ a)
+  | .app1 .arccos a => Ok C x ρ a ∧ C.acosOk (eval I ρ a)
   | .app1 _ _ => False
   | .app2 .add a b => Ok C x ρ a ∧ Ok C x ρ b
   | .app2 .sub a b => Ok C x ρ a ∧ Ok C x ρ b
@@ -130,6 +165,28 @@ theorem hasStrictDerivAt_eval (C : Calc I) (x : String) (env : String → 𝕜) 
       · rfl
       · simp only [d, eval]
         simp only [hm1, zpow_neg_one]
+    case sinh => exact (C.sinh _).comp t (ih h)
+    case cosh => exact (C.cosh _).comp t (ih h)
+    case tan =>
+      have h2 : I.toInt? (((2 : ℤ)) : 𝕜) = some 2 := Interp.toInt?_cast I 2
+      convert (C.tan _ h.2).comp t (ih h.1) using 1
+      · rfl
+      · simp only [d, eval, h2, Int.cast_one]
+    case arctan =>
+      have h2 : I.toInt? (((2 : ℤ)) : 𝕜) = some 2 := Interp.toInt?_cast I 2
+      convert (C.arctan _ h.2).comp t (ih h.1) using 1
+      · rfl
+      · simp only [d, eval, h2, Int.cast_one]
+    case arcsin =>
+      have h2 : I.toInt? (((2 : ℤ)) : 𝕜) = some 2 := Interp.toInt?_cast I 2
+      convert (C.asin _ h.2).comp t (ih h.1) using 1
+      · rfl
+      · simp only [d, eval, h2, Int.cast_one]
+    case arccos =>
+      have h2 : I.toInt? (((2 : ℤ)) : 𝕜) = some 2 := Interp.toInt?_cast I 2
+      convert (C.acos _ h.2).comp t (ih h.1) using 1
+      · rfl
+      · simp only [d, eval, h2, Int.cast_one]
     all_goals exact (by simp [Ok] at h)
   | app2 o a b iha ihb =>
     intro h
@@ -180,6 +237,28 @@ noncomputable def Calc.real : Calc Interp.real where
   rootOpen z n hz hn := by
     filter_upwards [eventually_gt_nhds hz] with w hw
     exact ⟨hn, hw.le⟩
+  tanOk z := Real.cos z ≠ 0
+  arctanOk _ := True
+  asinOk z := -1 < z ∧ z < 1
+  acosOk z := -1 < z ∧ z < 1
+  tan z hz := by simpa [Interp.real] using Real.hasStrictDerivAt_tan hz
+  tanOpen z hz := Real.continuous_cos.continuousAt.eventually_ne hz
+  arctan z _ := by simpa [Interp.real] using Real.hasStrictDerivAt_arctan z
+  arctanOpen _ _ := Filter.Eventually.of_forall fun _ => trivial
+  sinh z := Real.hasStrictDerivAt_sinh z
+  cosh z := Real.hasStrictDerivAt_cosh z
+  sinhDef _ := trivial
+  coshDef _ := trivial
+  asin z hz := by
+    simpa [Interp.real] using Real.hasStrictDerivAt_arcsin (by linarith [hz.1]) (by linarith [hz.2])
+  asinOpen z hz := by
+    filter_upwards [Ioo_mem_nhds hz.1 hz.2] with w hw
+    exact ⟨hw.1.le, hw.2.le⟩
+  acos z hz := by
+    simpa [Interp.real] using Real.hasStrictDerivAt_arccos (by linarith [hz.1]) (by linarith [hz.2])
+  acosOpen z hz := by
+    filter_upwards [Ioo_mem_nhds hz.1 hz.2] with w hw
+    exact ⟨hw.1.le, hw.2.le⟩
 
 /-- The derivative facts of the complex interpretation (principal logarithm off the cut; the
 square root has no complex interpretation in the fragment). -/
@@ -195,6 +274,22 @@ noncomputable def Calc.complex : Calc Interp.complex where
     filter_upwards [Complex.isOpen_slitPlane.mem_nhds hz] with w hw
     exact Complex.slitPlane_ne_zero hw
   rootOpen _ _ hz _ := hz.elim
+  tanOk z := Complex.cos z ≠ 0
+  arctanOk _ := False
+  asinOk _ := False
+  acosOk _ := False
+  tan z hz := by simpa [Interp.complex] using Complex.hasStrictDerivAt_tan hz
+  tanOpen z hz := Complex.continuous_cos.continuousAt.eventually_ne hz
+  arctan _ hz := hz.elim
+  arctanOpen _ hz := hz.elim
+  sinh z := Complex.hasStrictDerivAt_sinh z
+  cosh z := Complex.hasStrictDerivAt_cosh z
+  sinhDef _ := trivial
+  coshDef _ := trivial
+  asin _ hz := hz.elim
+  asinOpen _ hz := hz.elim
+  acos _ hz := hz.elim
+  acosOpen _ hz := hz.elim
 
 /-- Where `Ok` holds, definedness is an open condition: an expression defined at the point is
 defined near it. -/
@@ -216,6 +311,28 @@ theorem eventually_defined (C : Calc I) (x : String) (env : String → 𝕜) (t 
     case ln =>
       have hc := (hasStrictDerivAt_eval C x env t a h.1).hasDerivAt.continuousAt
       filter_upwards [ih h.1 hd.1, hc.eventually (C.lnOpen _ h.2)] with v h1 h2
+      exact ⟨h1, h2⟩
+    case tan =>
+      have hc := (hasStrictDerivAt_eval C x env t a h.1).hasDerivAt.continuousAt
+      filter_upwards [ih h.1 hd.1, hc.eventually (C.tanOpen _ h.2)] with v h1 h2
+      exact ⟨h1, h2⟩
+    case arctan =>
+      have hc := (hasStrictDerivAt_eval C x env t a h.1).hasDerivAt.continuousAt
+      filter_upwards [ih h.1 hd.1, hc.eventually (C.arctanOpen _ h.2)] with v h1 h2
+      exact ⟨h1, h2⟩
+    case sinh =>
+      filter_upwards [ih h hd.1] with v h1
+      exact ⟨h1, C.sinhDef _⟩
+    case cosh =>
+      filter_upwards [ih h hd.1] with v h1
+      exact ⟨h1, C.coshDef _⟩
+    case arcsin =>
+      have hc := (hasStrictDerivAt_eval C x env t a h.1).hasDerivAt.continuousAt
+      filter_upwards [ih h.1 hd.1, hc.eventually (C.asinOpen _ h.2)] with v h1 h2
+      exact ⟨h1, h2⟩
+    case arccos =>
+      have hc := (hasStrictDerivAt_eval C x env t a h.1).hasDerivAt.continuousAt
+      filter_upwards [ih h.1 hd.1, hc.eventually (C.acosOpen _ h.2)] with v h1 h2
       exact ⟨h1, h2⟩
     all_goals exact (by simp [Ok] at h)
   | app2 o a b iha ihb =>
@@ -388,5 +505,251 @@ theorem antiderivSubst_chain_open [CompleteSpace 𝕜] (C : Calc I) {cs : List C
       · rfl
       · simp only [hgf]
         ring
+
+/-! ## Explicit terms plus a residual integral -/
+
+/-- `E` evaluated with the holes of a recursive rule read as antiderivatives, when `E` mentions
+no hole. -/
+theorem eval_recEnv_free {E : Expr} (hE : "I1" ∉ E.varList) (env : String → 𝕜)
+    (Φ : String → 𝕜 → 𝕜) (v : 𝕜) :
+    eval I (recEnv env ["I1"] Φ "x" v) E = eval I (Function.update env "x" v) E ∧
+      (Defined I (recEnv env ["I1"] Φ "x" v) E ↔ Defined I (Function.update env "x" v) E) := by
+  have h : ∀ n ∈ E.varList, recEnv env ["I1"] Φ "x" v n = Function.update env "x" v n := by
+    intro n hn
+    have hI : n ≠ "I1" := fun h => hE (h ▸ hn)
+    simp [recEnv, Function.update, hI]
+  exact ⟨Calculus.eval_congr I E h, Calculus.defined_congr I E h⟩
+
+/-- **Explicit term plus `K` times a residual integral**, from pointwise obligations at `t`. -/
+theorem antiderivRec_open (C : Calc I) {cs : List Cond} (F E H K : Expr)
+    (hEI : "I1" ∉ E.varList) (hKx : "x" ∉ K.varList) (hKI : "I1" ∉ K.varList)
+    (hobl : ∀ env : String → 𝕜, (∀ k ∈ cs, k.Holds I env) → ∀ t : 𝕜,
+      (∀ᶠ v in 𝓝 t, Defined I (Function.update env "x" v) F) →
+      Defined I env K ∧ Ok C "x" (Function.update env "x" t) E ∧
+      Defined I (Function.update env "x" t) E ∧ Ok C "x" (Function.update env "x" t) H ∧
+      Defined I (Function.update env "x" t) H ∧
+      eval I (Function.update env "x" t) F =
+        eval I (Function.update env "x" t) (d "x" E) +
+          eval I env K * eval I (Function.update env "x" t) H) :
+    AntiderivRecHolds I "x" cs F (.app2 .add E (.app2 .mul K (.var "I1"))) [("I1", H)] := by
+  intro env hcs t hF
+  obtain ⟨hK, hokE, hdE, hokH, hdH, heq⟩ := hobl env hcs t hF
+  have hKρ : ∀ v Φ, eval I (recEnv env ["I1"] Φ "x" v) K = eval I env K ∧
+      (Defined I (recEnv env ["I1"] Φ "x" v) K ↔ Defined I env K) := by
+    intro v Φ
+    have h' : ∀ n ∈ K.varList, recEnv env ["I1"] Φ "x" v n = env n := by
+      intro n hn
+      have hx : n ≠ "x" := fun h => hKx (h ▸ hn)
+      have hI : n ≠ "I1" := fun h => hKI (h ▸ hn)
+      simp [recEnv, Function.update, hx, hI]
+    exact ⟨Calculus.eval_congr I K h', Calculus.defined_congr I K h'⟩
+  refine ⟨?_, fun Φ hΦ => ?_⟩
+  · intro i hi
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at hi
+    subst hi
+    exact eventually_defined C "x" env t H hokH hdH
+  · simp only [List.mem_cons, List.not_mem_nil, or_false, forall_eq] at hΦ
+    refine ⟨?_, ?_⟩
+    · filter_upwards [eventually_defined C "x" env t E hokE hdE] with v hv
+      simp only [List.map_cons, List.map_nil, Defined, (eval_recEnv_free hEI env Φ v).2,
+        (hKρ v Φ).2, hK, hv, true_and]
+    · have hfun : (fun v => eval I (recEnv env (([("I1", H)] : List (String × Expr)).map (·.1))
+          Φ "x" v) (.app2 .add E (.app2 .mul K (.var "I1")))) =
+          fun v => eval I (Function.update env "x" v) E + eval I env K * Φ "I1" v := by
+        funext v
+        simp only [List.map_cons, List.map_nil, eval, (eval_recEnv_free hEI env Φ v).1,
+          (hKρ v Φ).1]
+        simp [recEnv]
+      rw [hfun, heq]
+      exact (hasStrictDerivAt_eval C "x" env t E hokE).hasDerivAt.add (hΦ.const_mul _)
+
+/-- **Explicit term plus a residual integral** (coefficient one). -/
+theorem antiderivRec_open1 (C : Calc I) {cs : List Cond} (F E H : Expr)
+    (hEI : "I1" ∉ E.varList)
+    (hobl : ∀ env : String → 𝕜, (∀ k ∈ cs, k.Holds I env) → ∀ t : 𝕜,
+      (∀ᶠ v in 𝓝 t, Defined I (Function.update env "x" v) F) →
+      Ok C "x" (Function.update env "x" t) E ∧
+      Defined I (Function.update env "x" t) E ∧ Ok C "x" (Function.update env "x" t) H ∧
+      Defined I (Function.update env "x" t) H ∧
+      eval I (Function.update env "x" t) F =
+        eval I (Function.update env "x" t) (d "x" E) + eval I (Function.update env "x" t) H) :
+    AntiderivRecHolds I "x" cs F (.app2 .add E (.var "I1")) [("I1", H)] := by
+  intro env hcs t hF
+  obtain ⟨hokE, hdE, hokH, hdH, heq⟩ := hobl env hcs t hF
+  refine ⟨?_, fun Φ hΦ => ?_⟩
+  · intro i hi
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at hi
+    subst hi
+    exact eventually_defined C "x" env t H hokH hdH
+  · simp only [List.mem_cons, List.not_mem_nil, or_false, forall_eq] at hΦ
+    refine ⟨?_, ?_⟩
+    · filter_upwards [eventually_defined C "x" env t E hokE hdE] with v hv
+      simp only [List.map_cons, List.map_nil, Defined, (eval_recEnv_free hEI env Φ v).2, hv,
+        true_and]
+    · have hfun : (fun v => eval I (recEnv env (([("I1", H)] : List (String × Expr)).map (·.1))
+          Φ "x" v) (.app2 .add E (.var "I1"))) =
+          fun v => eval I (Function.update env "x" v) E + Φ "I1" v := by
+        funext v
+        simp only [List.map_cons, List.map_nil, eval, (eval_recEnv_free hEI env Φ v).1]
+        simp [recEnv]
+      rw [hfun, heq]
+      exact (hasStrictDerivAt_eval C "x" env t E hokE).hasDerivAt.add hΦ
+
+/-- **Closed-form antiderivative** from pointwise obligations at `t`. -/
+theorem antideriv_open (C : Calc I) {cs : List Cond} (F E : Expr)
+    (hobl : ∀ env : String → 𝕜, (∀ k ∈ cs, k.Holds I env) → ∀ t : 𝕜,
+      (∀ᶠ v in 𝓝 t, Defined I (Function.update env "x" v) F) →
+      Ok C "x" (Function.update env "x" t) E ∧ Defined I (Function.update env "x" t) E ∧
+      eval I (Function.update env "x" t) F = eval I (Function.update env "x" t) (d "x" E)) :
+    AntiderivHoldsUnder I "x" cs F E := by
+  intro env hcs t hF
+  obtain ⟨hokE, hdE, heq⟩ := hobl env hcs t hF
+  refine ⟨eventually_defined C "x" env t E hokE hdE, ?_⟩
+  rw [heq]
+  exact (hasStrictDerivAt_eval C "x" env t E hokE).hasDerivAt
+
+/-! ## Several residual integrals -/
+
+/-- An expression free of `x` and of the holes reads the same under `recEnv` as under `env`. -/
+theorem eval_recEnv_const {K : Expr} {holes : List String} (hKx : "x" ∉ K.varList)
+    (hK : ∀ h ∈ holes, h ∉ K.varList) (env : String → 𝕜) (Φ : String → 𝕜 → 𝕜) (v : 𝕜) :
+    eval I (recEnv env holes Φ "x" v) K = eval I env K ∧
+      (Defined I (recEnv env holes Φ "x" v) K ↔ Defined I env K) := by
+  have h' : ∀ n ∈ K.varList, recEnv env holes Φ "x" v n = env n := by
+    intro n hn
+    have hx : n ≠ "x" := fun h => hKx (h ▸ hn)
+    have hh : n ∉ holes := fun h => hK n h hn
+    simp [recEnv, Function.update, hx, hh]
+  exact ⟨Calculus.eval_congr I K h', Calculus.defined_congr I K h'⟩
+
+/-- An expression free of the holes reads the same under `recEnv` as under `update env x v`. -/
+theorem eval_recEnv_free' {E : Expr} {holes : List String} (hE : ∀ h ∈ holes, h ∉ E.varList)
+    (env : String → 𝕜) (Φ : String → 𝕜 → 𝕜) (v : 𝕜) :
+    eval I (recEnv env holes Φ "x" v) E = eval I (Function.update env "x" v) E ∧
+      (Defined I (recEnv env holes Φ "x" v) E ↔ Defined I (Function.update env "x" v) E) := by
+  have h' : ∀ n ∈ E.varList, recEnv env holes Φ "x" v n = Function.update env "x" v n := by
+    intro n hn
+    have hh : n ∉ holes := fun h => hE n h hn
+    by_cases hx : n = "x"
+    · subst hx; simp [recEnv]
+    · simp [recEnv, Function.update, hx, hh]
+  exact ⟨Calculus.eval_congr I E h', Calculus.defined_congr I E h'⟩
+
+/-- **Explicit term plus two residual integrals** `E + K₁ I₁ + K₂ I₂`, from pointwise
+obligations at `t`. -/
+theorem antiderivRec_open2 (C : Calc I) {cs : List Cond} (F E H₁ H₂ K₁ K₂ : Expr)
+    (hE : ∀ h ∈ ["I1", "I2"], h ∉ E.varList)
+    (hK₁ : "x" ∉ K₁.varList ∧ ∀ h ∈ ["I1", "I2"], h ∉ K₁.varList)
+    (hK₂ : "x" ∉ K₂.varList ∧ ∀ h ∈ ["I1", "I2"], h ∉ K₂.varList)
+    (hobl : ∀ env : String → 𝕜, (∀ k ∈ cs, k.Holds I env) → ∀ t : 𝕜,
+      (∀ᶠ v in 𝓝 t, Defined I (Function.update env "x" v) F) →
+      Defined I env K₁ ∧ Defined I env K₂ ∧ Ok C "x" (Function.update env "x" t) E ∧
+      Defined I (Function.update env "x" t) E ∧ Ok C "x" (Function.update env "x" t) H₁ ∧
+      Defined I (Function.update env "x" t) H₁ ∧ Ok C "x" (Function.update env "x" t) H₂ ∧
+      Defined I (Function.update env "x" t) H₂ ∧
+      eval I (Function.update env "x" t) F =
+        eval I (Function.update env "x" t) (d "x" E) +
+          eval I env K₁ * eval I (Function.update env "x" t) H₁ +
+          eval I env K₂ * eval I (Function.update env "x" t) H₂) :
+    AntiderivRecHolds I "x" cs F
+      (.app2 .add (.app2 .add E (.app2 .mul K₁ (.var "I1"))) (.app2 .mul K₂ (.var "I2")))
+      [("I1", H₁), ("I2", H₂)] := by
+  intro env hcs t hF
+  obtain ⟨hk₁, hk₂, hokE, hdE, hok₁, hd₁, hok₂, hd₂, heq⟩ := hobl env hcs t hF
+  refine ⟨?_, fun Φ hΦ => ?_⟩
+  · intro i hi
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at hi
+    rcases hi with rfl | rfl
+    · exact eventually_defined C "x" env t H₁ hok₁ hd₁
+    · exact eventually_defined C "x" env t H₂ hok₂ hd₂
+  · have hΦ₁ : HasDerivAt (Φ "I1") (eval I (Function.update env "x" t) H₁) t := hΦ ("I1", H₁) (by simp)
+    have hΦ₂ : HasDerivAt (Φ "I2") (eval I (Function.update env "x" t) H₂) t := hΦ ("I2", H₂) (by simp)
+    refine ⟨?_, ?_⟩
+    · filter_upwards [eventually_defined C "x" env t E hokE hdE] with v hv
+      simp only [List.map_cons, List.map_nil, Defined, (eval_recEnv_free' hE env Φ v).2,
+        (eval_recEnv_const hK₁.1 hK₁.2 env Φ v).2, (eval_recEnv_const hK₂.1 hK₂.2 env Φ v).2,
+        hk₁, hk₂, hv, true_and]
+    · have hfun : (fun v => eval I (recEnv env
+          (([("I1", H₁), ("I2", H₂)] : List (String × Expr)).map (·.1)) Φ "x" v)
+          (.app2 .add (.app2 .add E (.app2 .mul K₁ (.var "I1"))) (.app2 .mul K₂ (.var "I2")))) =
+          fun v => eval I (Function.update env "x" v) E + eval I env K₁ * Φ "I1" v +
+            eval I env K₂ * Φ "I2" v := by
+        funext v
+        simp only [List.map_cons, List.map_nil, eval, (eval_recEnv_free' hE env Φ v).1,
+          (eval_recEnv_const hK₁.1 hK₁.2 env Φ v).1, (eval_recEnv_const hK₂.1 hK₂.2 env Φ v).1]
+        simp [recEnv]
+      rw [hfun, heq]
+      exact ((hasStrictDerivAt_eval C "x" env t E hokE).hasDerivAt.add
+        (hΦ₁.const_mul _)).add (hΦ₂.const_mul _)
+
+/-- **Two residual integrals** `K₁ I₁ + K₂ I₂`: the integrand is pointwise
+`K₁ H₁ + K₂ H₂`. -/
+theorem antiderivRec_lin2 (C : Calc I) {cs : List Cond} (F H₁ H₂ K₁ K₂ : Expr)
+    (hK₁ : "x" ∉ K₁.varList ∧ ∀ h ∈ ["I1", "I2"], h ∉ K₁.varList)
+    (hK₂ : "x" ∉ K₂.varList ∧ ∀ h ∈ ["I1", "I2"], h ∉ K₂.varList)
+    (hobl : ∀ env : String → 𝕜, (∀ k ∈ cs, k.Holds I env) → ∀ t : 𝕜,
+      (∀ᶠ v in 𝓝 t, Defined I (Function.update env "x" v) F) →
+      Defined I env K₁ ∧ Defined I env K₂ ∧ Ok C "x" (Function.update env "x" t) H₁ ∧
+      Defined I (Function.update env "x" t) H₁ ∧ Ok C "x" (Function.update env "x" t) H₂ ∧
+      Defined I (Function.update env "x" t) H₂ ∧
+      eval I (Function.update env "x" t) F =
+        eval I env K₁ * eval I (Function.update env "x" t) H₁ +
+          eval I env K₂ * eval I (Function.update env "x" t) H₂) :
+    AntiderivRecHolds I "x" cs F
+      (.app2 .add (.app2 .mul K₁ (.var "I1")) (.app2 .mul K₂ (.var "I2")))
+      [("I1", H₁), ("I2", H₂)] := by
+  intro env hcs t hF
+  obtain ⟨hk₁, hk₂, hok₁, hd₁, hok₂, hd₂, heq⟩ := hobl env hcs t hF
+  refine ⟨?_, fun Φ hΦ => ?_⟩
+  · intro i hi
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at hi
+    rcases hi with rfl | rfl
+    · exact eventually_defined C "x" env t H₁ hok₁ hd₁
+    · exact eventually_defined C "x" env t H₂ hok₂ hd₂
+  · have hΦ₁ : HasDerivAt (Φ "I1") (eval I (Function.update env "x" t) H₁) t := hΦ ("I1", H₁) (by simp)
+    have hΦ₂ : HasDerivAt (Φ "I2") (eval I (Function.update env "x" t) H₂) t := hΦ ("I2", H₂) (by simp)
+    refine ⟨Filter.Eventually.of_forall fun v => ?_, ?_⟩
+    · simp only [List.map_cons, List.map_nil, Defined,
+        (eval_recEnv_const hK₁.1 hK₁.2 env Φ v).2, (eval_recEnv_const hK₂.1 hK₂.2 env Φ v).2,
+        hk₁, hk₂, true_and]
+    · have hfun : (fun v => eval I (recEnv env
+          (([("I1", H₁), ("I2", H₂)] : List (String × Expr)).map (·.1)) Φ "x" v)
+          (.app2 .add (.app2 .mul K₁ (.var "I1")) (.app2 .mul K₂ (.var "I2")))) =
+          fun v => eval I env K₁ * Φ "I1" v + eval I env K₂ * Φ "I2" v := by
+        funext v
+        simp only [List.map_cons, List.map_nil, eval,
+          (eval_recEnv_const hK₁.1 hK₁.2 env Φ v).1, (eval_recEnv_const hK₂.1 hK₂.2 env Φ v).1]
+        simp [recEnv]
+      rw [hfun, heq]
+      exact (hΦ₁.const_mul _).add (hΦ₂.const_mul _)
+
+/-- **One residual integral times a constant** `K I₁`: the integrand is pointwise `K H`. -/
+theorem antiderivRec_lin1 (C : Calc I) {cs : List Cond} (F H K : Expr)
+    (hK : "x" ∉ K.varList ∧ ∀ h ∈ ["I1"], h ∉ K.varList)
+    (hobl : ∀ env : String → 𝕜, (∀ k ∈ cs, k.Holds I env) → ∀ t : 𝕜,
+      (∀ᶠ v in 𝓝 t, Defined I (Function.update env "x" v) F) →
+      Defined I env K ∧ Ok C "x" (Function.update env "x" t) H ∧
+      Defined I (Function.update env "x" t) H ∧
+      eval I (Function.update env "x" t) F =
+        eval I env K * eval I (Function.update env "x" t) H) :
+    AntiderivRecHolds I "x" cs F (.app2 .mul K (.var "I1")) [("I1", H)] := by
+  intro env hcs t hF
+  obtain ⟨hk, hok, hd, heq⟩ := hobl env hcs t hF
+  refine ⟨?_, fun Φ hΦ => ?_⟩
+  · intro i hi
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at hi
+    subst hi
+    exact eventually_defined C "x" env t H hok hd
+  · have hΦ₁ : HasDerivAt (Φ "I1") (eval I (Function.update env "x" t) H) t := hΦ ("I1", H) (by simp)
+    refine ⟨Filter.Eventually.of_forall fun v => ?_, ?_⟩
+    · simp only [List.map_cons, List.map_nil, Defined, (eval_recEnv_const hK.1 hK.2 env Φ v).2,
+        hk, true_and]
+    · have hfun : (fun v => eval I (recEnv env (([("I1", H)] : List (String × Expr)).map (·.1))
+          Φ "x" v) (.app2 .mul K (.var "I1"))) = fun v => eval I env K * Φ "I1" v := by
+        funext v
+        simp only [List.map_cons, List.map_nil, eval, (eval_recEnv_const hK.1 hK.2 env Φ v).1]
+        simp [recEnv]
+      rw [hfun, heq]
+      exact hΦ₁.const_mul _
 
 end OSR.SymDeriv

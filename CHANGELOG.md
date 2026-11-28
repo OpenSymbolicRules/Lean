@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Extend the symbolic derivative to `tan`, `arctan`, `sinh`, `cosh`,
+  `arcsin` and `arccos` (the inverse functions over ℝ only), and add
+  `SymDeriv.antiderivRec_open`, `antiderivRec_open1` and `antideriv_open`
+  (explicit term plus at most one residual integral, pointwise obligations).
+- Add theorems for explicit terms plus two residual integrals or residual
+  integrals only (`SymDeriv.antiderivRec_open2`, `antiderivRec_lin2`,
+  `antiderivRec_lin1`), and prove 28 strengthened Integration variants with
+  pointwise obligations, symbolic-exponent powers split around their least
+  offset (OSR/IntegrationRec305, OSR/IntegrationRec306): 1.1.1.3 #24, #26,
+  #28, 1.1.1.4 #4, #8, #10, #12, 1.2.1.2 #41, #42, #59, #69, #77, 1.2.1.3 #61
+  and 6.7.6 #1, #2, #16, #17 over ℝ and ℂ; 1.2.1.2 #76, 5.3.4 #23, #24, #45,
+  #46, #47, #48, #65, #66 and 6.7.8 #49, #50 over ℝ.
 - Show that definedness is open where the symbolic derivative applies
   (`SymDeriv.eventually_defined`) and add `antiderivSubst_chain_open`, a
   substitution theorem with pointwise obligations and no condition on
