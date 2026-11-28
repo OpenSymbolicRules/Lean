@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Prove 8 more strengthened Integration variants with square roots over ℝ
+  (OSR/IntegrationRec307): 1.1.1.7 #12, 1.1.3.5 #13, 1.2.1.6 #26, #29,
+  1.3.3 #27, 4.1.2.1 #19, 4.1.2.3 #14 and 4.1.6 #34.
 - Extend the symbolic derivative to `tan`, `arctan`, `sinh`, `cosh`,
   `arcsin` and `arccos` (the inverse functions over ℝ only), and add
   `SymDeriv.antiderivRec_open`, `antiderivRec_open1` and `antideriv_open`

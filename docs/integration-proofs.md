@@ -129,7 +129,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 `OSR/IntegrationNum1.lean` distributed strengthened variants before their
 proofs (Specification V1-R-005e): both domains unproved, and a `numerical:`
-finding recording the evidence. The catalogue currently retains 313 unproved entries.
+finding recording the evidence. The catalogue currently retains 305 unproved entries.
 Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
 derivative is the residual integrand at the point, on assignments where each
@@ -440,7 +440,9 @@ with a coefficient computed offline when an equality condition of the rule is ne
 instance `c d² − b d e + a e² = 0` in 1.2.1.2 #41). They prove 1.1.1.3 #24, #26, #28,
 1.1.1.4 #4, #8, #10, #12, 1.2.1.2 #41, #42, #59, #69, #77, 1.2.1.3 #61 and 6.7.6 #1, #2, #16,
 #17 over ℝ and ℂ, and 1.2.1.2 #76, 5.3.4 #23, #24, #45, #46, #47, #48, #65, #66 and 6.7.8 #49,
-#50 over ℝ.
+#50 over ℝ. With the real square root unfolded (`Real.sqrt_eq_zero'`), the same generator proves
+1.1.1.7 #12, 1.1.3.5 #13, 1.2.1.6 #26, #29, 1.3.3 #27, 4.1.2.1 #19, 4.1.2.3 #14 and 4.1.6 #34
+over ℝ (`OSR/IntegrationRec307.lean`).
 `OSR/IntegrationRec205.lean` and `OSR/IntegrationRec206.lean` prove the
 recursive rules 1.1.3.4 #28 and #29, respectively, including their residual
 integrands and definedness conditions. Both complex proofs are exported as
