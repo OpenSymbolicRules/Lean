@@ -55,6 +55,10 @@ structure Calc (I : Interp 𝕜) where
   ln : ∀ z, lnOk z → HasStrictDerivAt I.ln z⁻¹ z
   root : ∀ z n, rootOk z → I.toInt? n = some 2 →
     HasStrictDerivAt (fun w => I.root w n) (1 / (2 * I.root z n)) z
+  /-- `ln` is defined near a point where it is differentiable. -/
+  lnOpen : ∀ z, lnOk z → ∀ᶠ w in 𝓝 z, I.lnDefined w
+  /-- The square root is defined near a point where it is differentiable. -/
+  rootOpen : ∀ z n, rootOk z → I.toInt? n = some 2 → ∀ᶠ w in 𝓝 z, I.rootDefined w n
 
 variable {I : Interp 𝕜}
 
@@ -172,6 +176,10 @@ noncomputable def Calc.real : Calc Interp.real where
   exp z := Real.hasStrictDerivAt_exp z
   ln z hz := Real.hasStrictDerivAt_log hz.ne'
   root z n hz _ := by simpa [Interp.real] using Real.hasStrictDerivAt_sqrt hz.ne'
+  lnOpen z hz := by simpa [Interp.real] using eventually_gt_nhds hz
+  rootOpen z n hz hn := by
+    filter_upwards [eventually_gt_nhds hz] with w hw
+    exact ⟨hn, hw.le⟩
 
 /-- The derivative facts of the complex interpretation (principal logarithm off the cut; the
 square root has no complex interpretation in the fragment). -/
@@ -183,6 +191,78 @@ noncomputable def Calc.complex : Calc Interp.complex where
   exp z := Complex.hasStrictDerivAt_exp z
   ln _ hz := Complex.hasStrictDerivAt_log hz
   root _ _ hz _ := hz.elim
+  lnOpen z hz := by
+    filter_upwards [Complex.isOpen_slitPlane.mem_nhds hz] with w hw
+    exact Complex.slitPlane_ne_zero hw
+  rootOpen _ _ hz _ := hz.elim
+
+/-- Where `Ok` holds, definedness is an open condition: an expression defined at the point is
+defined near it. -/
+theorem eventually_defined (C : Calc I) (x : String) (env : String → 𝕜) (t : 𝕜) :
+    ∀ e : Expr, Ok C x (Function.update env x t) e → Defined I (Function.update env x t) e →
+      ∀ᶠ v in 𝓝 t, Defined I (Function.update env x v) e := by
+  intro e
+  induction e with
+  | var n => intro _ _; exact Filter.Eventually.of_forall fun _ => trivial
+  | int z => intro _ _; exact Filter.Eventually.of_forall fun _ => trivial
+  | const c => intro _ _; exact Filter.Eventually.of_forall fun _ => trivial
+  | app1 o a ih =>
+    intro h hd
+    cases o
+    case neg => exact ih h hd
+    case sin => exact ih h hd
+    case cos => exact ih h hd
+    case exp => exact ih h hd
+    case ln =>
+      have hc := (hasStrictDerivAt_eval C x env t a h.1).hasDerivAt.continuousAt
+      filter_upwards [ih h.1 hd.1, hc.eventually (C.lnOpen _ h.2)] with v h1 h2
+      exact ⟨h1, h2⟩
+    all_goals exact (by simp [Ok] at h)
+  | app2 o a b iha ihb =>
+    intro h hd
+    cases o
+    case add =>
+      filter_upwards [iha h.1 hd.1, ihb h.2 hd.2] with v h1 h2
+      exact ⟨h1, h2⟩
+    case sub =>
+      filter_upwards [iha h.1 hd.1, ihb h.2 hd.2] with v h1 h2
+      exact ⟨h1, h2⟩
+    case mul =>
+      filter_upwards [iha h.1 hd.1, ihb h.2 hd.2] with v h1 h2
+      exact ⟨h1, h2⟩
+    case div =>
+      have hc := (hasStrictDerivAt_eval C x env t b h.2.1).hasDerivAt.continuousAt
+      filter_upwards [iha h.1 hd.1, ihb h.2.1 hd.2.1, hc.eventually_ne h.2.2] with v h1 h2 h3
+      exact ⟨h1, h2, h3⟩
+    case root =>
+      obtain ⟨ha, hx, h2, hr⟩ := h
+      have hn : ∀ v, eval I (Function.update env x v) b = eval I (Function.update env x t) b :=
+        fun v => eval_update_free env hx v t
+      have hnd : ∀ v, Defined I (Function.update env x v) b ↔ Defined I (Function.update env x t) b :=
+        fun v => Calculus.defined_congr I b fun n hn' => by
+          have : n ≠ x := fun h' => hx (h' ▸ hn')
+          simp [Function.update, this]
+      have hc := (hasStrictDerivAt_eval C x env t a ha).hasDerivAt.continuousAt
+      filter_upwards [iha ha hd.1, hc.eventually (C.rootOpen _ _ hr h2)] with v h1 h3
+      exact ⟨h1, (hnd v).2 hd.2.1, by rw [hn v]; exact h3⟩
+  | pow a e iha ihe =>
+    intro h hd
+    obtain ⟨ha, hx, m, hm, h0⟩ := h
+    have he : ∀ v, eval I (Function.update env x v) e = eval I (Function.update env x t) e :=
+      fun v => eval_update_free env hx v t
+    have hed : ∀ v, Defined I (Function.update env x v) e ↔ Defined I (Function.update env x t) e :=
+      fun v => Calculus.defined_congr I e fun n hn' => by
+        have : n ≠ x := fun h' => hx (h' ▸ hn')
+        simp [Function.update, this]
+    obtain ⟨hda, hde, m', hm', hne⟩ := hd
+    have hmm : m' = m := by rw [hm] at hm'; exact (Option.some.inj hm').symm
+    subst hmm
+    have hc := (hasStrictDerivAt_eval C x env t a ha).hasDerivAt.continuousAt
+    by_cases hneg : m' < 0
+    · filter_upwards [iha ha hda, hc.eventually_ne (hne hneg)] with v h1 h3
+      exact ⟨h1, (hed v).2 hde, m', by rw [he v]; exact hm, fun _ => h3⟩
+    · filter_upwards [iha ha hda] with v h1
+      exact ⟨h1, (hed v).2 hde, m', by rw [he v]; exact hm, fun h' => absurd h' hneg⟩
 
 /-! ## Substitution by the chain rule -/
 
@@ -226,6 +306,66 @@ theorem antiderivSubst_chain [CompleteSpace 𝕜] (C : Calc I) {cs : List Cond} 
       exact hg' ▸ hv.1
     · rw [hsub, ← hs.map_nhds_eq hd0]
       exact hev.mono fun v hv => hv.2
+  · intro Φ hΦ
+    simp only [List.mem_cons, List.not_mem_nil, or_false, forall_eq] at hΦ
+    rw [hsub] at hΦ
+    have hρ : ∀ v, ∀ n, n ≠ "x" → n ≠ "I1" →
+        substEnv I env (([("I1", H)] : List (String × Expr)).map (·.1)) [("I1", g)] Φ "x" v n =
+          env n := by
+      intro v n hx hI
+      simp [substEnv, Function.update, hx, hI]
+    refine ⟨Filter.Eventually.of_forall fun v => ?_, ?_⟩
+    · simp only [Defined, (hKρ _ (hρ v)).2, hK, true_and]
+    · have hfun : (fun v => eval I (substEnv I env (([("I1", H)] : List (String × Expr)).map (·.1))
+          [("I1", g)] Φ "x" v) (.app2 .mul K (.var "I1"))) =
+          fun v => eval I env K * Φ "I1" (gf v) := by
+        funext v
+        simp only [eval, (hKρ _ (hρ v)).1]
+        simp [substEnv, Function.update, hsub]
+      rw [hfun, heq]
+      have := (hΦ.comp t hs.hasDerivAt).const_mul (eval I env K)
+      convert this using 1
+      · rfl
+      · simp only [hgf]
+        ring
+
+/-- **Substitution `u = g(x)` by openness.** As `antiderivSubst_chain`, but with pointwise
+obligations and no condition on `g'(t)`: where `Ok` holds, definedness is open
+(`eventually_defined`), so `g` defined at `t` and `H` defined at `g(t)` are defined near them. -/
+theorem antiderivSubst_chain_open [CompleteSpace 𝕜] (C : Calc I) {cs : List Cond}
+    (F H g K : Expr) (hKx : "x" ∉ K.varList) (hKI : "I1" ∉ K.varList)
+    (hobl : ∀ env : String → 𝕜, (∀ k ∈ cs, k.Holds I env) → ∀ t : 𝕜,
+      (∀ᶠ v in 𝓝 t, Defined I (Function.update env "x" v) F) →
+      Defined I env K ∧ Ok C "x" (Function.update env "x" t) g ∧
+      Defined I (Function.update env "x" t) g ∧
+      Ok C "x" (Function.update env "x" (eval I (Function.update env "x" t) g)) H ∧
+      Defined I (Function.update env "x" (eval I (Function.update env "x" t) g)) H ∧
+      eval I (Function.update env "x" t) F =
+        eval I env K * eval I (Function.update env "x" (eval I (Function.update env "x" t) g)) H *
+          eval I (Function.update env "x" t) (d "x" g)) :
+    AntiderivSubstHolds I "x" cs F (.app2 .mul K (.var "I1")) [("I1", H)] [("I1", g)] := by
+  intro env hcs t hF
+  obtain ⟨hK, hok, hgd, hokH, hHd, heq⟩ := hobl env hcs t hF
+  set gf : 𝕜 → 𝕜 := fun v => eval I (Function.update env "x" v) g with hgf
+  have hs : HasStrictDerivAt gf (eval I (Function.update env "x" t) (d "x" g)) t :=
+    hasStrictDerivAt_eval C "x" env t g hok
+  have hsub : ∀ v, substAt I env [("I1", g)] "x" "I1" v = gf v := by
+    intro v; simp [substAt, hgf]
+  have hKρ : ∀ ρ : String → 𝕜, (∀ n, n ≠ "x" → n ≠ "I1" → ρ n = env n) →
+      eval I ρ K = eval I env K ∧ (Defined I ρ K ↔ Defined I env K) := by
+    intro ρ hρ
+    have h' : ∀ n ∈ K.varList, ρ n = env n := fun n hn =>
+      hρ n (fun h => hKx (h ▸ hn)) (fun h => hKI (h ▸ hn))
+    exact ⟨Calculus.eval_congr I K h', Calculus.defined_congr I K h'⟩
+  refine ⟨?_, ?_⟩
+  · intro i hi
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at hi
+    subst hi
+    refine ⟨(eventually_defined C "x" env t g hok hgd).mono fun v hv g' hg' => ?_, ?_⟩
+    · simp only [List.lookup_cons, beq_self_eq_true, Option.some.injEq] at hg'
+      exact hg' ▸ hv
+    · rw [hsub]
+      exact eventually_defined C "x" env (gf t) H hokH hHd
   · intro Φ hΦ
     simp only [List.mem_cons, List.not_mem_nil, or_false, forall_eq] at hΦ
     rw [hsub] at hΦ

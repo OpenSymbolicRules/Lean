@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Show that definedness is open where the symbolic derivative applies
+  (`SymDeriv.eventually_defined`) and add `antiderivSubst_chain_open`, a
+  substitution theorem with pointwise obligations and no condition on
+  `g'(t)`; prove 1.1.3.2 #83, 1.1.3.4 #9 and 1.1.3.6 #5 over ℝ and ℂ with it
+  (OSR/IntegrationRec304).
 - Add a symbolic derivative with a soundness proof (OSR/SymDeriv.lean:
   `SymDeriv.d`, `hasStrictDerivAt_eval`, with the derivative facts of ℝ and ℂ)
   and a chain-rule theorem for rules with a substitution `u = g(x)`

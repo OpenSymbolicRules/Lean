@@ -129,7 +129,7 @@ trinomial as `(d + e x) (a/d + c x/e)`), and 1.2.1.3 #19 with `e^p ≠ 0`.
 
 `OSR/IntegrationNum1.lean` distributed strengthened variants before their
 proofs (Specification V1-R-005e): both domains unproved, and a `numerical:`
-finding recording the evidence. The catalogue currently retains 344 unproved entries.
+finding recording the evidence. The catalogue currently retains 341 unproved entries.
 Each candidate was checked over ℝ
 by central differences, each residual integral replaced by a function whose
 derivative is the residual integrand at the point, on assignments where each
@@ -418,7 +418,12 @@ an interpretation are a `SymDeriv.Calc`; `Calc.real` and `Calc.complex` give the
 `u = g(x)` with result `K · I1(g(x))`: when `g'(t) ≠ 0` the strict derivative makes `g` a local
 homeomorphism near `t`, which carries the definedness of `H ∘ g` to that of `H` near `g(t)`.
 `OSR/IntegrationRec303.lean` applies it to `u = 1/(e + f x)`: 4.1.12 #9, #10 and 6.7.9 #49, #50
-over ℝ and ℂ.
+over ℝ and ℂ. `eventually_defined` shows that definedness is open where `Ok` holds (each
+expression of the fragment is continuous there, and nonzero divisors, `ln` and the square root
+stay inside their domains nearby), so `antiderivSubst_chain_open` needs no condition on `g'(t)`:
+its obligations are pointwise, at `t` and at `g(t)`. It covers substitutions whose derivative
+vanishes, such as `u = xⁿ` at `x = 0`: 1.1.3.2 #83 (`u = c x`), 1.1.3.4 #9 and 1.1.3.6 #5
+(`u = xⁿ`) over ℝ and ℂ (`OSR/IntegrationRec304.lean`).
 `OSR/IntegrationRec205.lean` and `OSR/IntegrationRec206.lean` prove the
 recursive rules 1.1.3.4 #28 and #29, respectively, including their residual
 integrands and definedness conditions. Both complex proofs are exported as
